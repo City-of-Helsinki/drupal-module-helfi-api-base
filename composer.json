@@ -1,6 +1,6 @@
 {
-    "name": "drupal/helfi_api",
-    "type": "drupal-module",
+    "name": "drupal/helfi_api_base",
+    "type": "drupal-custom-module",
     "minimum-stability": "dev",
     "require": {
       "drupal/api_tools": "~1.0.0"
