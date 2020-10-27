@@ -1,0 +1,13 @@
+administer remote entities:
+  title: 'Administer remote entity settings'
+  restrict access: true
+access remote entities overview:
+  title: 'Access remote entities overview page'
+delete remote entities:
+  title: Delete remote entities
+create remote entities:
+  title: Create remote entities
+view remote entities:
+  title: View remote entities
+edit remote entities:
+  title: Edit remote entities

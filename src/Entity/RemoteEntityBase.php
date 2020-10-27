@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\helfi_api\Entity;
+namespace Drupal\helfi_api_base\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
