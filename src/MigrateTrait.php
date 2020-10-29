@@ -21,4 +21,14 @@ trait MigrateTrait {
     return in_array($is_partial, ['true', '1']);
   }
 
+  /**
+   * Marks the migrate as partial or not.
+   *
+   * @param bool $status
+   *   TRUE if partial migrate, FALSE if not.
+   */
+  public function setIsPartialMigrate(bool $status = TRUE) : void {
+    putenv('PARTIAL_MIGRATE=' . ($status ? '1' : '0'));
+  }
+
 }
