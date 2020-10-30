@@ -26,9 +26,6 @@ jobs:
           composer create-project City-of-Helsinki/drupal-base:dev-main $HOME/drupal --no-interaction --repository https://city-of-helsinki.github.io/drupal-repository/
           ln -s $GITHUB_WORKSPACE $HOME/drupal/public/modules/custom
 
-      - name: Run PHPCS
-        run: cd $HOME/drupal && vendor/bin/phpcs public/modules/custom/ --standard=Drupal
-
       - name: Install Drupal
         run: php -d sendmail_path=$(which true); drush --yes --root $HOME/drupal -v site-install --existing-config --db-url="$SIMPLETEST_DB"
 
