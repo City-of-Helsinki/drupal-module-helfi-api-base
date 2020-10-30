@@ -28,7 +28,7 @@ jobs:
           php -d sendmail_path=$(which true); drush --yes --root $HOME/drupal -v site-install minimal --db-url="$SIMPLETEST_DB"
           ln -s $GITHUB_WORKSPACE $HOME/drupal/public/modules/custom
           cd $HOME/drupal &&
-          echo "$(jq --indent 4 '.repositories += [{"type": "path", "url": "'$GITHUB_WORKSPACE'"}]' composer.json)" > composer.json && composer_require drupal/$MODULE_NAME
+          echo "$(jq --indent 4 '.repositories += [{"type": "path", "url": "'$GITHUB_WORKSPACE'"}]' composer.json)" > composer.json && composer require drupal/$MODULE_NAME
           cat $HOME/drupal/composer.json
           drush en --root $HOME/drupal $MODULE_NAME -y
 
