@@ -27,7 +27,7 @@ jobs:
           ln -s $GITHUB_WORKSPACE $HOME/drupal/public/modules/custom
 
       - name: Install Drupal
-        run: php -d sendmail_path=$(which true); drush --yes --root $HOME/drupal -v site-install --existing-config --db-url="$SIMPLETEST_DB"
+        run: php -d sendmail_path=$(which true); drush --yes --root $HOME/drupal -v site-install --db-url="$SIMPLETEST_DB"
 
       - name: Run PHPUnit tests
         run: |
