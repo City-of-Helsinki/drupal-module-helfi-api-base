@@ -27,9 +27,9 @@ jobs:
           composer create-project City-of-Helsinki/drupal-base:dev-main $HOME/drupal --no-interaction --repository https://city-of-helsinki.github.io/drupal-repository/
           php -d sendmail_path=$(which true); drush --yes --root $HOME/drupal -v site-install minimal --db-url="$SIMPLETEST_DB"
           ln -s $GITHUB_WORKSPACE $HOME/drupal/public/modules/custom
-          composer config repositories.3 path $GITHUB_WORKSPACE
-          drush en --root $HOME/drupal $MODULE_NAME -y
+          composer config repositories.3 path $HOME/drupal/public/modules/custom
           cd $HOME/drupal && composer install
+          drush en --root $HOME/drupal $MODULE_NAME -y
 
       - name: Run PHPUnit tests
         run: |
