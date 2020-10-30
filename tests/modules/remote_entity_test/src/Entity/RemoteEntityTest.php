@@ -29,8 +29,8 @@ use Drupal\helfi_api_base\Entity\RemoteEntityBase;
  *       "html" = "Drupal\helfi_api_base\Entity\Routing\EntityRouteProvider",
  *     }
  *   },
- *   base_table = "remote_entity_test",
- *   data_table = "remote_entity_test_field_data",
+ *   base_table = "rmt",
+ *   data_table = "rmt_field_data",
  *   admin_permission = "administer remote entities",
  *   entity_keys = {
  *     "id" = "id",
@@ -39,10 +39,14 @@ use Drupal\helfi_api_base\Entity\RemoteEntityBase;
  *     "uuid" = "uuid"
  *   },
  *   links = {},
- *   field_ui_base_route = "trp_unit.settings"
  * )
  */
 final class RemoteEntityTest extends RemoteEntityBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public const MAX_SYNC_ATTEMPTS = 5;
 
   /**
    * {@inheritdoc}

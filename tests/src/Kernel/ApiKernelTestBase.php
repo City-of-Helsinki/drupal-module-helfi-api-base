@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
-use Drupal\KernelTests\KernelTestBase;
+use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 
 /**
  * API test base.
  */
-abstract class ApiKernelTestBase extends KernelTestBase {
+abstract class ApiKernelTestBase extends EntityKernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -17,7 +17,6 @@ abstract class ApiKernelTestBase extends KernelTestBase {
   protected static $modules = [
     'api_tools',
     'helfi_api_base',
-    'system',
   ];
 
   /**
@@ -27,7 +26,6 @@ abstract class ApiKernelTestBase extends KernelTestBase {
     parent::setUp();
 
     $this->installConfig(['helfi_api_base']);
-    $this->installSchema('system', ['sequences']);
   }
 
 }

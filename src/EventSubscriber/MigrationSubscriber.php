@@ -116,9 +116,16 @@ final class MigrationSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $dataTable = $this->entityTypeManager->getStorage($entity_type)
-      ->getEntityType()
-      ->getDataTable();
+    // @todo Fix this some other way.
+    $entityType = $this->entityTypeManager->getStorage($entity_type)
+      ->getEntityType();
+    $dataTable = $entityType->getDataTable();
+
+    // Fallback to base table if the entity doesn't have dedicated
+    // data table.
+    if (!$this->connection->schema()->tableExists($dataTable)) {
+      $dataTable = $entityType->getBaseTable();
+    }
 
     // Increment 'sync_attempts' for all entities.
     // This will be reset back to 0 on entity save.
