@@ -26,6 +26,7 @@ jobs:
         run: |
           composer create-project City-of-Helsinki/drupal-base:dev-main $HOME/drupal --no-interaction --repository https://city-of-helsinki.github.io/drupal-repository/
           ln -s $GITHUB_WORKSPACE $HOME/drupal/public/modules/custom
+          composer install
 
       - name: Install Drupal
         run: php -d sendmail_path=$(which true); drush --yes --root $HOME/drupal -v site-install --db-url="$SIMPLETEST_DB"
