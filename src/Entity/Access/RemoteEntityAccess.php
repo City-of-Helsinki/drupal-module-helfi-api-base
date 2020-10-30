@@ -24,10 +24,16 @@ class RemoteEntityAccess extends EntityAccessControlHandler {
         return AccessResult::allowedIfHasPermission($account, 'view remove entities');
 
       case 'update':
-        return AccessResult::allowedIfHasPermissions($account, ['edit remote entities', 'administer remote entities'], 'OR');
+        return AccessResult::allowedIfHasPermissions($account, [
+          'edit remote entities',
+          'administer remote entities',
+        ], 'OR');
 
       case 'delete':
-        return AccessResult::allowedIfHasPermissions($account, ['delete remote entities', 'administer remote entities'], 'OR');
+        return AccessResult::allowedIfHasPermissions($account, [
+          'delete remote entities',
+          'administer remote entities',
+        ], 'OR');
     }
 
     return AccessResult::neutral();
@@ -37,7 +43,10 @@ class RemoteEntityAccess extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
-    return AccessResult::allowedIfHasPermissions($account, ['create remote entities', 'administer remote entities'], 'OR');
+    return AccessResult::allowedIfHasPermissions($account, [
+      'create remote entities',
+      'administer remote entities',
+    ], 'OR');
   }
 
 }

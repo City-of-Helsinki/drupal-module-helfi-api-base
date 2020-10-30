@@ -63,12 +63,12 @@ final class EntityChanged extends ProcessPluginBase implements ContainerFactoryP
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    ['sourceid1' => $id] = $row->getIdMap();
+    ['sourceid1' => $id] = $row->getIdMap() + ['sourceid1' => NULL];
 
     $value = (int) $value;
 
     /** @var \Drupal\helfi_api_base\Entity\RemoteEntityBase $entity */
-    if ($value <= 0 || !$entity = $this->entityStorage->load($id)) {
+    if (!$id || $value <= 0 || !$entity = $this->entityStorage->load($id)) {
       return $value;
     }
 
