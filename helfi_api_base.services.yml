@@ -1,0 +1,6 @@
+services:
+  helfi_api_base.migration_subscriber:
+    class: Drupal\helfi_api_base\EventSubscriber\MigrationSubscriber
+    arguments: ['@entity_type.manager', '@database']
+    tags:
+      - { name: event_subscriber }

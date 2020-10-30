@@ -3,6 +3,7 @@
     "type": "drupal-custom-module",
     "minimum-stability": "dev",
     "require": {
-      "drupal/api_tools": "~1.0.0"
+        "drupal/api_tools": "~1.0.0",
+        "drupal/migrate_plus": "~5.0"
     }
 }

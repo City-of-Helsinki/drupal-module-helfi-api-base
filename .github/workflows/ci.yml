@@ -1,0 +1,39 @@
+on: [push]
+name: CI
+env:
+  SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
+  SIMPLETEST_BASE_URL: "http://127.0.0.1:8080"
+  DRUPAL_CORE: 9.0.x
+  MODULE_NAME: helfi_api_base
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/city-of-helsinki/drupal-php-docker:7.4
+
+    services:
+      db:
+        image: druidfi/db:mysql5.7-drupal
+        ports:
+          - 3306:3306
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Build project
+        run: |
+          composer create-project City-of-Helsinki/drupal-base:dev-main $HOME/drupal --no-interaction --repository https://city-of-helsinki.github.io/drupal-repository/
+          php -d sendmail_path=$(which true); drush --yes --root $HOME/drupal -v site-install minimal --db-url="$SIMPLETEST_DB"
+          ln -s $GITHUB_WORKSPACE $HOME/drupal/public/modules/custom
+          cd $HOME/drupal &&
+          echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "'$GITHUB_WORKSPACE'"}] + .' composer.json)" > composer.json && composer require drupal/$MODULE_NAME
+          cat $HOME/drupal/composer.json
+          drush en --root $HOME/drupal $MODULE_NAME -y
+
+      - name: Run PHPUnit tests
+        run: |
+          drush runserver $SIMPLETEST_BASE_URL --root $HOME/drupal > /dev/null 2>&1 &
+          chromedriver --port=4444 > /dev/null 2>&1 &
+          cd $HOME/drupal && vendor/bin/phpunit -c $HOME/drupal/phpunit.xml.dist --verbose --group $MODULE_NAME
