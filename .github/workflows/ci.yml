@@ -28,7 +28,7 @@ jobs:
           php -d sendmail_path=$(which true); drush --yes --root $HOME/drupal -v site-install minimal --db-url="$SIMPLETEST_DB"
           ln -s $GITHUB_WORKSPACE $HOME/drupal/public/modules/custom
           composer config repositories.3 path $GITHUB_WORKSPACE
-          drush en $MODULE_NAME -y
+          drush en --root $HOME/drupal $MODULE_NAME -y
           cd $HOME/drupal && composer install
 
       - name: Run PHPUnit tests
