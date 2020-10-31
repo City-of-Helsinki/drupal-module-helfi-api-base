@@ -9,7 +9,7 @@ use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
 
 /**
- * Base class for migration tests.
+ * Base class for multilingual migration tests.
  */
 abstract class MigrationTestBase extends ApiKernelTestBase implements MigrateMessageInterface {
 
@@ -36,7 +36,7 @@ abstract class MigrationTestBase extends ApiKernelTestBase implements MigrateMes
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp() : void {
     parent::setUp();
 
     $this->installConfig(['language', 'content_translation', 'migrate_plus']);
@@ -44,6 +44,13 @@ abstract class MigrationTestBase extends ApiKernelTestBase implements MigrateMes
     foreach (['fi', 'sv'] as $langcode) {
       ConfigurableLanguage::createFromLangcode($langcode)->save();
     }
+  }
+
+  /**
+   * Flushes all plugin caches.
+   */
+  protected function flushPluginCache() : void {
+    $this->container->get('plugin.cache_clearer')->clearCachedDefinitions();
   }
 
   /**
