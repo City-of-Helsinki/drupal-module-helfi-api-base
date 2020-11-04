@@ -24,13 +24,16 @@ jobs:
 
       - name: Build project
         run: |
-          composer create-project City-of-Helsinki/drupal-base:dev-main $HOME/drupal --no-interaction --repository https://city-of-helsinki.github.io/drupal-repository/
+          composer create-project City-of-Helsinki/drupal-helfi-platform:dev-main $HOME/drupal --no-interaction --repository https://city-of-helsinki.github.io/drupal-repository/
           php -d sendmail_path=$(which true); drush --yes --root $HOME/drupal -v site-install minimal --db-url="$SIMPLETEST_DB"
           ln -s $GITHUB_WORKSPACE $HOME/drupal/public/modules/custom
           cd $HOME/drupal &&
           echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "'$GITHUB_WORKSPACE'"}] + .' composer.json)" > composer.json && composer require drupal/$MODULE_NAME
           cat $HOME/drupal/composer.json
           drush en --root $HOME/drupal $MODULE_NAME -y
+
+      - name: Run PHPCS
+        run: cd $HOME/drupal && vendor/bin/phpcs public/modules/custom/ --standard=Drupal
 
       - name: Run PHPUnit tests
         run: |
