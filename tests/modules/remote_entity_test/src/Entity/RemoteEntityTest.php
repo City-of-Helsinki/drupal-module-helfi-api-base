@@ -18,7 +18,7 @@ use Drupal\helfi_api_base\Entity\RemoteEntityBase;
  *   label_collection = @Translation("Remote entity test"),
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "list_builder" = "Drupal\helfi_trp\Entity\Listing\UnitListBuilder",
+ *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
  *     "access" = "Drupal\helfi_api_base\Entity\Access\RemoteEntityAccess",
  *     "form" = {
