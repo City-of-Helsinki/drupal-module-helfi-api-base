@@ -86,7 +86,6 @@ final class JsonApi extends Json {
     for ($i = 1; $i <= ceil($total / $limit); $i++) {
       $currentUrl['query'][$offsetKey] = $limit * $i;
 
-
       $urls[] = Url::fromUri($currentUrl['path'], [
         'query' => $currentUrl['query'],
         'fragment' => $currentUrl['fragment'],
