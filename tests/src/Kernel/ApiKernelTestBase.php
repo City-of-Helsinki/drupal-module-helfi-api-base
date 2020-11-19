@@ -5,6 +5,9 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
 
 /**
  * API test base.
@@ -26,6 +29,22 @@ abstract class ApiKernelTestBase extends EntityKernelTestBase {
     parent::setUp();
 
     $this->installConfig(['helfi_api_base']);
+  }
+
+  /**
+   * Creates HTTP client stub.
+   *
+   * @param \Psr\Http\Message\ResponseInterface[] $responses
+   *   The expected responses.
+   *
+   * @return \GuzzleHttp\Client
+   *   The client.
+   */
+  protected function createMockHttpClient(array $responses) : Client {
+    $mock = new MockHandler($responses);
+    $handlerStack = HandlerStack::create($mock);
+
+    return new Client(['handler' => $handlerStack]);
   }
 
   /**
