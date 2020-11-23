@@ -3,7 +3,6 @@ name: CI
 env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
   SIMPLETEST_BASE_URL: "http://127.0.0.1:8080"
-  DRUPAL_CORE: 9.0.x
   MODULE_NAME: helfi_api_base
 jobs:
   tests:
@@ -22,21 +21,26 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Set variables
+        run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
+
       - name: Build project
         run: |
-          composer create-project City-of-Helsinki/drupal-helfi-platform:dev-main $HOME/drupal --no-interaction --repository https://repository.drupal.hel.ninja/
-          php -d sendmail_path=$(which true); drush --yes --root $HOME/drupal -v site-install minimal --db-url="$SIMPLETEST_DB"
-          ln -s $GITHUB_WORKSPACE $HOME/drupal/public/modules/custom
-          cd $HOME/drupal &&
-          echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "'$GITHUB_WORKSPACE'"}] + .' composer.json)" > composer.json && composer require drupal/$MODULE_NAME
-          cat $HOME/drupal/composer.json
-          drush en --root $HOME/drupal $MODULE_NAME -y
+          composer create-project City-of-Helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
+          cd $DRUPAL_ROOT
+          php -d sendmail_path=$(which true); drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
+          echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "'$GITHUB_WORKSPACE'"}] + .' composer.json)" > composer.json
+          composer require drupal/$MODULE_NAME
+          drush en $MODULE_NAME -y
 
       - name: Run PHPCS
-        run: cd $HOME/drupal && vendor/bin/phpcs public/modules/custom/ --standard=Drupal
+        run: |
+          cd $DRUPAL_ROOT
+          vendor/bin/phpcs public/modules/custom/ --standard=Drupal
 
       - name: Run PHPUnit tests
         run: |
-          drush runserver $SIMPLETEST_BASE_URL --root $HOME/drupal > /dev/null 2>&1 &
+          cd $DRUPAL_ROOT
+          drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
           chromedriver --port=4444 > /dev/null 2>&1 &
-          cd $HOME/drupal && vendor/bin/phpunit -c $HOME/drupal/phpunit.xml.dist --verbose --group $MODULE_NAME
+          vendor/bin/phpunit -c $DRUPAL_ROOT/phpunit.xml.dist --verbose --group $MODULE_NAME
