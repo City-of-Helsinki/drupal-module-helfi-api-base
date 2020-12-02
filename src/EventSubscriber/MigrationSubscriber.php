@@ -58,14 +58,12 @@ final class MigrationSubscriber implements EventSubscriberInterface {
   private function getEntityType(MigrationInterface $migration) : ? string {
     $configuration = $migration->getDestinationConfiguration();
 
-    $defaults = [NULL, NULL];
-    [$type, $entity_type] = explode(':', $configuration['plugin']) + $defaults;
-
-    if ($type !== 'entity' || !$entity_type) {
-      return NULL;
+    foreach (explode(':', $configuration['plugin']) as $type) {
+      if ($this->entityTypeManager->hasDefinition($type)) {
+        return $type;
+      }
     }
-
-    return $entity_type;
+    return NULL;
   }
 
   /**
