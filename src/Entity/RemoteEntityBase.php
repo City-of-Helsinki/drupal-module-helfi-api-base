@@ -38,6 +38,16 @@ abstract class RemoteEntityBase extends ContentEntityBase {
   protected bool $resetSyncAttempts = TRUE;
 
   /**
+   * Get sthe migration name.
+   *
+   * @return string|null
+   *   The migration name.
+   */
+  public static function getMigration() : ? string {
+    return NULL;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getCreatedTime() : string {
