@@ -60,5 +60,4 @@ trait MigrationTestTrait {
     return $this->container->get('plugin.manager.migration')->createInstance($plugin_id);
   }
 
-
 }
