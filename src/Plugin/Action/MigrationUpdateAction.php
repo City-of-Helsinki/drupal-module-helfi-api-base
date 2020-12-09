@@ -70,13 +70,10 @@ class MigrationUpdateAction extends ActionBase implements ContainerFactoryPlugin
    */
   protected function getMigration(RemoteEntityBase $entity) : MigrationInterface {
     $definition = $this->entityTypeManager
-      ->getDefinition($this->getPluginDefinition()['type']);
+      ->getDefinition($this->getPluginDefinition()['type'])
+      ->getClass()::getMigration();
 
-    if (!$migration = $definition->getClass()::getMigration()) {
-      throw new \InvalidArgumentException(sprintf('Migration not found for %s', $definition->id()));
-    }
-
-    return $this->migrationPluginManager->createInstance($migration, [
+    return $this->migrationPluginManager->createInstance($definition, [
       'entity_ids' => [$entity->id()],
     ]);
   }

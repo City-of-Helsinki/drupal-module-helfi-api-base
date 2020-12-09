@@ -6,7 +6,6 @@ namespace Drupal\helfi_api_base\Plugin\migrate\source;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\helfi_api_base\MigrateTrait;
-use Drupal\helfi_tpr\Plugin\migrate\source\SupportsSingleItemMigrationInterface;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Plugin\MigrationInterface;
 use GuzzleHttp\ClientInterface;
@@ -125,14 +124,14 @@ abstract class HttpSourcePluginBase extends SourcePluginBase {
     $plugin_definition,
     MigrationInterface $migration = NULL
   ) {
-    $instance = new static($configuration, $plugin_id, $plugin_definition,
-      $migration);
+    $instance = new static($configuration, $plugin_id, $plugin_definition, $migration);
     $instance->httpClient = $container->get('http_client');
 
     if (!isset($configuration['url'])) {
       throw new \InvalidArgumentException('The "url" configuration missing.');
     }
 
+    // Allow certain entity IDs to be updated.
     if (isset($migration->entity_ids)) {
       $instance->entityIds = $migration->entity_ids;
     }
