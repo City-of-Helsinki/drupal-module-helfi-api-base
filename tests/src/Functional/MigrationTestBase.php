@@ -2,16 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helfi_api_base\Kernel;
+namespace Drupal\Tests\helfi_api_base\Functional;
 
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\migrate\MigrateMessageInterface;
+use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\helfi_api_base\Traits\MigrationTestTrait;
 
 /**
  * Base class for multilingual migration tests.
  */
-abstract class MigrationTestBase extends ApiKernelTestBase implements MigrateMessageInterface {
+abstract class MigrationTestBase extends BrowserTestBase implements MigrateMessageInterface {
 
   use MigrationTestTrait;
 
@@ -30,8 +31,6 @@ abstract class MigrationTestBase extends ApiKernelTestBase implements MigrateMes
    */
   public function setUp() : void {
     parent::setUp();
-
-    $this->installConfig(['language', 'content_translation', 'migrate_plus']);
 
     foreach (['fi', 'sv'] as $langcode) {
       ConfigurableLanguage::createFromLangcode($langcode)->save();
