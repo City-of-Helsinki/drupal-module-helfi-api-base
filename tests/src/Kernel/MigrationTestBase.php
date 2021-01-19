@@ -20,7 +20,6 @@ abstract class MigrationTestBase extends ApiKernelTestBase implements MigrateMes
    */
   protected static $modules = [
     'migrate',
-    'migrate_plus',
     'language',
     'content_translation',
   ];
@@ -31,7 +30,7 @@ abstract class MigrationTestBase extends ApiKernelTestBase implements MigrateMes
   public function setUp() : void {
     parent::setUp();
 
-    $this->installConfig(['language', 'content_translation', 'migrate_plus']);
+    $this->installConfig(['language', 'content_translation']);
 
     foreach (['fi', 'sv'] as $langcode) {
       ConfigurableLanguage::createFromLangcode($langcode)->save();

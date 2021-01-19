@@ -5,8 +5,7 @@
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",
     "require": {
-        "drupal/api_tools": "~1.0.0",
-        "drupal/migrate_plus": "~5.0"
+        "drupal/api_tools": "~1.0.0"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",

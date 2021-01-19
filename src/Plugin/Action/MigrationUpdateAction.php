@@ -10,10 +10,10 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_api_base\Entity\RemoteEntityBase;
 use Drupal\helfi_api_base\MigrateTrait;
+use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessage;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
-use Drupal\migrate_tools\MigrateExecutable;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

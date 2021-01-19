@@ -21,7 +21,6 @@ abstract class MigrationTestBase extends BrowserTestBase implements MigrateMessa
    */
   protected static $modules = [
     'migrate',
-    'migrate_plus',
     'language',
     'content_translation',
   ];

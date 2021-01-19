@@ -25,7 +25,6 @@ class MigrationSubscriberTest extends ApiKernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'migrate_plus',
     'migrate',
     'system',
     'remote_entity_test',
