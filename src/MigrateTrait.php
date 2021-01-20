@@ -10,6 +10,18 @@ namespace Drupal\helfi_api_base;
 trait MigrateTrait {
 
   /**
+   * Gets the limit.
+   *
+   * @return int
+   *   The limit.
+   */
+  public function getLimit() : int {
+    $limit = getenv('MIGRATE_LIMIT') ?: 0;
+
+    return (int) $limit;
+  }
+
+  /**
    * Checks if we're doing partial migrate.
    *
    * @return bool
