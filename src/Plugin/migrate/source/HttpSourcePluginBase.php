@@ -106,12 +106,17 @@ abstract class HttpSourcePluginBase extends SourcePluginBase {
    */
   protected function buildCanonicalUrl(string $id) : string {
     $urlParts = UrlHelper::parse($this->configuration['url']);
+    $query = UrlHelper::buildQuery($urlParts['query']);
 
-    return vsprintf('%s/%s/?%s', [
+    $url = vsprintf('%s/%s', [
       rtrim($urlParts['path'], '/'),
       $id,
-      UrlHelper::buildQuery($urlParts['query']),
     ]);
+
+    if ($query) {
+      $url = sprintf('%s?%s', $url, $query);
+    }
+    return $url;
   }
 
   /**
