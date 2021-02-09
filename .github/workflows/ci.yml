@@ -31,7 +31,7 @@ jobs:
           git clone --depth 1 --branch "$DRUPAL_CORE_VERSION" http://git.drupal.org/project/drupal.git/ $DRUPAL_ROOT
           cd $DRUPAL_ROOT
           echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "'$GITHUB_WORKSPACE'"}] + .' composer.json)" > composer.json
-          echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "https://repository.drupal.hel.ninja/"}] + .' composer.json)" > composer.json
+          echo "$(jq --indent 4 '.repositories |= [{"type": "composer", "url": "https://repository.drupal.hel.ninja/"}] + .' composer.json)" > composer.json
           composer require drupal/$MODULE_NAME
           drush en $MODULE_NAME -y
 
