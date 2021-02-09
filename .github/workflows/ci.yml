@@ -23,7 +23,9 @@ jobs:
           fetch-depth: 1
 
       - name: Set variables
-        run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
+        run: |
+          echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
+          echo "$HOME/.config/composer/vendor/bin" >> $GITHUB_PATH
 
       - name: Setup Drupal test runner
         run: |
