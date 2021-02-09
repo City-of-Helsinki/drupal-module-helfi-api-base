@@ -25,16 +25,12 @@ jobs:
       - name: Set variables
         run: |
           echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
-          echo "$HOME/.config/composer/vendor/bin" >> $GITHUB_PATH
-
-      - name: Setup Drupal test runner
-        run: |
-          composer global require tuutti/drupal-test-runner ^1.0
 
       - name: Build project
         run: |
-          drupal-tr
+          git clone --depth 1 --branch "$DRUPAL_CORE_VERSION" http://git.drupal.org/project/drupal.git/ $DRUPAL_ROOT
           cd $DRUPAL_ROOT
+          echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "'$GITHUB_WORKSPACE'"}] + .' composer.json)" > composer.json
           echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "https://repository.drupal.hel.ninja/"}] + .' composer.json)" > composer.json
           composer require drupal/$MODULE_NAME
           drush en $MODULE_NAME -y
@@ -46,4 +42,7 @@ jobs:
 
       - name: Run PHPUnit tests
         run: |
-          TEST_RUNNER=core drupal-tr run-tests
+          cd $DRUPAL_ROOT
+          drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
+          chromedriver --port=4444 > /dev/null 2>&1 &
+          php ./core/scripts/run-tests.sh --color $DRUPAL_MODULE_NAME
