@@ -32,7 +32,7 @@ trait MigrationTestTrait {
    * {@inheritdoc}
    */
   public function display($message, $type = 'status') {
-    $this->assert($type == 'status', $message, 'migrate');
+    $this->assertTrue($type == 'status', (string) $message);
   }
 
   /**

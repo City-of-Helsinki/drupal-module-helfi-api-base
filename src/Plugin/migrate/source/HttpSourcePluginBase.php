@@ -19,7 +19,7 @@ abstract class HttpSourcePluginBase extends SourcePluginBase {
 
   use MigrateTrait;
 
-  /**
+  /*
    * The number of ignored rows until we stop the migrate.
    *
    * This assumes that your API can be sorted in a way that the newest
@@ -53,7 +53,7 @@ abstract class HttpSourcePluginBase extends SourcePluginBase {
    *   The url.
    *
    * @return array
-   *   The JSON returned by Ahjo service.
+   *   The JSON returned by API service.
    */
   protected function getContent(string $url) : array {
     try {
