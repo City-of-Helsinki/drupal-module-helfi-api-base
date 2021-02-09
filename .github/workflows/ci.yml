@@ -28,6 +28,7 @@ jobs:
       - name: Build project
         run: |
           composer global require tuutti/drupal-test-runner ^1.0
+          drupal-tr
           cd $DRUPAL_ROOT
           echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "https://repository.drupal.hel.ninja/"}] + .' composer.json)" > composer.json
           composer require drupal/$MODULE_NAME
