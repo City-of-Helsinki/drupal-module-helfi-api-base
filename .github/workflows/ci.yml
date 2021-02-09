@@ -25,9 +25,12 @@ jobs:
       - name: Set variables
         run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
 
-      - name: Build project
+      - name: Setup Drupal test runner
         run: |
           composer global require tuutti/drupal-test-runner ^1.0
+
+      - name: Build project
+        run: |
           drupal-tr
           cd $DRUPAL_ROOT
           echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "https://repository.drupal.hel.ninja/"}] + .' composer.json)" > composer.json
