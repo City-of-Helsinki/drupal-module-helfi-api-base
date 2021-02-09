@@ -3,8 +3,7 @@ name: CI
 env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
   SIMPLETEST_BASE_URL: "http://127.0.0.1:8080"
-  DRUPAL_MODULE_NAME: helfi_api_base
-  DRUPAL_CORE_VERSION: 9.1.x
+  MODULE_NAME: helfi_api_base
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -23,26 +22,25 @@ jobs:
           fetch-depth: 1
 
       - name: Set variables
-        run: |
-          echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
+        run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
 
       - name: Build project
         run: |
-          git clone --depth 1 --branch "$DRUPAL_CORE_VERSION" http://git.drupal.org/project/drupal.git/ $DRUPAL_ROOT
+          composer create-project City-of-Helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
           cd $DRUPAL_ROOT
+          php -d sendmail_path=$(which true); drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
           echo "$(jq --indent 4 '.repositories |= [{"type": "path", "url": "'$GITHUB_WORKSPACE'"}] + .' composer.json)" > composer.json
-          echo "$(jq --indent 4 '.repositories |= [{"type": "composer", "url": "https://repository.drupal.hel.ninja/"}] + .' composer.json)" > composer.json
           composer require drupal/$MODULE_NAME
           drush en $MODULE_NAME -y
 
       - name: Run PHPCS
         run: |
           cd $DRUPAL_ROOT
-          vendor/bin/phpcs modules/custom/ --standard=Drupal
+          vendor/bin/phpcs public/modules/custom/ --standard=Drupal
 
       - name: Run PHPUnit tests
         run: |
           cd $DRUPAL_ROOT
           drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
           chromedriver --port=4444 > /dev/null 2>&1 &
-          php ./core/scripts/run-tests.sh --color $DRUPAL_MODULE_NAME
+          vendor/bin/phpunit -c $DRUPAL_ROOT/phpunit.xml.dist --verbose --group $MODULE_NAME
