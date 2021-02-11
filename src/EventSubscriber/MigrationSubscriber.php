@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\EventSubscriber;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_api_base\Entity\RemoteEntityBase;
 use Drupal\helfi_api_base\MigrateTrait;
+use Drupal\helfi_api_base\Plugin\migrate\source\HttpSourcePluginBase;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -103,6 +105,14 @@ final class MigrationSubscriber implements EventSubscriberInterface {
    *   The migrate event.
    */
   public function onPreImport(MigrateImportEvent $event) : void {
+    /** @var \Drupal\helfi_api_base\Plugin\migrate\source\HttpSourcePluginBase $sourcePlugin */
+    $sourcePlugin = $event->getMigration()->getSourcePlugin();
+
+    // Invalidate migration specific cache.
+    if ($sourcePlugin instanceof HttpSourcePluginBase) {
+      Cache::invalidateTags($sourcePlugin->getCacheTags());
+    }
+
     if (!$entity_type = $this->getEntityType($event->getMigration())) {
       return;
     }

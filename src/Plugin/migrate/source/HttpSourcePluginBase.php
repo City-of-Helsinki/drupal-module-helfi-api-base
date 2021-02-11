@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\helfi_api_base\Plugin\migrate\source;
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Cache\CacheableDependencyInterface;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\helfi_api_base\MigrateTrait;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Plugin\MigrationInterface;
@@ -15,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a HTTP source plugin.
  */
-abstract class HttpSourcePluginBase extends SourcePluginBase {
+abstract class HttpSourcePluginBase extends SourcePluginBase implements CacheableDependencyInterface {
 
   use MigrateTrait;
 
@@ -47,6 +49,104 @@ abstract class HttpSourcePluginBase extends SourcePluginBase {
   protected array $entityIds = [];
 
   /**
+   * The static cache to store data.
+   *
+   * @var array
+   */
+  protected array $data = [];
+
+  /**
+   * Keep track of ignored rows to stop migrate after N ignored rows.
+   *
+   * @var int
+   */
+  protected int $ignoredRows = 0;
+
+  /**
+   * The cache.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected CacheBackendInterface $dataCache;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() : array {
+    return [
+      'migrate-data-' . (string) $this,
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheMaxAge() : int {
+    return CacheBackendInterface::CACHE_PERMANENT;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() : array {
+    return [];
+  }
+
+  /**
+   * Gets the cache key for given id.
+   *
+   * @param string $id
+   *   The id.
+   *
+   * @return string
+   *   The cache key.
+   */
+  protected function getCacheKey(string $id) : string {
+    $id = preg_replace('/[^a-z0-9_]+/s', '_', $id);
+
+    return sprintf('migrate-data-%s_%s', (string) $this, $id);
+  }
+
+  /**
+   * Gets cached data for given id.
+   *
+   * @param string $id
+   *   The id.
+   *
+   * @return array|null
+   *   The cached data or null.
+   */
+  protected function getFromCache(string $id) : ? array {
+    $key = $this->getCacheKey($id);
+
+    if (isset($this->data[$key])) {
+      return $this->data[$key];
+    }
+
+    if ($data = $this->dataCache->get($key)) {
+      return $data->data;
+    }
+    return NULL;
+  }
+
+  /**
+   * Sets the cache.
+   *
+   * @param string $id
+   *   The id.
+   * @param mixed $data
+   *   The data.
+   *
+   * @return $this
+   *   The self.
+   */
+  protected function setCache(string $id, $data) : self {
+    $key = $this->getCacheKey($id);
+    $this->dataCache->set($key, $data, CacheBackendInterface::CACHE_PERMANENT, $this->getCacheTags());
+    return $this;
+  }
+
+  /**
    * Sends a HTTP request and returns response data as array.
    *
    * @param string $url
@@ -56,9 +156,16 @@ abstract class HttpSourcePluginBase extends SourcePluginBase {
    *   The JSON returned by API service.
    */
   protected function getContent(string $url) : array {
+    if ($data = $this->getFromCache($url)) {
+      return $data;
+    }
+
     try {
       $content = (string) $this->httpClient->request('GET', $url)->getBody();
-      return \GuzzleHttp\json_decode($content, TRUE);
+      $content = \GuzzleHttp\json_decode($content, TRUE);
+      $this->setCache($url, $content);
+
+      return $content;
     }
     catch (GuzzleException $e) {
     }
@@ -93,6 +200,19 @@ abstract class HttpSourcePluginBase extends SourcePluginBase {
       return $this->initializeSingleImportIterator();
     }
     return $this->initializeListIterator();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function next() {
+    parent::next();
+
+    // Check if the current row has changes and increment ignoredRows variable
+    // to allow us to stop migrate early if we have no changes.
+    if ($this->isPartialMigrate() && $this->currentRow && !$this->currentRow->changed()) {
+      $this->ignoredRows++;
+    }
   }
 
   /**
@@ -131,6 +251,7 @@ abstract class HttpSourcePluginBase extends SourcePluginBase {
   ) {
     $instance = new static($configuration, $plugin_id, $plugin_definition, $migration);
     $instance->httpClient = $container->get('http_client');
+    $instance->dataCache = $container->get('cache.default');
 
     if (!isset($configuration['url'])) {
       throw new \InvalidArgumentException('The "url" configuration missing.');
