@@ -60,6 +60,7 @@ class MigrationSubscriberTest extends ApiKernelTestBase {
   protected function getMigrationEvent(string $plugin) : MigrateImportEvent {
     // Setup test migration objects.
     $migration_prophecy = $this->prophesize(MigrationInterface::class);
+    $migration_prophecy->getSourcePlugin()->willReturn(NULL);
     $migration_prophecy->getDestinationConfiguration()->willReturn(['plugin' => $plugin]);
     $messenger = $this->prophesize(MigrateMessageInterface::class);
     return new MigrateImportEvent($migration_prophecy->reveal(), $messenger->reveal());
@@ -94,7 +95,7 @@ class MigrationSubscriberTest extends ApiKernelTestBase {
     $this->migrationSubscriber->onPreImport($event);
 
     $entity = $this->reloadEntity($entity);
-    $this->assertEqual($entity->getSyncAttempts(), 1);
+    $this->assertEquals($entity->getSyncAttempts(), 1);
   }
 
   /**
@@ -109,7 +110,7 @@ class MigrationSubscriberTest extends ApiKernelTestBase {
     $event = $this->getMigrationEvent('invalid_entity');
     $this->migrationSubscriber->onPreImport($event);
 
-    $this->assertEqual($entity->getSyncAttempts(), 0);
+    $this->assertEquals($entity->getSyncAttempts(), 0);
   }
 
   /**
@@ -125,12 +126,12 @@ class MigrationSubscriberTest extends ApiKernelTestBase {
 
     /** @var \Drupal\remote_entity_test\Entity\RemoteEntityTest $entity */
     $entity = $this->reloadEntity($entity);
-    $this->assertEqual($entity->getSyncAttempts(), RemoteEntityTest::MAX_SYNC_ATTEMPTS);
+    $this->assertEquals($entity->getSyncAttempts(), RemoteEntityTest::MAX_SYNC_ATTEMPTS);
 
     $this->migrationSubscriber->onPostImport($event);
 
     // Make sure entity was deleted.
-    $this->assertEqual(RemoteEntityTest::load(1), NULL);
+    $this->assertEquals(RemoteEntityTest::load(1), NULL);
   }
 
 }
