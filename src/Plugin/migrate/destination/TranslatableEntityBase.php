@@ -124,9 +124,19 @@ abstract class TranslatableEntityBase extends EntityContentBase {
     foreach ($this->getTranslatableFields() as $remote => $local) {
       $field = sprintf('%s_%s', $remote, $langcode);
 
+      $value = $row->getSourceProperty($remote);
+
       // Attempt to read source property in current language and fallback to
       // finnish.
-      $value = $row->hasSourceProperty($field) ? $row->getSourceProperty($field) : $row->getSourceProperty(sprintf('%s_fi', $remote));
+      if (!$value) {
+        $value = $row->hasSourceProperty($field) ? $row->getSourceProperty($field) : $row->getSourceProperty(sprintf('%s_fi', $remote));
+      }
+
+      // Deal with nested translated fields (an array with langcode => value).
+      if (is_array($value)) {
+        // Attempt to read value in current language, fallback to first value.
+        $value = $value[$langcode] ?? reset($value);
+      }
 
       if (!$value) {
         continue;
