@@ -21,6 +21,13 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
 
   use MigrateTrait;
 
+  /**
+   * Whether to use request cache or not.
+   *
+   * @var bool
+   */
+  protected bool $useRequestCache = TRUE;
+
   /*
    * The number of ignored rows until we stop the migrate.
    *
@@ -117,6 +124,9 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
    *   The cached data or null.
    */
   protected function getFromCache(string $id) : ? array {
+    if (!$this->useRequestCache) {
+      return NULL;
+    }
     $key = $this->getCacheKey($id);
 
     if (isset($this->data[$key])) {
@@ -141,6 +151,9 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
    *   The self.
    */
   protected function setCache(string $id, $data) : self {
+    if (!$this->useRequestCache) {
+      return $this;
+    }
     $key = $this->getCacheKey($id);
     $this->dataCache->set($key, $data, CacheBackendInterface::CACHE_PERMANENT, $this->getCacheTags());
     return $this;
