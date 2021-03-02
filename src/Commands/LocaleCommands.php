@@ -134,6 +134,7 @@ class LocaleCommands extends DrushCommands {
             $options['context'] = $context;
           }
           $this->translationManager
+            // @codingStandardsIgnoreLine
             ->translateString(new TranslatableMarkup($item->getSource(), [], $options));
         }
         $process = $this->processManager()->process([

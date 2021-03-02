@@ -64,6 +64,7 @@ class LocaleCommandsTest extends BrowserTestBase {
 
     foreach ($strings as $langcode => $group) {
       foreach ($group as $source => $expected) {
+        // @codingStandardsIgnoreLine
         $string = new TranslatableMarkup($source, [], ['langcode' => $langcode]);
         $this->assertEquals($expected, (string) $string);
       }
