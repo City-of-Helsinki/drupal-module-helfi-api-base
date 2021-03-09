@@ -1,0 +1,5 @@
+helfi_api_base.integrations:
+  title: Integrations
+  route_name: helfi_api_base.integrations
+  base_route: system.admin_content
+  weight: 15
