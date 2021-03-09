@@ -1,0 +1,7 @@
+helfi_api_base.integrations:
+  path: '/admin/content/integrations'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Integrations'
+  requirements:
+    _permission: 'access remote entities overview'

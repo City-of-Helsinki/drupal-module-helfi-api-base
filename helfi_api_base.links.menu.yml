@@ -1,0 +1,5 @@
+helfi_api_base.integrations:
+  title: Integrations
+  description: List of integration content
+  route_name: helfi_api_base.integrations
+  parent: system.admin_content
