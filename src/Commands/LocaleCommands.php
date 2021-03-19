@@ -133,9 +133,21 @@ class LocaleCommands extends DrushCommands {
           if ($context = $item->getContext()) {
             $options['context'] = $context;
           }
-          $this->translationManager
-            // @codingStandardsIgnoreLine
-            ->translateString(new TranslatableMarkup($item->getSource(), [], $options));
+          $sources = $item->getSource();
+
+          // We don't want to expose strings with plural form.
+          if ($item->isPlural()) {
+            continue;
+          }
+
+          if (!is_array($sources)) {
+            $sources = [$sources];
+          }
+          foreach ($sources as $source) {
+            $this->translationManager
+              // @codingStandardsIgnoreLine
+              ->translateString(new TranslatableMarkup($source, [], $options));
+          }
         }
         $process = $this->processManager()->process([
           'drush',
