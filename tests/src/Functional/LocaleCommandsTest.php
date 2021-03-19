@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_api_base\Functional;
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\StringTranslation\PluralTranslatableMarkup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\Tests\BrowserTestBase;
@@ -70,6 +71,25 @@ class LocaleCommandsTest extends BrowserTestBase {
       }
     }
 
+    $singular = new PluralTranslatableMarkup(1, 'One test item', '@count test items', [], ['langcode' => 'fi']);
+    $plural = new PluralTranslatableMarkup(5, 'One test item', '@count test items', [], ['langcode' => 'fi']);
+
+    $this->assertEquals('Yksi testi itemi', (string) $singular);
+    $this->assertEquals('5 testi itemiä', (string) $plural);
+
+    // String 'Test' should have finnish translation in Helfi context.
+    $context_fi = new TranslatableMarkup('Test', [], [
+      'langcode' => 'fi',
+      'context' => 'Helfi',
+    ]);
+    $this->assertEquals('Testihelfi', (string) $context_fi);
+
+    // String 'Test' shouldn't have swedish translation in Helfi context.
+    $context_sv = new TranslatableMarkup('Test', [], [
+      'langcode' => 'sv',
+      'context' => 'Helfi',
+    ]);
+    $this->assertEquals('Test', (string) $context_sv);
   }
 
 }
