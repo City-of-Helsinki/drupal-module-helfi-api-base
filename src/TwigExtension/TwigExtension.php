@@ -36,7 +36,7 @@ class TwigExtension extends AbstractExtension {
    * Example:
    *
    * @code
-   *  {{ 'https://my.web.site/my-image.jpg'|tamro_imagecache_external('thumbnail') }}
+   *  {{ 'https://my.web.site/my-image.jpg'|helfi_api_base_imagecache_external('thumbnail') }}
    * @endcode
    *
    * @param string $path
