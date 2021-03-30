@@ -4,8 +4,3 @@ services:
     arguments: ['@entity_type.manager', '@database']
     tags:
       - { name: event_subscriber }
-
-  helfi_api_base.image_cache_external:
-    class: Drupal\helfi_api_base\TwigExtension\TwigExtension
-    tags:
-      - { name: twig.extension }
