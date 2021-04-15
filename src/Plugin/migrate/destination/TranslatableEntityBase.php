@@ -75,8 +75,8 @@ abstract class TranslatableEntityBase extends EntityContentBase {
     $entity_id = reset($old_destination_id_values) ?: $this->getEntityId($row);
 
     if (!empty($entity_id) && ($entity = $this->storage->load($entity_id))) {
-      // Update values only when we're dealing with the original translation so we
-      // don't accidentally override the default translation.
+      // Update values only when we're dealing with the original translation so
+      // we don't accidentally override the default translation.
       if ($default_langcode) {
         $entity = $this->updateEntity($entity, $row) ?: $entity;
       }
