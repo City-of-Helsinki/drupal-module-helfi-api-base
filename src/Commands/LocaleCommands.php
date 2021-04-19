@@ -152,6 +152,7 @@ class LocaleCommands extends DrushCommands {
         $process = $this->processManager()->process([
           'drush',
           'locale:import',
+          '--type=customized',
           '--override=all',
           $language->getId(),
           $file->uri,
