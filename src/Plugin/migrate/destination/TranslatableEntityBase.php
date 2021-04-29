@@ -54,6 +54,36 @@ abstract class TranslatableEntityBase extends EntityContentBase {
   }
 
   /**
+   * Callback when creating a new translation.
+   *
+   * @param string $langcode
+   *   The langcode.
+   * @param \Drupal\migrate\Row $row
+   *   The row.
+   *
+   * @return \Drupal\migrate\Row
+   *   The modified row.
+   */
+  protected function onTranslationCreate(string $langcode, Row $row) : Row {
+    return $row;
+  }
+
+  /**
+   * Callback when creating a new entity.
+   *
+   * @param string $langcode
+   *   The langcode.
+   * @param \Drupal\migrate\Row $row
+   *   The row.
+   *
+   * @return \Drupal\migrate\Row
+   *   The modified row.
+   */
+  protected function onEntityCreate(string $langcode, Row $row) : Row {
+    return $row;
+  }
+
+  /**
    * Gets the translated entity for given langcode and row.
    *
    * @param string $langcode
@@ -91,6 +121,7 @@ abstract class TranslatableEntityBase extends EntityContentBase {
       if ($row->isStub()) {
         $this->processStubRow($row);
       }
+      $row = $this->onEntityCreate($langcode, $row);
       $entity = $this->storage->create($row->getDestination());
       $entity->enforceIsNew();
     }
@@ -104,6 +135,7 @@ abstract class TranslatableEntityBase extends EntityContentBase {
       if ($row->isStub()) {
         $this->processStubRow($row);
       }
+      $row = $this->onTranslationCreate($langcode, $row);
       return $entity->addTranslation($langcode, $row->getDestination());
     }
   }
