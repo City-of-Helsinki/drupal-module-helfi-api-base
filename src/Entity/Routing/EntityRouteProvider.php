@@ -29,51 +29,7 @@ final class EntityRouteProvider extends AdminHtmlRouteProvider {
       $collection->add("$entity_type_id.settings", $settings_form_route);
     }
 
-    if ($revision_routes = $this->getRevisionRoutes($entity_type)) {
-      foreach ($revision_routes as $route_name => $route) {
-        $collection->add($route_name, $route);
-      }
-    }
-
     return $collection;
-  }
-
-  /**
-   * Gets the revision routes.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
-   *   The entity type.
-   *
-   * @return \Symfony\Component\Routing\Route[]|null
-   *   The routes.
-   */
-  protected function getRevisionRoutes(EntityTypeInterface $entity_type) : ? array {
-    if (!$entity_type->hasKey('revision_table')) {
-      return NULL;
-    }
-    $entity_type_id = $entity_type->id();
-
-    $routes = [];
-
-    if ($version_history_link = $entity_type->getLinkTemplate('version-history')) {
-      $version_history_route = new Route($version_history_link);
-      $routes[sprintf('entity.%s.version_history', $entity_type_id)] = $version_history_route;
-
-      $confirm_route_base = sprintf('%s/{%s_revision}/revert', $version_history_link, $entity_type_id);
-
-      $revert_confirm_route = new Route($confirm_route_base);
-      $routes[sprintf('%s.revision_revert_confirm', $entity_type_id)] = $revert_confirm_route;
-
-      $revert_translation_route = new Route(sprintf('%s/{langcode}', $confirm_route_base));
-      $routes[sprintf('%s.revision_reveret_translation_confirm', $entity_type_id)] = $revert_translation_route;
-    }
-
-    if ($entity_revision_link = $entity_type->getLinkTemplate('revision')) {
-      $entity_revision = new Route($entity_revision_link);
-      $routes[sprintf('entity.%s.revision', $entity_type_id)] = $entity_revision;
-    }
-
-    return $routes;
   }
 
   /**
