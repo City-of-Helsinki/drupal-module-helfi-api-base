@@ -18,7 +18,6 @@ abstract class ApiKernelTestBase extends EntityKernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'api_tools',
     'helfi_api_base',
   ];
 
