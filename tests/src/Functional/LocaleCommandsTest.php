@@ -51,7 +51,7 @@ class LocaleCommandsTest extends BrowserTestBase {
   public function testImport() {
     $this->drush('helfi:locale-import', ['helfi_locale_test']);
     // Invalidate translation cache.
-    Cache::invalidateTags(['locale']);
+    drupal_flush_all_caches();
 
     $strings = [
       'fi' => [
