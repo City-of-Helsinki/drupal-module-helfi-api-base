@@ -14,7 +14,7 @@ use Drush\TestTraits\DrushTestTrait;
 /**
  * Tests locale commands.
  *
- * @group helfi_platform_config
+ * @group helfi_api_base
  */
 class LocaleCommandsTest extends BrowserTestBase {
 
