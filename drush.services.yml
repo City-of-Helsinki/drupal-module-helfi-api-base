@@ -1,4 +1,9 @@
 services:
+  helfi_api_base.fixture_commands:
+    class: \Drupal\helfi_api_base\Commands\FixtureCommands
+    arguments: ['@service_container']
+    tags:
+      - { name: drush.command }
   helfi_api_base.locale_commands:
     class: \Drupal\helfi_api_base\Commands\LocaleCommands
     arguments: ['@language_manager', '@file_system', '@string_translation']
