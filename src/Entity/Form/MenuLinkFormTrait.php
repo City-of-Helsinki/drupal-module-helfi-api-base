@@ -88,9 +88,10 @@ trait MenuLinkFormTrait {
   protected function getAvailableMenus() : array {
     // Allow available menus to be overridden in settings.php:
     // @code
-    // $settings['helfi_{entity_type_id}_available_menus'] = ['main', 'your_menu'];
+    // $settings['helfi_{entity_type_id}_available_menus'] = ['your_menu'];
     // @endcode
-    // Replace {entity_type_id} with a TPR entity type id, like tpr_unit or tpr_service.
+    // Replace {entity_type_id} with a TPR entity type id, like tpr_unit or
+    // tpr_service.
     $setting_key = sprintf('helfi_%s_available_menus', $this->getEntity()->getEntityTypeId());
     $menus = Settings::get($setting_key, ['main']);
 
@@ -145,7 +146,6 @@ trait MenuLinkFormTrait {
 
     $id = $menu_link->isNew() ? '' : $menu_link->getPluginId();
     $default = $menu_link->getMenuName() . ':' . $menu_link->getParentId();
-
 
     $form['menu']['link']['menu_parent'] = $this->menuParentSelector
       ->parentSelectElement($default, $id, $this->getAvailableMenus());
