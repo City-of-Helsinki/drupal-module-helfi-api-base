@@ -130,14 +130,12 @@ abstract class TranslatableEntityBase extends EntityContentBase {
       // Update existing translation.
       return $this->updateEntity($entity->getTranslation($langcode), $row);
     }
-    else {
-      // Stubs might need some required fields filled in.
-      if ($row->isStub()) {
-        $this->processStubRow($row);
-      }
-      $row = $this->onTranslationCreate($langcode, $row);
-      return $entity->addTranslation($langcode, $row->getDestination());
+    // Stubs might need some required fields filled in.
+    if ($row->isStub()) {
+      $this->processStubRow($row);
     }
+    $row = $this->onTranslationCreate($langcode, $row);
+    return $entity->addTranslation($langcode, $row->getDestination());
   }
 
   /**
