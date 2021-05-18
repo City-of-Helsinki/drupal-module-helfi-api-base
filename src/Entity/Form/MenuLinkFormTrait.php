@@ -11,11 +11,10 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 
 /**
- * A trait to allow entity forms to provide menu link form.
+ * A trait to allow entity forms to provide a menu link form.
  *
- * This can be used by calling this from your form controller, for
- * example by adding this to your form controller's ::buildForm()
- * callback.
+ * To use this, call the ::attachMenuLinkForm() method in your
+ * ::buildForm() method, like:
  *
  * @code
  * $form = $this->attachMenuLinkForm($form, $form_state);
@@ -54,7 +53,8 @@ trait MenuLinkFormTrait {
    * Gets the default menu link for given translation.
    *
    * Attempts to load menu link from 'menu_link' field reference and
-   * fallbacks to loading it straight from the menu link storage.
+   * fallbacks to loading it from the menu link storage using the
+   * entity's canonical URL.
    *
    * @return \Drupal\menu_link_content\MenuLinkContentInterface
    *   The menu link.
@@ -62,19 +62,18 @@ trait MenuLinkFormTrait {
   protected function getDefaultMenuLink() : MenuLinkContentInterface {
     $entity = $this->getEntity();
 
-    if ($menu_link = $this->getEntity()->get($this->menuLinkFieldName)->entity) {
-      return $this->entityRepository->getTranslationFromContext($menu_link);
+    if (!$menu_link = $this->getEntity()->get($this->menuLinkFieldName)->entity) {
+      $storage = $this->entityTypeManager->getStorage('menu_link_content');
+
+      $results = $storage->getQuery()
+        ->condition('link.uri', sprintf('entity:%s/%s', $entity->getEntityTypeId(), $entity->id()))
+        ->condition('menu_name', array_values($this->getAvailableMenus()), 'IN')
+        ->sort('id')
+        ->range(0, 1)
+        ->execute();
+
+      $menu_link = empty($results) ? MenuLinkContent::create([]) : MenuLinkContent::load(reset($results));
     }
-    $storage = $this->entityTypeManager->getStorage('menu_link_content');
-
-    $results = $storage->getQuery()
-      ->condition('link.uri', sprintf('entity:%s/%s', $entity->getEntityTypeId(), $entity->id()))
-      ->condition('menu_name', array_values($this->getAvailableMenus()), 'IN')
-      ->sort('id')
-      ->range(0, 1)
-      ->execute();
-
-    $menu_link = empty($results) ? MenuLinkContent::create([]) : MenuLinkContent::load(reset($results));
 
     return $this->entityRepository->getTranslationFromContext($menu_link);
   }
