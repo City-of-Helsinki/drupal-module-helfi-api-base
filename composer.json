@@ -1,6 +1,6 @@
 {
     "name": "drupal/helfi_api_base",
-    "type": "drupal-custom-module",
+    "type": "drupal-module",
     "description": "Helfi - API Base",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",
