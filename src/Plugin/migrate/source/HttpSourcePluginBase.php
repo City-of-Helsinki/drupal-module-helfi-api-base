@@ -178,7 +178,7 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
       $content = \GuzzleHttp\json_decode($content, TRUE);
       $this->setCache($url, $content);
 
-      return $content;
+      return $content ?? [];
     }
     catch (GuzzleException $e) {
     }
