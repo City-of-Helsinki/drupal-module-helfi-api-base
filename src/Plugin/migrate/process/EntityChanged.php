@@ -72,9 +72,13 @@ final class EntityChanged extends ProcessPluginBase implements ContainerFactoryP
       return $value;
     }
 
+    if (!$entity->hasField('changed')) {
+      return $value;
+    }
+
     // Ignore importing completely if entity has not changed and we're doing
     // a partial migrate.
-    if ((int) $entity->getChangedTime() >= $value && $this->isPartialMigrate()) {
+    if ((int) $entity->get('changed')->value >= $value && $this->isPartialMigrate()) {
       throw new MigrateSkipRowException();
     }
 
