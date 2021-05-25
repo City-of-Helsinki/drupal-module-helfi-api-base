@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\helfi_api_base\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
-use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -15,8 +14,6 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  * Base class for remote entities.
  */
 abstract class RemoteEntityBase extends ContentEntityBase {
-
-  use EntityChangedTrait;
 
   /**
    * The maximum sync attempts.
@@ -45,21 +42,6 @@ abstract class RemoteEntityBase extends ContentEntityBase {
    */
   public static function getMigration() : ? string {
     return NULL;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCreatedTime() : string {
-    return $this->get('created')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setCreatedTime(int $timestamp) {
-    $this->set('created', $timestamp);
-    return $this;
   }
 
   /**

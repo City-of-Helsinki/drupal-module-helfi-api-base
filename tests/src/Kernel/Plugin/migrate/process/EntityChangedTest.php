@@ -95,7 +95,7 @@ class EntityChangedTest extends ApiKernelTestBase {
     $rowDate = DateTimePlus::createFromFormat('Y-m-d\TH:i:s', $row_date)->format('U');
     $value = $this->getSut()->transform($rowDate, $executable, $row, 'changed');
 
-    $this->assertEqual($rowDate, $value);
+    $this->assertEquals($rowDate, $value);
   }
 
   /**
