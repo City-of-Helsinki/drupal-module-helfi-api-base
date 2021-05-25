@@ -6,6 +6,7 @@ namespace Drupal\helfi_api_base\EventSubscriber;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_api_base\Entity\RemoteEntityBase;
 use Drupal\helfi_api_base\MigrateTrait;
@@ -54,18 +55,38 @@ final class MigrationSubscriber implements EventSubscriberInterface {
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
    *   The migration.
    *
-   * @return string|null
+   * @return \Drupal\Core\Entity\EntityTypeInterface|null
    *   The entity type or null.
    */
-  private function getEntityType(MigrationInterface $migration) : ? string {
+  private function getEntityType(MigrationInterface $migration) : ? EntityTypeInterface {
     $configuration = $migration->getDestinationConfiguration();
 
     foreach (explode(':', $configuration['plugin']) as $type) {
       if ($this->entityTypeManager->hasDefinition($type)) {
-        return $type;
+        try {
+          $storage = $this->entityTypeManager->getStorage($type);
+          $entityType = $storage->getEntityType();
+
+          return $this->implementsRemoteEntityBase($entityType) ? $entityType : NULL;
+        }
+        catch (\Exception $e) {
+        }
       }
     }
     return NULL;
+  }
+
+  /**
+   * Checks whether we implement remote entity base.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
+   *   The entity type.
+   *
+   * @return bool
+   *   TRUE if the class implements remote entity base.
+   */
+  private function implementsRemoteEntityBase(EntityTypeInterface $entity_type) : bool {
+    return is_a($entity_type->getClass(), RemoteEntityBase::class, TRUE);
   }
 
   /**
@@ -78,13 +99,8 @@ final class MigrationSubscriber implements EventSubscriberInterface {
     if (!$entity_type = $this->getEntityType($event->getMigration())) {
       return;
     }
-
-    $storage = $this->entityTypeManager->getStorage($entity_type);
-    $entityClass = $storage->getEntityType()->getClass();
-
-    if (!is_a($entityClass, RemoteEntityBase::class, TRUE)) {
-      return;
-    }
+    $storage = $this->entityTypeManager->getStorage($entity_type->id());
+    $entityClass = $entity_type->getClass();
 
     // Fetch and delete entities that exceeds the max sync attempts
     // limit.
@@ -113,7 +129,7 @@ final class MigrationSubscriber implements EventSubscriberInterface {
       Cache::invalidateTags($sourcePlugin->getCacheTags());
     }
 
-    if (!$entity_type = $this->getEntityType($event->getMigration())) {
+    if (!$entityType = $this->getEntityType($event->getMigration())) {
       return;
     }
 
@@ -125,8 +141,6 @@ final class MigrationSubscriber implements EventSubscriberInterface {
     }
 
     // @todo Fix this some other way.
-    $entityType = $this->entityTypeManager->getStorage($entity_type)
-      ->getEntityType();
     $dataTable = $entityType->getDataTable();
 
     // Fallback to base table if the entity doesn't have dedicated
