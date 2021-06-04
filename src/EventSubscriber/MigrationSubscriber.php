@@ -102,6 +102,11 @@ final class MigrationSubscriber implements EventSubscriberInterface {
     $storage = $this->entityTypeManager->getStorage($entity_type->id());
     $entityClass = $entity_type->getClass();
 
+    // Allow this check to be disabled by setting MAX_SYNC_ATTEMPTS to 0.
+    if ($entityClass::MAX_SYNC_ATTEMPTS <= 0) {
+      return;
+    }
+
     // Fetch and delete entities that exceeds the max sync attempts
     // limit.
     $results = $storage
