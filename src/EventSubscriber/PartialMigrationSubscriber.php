@@ -10,7 +10,7 @@ use Drupal\migrate\Event\MigrateImportEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Handle life-cycle of migrated entities.
+ * Resolve the state of the migration.
  */
 final class PartialMigrationSubscriber implements EventSubscriberInterface {
 
@@ -93,5 +93,5 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
       'migrate.post_import' => ['updateMigrationState'],
     ];
   }
-  
+
 }
