@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\helfi_api_base\EventSubscriber;
 
 use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
-use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -44,8 +43,8 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
    *   The migrate event.
    */
   public function updateMigrationState(MigrateImportEvent $event) {
-    $migrationStateKey = self::PARTIAL_MIGRATE_KEY.'_'.$event->getMigration()->id();
-    $migrationLastFullTimeKey = self::PARTIAL_MIGRATE_LAST_FULL_KEY.'_'.$event->getMigration()->id();
+    $migrationStateKey = self::PARTIAL_MIGRATE_KEY . '_' . $event->getMigration()->id();
+    $migrationLastFullTimeKey = self::PARTIAL_MIGRATE_LAST_FULL_KEY . '_' . $event->getMigration()->id();
 
     $lastFullMigrate = $this->state->get($migrationLastFullTimeKey);
     if (is_null($lastFullMigrate)) {
