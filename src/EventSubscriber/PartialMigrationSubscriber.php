@@ -56,9 +56,8 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
     if ($timeDifference == 0 || $timeDifference > self::PARTIAL_MIGRATE_INTERVAL) {
       $this->scheduleFullMigration($migrationStateKey, $migrationLastFullTimeKey);
       return;
-    } else {
-      $this->schedulePartialMigration($migrationStateKey);
     }
+    $this->schedulePartialMigration($migrationStateKey);
   }
 
   /**
