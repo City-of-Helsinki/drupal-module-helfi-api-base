@@ -53,12 +53,12 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
     }
 
     $timeDifference = time() - (int) $lastFullMigrate;
-    if ($timeDifference > self::PARTIAL_MIGRATE_INTERVAL) {
+    if ($timeDifference == 0 || $timeDifference > self::PARTIAL_MIGRATE_INTERVAL) {
       $this->scheduleFullMigration($migrationStateKey, $migrationLastFullTimeKey);
       return;
+    } else {
+      $this->schedulePartialMigration($migrationStateKey);
     }
-
-    $this->schedulePartialMigration($migrationStateKey);
   }
 
   /**
