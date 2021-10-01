@@ -201,7 +201,7 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
    */
   protected function initializeSingleImportIterator() : \Iterator {
     foreach ($this->entityIds as $entityId) {
-      yield $this->getContent($this->buildCanonicalUrl($entityId));
+      yield $this->getContent($this->buildCanonicalUrl((string) $entityId));
     }
   }
 
