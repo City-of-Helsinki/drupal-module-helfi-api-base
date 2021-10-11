@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\EventSubscriber;
 
+use Drupal\Component\Datetime\Time;
 use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -13,10 +14,25 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class PartialMigrationSubscriber implements EventSubscriberInterface {
 
+  /**
+   * The key for migration state saved in key_value store.
+   *
+   * @var string
+   */
   public const PARTIAL_MIGRATE_KEY = 'partial_migrate_state';
 
+  /**
+   * The key for last full migration timestamp saved in key_value store.
+   *
+   * @var string
+   */
   public const PARTIAL_MIGRATE_LAST_FULL_KEY = 'partial_migrate_previous_full';
 
+  /**
+   * Interval for running full migrations.
+   *
+   * @var int
+   */
   public const PARTIAL_MIGRATE_INTERVAL = 604800;
 
   /**
@@ -24,16 +40,26 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
    *
    * @var Drupal\Core\State\StateInterface
    */
-  protected $state;
+  protected StateInterface $state;
 
   /**
-   * PartialMigrationSubscriber constructor.
+   * Time service.
+   *
+   * @var \Drupal\Component\Datetime\Time
+   */
+  protected Time $time;
+
+  /**
+   * Constructs a new instance.
    *
    * @param \Drupal\Core\State\KeyValueFactoryInterface $key_value_factory
    *   Key value factory.
+   * @param \Drupal\Component\Datetime\Time $time
+   *   Time service.
    */
-  public function __construct(KeyValueFactoryInterface $key_value_factory) {
+  public function __construct(KeyValueFactoryInterface $key_value_factory, Time $time) {
     $this->state = $key_value_factory->get('state');
+    $this->time = $time;
   }
 
   /**
@@ -42,7 +68,7 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
    * @param \Drupal\migrate\Event\MigrateImportEvent $event
    *   The migrate event.
    */
-  public function updateMigrationState(MigrateImportEvent $event) {
+  public function updateMigrationState(MigrateImportEvent $event): void {
     $migrationStateKey = self::PARTIAL_MIGRATE_KEY . '_' . $event->getMigration()->id();
     $migrationLastFullTimeKey = self::PARTIAL_MIGRATE_LAST_FULL_KEY . '_' . $event->getMigration()->id();
 
@@ -52,7 +78,7 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $timeDifference = time() - (int) $lastFullMigrate;
+    $timeDifference = $this->time->getCurrentTime() - (int) $lastFullMigrate;
     if ($timeDifference == 0 || $timeDifference > self::PARTIAL_MIGRATE_INTERVAL) {
       $this->scheduleFullMigration($migrationStateKey, $migrationLastFullTimeKey);
       return;
@@ -68,9 +94,9 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
    * @param string $migrationLastFullTimeKey
    *   The "last run" -state to update.
    */
-  private function scheduleFullMigration(string $migrationStateKey, string $migrationLastFullTimeKey) {
+  private function scheduleFullMigration(string $migrationStateKey, string $migrationLastFullTimeKey): void {
     $this->state->set($migrationStateKey, 0);
-    $this->state->set($migrationLastFullTimeKey, time());
+    $this->state->set($migrationLastFullTimeKey, $this->time->getCurrentTime());
   }
 
   /**
@@ -79,7 +105,7 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
    * @param string $migrationStateKey
    *   State to update.
    */
-  private function schedulePartialMigration(string $migrationStateKey) {
+  private function schedulePartialMigration(string $migrationStateKey): void {
     $this->state->set($migrationStateKey, 1);
   }
 
