@@ -38,7 +38,7 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
   /**
    * State collection.
    *
-   * @var Drupal\Core\State\StateInterface
+   * @var \Drupal\Core\State\StateInterface
    */
   protected StateInterface $state;
 
@@ -54,7 +54,7 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\Core\State\KeyValueFactoryInterface $key_value_factory
    *   Key value factory.
-   * @param \Drupal\Component\Datetime\Time $time
+   * @param \Drupal\Component\Datetime\TimeInterface $time
    *   Time service.
    */
   public function __construct(KeyValueFactoryInterface $key_value_factory, TimeInterface $time) {
