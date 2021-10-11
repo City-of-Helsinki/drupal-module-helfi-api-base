@@ -45,7 +45,7 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
   /**
    * Time service.
    *
-   * @var \Drupal\Component\Datetime\Time
+   * @var \Drupal\Component\Datetime\TimeInterface
    */
   protected TimeInterface $time;
 
