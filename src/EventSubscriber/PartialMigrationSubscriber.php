@@ -38,9 +38,9 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
   /**
    * State collection.
    *
-   * @var \Drupal\Core\State\StateInterface
+   * @var \Drupal\Core\State\KeyValueStoreInterface
    */
-  protected StateInterface $state;
+  protected KeyValueStoreInterface $state;
 
   /**
    * Time service.
