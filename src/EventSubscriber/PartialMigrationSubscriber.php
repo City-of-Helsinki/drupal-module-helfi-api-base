@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\helfi_api_base\EventSubscriber;
 
 use Drupal\Component\Datetime\TimeInterface;
-use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
+use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -52,13 +52,13 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
   /**
    * Constructs a new instance.
    *
-   * @param \Drupal\Core\State\KeyValueFactoryInterface $key_value_factory
+   * @param \Drupal\Core\State\StateInterface $state
    *   Key value factory.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   Time service.
    */
-  public function __construct(KeyValueFactoryInterface $key_value_factory, TimeInterface $time) {
-    $this->state = $key_value_factory->get('state');
+  public function __construct(StateInterface $state, TimeInterface $time) {
+    $this->state = $state;
     $this->time = $time;
   }
 

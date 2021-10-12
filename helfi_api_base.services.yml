@@ -7,6 +7,6 @@ services:
 
   helfi_api_base.partial_migration_subscriber:
     class: Drupal\helfi_api_base\EventSubscriber\PartialMigrationSubscriber
-    arguments: ['@keyvalue', '@datetime.time']
+    arguments: ['@state', '@datetime.time']
     tags:
       - { name: event_subscriber }
