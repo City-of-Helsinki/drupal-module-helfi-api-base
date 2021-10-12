@@ -153,7 +153,6 @@ class LocaleCommands extends DrushCommands {
           'drush',
           'locale:import',
           '--type=customized',
-          '--override=all',
           $language->getId(),
           $file->uri,
         ]);
