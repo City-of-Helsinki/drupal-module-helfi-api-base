@@ -229,6 +229,16 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
   }
 
   /**
+   * Gets the canonical base URL.
+   *
+   * @return string
+   *   The canonical base URL.
+   */
+  protected function getCanonicalBaseUrl() : string {
+    return $this->configuration['url'];
+  }
+
+  /**
    * Builds a canonical url to individual entity.
    *
    * @param string $id
@@ -238,7 +248,7 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
    *   The url to canonical page of given entity.
    */
   protected function buildCanonicalUrl(string $id) : string {
-    $urlParts = UrlHelper::parse($this->configuration['url']);
+    $urlParts = UrlHelper::parse($this->getCanonicalBaseUrl());
     $query = UrlHelper::buildQuery($urlParts['query']);
 
     $url = vsprintf('%s/%s', [

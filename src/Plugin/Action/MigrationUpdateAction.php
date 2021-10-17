@@ -87,8 +87,25 @@ class MigrationUpdateAction extends ActionBase implements ContainerFactoryPlugin
     }
     $this->setIsPartialMigrate(TRUE);
     $migration = $this->getMigration($entity);
-    $keys = array_keys($migration->getSourcePlugin()->getIds());
-    $migration->getIdMap()->setUpdate(array_combine($keys, [$entity->id()]));
+
+    $updateMap = [];
+    foreach ($migration->getSourcePlugin()->getIds() as $key => $values) {
+      $entityKey = $key;
+
+      if (!$entity->hasField($key)) {
+        if (!isset($values['entity_key'])) {
+          // @codingStandardsIgnoreLine
+          @trigger_error("Calling MigrateUpdateAction::execute() without definining 'entity_key' in source plugin's ::getIds() method is deprecated in helfi_api_base:1.3.0 and is removed in helfi_api_base:2.0.0.", E_USER_DEPRECATED);
+        }
+        $entityKey = $values['entity_key'];
+      }
+      $value = $entity->get($entityKey)
+        ->first()
+        ->getValue();
+
+      $updateMap[$key] = reset($value);
+    }
+    $migration->getIdMap()->setUpdate($updateMap);
 
     $executable = new MigrateExecutable($migration, new MigrateMessage());
     $executable->import();
