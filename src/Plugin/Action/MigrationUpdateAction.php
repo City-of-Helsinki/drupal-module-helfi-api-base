@@ -95,7 +95,7 @@ class MigrationUpdateAction extends ActionBase implements ContainerFactoryPlugin
       if (!$entity->hasField($key)) {
         if (!isset($values['entity_key'])) {
           // @codingStandardsIgnoreLine
-          @trigger_error("Calling MigrateUpdateAction::execute() without definining 'entity_key' in migration source plugin's ::getIds() method is deprecated in helfi_api_base:1.3.0 and is removed in helfi_api_base:2.0.0.", E_USER_DEPRECATED);
+          @trigger_error("Calling MigrateUpdateAction::execute() without definining 'entity_key' in source plugin's ::getIds() method is deprecated in helfi_api_base:1.3.0 and is removed in helfi_api_base:2.0.0.", E_USER_DEPRECATED);
         }
         $entityKey = $values['entity_key'];
       }
