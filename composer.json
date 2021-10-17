@@ -5,6 +5,7 @@
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",
     "require": {
+        "php": "^8.0",
         "drupal/entity": "^1.0"
     },
     "require-dev": {
