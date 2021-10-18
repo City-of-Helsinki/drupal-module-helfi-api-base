@@ -6,7 +6,7 @@ Base module for API based features.
 
 ## Requirements
 
-- PHP 7.4 or higher
+- PHP 8.0 or higher
 
 ## Usage
 
