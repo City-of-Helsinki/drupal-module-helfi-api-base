@@ -187,8 +187,11 @@ trait MenuLinkFormTrait {
       }
     }
     if (!empty($values['enabled'])) {
-      // Menu link inherits published status from parent entity.
-      $entity->isPublished() ? $menu_link->setPublished() : $menu_link->setUnpublished();
+      if ($menu_link->isNew() || $menu_link->isNewTranslation()) {
+        // If the menu link is a new one, it inherits published status from
+        // parent entity.
+        $entity->isPublished() ? $menu_link->setPublished() : $menu_link->setUnpublished();
+      }
 
       [$menu_name, $parent] = explode(':', $values['menu_parent'], 2);
 
