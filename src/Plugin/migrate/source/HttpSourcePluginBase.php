@@ -7,6 +7,7 @@ namespace Drupal\helfi_api_base\Plugin\migrate\source;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\helfi_api_base\Event\MigrationConfigurationEvent;
 use Drupal\helfi_api_base\MigrateTrait;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Plugin\MigrationInterface;
@@ -35,7 +36,7 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
    * changes are listed first.
    *
    * For this to have any effect 'track_changes' source setting must be set to
-   * true and you must run the migrate with PARTIAL_MIGRATE=1 setting.
+   * true, and you must run the migrate with PARTIAL_MIGRATE=1 setting.
    *
    * @var int
    */
@@ -272,13 +273,18 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
     $plugin_definition,
     MigrationInterface $migration = NULL
   ) {
-    $instance = new static($configuration, $plugin_id, $plugin_definition, $migration);
-    $instance->httpClient = $container->get('http_client');
-    $instance->dataCache = $container->get('cache.default');
+    /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
+    $eventDispatcher = $container->get('event_dispatcher');
+    $eventDispatcher->dispatch(
+      new MigrationConfigurationEvent($configuration, $migration)
+    );
 
     if (!isset($configuration['url'])) {
       throw new \InvalidArgumentException('The "url" configuration missing.');
     }
+    $instance = new static($configuration, $plugin_id, $plugin_definition, $migration);
+    $instance->httpClient = $container->get('http_client');
+    $instance->dataCache = $container->get('cache.default');
 
     // Allow certain entity IDs to be updated.
     if (isset($migration->entity_ids)) {
