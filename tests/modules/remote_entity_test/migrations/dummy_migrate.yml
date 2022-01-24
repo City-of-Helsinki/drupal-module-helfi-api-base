@@ -1,0 +1,12 @@
+id: dummy_migrate
+label: "Dummy migrate"
+source:
+  plugin: dummy_source
+  url: 'http://localhost'
+process:
+  title: title
+  body/0/value: bodyvalue
+  body/0/format: bodyformat
+destination:
+  default_bundle: node_stub
+  plugin: entity:node
