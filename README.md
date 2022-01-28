@@ -62,7 +62,7 @@ final class YourCustomEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      '\Drupal\helfi_api_base\Event\MigrationConfigurationEvent' => [
+      'Drupal\helfi_api_base\Event\MigrationConfigurationEvent' => [
         ['onMigration'],
       ],
     ];
