@@ -32,13 +32,18 @@ use Drupal\helfi_api_base\Entity\RemoteEntityBase;
  *   base_table = "rmt",
  *   data_table = "rmt_field_data",
  *   admin_permission = "administer remote entities",
+ *   translatable = TRUE,
  *   entity_keys = {
  *     "id" = "id",
  *     "langcode" = "langcode",
  *     "label" = "name",
- *     "uuid" = "uuid"
+ *     "uuid" = "uuid",
+ *     "published" = "content_translation_status",
+ *     "owner" = "content_translation_uid",
  *   },
- *   links = {},
+ *   links = {
+ *     "delete-form" = "/rmt/{remote_entity_test}/delete",
+ *   },
  * )
  */
 final class RemoteEntityTest extends RemoteEntityBase {

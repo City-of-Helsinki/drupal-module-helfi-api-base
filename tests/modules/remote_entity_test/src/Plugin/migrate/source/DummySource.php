@@ -19,7 +19,10 @@ final class DummySource extends HttpSourcePluginBase {
    * {@inheritdoc}
    */
   protected function initializeListIterator(): \Iterator {
-    yield [];
+    yield ['id' => 1, 'language' => 'fi', 'title' => 'Title fi 1'];
+    yield ['id' => 1, 'language' => 'en', 'title' => 'Title en 1'];
+    yield ['id' => 2, 'language' => 'en', 'title' => 'Title en 2'];
+    yield ['id' => 2, 'language' => 'fi', 'title' => 'Title fi 2'];
   }
 
   /**
@@ -42,6 +45,9 @@ final class DummySource extends HttpSourcePluginBase {
   public function getIds(): array {
     return [
       'id' => [
+        'type' => 'string',
+      ],
+      'language' => [
         'type' => 'string',
       ],
     ];
