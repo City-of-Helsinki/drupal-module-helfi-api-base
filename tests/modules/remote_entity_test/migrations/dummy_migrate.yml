@@ -4,6 +4,7 @@ source:
   plugin: dummy_source
   url: 'http://localhost'
 process:
+  id: id
   name: title
 destination:
   plugin: translatable_entity:remote_entity_test
