@@ -15,7 +15,7 @@ class MigrateTranslatableEntity extends MigrateEntity {
   /**
    * {@inheritdoc}
    */
-  public function getDerivativeDefinitions($base_plugin_definition) : array  {
+  public function getDerivativeDefinitions($base_plugin_definition) : array {
     foreach ($this->entityDefinitions as $entity_type => $entity_info) {
       $this->derivatives[$entity_type] = [
         'id' => "translatable_entity:$entity_type",

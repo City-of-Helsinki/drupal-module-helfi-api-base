@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a destination base plugin for translatable entities.
  *
+ * phpcs:ignore
  * @deprecated in 1.3.3 and is removed from 2.0.0.
  */
 abstract class TranslatableEntityBase extends TranslatableEntity {
