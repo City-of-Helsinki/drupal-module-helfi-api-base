@@ -70,4 +70,20 @@ class TranslatableMigrationTest extends MigrationTestBase {
     }
   }
 
+  /**
+   * Tests that we can run a rollback on multilingual migrations.
+   */
+  public function testRollback() : void {
+    $this->executeMigration('dummy_migrate');
+    $this->assertCount(2, RemoteEntityTest::loadMultiple());
+
+    // Make sure entities are deleted when we run rollback.
+    $this->rollbackMigration('dummy_migrate');
+    $this->assertEmpty(RemoteEntityTest::loadMultiple());
+
+    // Make sure entities can be migrated again.
+    $this->executeMigration('dummy_migrate');
+    $this->assertCount(2, RemoteEntityTest::loadMultiple());
+  }
+
 }

@@ -13,7 +13,7 @@ use Drupal\migrate\Plugin\Migration;
 trait MigrationTestTrait {
 
   /**
-   * A two dimensional array of messages.
+   * A two-dimensional array of messages.
    *
    * The first key is the type of message, the second is just numeric. Values
    * are the messages.
@@ -50,6 +50,19 @@ trait MigrationTestTrait {
     $migration = $this->getMigration($migration, $configuration);
 
     (new MigrateExecutable($migration, $this))->import();
+  }
+
+  /**
+   * Rollbacks a migration.
+   *
+   * @param string $migration
+   *   The migration ID.
+   * @param array $configuration
+   *   The migration configuration.
+   */
+  protected function rollbackMigration(string $migration, array $configuration = []) : void {
+    $migration = $this->getMigration($migration, $configuration);
+    (new MigrateExecutable($migration, $this))->rollback();
   }
 
   /**
