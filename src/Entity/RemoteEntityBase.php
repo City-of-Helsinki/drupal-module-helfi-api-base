@@ -35,7 +35,7 @@ abstract class RemoteEntityBase extends ContentEntityBase {
   protected bool $resetSyncAttempts = TRUE;
 
   /**
-   * Get sthe migration name.
+   * Gets the migration name.
    *
    * @return string|null
    *   The migration name.
@@ -68,6 +68,26 @@ abstract class RemoteEntityBase extends ContentEntityBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function delete(bool $forceDelete = FALSE) : void {
+    $hasDeleteForm = $this->hasLinkTemplate('delete-form');
+
+    // Disable deleting entities to prevent accidental automatic deletions if
+    // entity type does not define delete form.
+    if (!$hasDeleteForm && !$forceDelete) {
+      \Drupal::logger('helfi_api_base')
+        ->notice('Prevented deleting entity @type with ID @id. Deleting Remote entities without "delete-form" is disabled. This can be overridden by calling ::delete() with forceDelete = TRUE.',
+          [
+            '@id' => $this->id(),
+            '@type' => $this->getEntityTypeId(),
+          ]);
+      return;
+    }
+    parent::delete();
+  }
+
+  /**
    * Increments sync attempts counter.
    *
    * @param int $increment
@@ -77,7 +97,7 @@ abstract class RemoteEntityBase extends ContentEntityBase {
    *   The self.
    */
   public function incrementSyncAttempts(int $increment = 1) : self {
-    // Never reset sync attempts on save if we increment sync attemps.
+    // Never reset sync attempts on save if we increment sync attempts.
     $this->resetSyncAttempts = FALSE;
 
     $this->set('sync_attempts', $this->getSyncAttempts() + $increment);

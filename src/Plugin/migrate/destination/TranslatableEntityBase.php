@@ -4,20 +4,19 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\Plugin\migrate\destination;
 
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_api_base\Entity\RemoteEntityBase;
-use Drupal\migrate\Plugin\migrate\destination\EntityContentBase;
-use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a destination plugin for translatable entities.
+ * Provides a destination base plugin for translatable entities.
+ *
+ * phpcs:ignore
+ * @deprecated in 1.3.3 and is removed from 2.0.0.
  */
-abstract class TranslatableEntityBase extends EntityContentBase {
+abstract class TranslatableEntityBase extends TranslatableEntity {
 
   /**
    * The language manager service.
@@ -25,6 +24,16 @@ abstract class TranslatableEntityBase extends EntityContentBase {
    * @var \Drupal\Core\Language\LanguageManagerInterface
    */
   protected LanguageManagerInterface $languageManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getEntity(Row $row, array $old_destination_id_values) {
+    // Deal with translations that have translated fields, such as:
+    // ['name' => ['fi' => 'Name in finnish', 'sv' => 'Name in swedish'].
+    // or ['name_fi' => 'Name in finnish', 'name_sv' => 'Name in swedish'].
+    return $this->getFieldTranslationEntity($row, $old_destination_id_values);
+  }
 
   /**
    * {@inheritdoc}
@@ -40,102 +49,6 @@ abstract class TranslatableEntityBase extends EntityContentBase {
     $instance->languageManager = $container->get('language_manager');
 
     return $instance;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function updateEntity(EntityInterface $entity, Row $row) {
-    $entity = parent::updateEntity($entity, $row);
-    // Always delete on rollback, even if it's "default" translation.
-    $this->setRollbackAction($row->getIdMap(), MigrateIdMapInterface::ROLLBACK_DELETE);
-
-    return $entity;
-  }
-
-  /**
-   * Callback when creating a new translation.
-   *
-   * @param string $langcode
-   *   The langcode.
-   * @param \Drupal\migrate\Row $row
-   *   The row.
-   *
-   * @return \Drupal\migrate\Row
-   *   The modified row.
-   */
-  protected function onTranslationCreate(string $langcode, Row $row) : Row {
-    return $row;
-  }
-
-  /**
-   * Callback when creating a new entity.
-   *
-   * @param string $langcode
-   *   The langcode.
-   * @param \Drupal\migrate\Row $row
-   *   The row.
-   *
-   * @return \Drupal\migrate\Row
-   *   The modified row.
-   */
-  protected function onEntityCreate(string $langcode, Row $row) : Row {
-    return $row;
-  }
-
-  /**
-   * Gets the translated entity for given langcode and row.
-   *
-   * @param string $langcode
-   *   The language code.
-   * @param \Drupal\migrate\Row $row
-   *   The row.
-   * @param array $old_destination_id_values
-   *   The old destination id values.
-   *
-   * @return \Drupal\helfi_api_base\Entity\RemoteEntityBase
-   *   The entity.
-   */
-  protected function getTranslatedEntity(string $langcode, Row $row, array $old_destination_id_values) : RemoteEntityBase {
-    $default_langcode = $row->getSourceProperty('default_langcode') === TRUE;
-
-    if ($default_langcode) {
-      $row->setDestinationProperty('langcode', $langcode);
-    }
-    $entity_id = reset($old_destination_id_values) ?: $this->getEntityId($row);
-
-    if (!empty($entity_id) && ($entity = $this->storage->load($entity_id))) {
-      // Update values only when we're dealing with the original translation so
-      // we don't accidentally override the default translation.
-      if ($default_langcode) {
-        $entity = $this->updateEntity($entity, $row) ?: $entity;
-      }
-    }
-    else {
-      // Attempt to ensure we always have a bundle.
-      if ($bundle = $this->getBundle($row)) {
-        $row->setDestinationProperty($this->getKey('bundle'), $bundle);
-      }
-
-      // Stubs might need some required fields filled in.
-      if ($row->isStub()) {
-        $this->processStubRow($row);
-      }
-      $row = $this->onEntityCreate($langcode, $row);
-      $entity = $this->storage->create($row->getDestination());
-      $entity->enforceIsNew();
-    }
-
-    if ($entity->hasTranslation($langcode)) {
-      // Update existing translation.
-      return $this->updateEntity($entity->getTranslation($langcode), $row);
-    }
-    // Stubs might need some required fields filled in.
-    if ($row->isStub()) {
-      $this->processStubRow($row);
-    }
-    $row = $this->onTranslationCreate($langcode, $row);
-    return $entity->addTranslation($langcode, $row->getDestination());
   }
 
   /**
@@ -167,14 +80,15 @@ abstract class TranslatableEntityBase extends EntityContentBase {
   protected function getFieldTranslationEntity(Row $row, array $old_destination_id_values) : RemoteEntityBase {
     /** @var \Drupal\helfi_api_base\Entity\RemoteEntityBase $entity */
     $entity = parent::getEntity($row, $old_destination_id_values);
-    $default_language = $this->languageManager->getDefaultLanguage();
-    $row = $this->populateFieldTranslations($default_language, $row);
+
+    $default_langcode = $this->languageManager->getDefaultLanguage()->getId();
+    $row = $this->populateFieldTranslations($default_langcode, $row);
 
     $languages = $this->languageManager->getLanguages();
-    unset($languages[$default_language->getId()]);
+    unset($languages[$default_langcode]);
 
     foreach ($this->languageManager->getLanguages() as $langcode => $language) {
-      $languageRow = $this->populateFieldTranslations($language, $row);
+      $languageRow = $this->populateFieldTranslations($langcode, $row);
 
       if ($entity->hasTranslation($langcode)) {
         // Update existing translation.
@@ -194,55 +108,17 @@ abstract class TranslatableEntityBase extends EntityContentBase {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  protected function getEntity(Row $row, array $old_destination_id_values) {
-    // Deal with translations that are yielded as separate objects by source
-    // plugin.
-    if ($langcode = $row->getSourceProperty('language')) {
-      return $this->getTranslatedEntity($langcode, $row, $old_destination_id_values);
-    }
-    // Deal with translations that have translated fields, such as:
-    // ['name' => ['fi' => 'Name in finnish', 'sv' => 'Name in swedish'].
-    // or ['name_fi' => 'Name in finnish', 'name_sv' => 'Name in swedish'].
-    return $this->getFieldTranslationEntity($row, $old_destination_id_values);
-  }
-
-  /**
-   * Gets the translatable source fields.
-   *
-   * Defined as remote field name => local field name:
-   *
-   * @code
-   * [
-   *   'name => 'field_name',
-   *   'www' =>  'field_url',
-   * ]
-   * @endcode
-   * Language code will be appended to remote field automatically. For
-   * example the field `name` will become name_fi, name_en etc.
-   *
-   * @return string[]
-   *   An array of source fields.
-   */
-  protected function getTranslatableFields() : array {
-    return [];
-  }
-
-  /**
    * Populates the row object values.
    *
-   * @param \Drupal\Core\Language\LanguageInterface $language
-   *   The language.
+   * @param string $langcode
+   *   The langcode.
    * @param \Drupal\migrate\Row $row
    *   The row.
    *
    * @return \Drupal\migrate\Row
    *   The row.
    */
-  protected function populateFieldTranslations(LanguageInterface $language, Row $row) : Row {
-    $langcode = $language->getId();
-
+  protected function populateFieldTranslations(string $langcode, Row $row) : Row {
     if (!$row->get('langcode')) {
       $row->setDestinationProperty('langcode', $langcode);
     }
@@ -281,13 +157,6 @@ abstract class TranslatableEntityBase extends EntityContentBase {
     }
 
     return $row;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getIds() {
-    return ['id' => ['type' => 'string']];
   }
 
 }

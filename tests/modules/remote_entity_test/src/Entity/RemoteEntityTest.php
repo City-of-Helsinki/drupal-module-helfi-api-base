@@ -4,13 +4,17 @@ declare(strict_types = 1);
 
 namespace Drupal\remote_entity_test\Entity;
 
+use Drupal\Core\Entity\EntityPublishedInterface;
+use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Entity\RemoteEntityBase;
+use Drupal\user\EntityOwnerInterface;
+use Drupal\user\EntityOwnerTrait;
 
 /**
- * Defines the entity entity class.
+ * Defines the remote entity test class.
  *
  * @ContentEntityType(
  *   id = "remote_entity_test",
@@ -32,16 +36,25 @@ use Drupal\helfi_api_base\Entity\RemoteEntityBase;
  *   base_table = "rmt",
  *   data_table = "rmt_field_data",
  *   admin_permission = "administer remote entities",
+ *   translatable = TRUE,
  *   entity_keys = {
  *     "id" = "id",
  *     "langcode" = "langcode",
  *     "label" = "name",
- *     "uuid" = "uuid"
+ *     "uuid" = "uuid",
+ *     "published" = "content_translation_status",
+ *     "owner" = "content_translation_uid",
  *   },
- *   links = {},
+ *   links = {
+ *     "delete-form" = "/rmt/{remote_entity_test}/delete",
+ *     "collection" = "/admin/content/remote-entity-test",
+ *   },
  * )
  */
-final class RemoteEntityTest extends RemoteEntityBase {
+final class RemoteEntityTest extends RemoteEntityBase implements EntityPublishedInterface, EntityOwnerInterface {
+
+  use EntityPublishedTrait;
+  use EntityOwnerTrait;
 
   /**
    * {@inheritdoc}
@@ -53,9 +66,12 @@ final class RemoteEntityTest extends RemoteEntityBase {
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+    $fields += static::ownerBaseFieldDefinitions($entity_type);
+    $fields += static::publishedBaseFieldDefinitions($entity_type);
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Name'))
+      ->setTranslatable(TRUE)
       ->setDefaultValue('')
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE)

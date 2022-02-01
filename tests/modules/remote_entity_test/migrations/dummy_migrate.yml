@@ -4,9 +4,11 @@ source:
   plugin: dummy_source
   url: 'http://localhost'
 process:
-  title: title
-  body/0/value: bodyvalue
-  body/0/format: bodyformat
+  id: id
+  name: title
 destination:
-  default_bundle: node_stub
-  plugin: entity:node
+  plugin: translatable_entity:remote_entity_test
+  default_values:
+    content_translation_uid: 1
+    content_translation_status: false
+
