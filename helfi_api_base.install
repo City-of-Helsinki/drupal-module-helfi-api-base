@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types = 1);
-
 /**
  * @file
  * Contains installation procedure for API base module.
  */
+
+declare(strict_types = 1);
 
 use Drupal\filter\Entity\FilterFormat;
 

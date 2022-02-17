@@ -1,13 +1,13 @@
 <?php
 
-declare(strict_types = 1);
-
-use Drupal\helfi_api_base\Link\LinkProcessor;
-
 /**
  * @file
  * Contains API base module.
  */
+
+declare(strict_types = 1);
+
+use Drupal\helfi_api_base\Link\LinkProcessor;
 
 /**
  * Implements hook_element_info_alter().
@@ -26,7 +26,7 @@ function helfi_api_base_theme() : array {
     'helfi_link' => [
       'variables' => [
         'url' => NULL,
-        'title' => NULL
+        'title' => NULL,
       ],
       'template' => 'helfi-link',
     ],
