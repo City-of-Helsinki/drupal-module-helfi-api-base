@@ -15,7 +15,12 @@ jobs:
 
     services:
       db:
-        image: druidfi/db:mysql5.7-drupal
+        image: mariadb:10.5
+        env:
+          MYSQL_USER: drupal
+          MYSQL_PASSWORD: drupal
+          MYSQL_DATABASE: drupal
+          MYSQL_ROOT_PASSWORD: drupal
         ports:
           - 3306:3306
 
@@ -27,29 +32,34 @@ jobs:
       - name: Set variables
         run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
 
-      - name: Build project
-        run: composer create-project city-of-helsinki/drupal-helfi-platform:dev-main $DRUPAL_ROOT --no-interaction --repository https://repository.drupal.hel.ninja/
+      - name: Clone drupal
+        run: git clone --depth 1 --branch "$DRUPAL_CORE_VERSION" http://git.drupal.org/project/drupal.git/ $DRUPAL_ROOT
+
+      - name: Install required composer dependencies
+        run: |
+          cd $DRUPAL_ROOT
+          composer config platform.php ${{ matrix.php-version }}
+          composer config repositories.0 path $GITHUB_WORKSPACE
+          composer require drupal/${{ secrets.MODULE_NAME }} -W
+          composer run-script drupal-phpunit-upgrade
+          composer require "drush/drush ^10.0"
+          composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer require --dev "drupal/coder"
 
       - name: Install Drupal
         run: |
           cd $DRUPAL_ROOT
           php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
-
-      - name: Update modules
-        run: |
-          cd $DRUPAL_ROOT
-          composer config repositories.5 path $GITHUB_WORKSPACE
-          composer require drupal/${{ secrets.MODULE_NAME }} -W
           vendor/bin/drush en ${{ secrets.MODULE_NAME }} -y
 
       - name: Run PHPCS
         run: |
           cd $DRUPAL_ROOT
-          vendor/bin/phpcs public/modules/contrib/${{ secrets.MODULE_NAME }} --standard=Drupal
+          vendor/bin/phpcs modules/contrib/${{ secrets.MODULE_NAME }} --standard=Drupal --extensions=php,module,inc,install,test,info
 
       - name: Run PHPUnit tests
         run: |
           cd $DRUPAL_ROOT
           vendor/bin/drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
           chromedriver --port=4444 > /dev/null 2>&1 &
-          vendor/bin/phpunit --fail-on-skipped -c $DRUPAL_ROOT/phpunit.platform.xml --verbose --group ${{ secrets.MODULE_NAME }}
+          php ./core/scripts/run-tests.sh --dburl $SIMPLETEST_DB --php /usr/local/bin/php --color --verbose --sqlite /tmp/test.sqlite --url $SIMPLETEST_BASE_URL ${{ secrets.MODULE_NAME }}
