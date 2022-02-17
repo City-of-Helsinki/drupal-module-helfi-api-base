@@ -39,7 +39,7 @@ jobs:
       - name: Install required composer dependencies
         run: |
           cd $DRUPAL_ROOT
-          composer config platform.php ${{ matrix.php-version }}
+          composer config platform.php ${{ matrix.php-versions }}
           composer config repositories.0 path $GITHUB_WORKSPACE
           composer require drupal/${{ secrets.MODULE_NAME }} -W
           composer run-script drupal-phpunit-upgrade
