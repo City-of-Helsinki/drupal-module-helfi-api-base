@@ -5,6 +5,11 @@ declare(strict_types = 1);
 use Drupal\helfi_api_base\Link\LinkProcessor;
 
 /**
+ * @file
+ * Contains API base module.
+ */
+
+/**
  * Implements hook_element_info_alter().
  */
 function helfi_api_base_element_info_alter(array &$info) {

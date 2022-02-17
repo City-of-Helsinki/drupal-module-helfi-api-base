@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * @file
- * Contains installation procedure for Proxy module.
+ * Contains installation procedure for API base module.
  */
 
 use Drupal\filter\Entity\FilterFormat;
@@ -17,7 +19,7 @@ function helfi_api_base_install() {
     $format->setFilterConfig('helfi_link_converter', [
       'status' => 1,
     ])
-    ->save();
+      ->save();
   }
 }
 
