@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Contains installation procedure for Proxy module.
+ */
+
+use Drupal\filter\Entity\FilterFormat;
+
+/**
+ * Implements hook_install().
+ */
+function helfi_api_base_install() {
+  $formatters = FilterFormat::loadMultiple();
+
+  foreach ($formatters as $format) {
+    $format->setFilterConfig('helfi_link_converter', [
+      'status' => 1,
+    ])
+    ->save();
+  }
+}
+
+/**
+ * Enable 'helfi_link_converter' filter format.
+ */
+function helfi_api_base_update_9001() : void {
+  helfi_api_base_install();
+}
