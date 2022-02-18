@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Contains installation procedure for API base module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_install().
+ */
+function helfi_api_base_install() {
+  if (!\Drupal::moduleHandler()->moduleExists('filter')) {
+    return;
+  }
+
+  $formatters = \Drupal::entityTypeManager()
+    ->getStorage('filter_format')
+    ->loadMultiple();
+
+  /** @var \Drupal\filter\Entity\FilterFormat $format */
+  foreach ($formatters as $format) {
+    $format->setFilterConfig('helfi_link_converter', [
+      'status' => 1,
+    ])
+      ->save();
+  }
+}
+
+/**
+ * Enable 'helfi_link_converter' filter format.
+ */
+function helfi_api_base_update_9001() : void {
+  helfi_api_base_install();
+}

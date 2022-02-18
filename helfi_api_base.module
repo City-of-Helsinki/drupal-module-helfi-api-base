@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Contains API base module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\helfi_api_base\Link\LinkProcessor;
+
+/**
+ * Implements hook_element_info_alter().
+ */
+function helfi_api_base_element_info_alter(array &$info) {
+  $info['link']['#pre_render'] = [
+    [LinkProcessor::class, 'preRenderLink'],
+  ];
+}
+
+/**
+ * Implements hook_theme().
+ */
+function helfi_api_base_theme() : array {
+  return [
+    'helfi_link' => [
+      'variables' => [
+        'url' => NULL,
+        'title' => NULL,
+      ],
+      'template' => 'helfi-link',
+    ],
+  ];
+}
