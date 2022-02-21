@@ -27,6 +27,7 @@ function helfi_api_base_theme() : array {
       'variables' => [
         'url' => NULL,
         'title' => NULL,
+        'attributes' => [],
       ],
       'template' => 'helfi-link',
     ],

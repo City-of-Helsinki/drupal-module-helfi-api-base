@@ -20,18 +20,17 @@ final class LinkProcessor extends Link {
     if (isset($element['#url']) && $element['#url'] instanceof Url) {
       $externalUrl = new ExternalUri(clone $element['#url']);
 
+      $element['#title'] = [
+        '#theme' => 'helfi_link',
+        '#url' => $element['#url'],
+        '#title' => $element['#title'],
+      ];
       // We can't set URL's 'external' property to FALSE, because it will break
       // the URL validation.
       if ($externalUrl->isExternal()) {
-        if (!is_array($element['#title'])) {
-          $element['#title'] = [
-            '#theme' => 'helfi_link',
-            '#url' => $element['#url'],
-            '#title' => $element['#title'],
-          ];
-        }
         $element['#attributes']['data-is-external'] = 'true';
       }
+      $element['#title']['#attributes'] = $element['#attributes'] ?? [];
     }
     return parent::preRenderLink($element);
   }

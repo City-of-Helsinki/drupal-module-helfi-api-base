@@ -26,7 +26,7 @@ class LinkConverterFilterTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
+  protected $defaultTheme = 'link_template_test_theme';
 
   /**
    * {@inheritdoc}
@@ -79,9 +79,14 @@ class LinkConverterFilterTest extends BrowserTestBase {
       );
     $this->assertSession()
       ->elementAttributeContains('css', '.external-link', 'data-test', '123');
+
     // Make sure external links get a data-attribute to indicate it.
-    $this->assertSession()
-      ->elementAttributeContains('css', '.external-link', 'data-is-external', 'true');
+    $element = $this->getSession()->getPage()->find('css', '.external-link');
+    $this->assertEquals('true', $element->getAttribute('data-is-external'));
+    // Make sure  there's an external link text inside the link tag.
+    $children = $element->find('css', '.helfi-external-link');
+    $this->assertEquals('This is external link', $children->getText());
+
     // Make sure whitelisted external URLs are not marked as external.
     $element = $this->getSession()->getPage()->find('css', '.whitelisted-external-link');
     $this->assertFalse($element->hasAttribute('data-is-external'));
