@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\helfi_api_base\Plugin\Filter;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
