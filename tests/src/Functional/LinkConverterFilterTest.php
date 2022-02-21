@@ -52,6 +52,15 @@ class LinkConverterFilterTest extends BrowserTestBase {
      <p>External whitelisted link test:
        <a class="whitelisted-external-link" href="https://www.hel.fi">External link 2</a>
      </p>
+     <p>External link without scheme:
+       <a class="external-no-scheme" href="www.hel.fi">External link 3</a>
+     </p>
+     <p>Base link:
+       <a class="base-link" href="base:/node/1">Base link</a>
+     </p>
+     <p>Entity link:
+       <a class="entity-link" href="entity:node/1">Entity link</a>
+     </p>
     ';
     $node = $this->drupalCreateNode([
       'title' => 'Test title',
@@ -76,6 +85,18 @@ class LinkConverterFilterTest extends BrowserTestBase {
     // Make sure whitelisted external URLs are not marked as external.
     $element = $this->getSession()->getPage()->find('css', '.whitelisted-external-link');
     $this->assertFalse($element->hasAttribute('data-is-external'));
+
+    // Make sure urls without scheme defaults to https.
+    $element = $this->getSession()->getPage()->find('css', '.external-no-scheme');
+    $this->assertEquals('https://www.hel.fi', $element->getAttribute('href'));
+
+    // Make sure base:/node/1 converts to /node/1.
+    $element = $this->getSession()->getPage()->find('css', '.base-link');
+    $this->assertEquals('/node/1', $element->getAttribute('href'));
+
+    // Make sure entity:node/1 converts to /node/1.
+    $element = $this->getSession()->getPage()->find('css', '.entity-link');
+    $this->assertEquals('/node/1', $element->getAttribute('href'));
   }
 
 }

@@ -72,10 +72,13 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
    *   The URL.
    */
   private function parseEmbeddedUrl(string $value) : Url {
-    if (UrlHelper::isExternal($value)) {
-      return Url::fromUri($value);
+    if (str_starts_with($value, '/')) {
+      return Url::fromUserInput($value);
     }
-    return Url::fromUserInput($value);
+    if (!parse_url($value, PHP_URL_SCHEME)) {
+      $value = sprintf('https://%s', $value);
+    }
+    return Url::fromUri($value);
   }
 
   /**
