@@ -1,0 +1,6 @@
+name: 'Link template test theme'
+type: theme
+description: ''
+version: VERSION
+base theme: stark
+core_version_requirement: ^9
