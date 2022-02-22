@@ -14,11 +14,25 @@ use Drupal\helfi_api_base\Helper\ExternalUri;
 final class LinkProcessor extends Link {
 
   /**
+   * Gets whitelisted domains.
+   *
+   * These can be configured by overriding the
+   * 'helfi_api_base.internal_domains' parameter in services.yml file.
+   *
+   * @return array
+   *   The host whitelist.
+   */
+  private static function getHostWhitelist() : array {
+    return \Drupal::getContainer()
+      ->getParameter('helfi_api_base.internal_domains') ?? [];
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function preRenderLink($element) : array {
     if (isset($element['#url']) && $element['#url'] instanceof Url) {
-      $externalUrl = new ExternalUri(clone $element['#url']);
+      $externalUrl = new ExternalUri(clone $element['#url'], static::getHostWhitelist());
 
       $element['#title'] = [
         '#theme' => 'helfi_link',

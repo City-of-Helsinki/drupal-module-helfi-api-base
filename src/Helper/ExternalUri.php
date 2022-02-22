@@ -11,20 +11,18 @@ use Drupal\Core\Url;
  */
 final class ExternalUri {
 
-  public const WHITELIST = [
-    'www.hel.fi',
-    'paatokset.hel.fi',
-    'avustukset.hel.fi',
-  ];
-  public const WHITELIST_OPTION_KEY = 'whitelisted_external_url';
-
   /**
    * Constructs a new instance.
    *
    * @param \Drupal\Core\Url $url
    *   The URL object.
+   * @param array $whitelist
+   *   The whitelist.
    */
-  public function __construct(private Url $url) {
+  public function __construct(
+    private Url $url,
+    private array $whitelist
+  ) {
   }
 
   /**
@@ -40,10 +38,10 @@ final class ExternalUri {
       return FALSE;
     }
 
-    // Allow links with whitelisted host to act as an internal.
+    // Allow whitelisted links to act as an internal.
     return !in_array(
       parse_url($this->url->getUri(), PHP_URL_HOST),
-      self::WHITELIST
+      $this->whitelist
     );
   }
 
