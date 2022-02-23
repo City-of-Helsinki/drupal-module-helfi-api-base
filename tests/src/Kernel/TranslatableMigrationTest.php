@@ -2,8 +2,6 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\helfi_api_base\Tests\Kernel;
-
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
 use Drupal\helfi_api_base\MigrateTrait;

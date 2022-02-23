@@ -18,6 +18,7 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
   protected static $modules = [
     'language',
     'content_translation',
+    'helfi_api_base',
   ];
 
   /**

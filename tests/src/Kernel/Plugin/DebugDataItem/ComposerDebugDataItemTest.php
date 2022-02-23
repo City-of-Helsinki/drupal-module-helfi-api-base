@@ -2,10 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helfi_api_base\Kernel;
+namespace Drupal\Tests\helfi_api_base\Kernel\Plugin\DebugDataItem;
 
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 
 /**
  * Tests Composer debug data plugin.
@@ -13,8 +12,6 @@ use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
  * @group helfi_api_base
  */
 class ComposerDebugDataItemTest extends KernelTestBase {
-
-  use ApiTestTrait;
 
   /**
    * {@inheritdoc}
