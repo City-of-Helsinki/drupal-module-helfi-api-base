@@ -1,4 +1,5 @@
 parameters:
+  helfi_api_base.default_composer_lock: '%app.root%/../composer.lock'
   helfi_api_base.internal_domains:
     - 'www.hel.fi'
     - 'paatokset.hel.fi'
@@ -19,3 +20,11 @@ services:
     arguments: ['@state', '@datetime.time']
     tags:
       - { name: event_subscriber }
+
+  helfi_api_base.composer_info:
+    class: ComposerLockParser\ComposerInfo
+    arguments: ['%helfi_api_base.default_composer_lock%']
+
+  plugin.manager.debug_data_item:
+    class: Drupal\helfi_api_base\DebugDataItemPluginManager
+    parent: default_plugin_manager

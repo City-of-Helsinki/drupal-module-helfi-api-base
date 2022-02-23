@@ -3,3 +3,9 @@ helfi_api_base.integrations:
   description: List of integration content
   route_name: helfi_api_base.integrations
   parent: system.admin_content
+
+helfi_api_base.debug_settings:
+  title: Debug
+  description: Shows gathered debug data
+  route_name:  helfi_api_base.debug_list
+  parent: system.admin

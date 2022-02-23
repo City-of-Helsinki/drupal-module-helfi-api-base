@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Traits;
 
+use Drupal\Core\Extension\ExtensionPathResolver;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -30,6 +31,16 @@ trait ApiTestTrait {
   }
 
   /**
+   * Gets the extension path resolver.
+   *
+   * @return \Drupal\Core\Extension\ExtensionPathResolver
+   *   The extension path resolver.
+   */
+  protected function getExtensioPathResolver() : ExtensionPathResolver {
+    return $this->container->get('extension.path.resolver');
+  }
+
+  /**
    * Gets the fixture path.
    *
    * @param string $module
@@ -41,7 +52,7 @@ trait ApiTestTrait {
    *   The fixture path.
    */
   protected function getFixturePath(string $module, string $name) : string {
-    $file = sprintf('%s/tests/fixtures/%s', drupal_get_path('module', $module), $name);
+    $file = sprintf('%s/tests/fixtures/%s', $this->getExtensioPathResolver()->getPath('module', $module), $name);
 
     if (!file_exists($file)) {
       throw new \InvalidArgumentException(sprintf('Fixture %s not found', $name));

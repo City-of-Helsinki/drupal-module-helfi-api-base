@@ -60,6 +60,7 @@ class MigrationSubscriberTest extends ApiKernelTestBase {
   protected function getMigrationEvent(string $plugin) : MigrateImportEvent {
     // Setup test migration objects.
     $migration_prophecy = $this->prophesize(MigrationInterface::class);
+    $migration_prophecy->id()->willReturn('dummy_migrate');
     $migration_prophecy->getSourcePlugin()->willReturn(NULL);
     $migration_prophecy->getDestinationConfiguration()->willReturn(['plugin' => $plugin]);
     $messenger = $this->prophesize(MigrateMessageInterface::class);
