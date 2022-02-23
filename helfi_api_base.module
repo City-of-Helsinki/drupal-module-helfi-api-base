@@ -45,7 +45,7 @@ function helfi_api_base_theme() : array {
 /**
  * Implements hook_theme_suggestions_HOOK().
  */
-function helfi_debug_theme_suggestions_debug_item(array $variables) {
+function helfi_api_base_theme_suggestions_debug_item(array $variables) {
   $suggestions = [];
   $suggestions[] = 'debug_item__' . strtr($variables['id'], '.', '_');
   return $suggestions;
