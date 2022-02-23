@@ -1,6 +1,5 @@
 parameters:
   helfi_api_base.internal_domains:
-    - 'hel.fi'
     - 'www.hel.fi'
     - 'paatokset.hel.fi'
     - 'avustukset.hel.fi'
