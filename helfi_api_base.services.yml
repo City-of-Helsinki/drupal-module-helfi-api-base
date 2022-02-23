@@ -4,6 +4,10 @@ parameters:
     - 'paatokset.hel.fi'
     - 'avustukset.hel.fi'
 services:
+  logger.channel.helfi_api_base:
+    parent: logger.channel_base
+    arguments: [ 'helfi_api_base' ]
+
   helfi_api_base.migration_subscriber:
     class: Drupal\helfi_api_base\EventSubscriber\MigrationSubscriber
     arguments: ['@entity_type.manager', '@database']
