@@ -129,6 +129,9 @@ final class MigrationSubscriber implements EventSubscriberInterface {
     /** @var \Drupal\helfi_api_base\Plugin\migrate\source\HttpSourcePluginBase $sourcePlugin */
     $sourcePlugin = $event->getMigration()->getSourcePlugin();
 
+    // Invalidate migration:{id} cache.
+    Cache::invalidateTags(['migration:' . $event->getMigration()->id()]);
+
     // Invalidate migration specific cache.
     if ($sourcePlugin instanceof HttpSourcePluginBase) {
       Cache::invalidateTags($sourcePlugin->getCacheTags());
