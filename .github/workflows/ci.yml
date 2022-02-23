@@ -40,8 +40,8 @@ jobs:
         run: |
           cd $DRUPAL_ROOT
           composer config platform.php ${{ matrix.php-versions }}
-          composer config repositories.4 path $GITHUB_WORKSPACE
-          composer config repositories.5 composer https://repository.drupal.hel.ninja/
+          composer config repositories.4 composer https://repository.drupal.hel.ninja/
+          composer config repositories.5 path $GITHUB_WORKSPACE
           composer require drupal/${{ secrets.MODULE_NAME }} -W
           composer run-script drupal-phpunit-upgrade
           composer require "drush/drush ^10.0"
