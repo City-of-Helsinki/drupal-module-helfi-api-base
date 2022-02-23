@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: { }
+id: helfi_debug_data
+plugin_id: 'helfi_debug_data'
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - cookie

@@ -16,3 +16,11 @@ services:
     arguments: ['@state', '@datetime.time']
     tags:
       - { name: event_subscriber }
+
+  helfi_api_base.composer_info:
+    class: ComposerLockParser\ComposerInfo
+    arguments: ['%app.root%/../composer.lock']
+
+  plugin.manager.debug_data_item:
+    class: Drupal\helfi_api_base\DebugDataItemPluginManager
+    parent: default_plugin_manager

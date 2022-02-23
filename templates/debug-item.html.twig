@@ -1,0 +1,21 @@
+{#
+/**
+ * To actually show any data from a custom plugin, you *MUST* override this template
+ * with a template called 'debug-item--{{ id }}.html.twig'.
+ *
+ * For example: debug-item--composer.html.twig, where 'composer' is your plugin's ID.
+ *
+ * You can then loop your data with something like this:
+ * {% for item in data.packages %}
+ *    {{ item.name }}
+ *    {{ item.version }}
+ * {% endfor %}
+ *
+ *  Available variables:
+ *  - id: The ID of your plugin
+ *  - label The label of your plugin
+ *  - data:  An array of data returned by your plugin's collect() method.
+ */
+#}
+{{ id }}
+{{ label }}

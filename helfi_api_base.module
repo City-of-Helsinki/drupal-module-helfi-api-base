@@ -31,5 +31,22 @@ function helfi_api_base_theme() : array {
       ],
       'template' => 'helfi-link',
     ],
+    'debug_item' => [
+      'variables' => [
+        'id' => NULL,
+        'label' => NULL,
+        'data' => [],
+      ],
+      'template' => 'debug-item',
+    ],
   ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function helfi_debug_theme_suggestions_debug_item(array $variables) {
+  $suggestions = [];
+  $suggestions[] = 'debug_item__' . strtr($variables['id'], '.', '_');
+  return $suggestions;
 }

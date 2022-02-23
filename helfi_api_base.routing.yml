@@ -5,3 +5,11 @@ helfi_api_base.integrations:
     _title: 'Integrations'
   requirements:
     _permission: 'access remote entities overview'
+
+helfi_api_base.debug_list:
+  path: '/admin/debug'
+  defaults:
+    _title: 'Debug'
+    _controller: '\Drupal\helfi_api_base\Controller\DebugController::build'
+  requirements:
+    _permission: 'restful get helfi_debug_data'
