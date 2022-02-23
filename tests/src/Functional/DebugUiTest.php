@@ -45,6 +45,7 @@ class DebugUiTest extends BrowserTestBase {
     $content = json_decode($this->getSession()->getPage()->getContent(), TRUE);
 
     $this->assertNotEmpty($content['composer']);
+    $this->assertNotEmpty($content['migrate']);
   }
 
   /**
@@ -60,6 +61,7 @@ class DebugUiTest extends BrowserTestBase {
     $this->drupalGet('/admin/debug');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Composer');
+    $this->assertSession()->pageTextContains('Migrate');
   }
 
 }
