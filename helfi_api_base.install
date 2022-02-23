@@ -7,6 +7,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Config\FileStorage;
+
 /**
  * Implements hook_install().
  */
@@ -33,4 +35,19 @@ function helfi_api_base_install() {
  */
 function helfi_api_base_update_9001() : void {
   helfi_api_base_install();
+}
+
+/**
+ * Enable rest module and install debug api endpoint.
+ */
+function helfi_api_base_update_9002() : void {
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $extensionPathResolver */
+  $extensionPathResolver = \Drupal::service('extension.path.resolver');
+  $config_path = $extensionPathResolver->getPath('module', 'helfi_api_base') . '/config/install';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+
+  // Install rest resource config.
+  $tpr_service_action = 'rest.resource.helfi_debug_data';
+  $config_storage->write($tpr_service_action, $source->read($tpr_service_action));
 }
