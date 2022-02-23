@@ -61,12 +61,6 @@ class LinkConverterFilterTest extends BrowserTestBase {
      <p>Entity link:
        <a class="entity-link" href="entity:node/1">Entity link</a>
      </p>
-     <p>Mailto link:
-       <a class="mailto-link" href="mailto:example@example.com">Mailto link</a>
-     </p>
-     <p>Tel link:
-       <a class="tel-link" href="tel:+358040123456">Tel link</a>
-     </p>
     ';
     $node = $this->drupalCreateNode([
       'title' => 'Test title',
@@ -108,12 +102,6 @@ class LinkConverterFilterTest extends BrowserTestBase {
     // Make sure entity:node/1 converts to /node/1.
     $element = $this->getSession()->getPage()->find('css', '.entity-link');
     $this->assertEquals('/node/1', $element->getAttribute('href'));
-
-    // Make sure tel and mailto links are not marked as external.
-    foreach (['mailto', 'tel'] as $type) {
-      $element = $this->getSession()->getPage()->find('css', sprintf('.%s-link', $type));
-      $this->assertFalse($element->hasAttribute('href'));
-    }
   }
 
 }
