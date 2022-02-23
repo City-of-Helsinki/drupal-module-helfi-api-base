@@ -38,9 +38,12 @@ function helfi_api_base_update_9001() : void {
 }
 
 /**
- * Enable rest module and install debug api endpoint.
+ * Install the debug rest config.
  */
 function helfi_api_base_update_9002() : void {
+  if (!\Drupal::moduleHandler()->moduleExists('rest')) {
+    return;
+  }
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $extensionPathResolver */
   $extensionPathResolver = \Drupal::service('extension.path.resolver');
   $config_path = $extensionPathResolver->getPath('module', 'helfi_api_base') . '/config/install';
