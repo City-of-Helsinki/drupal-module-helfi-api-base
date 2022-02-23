@@ -1,6 +1,7 @@
 parameters:
   helfi_api_base.default_composer_lock: '%app.root%/../composer.lock'
   helfi_api_base.internal_domains:
+    - 'hel.fi'
     - 'www.hel.fi'
     - 'paatokset.hel.fi'
     - 'avustukset.hel.fi'
