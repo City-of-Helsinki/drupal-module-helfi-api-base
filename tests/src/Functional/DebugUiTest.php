@@ -19,6 +19,7 @@ class DebugUiTest extends BrowserTestBase {
    */
   protected static $modules = [
     'rest',
+    'composer_lock_test',
     'helfi_api_base',
   ];
 
