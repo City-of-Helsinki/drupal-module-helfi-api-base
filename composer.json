@@ -7,7 +7,7 @@
     "require": {
         "php": "^8.0",
         "drupal/entity": "^1.0",
-        "t4web/composer-lock-parser": "dev-master#28b35ecde1a356303a38c1cf0320599b7a4f53d2"
+        "t4web/composer-lock-parser": "dev-master#fe21200b0814c3a487866de5b3e0384449f043a0"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
