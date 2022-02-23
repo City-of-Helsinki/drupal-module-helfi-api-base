@@ -9,6 +9,9 @@
         "drupal/entity": "^1.0",
         "t4web/composer-lock-parser": "dev-master#fe21200b0814c3a487866de5b3e0384449f043a0"
     },
+    "conflict": {
+        "drupal/helfi_debug": "*"
+    },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "drupal/coder": "^8.3"
