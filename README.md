@@ -8,9 +8,7 @@ Base module for API based features.
 
 - PHP 8.0 or higher
 
-## Usage
-
-### PO Importer
+## PO Importer
 
 Create `translations/{langcode}` folders inside your module (like `translations/fi`, `translations/sv`) and create one or more `.po` files.
 
@@ -18,15 +16,28 @@ See https://www.drupal.org/community/contributor-guide/reference-information/loc
 
 Run `drush helfi:locale-import {module_name}`.
 
-### Remote entity
+## Remote entity
+
+@todo:
+
+## Migrate garbage collection
 
 @todo
 
-### Migrate garbage collection
+## Link filter
 
-@todo
+You can enable the filter from `Configuration -> Text formats and editors -> Configure -> Enable the Hel.fi: Link converter filter`. This must be run after `Convert URLs into links` filter if enabled.
 
-### Alter migration configuration
+The filter parses all links from markup fields and runs them through the `#type => link` render element so they can be processed the same way all other links are processed. See [src/Plugin/Filter/LinkConverter.php](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/src/Plugin/Filter/LinkConverter.php).
+
+## Link preprocessor
+
+We override the default link `#preprocess` callback to run all our links through a template to figure out whether the link is external or not. See:
+- [src/Link/LinkProcessor.php](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/src/Link/LinkProcessor.php)
+- [src/Helper/ExternalUri.php](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/src/Helper/ExternalUri.php)
+- [tests/themes/link_template_test_theme/templates/helfi-link.html.twig](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/tests/themes/link_template_test_theme/templates/helfi-link.html.twig) (this is done in `hdbt` theme as well).
+
+ ## Alter migration configuration
 
 Create an event subscriber that responds to `\Drupal\helfi_api_base\Event\MigrationConfigurationEvent`  event:
 
