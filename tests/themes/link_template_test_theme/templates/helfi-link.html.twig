@@ -2,3 +2,9 @@
 {% if 'data-is-external' in attributes|keys %}
   <span class="helfi-external-link">This is external link</span>
 {% endif %}
+{% if attributes['data-protocol'] == 'tel' %}
+  <span class="helfi-tel-link">This is tel link</span>
+{% endif %}
+{% if attributes['data-protocol'] == 'mailto' %}
+  <span class="helfi-mailto-link">This is mailto link</span>
+{% endif %}

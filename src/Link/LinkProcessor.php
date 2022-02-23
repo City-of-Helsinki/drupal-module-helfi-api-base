@@ -39,10 +39,18 @@ final class LinkProcessor extends Link {
         '#url' => $element['#url'],
         '#title' => $element['#title'],
       ];
+
       // We can't set URL's 'external' property to FALSE, because it will break
       // the URL validation.
       if ($externalUrl->isExternal()) {
         $element['#attributes']['data-is-external'] = 'true';
+
+        $scheme = parse_url($element['#url']->getUri(), PHP_URL_SCHEME);
+
+        // Blacklist generic schemes since we're not interested in them.
+        if (!in_array($scheme, ['http', 'https'])) {
+          $element['#attributes']['data-protocol'] = $scheme;
+        }
       }
       $element['#title']['#attributes'] = $element['#attributes'] ?? [];
     }

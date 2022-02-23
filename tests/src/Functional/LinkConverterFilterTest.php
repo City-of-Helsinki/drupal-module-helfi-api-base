@@ -61,6 +61,12 @@ class LinkConverterFilterTest extends BrowserTestBase {
      <p>Entity link:
        <a class="entity-link" href="entity:node/1">Entity link</a>
      </p>
+     <p>Tel link:
+       <a class="tel-link" href="tel:+358123456">Tel link</a>
+     </p>
+     <p>Mailto link:
+       <a class="mailto-link" href="mailto:example@example.com">Mailto link</a>
+     </p>
      <p>
       <a class="no-href">No href link</a>
     </p>
@@ -86,25 +92,38 @@ class LinkConverterFilterTest extends BrowserTestBase {
     // Make sure external links get a data-attribute to indicate it.
     $element = $this->getSession()->getPage()->find('css', '.external-link');
     $this->assertEquals('true', $element->getAttribute('data-is-external'));
+    $this->assertFalse($element->hasAttribute('data-protocol'));
     // Make sure  there's an external link text inside the link tag.
     $children = $element->find('css', '.helfi-external-link');
     $this->assertEquals('This is external link', $children->getText());
 
     // Make sure whitelisted external URLs are not marked as external.
     $element = $this->getSession()->getPage()->find('css', '.whitelisted-external-link');
+    $this->assertFalse($element->hasAttribute('data-protocol'));
     $this->assertFalse($element->hasAttribute('data-is-external'));
 
     // Make sure urls without scheme defaults to https.
     $element = $this->getSession()->getPage()->find('css', '.external-no-scheme');
     $this->assertEquals('https://www.hel.fi', $element->getAttribute('href'));
+    $this->assertFalse($element->hasAttribute('data-protocol'));
 
     // Make sure base:/node/1 converts to /node/1.
     $element = $this->getSession()->getPage()->find('css', '.base-link');
     $this->assertEquals('/node/1', $element->getAttribute('href'));
+    $this->assertFalse($element->hasAttribute('data-protocol'));
 
     // Make sure entity:node/1 converts to /node/1.
     $element = $this->getSession()->getPage()->find('css', '.entity-link');
     $this->assertEquals('/node/1', $element->getAttribute('href'));
+    $this->assertFalse($element->hasAttribute('data-protocol'));
+
+    // Make sure tel and mailto links have 'data-protocol' scheme.
+    foreach (['mailto', 'tel'] as $type) {
+      $element = $this->getSession()->getPage()->find('css', sprintf('.%s-link', $type));
+      $this->assertEquals($type, $element->getAttribute('data-protocol'));
+      $children = $element->find('css', sprintf('.helfi-%s-link', $type));
+      $this->assertEquals(sprintf('This is %s link', $type), $children->getText());
+    }
   }
 
 }
