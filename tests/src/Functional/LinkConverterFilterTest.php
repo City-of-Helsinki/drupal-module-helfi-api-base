@@ -61,6 +61,9 @@ class LinkConverterFilterTest extends BrowserTestBase {
      <p>Entity link:
        <a class="entity-link" href="entity:node/1">Entity link</a>
      </p>
+     <p>
+      <a class="no-href">No href link</a>
+    </p>
     ';
     $node = $this->drupalCreateNode([
       'title' => 'Test title',

@@ -14,6 +14,7 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -46,6 +47,13 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
   private LanguageManagerInterface $languageManager;
 
   /**
+   * The logger.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  private LoggerInterface $logger;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -57,6 +65,7 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
     $instance = new self($configuration, $plugin_id, $plugin_definition);
     $instance->renderer = $container->get('renderer');
     $instance->languageManager = $container->get('language_manager');
+    $instance->logger = $container->get('logger.channel.helfi_api_base');
 
     return $instance;
   }
@@ -89,13 +98,24 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
 
     $hasChanges = FALSE;
 
+    /** @var \DOMElement $node */
     foreach ($dom->getElementsByTagName('a') as $node) {
       $hasChanges = TRUE;
-      /** @var \DOMElement $node */
-      $value = $node->getAttribute('href');
+      // Nothing to do if link has no href.
+      if (!$value = $node->getAttribute('href')) {
+        continue;
+      }
 
-      $build = Link::fromTextAndUrl($node->nodeValue, $this->parseEmbeddedUrl($value))
-        ->toRenderable();
+      try {
+        $build = Link::fromTextAndUrl($node->nodeValue, $this->parseEmbeddedUrl($value))
+          ->toRenderable();
+      }
+      catch (\InvalidArgumentException $e) {
+        $this->logger->error(
+          sprintf('Failed to parse link: %s', $node->nodeValue)
+        );
+        continue;
+      }
 
       $build['#attributes']['class'] = [];
       // Any attributes not consumed by the filter should be carried over to the
