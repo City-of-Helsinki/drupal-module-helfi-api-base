@@ -10,11 +10,11 @@ Base module for `drupal-helfi-platform` ecosystem.
 
 ## Features
 
-- [documentation/po-importer.md](PO importer): Allows modules to define translations that can be imported using Drush.
-- [documentation/remote-entity.md](Remote Entity): A base entity to be used with migrations.
-- [documentation/migrate.md](Migration): Various features to help with migrations.
-- [documentation/debug.md](Debug collector): A plugin to collect and show various debug information in one place.
-- [documentation/testing.md](Testing): Various features to help with automated testing.
+- [PO Importer](documentation/po-importer.md): Allows modules to define translations that can be imported using Drush.
+- [Remote Entity](documentation/remote-entity.md): A base entity to be used with migrations.
+- [Migrate](documentation/migrate.md): Various features to help with migrations.
+- [Debug collector](documentation/debug.md): A plugin to collect and show various debug information in one place.
+- [Testing](documentation/testing.md): Various features to help with automated testing.
 
 ## Contact
 

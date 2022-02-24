@@ -1,3 +1,3 @@
-# Remote enity
+# Remote entity
 
 @todo
