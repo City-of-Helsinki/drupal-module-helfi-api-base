@@ -36,7 +36,7 @@ trait ApiTestTrait {
    * @return \Drupal\Core\Extension\ExtensionPathResolver
    *   The extension path resolver.
    */
-  protected function getExtensioPathResolver() : ExtensionPathResolver {
+  protected function getExtensionPathResolver() : ExtensionPathResolver {
     return $this->container->get('extension.path.resolver');
   }
 
@@ -52,7 +52,7 @@ trait ApiTestTrait {
    *   The fixture path.
    */
   protected function getFixturePath(string $module, string $name) : string {
-    $file = sprintf('%s/tests/fixtures/%s', $this->getExtensioPathResolver()->getPath('module', $module), $name);
+    $file = sprintf('%s/tests/fixtures/%s', $this->getExtensionPathResolver()->getPath('module', $module), $name);
 
     if (!file_exists($file)) {
       throw new \InvalidArgumentException(sprintf('Fixture %s not found', $name));
