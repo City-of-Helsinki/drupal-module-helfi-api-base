@@ -4,11 +4,13 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\Plugin\Filter;
 
+use Drupal\Component\Render\MarkupInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
@@ -23,9 +25,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Filter(
  *   id = "helfi_link_converter",
  *   title = @Translation("Hel.fi: Link converter"),
- *   description = @Translation("Runs embedded links through a template. NOTE: This filter must be run after 'Convert URLs into links' filter."),
- *   type = Drupal\filter\Plugin\FilterInterface::TYPE_MARKUP_LANGUAGE,
- *   settings = {
+ *   description = @Translation("Runs embedded links through a template. NOTE:
+ *   This filter must be run after 'Convert URLs into links' filter."), type =
+ *   Drupal\filter\Plugin\FilterInterface::TYPE_MARKUP_LANGUAGE, settings = {
  *   },
  *   weight = -10
  * )
@@ -83,10 +85,14 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
     if (str_starts_with($value, '/')) {
       return Url::fromUserInput($value);
     }
-    if (!parse_url($value, PHP_URL_SCHEME)) {
-      $value = sprintf('https://%s', $value);
+    try {
+      return Url::fromUri($value);
     }
-    return Url::fromUri($value);
+    catch (\InvalidArgumentException $e) {
+      // Default to https://{value} if previous attempt failed.
+      // If this fails too, the result will be logged.
+      return Url::fromUri(sprintf('https://%s', $value));
+    }
   }
 
   /**
@@ -107,7 +113,7 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
       }
 
       try {
-        $build = Link::fromTextAndUrl($node->nodeValue, $this->parseEmbeddedUrl($value))
+        $build = Link::fromTextAndUrl($this->getLinkText($node), $this->parseEmbeddedUrl($value))
           ->toRenderable();
       }
       catch (\InvalidArgumentException $e) {
@@ -116,19 +122,8 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
         );
         continue;
       }
+      $build['#attributes'] = $this->getNodeAttributes($node);
 
-      $build['#attributes']['class'] = [];
-      // Any attributes not consumed by the filter should be carried over to the
-      // rendered item.
-      foreach ($node->attributes as $attribute) {
-        if ($attribute->nodeName == 'class') {
-          // We don't want to overwrite the existing CSS class.
-          $build['#attributes']['class'] = array_unique(array_merge($build['#attributes']['class'], explode(' ', $attribute->nodeValue)));
-        }
-        else {
-          $build['#attributes'][$attribute->nodeName] = $attribute->nodeValue;
-        }
-      }
       unset($build['#attributes']['href']);
       $this->render($build, $node, $result);
     }
@@ -169,7 +164,6 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
     $replacement_nodes = Html::load($markup)->getElementsByTagName('body')
       ->item(0)
       ->childNodes;
-
     foreach ($replacement_nodes as $replacement_node) {
       // Import the replacement node from the new DOMDocument into the original
       // one, importing also the child nodes of the replacement node.
@@ -177,6 +171,55 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
       $node->parentNode->insertBefore($replacement_node, $node);
     }
     $node->parentNode->removeChild($node);
+  }
+
+  /**
+   * Renders the text.
+   *
+   * @param \DOMElement $node
+   *   The node.
+   *
+   * @todo Review this.
+   *
+   * @return \Drupal\Component\Render\MarkupInterface|string
+   *   The rendered markup or string.
+   */
+  private function getLinkText(\DOMElement $node) : MarkupInterface|string {
+    if ($node->childElementCount === 0) {
+      return $node->nodeValue;
+    }
+    // Keep all child elements.
+    $text = '';
+    foreach ($node->childNodes as $childNode) {
+      /** @var \DOMNode $childNode */
+      $text .= $childNode->C14N();
+    }
+    return Markup::create($text);
+  }
+
+  /**
+   * Renders attributes for given node.
+   *
+   * @param \DOMNode $node
+   *   The node.
+   *
+   * @return array
+   *   The rendered attributes.
+   */
+  private function getNodeAttributes(\DOMNode $node) : array {
+    $build['class'] = [];
+    // Any attributes not consumed by the filter should be carried over to the
+    // rendered item.
+    foreach ($node->attributes as $attribute) {
+      if ($attribute->nodeName == 'class') {
+        // We don't want to overwrite the existing CSS class.
+        $build['class'] = array_unique(array_merge($build['class'], explode(' ', $attribute->nodeValue)));
+      }
+      else {
+        $build[$attribute->nodeName] = $attribute->nodeValue;
+      }
+    }
+    return $build;
   }
 
 }
