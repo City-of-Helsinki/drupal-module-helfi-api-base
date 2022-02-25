@@ -28,7 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("Runs embedded links through a template. NOTE: This filter must be run after 'Convert URLs into links' filter."),
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_MARKUP_LANGUAGE,
  *   settings = {},
- *   weight = -10 *   weight = -10
+ *   weight = -10
  * )
  */
 final class LinkConverter extends FilterBase implements ContainerFactoryPluginInterface {
