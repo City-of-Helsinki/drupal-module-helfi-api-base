@@ -46,7 +46,7 @@ function helfi_api_base_update_9002() : void {
   }
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $extensionPathResolver */
   $extensionPathResolver = \Drupal::service('extension.path.resolver');
-  $config_path = $extensionPathResolver->getPath('module', 'helfi_api_base') . '/config/install';
+  $config_path = $extensionPathResolver->getPath('module', 'helfi_api_base') . '/config/optional';
   $source = new FileStorage($config_path);
   $config_storage = \Drupal::service('config.storage');
 
