@@ -19,7 +19,6 @@ class LinkConverterFilterTest extends BrowserTestBase {
   protected static $modules = [
     'filter',
     'node',
-    'filter_test',
     'helfi_api_base',
   ];
 
@@ -34,14 +33,31 @@ class LinkConverterFilterTest extends BrowserTestBase {
   public function setUp(): void {
     parent::setUp();
 
-    FilterFormat::load('full_html')
-      ->setFilterConfig('helfi_link_converter', ['status' => 1])
-      ->save();
+    // Setup Filtered HTML text format.
+    $filtered_html_format = FilterFormat::create([
+      'format' => 'filtered_html',
+      'name' => 'Filtered HTML',
+      'filters' => [
+        'filter_html' => [
+          'status' => 1,
+          'settings' => [
+            'allowed_html' => '<p><a href data-test class><span class>',
+          ],
+        ],
+        'filter_url' => [
+          'status' => 1,
+        ],
+        'helfi_link_converter' => [
+          'status' => 1,
+        ],
+      ],
+    ]);
+    $filtered_html_format->save();
     $this->drupalCreateContentType(['type' => 'page']);
   }
 
   /**
-   * Tests that language prefixes are added to the links in text fields.
+   * Tests 'helfi_link_converter' filter.
    */
   public function testFilter() : void {
     $body = '
@@ -53,13 +69,16 @@ class LinkConverterFilterTest extends BrowserTestBase {
        <a class="whitelisted-external-link" href="https://www.hel.fi">External link 2</a>
      </p>
      <p>External link without scheme:
-       <a class="external-no-scheme" href="www.hel.fi">External link 3</a>
+       <a class="external-no-scheme" href="www.example.com">External link no scheme</a>
      </p>
      <p>Base link:
        <a class="base-link" href="base:/node/1">Base link</a>
      </p>
+     <p>Internal link:
+       <a class="internal-link" href="internal:/node/1">Internal link</a>
+     </p>
      <p>Entity link:
-       <a class="entity-link" href="entity:node/1">Entity link</a>
+       <a class="entity-link" href="entity:/node/1">Entity link</a>
      </p>
      <p>Tel link:
        <a class="tel-link" href="tel:+358123456">Tel link</a>
@@ -70,12 +89,15 @@ class LinkConverterFilterTest extends BrowserTestBase {
      <p>
       <a class="no-href">No href link</a>
     </p>
+     <p>
+      <a class="nested-dom-link" href="/"><span class="nested" onload="alert(123);">Nested dom link</span></a>
+    </p>
     ';
     $node = $this->drupalCreateNode([
       'title' => 'Test title',
       'body' => [
         'value' => $body,
-        'format' => 'full_html',
+        'format' => 'filtered_html',
       ],
     ]);
     $node->save();
@@ -102,20 +124,18 @@ class LinkConverterFilterTest extends BrowserTestBase {
     $this->assertFalse($element->hasAttribute('data-protocol'));
     $this->assertFalse($element->hasAttribute('data-is-external'));
 
-    // Make sure urls without scheme defaults to https.
+    // Make sure urls without scheme default to https://.
     $element = $this->getSession()->getPage()->find('css', '.external-no-scheme');
-    $this->assertEquals('https://www.hel.fi', $element->getAttribute('href'));
+    $this->assertEquals('https://www.example.com', $element->getAttribute('href'));
     $this->assertFalse($element->hasAttribute('data-protocol'));
+    $this->assertTrue($element->hasAttribute('data-is-external'));
 
-    // Make sure base:/node/1 converts to /node/1.
-    $element = $this->getSession()->getPage()->find('css', '.base-link');
-    $this->assertEquals('/node/1', $element->getAttribute('href'));
-    $this->assertFalse($element->hasAttribute('data-protocol'));
-
-    // Make sure entity:node/1 converts to /node/1.
-    $element = $this->getSession()->getPage()->find('css', '.entity-link');
-    $this->assertEquals('/node/1', $element->getAttribute('href'));
-    $this->assertFalse($element->hasAttribute('data-protocol'));
+    foreach (['base', 'entity', 'internal'] as $type) {
+      // Make sure $type:/node/1 converts to /node/1.
+      $element = $this->getSession()->getPage()->find('css', sprintf('.%s-link', $type));
+      $this->assertEquals('/node/1', $element->getAttribute('href'));
+      $this->assertFalse($element->hasAttribute('data-protocol'));
+    }
 
     // Make sure tel and mailto links have 'data-protocol' scheme.
     foreach (['mailto', 'tel'] as $type) {
@@ -124,6 +144,10 @@ class LinkConverterFilterTest extends BrowserTestBase {
       $children = $element->find('css', sprintf('.helfi-%s-link', $type));
       $this->assertEquals(sprintf('This is %s link', $type), $children->getText());
     }
+    $element = $this->getSession()->getPage()->find('css', '.nested-dom-link');
+    $children = $element->find('css', '.nested');
+    // Make sure nested tags get run through filter.
+    $this->assertFalse($children->hasAttribute('onload'));
   }
 
 }
