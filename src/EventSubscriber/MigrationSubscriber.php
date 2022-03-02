@@ -107,7 +107,7 @@ final class MigrationSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    // Fetch and delete entities that exceeds the max sync attempts
+    // Fetch and delete entities that exceed the max sync attempts
     // limit.
     $results = $storage
       ->getQuery()
@@ -115,7 +115,7 @@ final class MigrationSubscriber implements EventSubscriberInterface {
       ->execute();
 
     foreach ($results as $id) {
-      $storage->load($id)->delete();
+      $storage->load($id)->delete(TRUE);
     }
   }
 
