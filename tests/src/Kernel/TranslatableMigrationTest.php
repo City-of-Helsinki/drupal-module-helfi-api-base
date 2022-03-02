@@ -22,6 +22,8 @@ class TranslatableMigrationTest extends MigrationTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'link',
+    'menu_link_content',
     'remote_entity_test',
   ];
 
@@ -31,6 +33,7 @@ class TranslatableMigrationTest extends MigrationTestBase {
   public function setUp() : void {
     parent::setUp();
 
+    $this->installEntitySchema('menu_link_content');
     $this->installEntitySchema('remote_entity_test');
   }
 
