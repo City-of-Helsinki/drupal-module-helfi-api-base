@@ -9,7 +9,7 @@ Provides a support for:
 
 ## Usage
 
-See [tests/modules/remote_entity_test/src/Entity/RemoteEntityTest.php](tests/modules/remote_entity_test/src/Entity/RemoteEntityTest.php) for an example implementation.
+See [tests/modules/remote_entity_test/src/Entity/RemoteEntityTest.php](/tests/modules/remote_entity_test/src/Entity/RemoteEntityTest.php) for an example implementation.
 
 ## Revision support
 
