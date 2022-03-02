@@ -139,13 +139,14 @@ trait MenuLinkFormTrait {
 
     $form['menu']['published'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Published'),
+      '#title' => $this->t('Enabled'),
       '#default_value' => $menu_link->isNew() ? TRUE : $menu_link->isPublished(),
       '#states' => [
         'invisible' => [
           'input[name="menu[enabled]"]' => ['checked' => FALSE],
         ],
       ],
+      '#description' => $this->t('All languages'),
     ];
 
     $form['menu']['link']['title'] = [
