@@ -31,6 +31,18 @@ trait ApiTestTrait {
   }
 
   /**
+   * Enable translation for given entity types.
+   *
+   * @param array $entityTypes
+   *   The entity types to enable translation for.
+   */
+  protected function enableTranslation(array $entityTypes) : void {
+    foreach ($entityTypes as $type) {
+      \Drupal::service('content_translation.manager')->setEnabled($type, $type, TRUE);
+    }
+  }
+
+  /**
    * Gets the extension path resolver.
    *
    * @return \Drupal\Core\Extension\ExtensionPathResolver

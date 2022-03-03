@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_api_base\Functional;
 
 use Drupal\Core\Url;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 
 /**
  * Tests menu link form.
@@ -12,6 +13,8 @@ use Drupal\Core\Url;
  * @group helfi_api_base
  */
 class MenuLinkFormTest extends BrowserTestBase {
+
+  use ApiTestTrait;
 
   /**
    * {@inheritdoc}
@@ -35,12 +38,7 @@ class MenuLinkFormTest extends BrowserTestBase {
     parent::setUp();
 
     $this->placeBlock('system_menu_block:main', ['id' => 'main-menu']);
-
-    // Enable translation for the given entity type and ensure the change is
-    // picked up.
-    foreach (['menu_link_content', 'remote_entity_test'] as $type) {
-      \Drupal::service('content_translation.manager')->setEnabled($type, $type, TRUE);
-    }
+    $this->enableTranslation(['menu_link_content', 'remote_entity_test']);
     $this->rebuildContainer();
   }
 
@@ -62,12 +60,12 @@ class MenuLinkFormTest extends BrowserTestBase {
   }
 
   /**
-   * Asserts that fields have expected values.
+   * Asserts that menu is enabled values.
    *
    * @param string $langcode
    *   The langcode.
    */
-  private function assertFieldValues(string $langcode) : void {
+  private function assertMenuEnabled(string $langcode) : void {
     $this->assertSession()->fieldValueEquals('menu[enabled]', '1');
     $this->assertSession()->fieldValueEquals('menu[title]', 'Test title ' . $langcode);
     $this->assertSession()->fieldValueEquals('menu[published]', '1');
@@ -102,7 +100,7 @@ class MenuLinkFormTest extends BrowserTestBase {
 
       // Make sure menu link is show in edit form.
       $this->drupalGet($this->getEditRoute($langcode, $entity->id()));
-      $this->assertFieldValues($langcode);
+      $this->assertMenuEnabled($langcode);
     }
 
     // Test forms again to make sure we didn't just override the same
@@ -110,7 +108,7 @@ class MenuLinkFormTest extends BrowserTestBase {
     foreach (['en', 'fi'] as $langcode) {
       // Make sure menu link is show in edit form.
       $this->drupalGet($this->getEditRoute($langcode, $entity->id()));
-      $this->assertFieldValues($langcode);
+      $this->assertMenuEnabled($langcode);
       $this->assertSession()->linkExists('Test title ' . $langcode);
 
       $storage->resetCache([$entity->id()]);
