@@ -4,7 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\Commands;
 
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\helfi_api_base\Plugin\migrate\destination\TranslatableEntity;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessage;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
@@ -64,10 +67,12 @@ class FixtureCommands extends DrushCommands {
    *
    * @param string $migration
    *   The migration name.
+   * @param array $options
+   *   The options.
    *
    * @command helfi:migrate-fixture
    */
-  public function migrateFixtures(string $migration) {
+  public function migrateFixtures(string $migration, array $options = ['publish' => FALSE]) {
     $serviceName = sprintf('migration_fixture.%s', $migration);
 
     if (!$this->container->has($serviceName)) {
@@ -81,6 +86,21 @@ class FixtureCommands extends DrushCommands {
     $instance = $this->migrationPluginManager->createInstance($migration, $service->getConfiguration());
 
     (new MigrateExecutable($instance, new MigrateMessage()))->import();
+
+    $destinationPlugin = $instance->getDestinationPlugin();
+
+    if ($destinationPlugin instanceof TranslatableEntity) {
+      array_map(function (ContentEntityInterface $entity) use ($options) {
+        if (!$options['publish'] || !$entity instanceof EntityPublishedInterface) {
+          return;
+        }
+        foreach ($entity->getTranslationLanguages() as $language) {
+          $entity->getTranslation($language->getId())
+            ->setPublished()
+            ->save();
+        }
+      }, $destinationPlugin->getStorage()->loadMultiple());
+    }
   }
 
 }
