@@ -21,7 +21,10 @@ class RemoteEntityAccess extends EntityAccessControlHandler {
 
     switch ($operation) {
       case 'view':
-        return AccessResult::allowedIfHasPermission($account, 'view remote entities');
+        return AccessResult::allowedIfHasPermissions($account, [
+          'view remote entities',
+          'administer remote entities',
+        ], 'OR');
 
       case 'update':
         return AccessResult::allowedIfHasPermissions($account, [

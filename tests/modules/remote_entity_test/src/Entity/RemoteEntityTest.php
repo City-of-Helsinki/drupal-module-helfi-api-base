@@ -26,7 +26,7 @@ use Drupal\user\EntityOwnerTrait;
  *     "views_data" = "Drupal\views\EntityViewsData",
  *     "access" = "Drupal\helfi_api_base\Entity\Access\RemoteEntityAccess",
  *     "form" = {
- *       "default" = "Drupal\Core\Entity\ContentEntityForm",
+ *       "default" = "Drupal\remote_entity_test\Entity\RemoteEntityForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm"
  *     },
  *     "route_provider" = {
@@ -46,6 +46,8 @@ use Drupal\user\EntityOwnerTrait;
  *     "owner" = "content_translation_uid",
  *   },
  *   links = {
+ *     "canonical" = "/rmt/{remote_entity_test}",
+ *     "edit-form" = "/admin/content/rmt/{remote_entity_test}/edit",
  *     "delete-form" = "/rmt/{remote_entity_test}/delete",
  *     "collection" = "/admin/content/remote-entity-test",
  *   },
@@ -79,6 +81,13 @@ final class RemoteEntityTest extends RemoteEntityBase implements EntityPublished
         'max_length' => 255,
         'text_processing' => 0,
       ]);
+
+    $fields['menu_link'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(new TranslatableMarkup('Menu link'))
+      ->setSettings([
+        'target_type' => 'menu_link_content',
+      ])
+      ->setTranslatable(TRUE);
 
     return $fields;
   }

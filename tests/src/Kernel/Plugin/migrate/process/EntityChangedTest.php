@@ -32,6 +32,8 @@ class EntityChangedTest extends ApiKernelTestBase {
     'migrate',
     'system',
     'remote_entity_test',
+    'link',
+    'menu_link_content',
     'entity_changed_test',
   ];
 
@@ -43,6 +45,7 @@ class EntityChangedTest extends ApiKernelTestBase {
 
     $this->installConfig(['entity_changed_test']);
     $this->installEntitySchema('remote_entity_test');
+    $this->installEntitySchema('menu_link_content');
   }
 
   /**

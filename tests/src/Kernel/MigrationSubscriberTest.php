@@ -27,6 +27,8 @@ class MigrationSubscriberTest extends ApiKernelTestBase {
   protected static $modules = [
     'migrate',
     'system',
+    'link',
+    'menu_link_content',
     'remote_entity_test',
   ];
 
@@ -43,6 +45,7 @@ class MigrationSubscriberTest extends ApiKernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
+    $this->installEntitySchema('menu_link_content');
     $this->installEntitySchema('remote_entity_test');
     $this->migrationSubscriber = $this->container->get('helfi_api_base.migration_subscriber');
     $this->setIsPartialMigrate(FALSE);

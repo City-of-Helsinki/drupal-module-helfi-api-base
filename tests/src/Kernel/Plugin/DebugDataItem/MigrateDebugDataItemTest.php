@@ -16,7 +16,11 @@ class MigrateDebugDataItemTest extends MigrationTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['remote_entity_test'];
+  protected static $modules = [
+    'link',
+    'remote_entity_test',
+    'menu_link_content',
+  ];
 
   /**
    * {@inheritdoc}
@@ -24,6 +28,7 @@ class MigrateDebugDataItemTest extends MigrationTestBase {
   public function setUp() : void {
     parent::setUp();
 
+    $this->installEntitySchema('menu_link_content');
     $this->installEntitySchema('remote_entity_test');
   }
 
