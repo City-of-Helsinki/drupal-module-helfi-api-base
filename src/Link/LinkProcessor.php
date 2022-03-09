@@ -6,7 +6,6 @@ namespace Drupal\helfi_api_base\Link;
 
 use Drupal\Core\Render\Element\Link;
 use Drupal\Core\Url;
-use Drupal\helfi_api_base\Helper\ExternalUri;
 
 /**
  * Provides a whitelist functionality for all links.
@@ -14,25 +13,12 @@ use Drupal\helfi_api_base\Helper\ExternalUri;
 final class LinkProcessor extends Link {
 
   /**
-   * Gets whitelisted domains.
-   *
-   * These can be configured by overriding the
-   * 'helfi_api_base.internal_domains' parameter in services.yml file.
-   *
-   * @return array
-   *   The host whitelist.
-   */
-  private static function getHostWhitelist() : array {
-    return \Drupal::getContainer()
-      ->getParameter('helfi_api_base.internal_domains') ?? [];
-  }
-
-  /**
    * {@inheritdoc}
    */
   public static function preRenderLink($element) : array {
     if (isset($element['#url']) && $element['#url'] instanceof Url) {
-      $externalUrl = new ExternalUri(clone $element['#url'], static::getHostWhitelist());
+      /** @var \Drupal\helfi_api_base\Link\InternalDomainResolver $resolver */
+      $resolver = \Drupal::service('helfi_api_base.internal_domain_resolver');
 
       $element['#title'] = [
         '#theme' => 'helfi_link',
@@ -40,14 +26,14 @@ final class LinkProcessor extends Link {
         '#title' => $element['#title'],
       ];
 
-      // We can't set URL's 'external' property to FALSE, because it will break
-      // the URL validation.
-      if ($externalUrl->isExternal()) {
+      // We can't set URI's 'external' property to FALSE, because it will
+      // break the URL validation.
+      if ($resolver->isExternal($element['#url'])) {
         $element['#attributes']['data-is-external'] = 'true';
 
         $scheme = parse_url($element['#url']->getUri(), PHP_URL_SCHEME);
 
-        // Blacklist generic schemes since we're not interested in them.
+        // Skip generic schemes since we're not interested in them.
         if (!in_array($scheme, ['http', 'https'])) {
           $element['#attributes']['data-protocol'] = $scheme;
         }

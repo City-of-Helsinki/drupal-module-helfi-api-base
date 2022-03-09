@@ -10,6 +10,10 @@ services:
     parent: logger.channel_base
     arguments: [ 'helfi_api_base' ]
 
+  helfi_api_base.internal_domain_resolver:
+    class: Drupal\helfi_api_base\Link\InternalDomainResolver
+    arguments: ['%helfi_api_base.internal_domains%']
+
   helfi_api_base.migration_subscriber:
     class: Drupal\helfi_api_base\EventSubscriber\MigrationSubscriber
     arguments: ['@entity_type.manager', '@database']

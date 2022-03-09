@@ -7,16 +7,16 @@ namespace Drupal\Tests\helfi_api_base\Unit;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Url;
-use Drupal\helfi_api_base\Helper\ExternalUri;
+use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\Tests\UnitTestCase;
 
 /**
- * Tests external uri helper.
+ * Tests internal domain resolver.
  *
  * @group helfi_api_base
- * @coversDefaultClass \Drupal\helfi_api_base\Helper\ExternalUri
+ * @coversDefaultClass \Drupal\helfi_api_base\Link\InternalDomainResolver
  */
-class ExternalUriTest extends UnitTestCase {
+class InternalDomainResolverTest extends UnitTestCase {
 
   /**
    * {@inheritdoc}
@@ -37,8 +37,8 @@ class ExternalUriTest extends UnitTestCase {
   public function testIsExternal(string $url, bool $expectedExternal) : void {
     $url = Url::fromUri($url);
     // Mark www.hel.fi as internal.
-    $sut = new ExternalUri($url, ['www.hel.fi']);
-    $this->assertEquals($expectedExternal, $sut->isExternal());
+    $sut = new InternalDomainResolver(['www.hel.fi']);
+    $this->assertEquals($expectedExternal, $sut->isExternal($url));
   }
 
   /**

@@ -13,9 +13,9 @@ use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\Core\Url;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
+use Drupal\helfi_api_base\Link\UrlHelper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -72,29 +72,6 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
   }
 
   /**
-   * Parses the embedded url.
-   *
-   * @param string $value
-   *   The url.
-   *
-   * @return \Drupal\Core\Url
-   *   The URL.
-   */
-  private function parseEmbeddedUrl(string $value) : Url {
-    if (str_starts_with($value, '/')) {
-      return Url::fromUserInput($value);
-    }
-    try {
-      return Url::fromUri($value);
-    }
-    catch (\InvalidArgumentException $e) {
-      // Default to https://{value} if previous attempt failed.
-      // If this fails too, the result will be logged.
-      return Url::fromUri(sprintf('https://%s', $value));
-    }
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function process($text, $langcode) : FilterProcessResult {
@@ -112,7 +89,7 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
       }
 
       try {
-        $build = Link::fromTextAndUrl($this->getLinkText($node), $this->parseEmbeddedUrl($value))
+        $build = Link::fromTextAndUrl($this->getLinkText($node), UrlHelper::parse($value))
           ->toRenderable();
       }
       catch (\InvalidArgumentException $e) {
