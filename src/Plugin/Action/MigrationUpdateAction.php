@@ -69,9 +69,7 @@ class MigrationUpdateAction extends ActionBase implements ContainerFactoryPlugin
    *   The migration.
    */
   protected function getMigration(RemoteEntityBase $entity) : MigrationInterface {
-    $definition = $this->entityTypeManager
-      ->getDefinition($this->getPluginDefinition()['type'])
-      ->getClass()::getMigration();
+    $definition = $entity::getMigration();
 
     return $this->migrationPluginManager->createInstance($definition, [
       'entity_ids' => [$entity->id()],
@@ -81,12 +79,29 @@ class MigrationUpdateAction extends ActionBase implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
+  public function executeMultiple(array $entities) {
+    if (count($entities) > 100) {
+      $this->messenger()->addError($this->t('Cannot update more than 100 entities at once.'));
+
+      return;
+    }
+    parent::executeMultiple($entities);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function execute($entity = NULL) {
     if (!$entity instanceof RemoteEntityBase) {
-      throw new \InvalidArgumentException('Given entity is not instanceof RemoteEntityBase.');
+      throw new \LogicException('Given entity is not instanceof RemoteEntityBase.');
     }
     $this->setIsPartialMigrate(TRUE);
     $migration = $this->getMigration($entity);
+
+    if ($migration->getStatus() > MigrationInterface::STATUS_IDLE) {
+      $this->messenger()->addError($this->t('Migration is busy running another task. Please try again later.'));
+      return;
+    }
 
     $updateMap = [];
     foreach ($migration->getSourcePlugin()->getIds() as $key => $values) {
@@ -95,7 +110,7 @@ class MigrationUpdateAction extends ActionBase implements ContainerFactoryPlugin
       if (!$entity->hasField($key)) {
         if (!isset($values['entity_key'])) {
           // @codingStandardsIgnoreLine
-          @trigger_error("Calling MigrateUpdateAction::execute() without definining 'entity_key' in source plugin's ::getIds() method is deprecated in helfi_api_base:1.3.0 and is removed in helfi_api_base:2.0.0.", E_USER_DEPRECATED);
+          @trigger_error("Calling MigrateUpdateAction::execute() without defining the 'entity_key' in source plugin's ::getIds() method is deprecated in helfi_api_base:1.3.0 and is removed in helfi_api_base:2.0.0.", E_USER_DEPRECATED);
           continue;
         }
         $entityKey = $values['entity_key'];
