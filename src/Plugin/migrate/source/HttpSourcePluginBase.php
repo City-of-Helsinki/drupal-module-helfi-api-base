@@ -209,7 +209,7 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
   /**
    * {@inheritdoc}
    */
-  protected function initializeIterator() {
+  protected function initializeIterator() : \Iterator {
     if ($this->entityIds) {
       return $this->initializeSingleImportIterator();
     }
