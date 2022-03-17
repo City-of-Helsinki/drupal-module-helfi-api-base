@@ -33,7 +33,7 @@ class Composer extends DebugDataItemPluginBase implements ContainerFactoryPlugin
    *
    * @var \ComposerLockParser\Package[]
    */
-  private array $packages;
+  private array $packages = [];
 
   /**
    * {@inheritdoc}
@@ -86,6 +86,7 @@ class Composer extends DebugDataItemPluginBase implements ContainerFactoryPlugin
     foreach ($this->getPackages() as $package) {
       $data['packages'][] = [
         'name' => $package->getName(),
+        'source' => $package->getSource(),
         'version' => $package->getVersion(),
         'time' => $package->getTime()?->format('c'),
       ];
