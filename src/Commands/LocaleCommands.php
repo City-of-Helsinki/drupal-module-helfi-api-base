@@ -73,15 +73,11 @@ class LocaleCommands extends DrushCommands {
    *   Translation file objects.
    */
   private function getTranslationFiles(string $language, string $module) : array {
-    $basePath = drupal_get_path('module', $module);
-    $dir = sprintf('%s/translations/%s', $basePath, $language);
-
-    if (!is_dir($dir)) {
-      return [];
-    }
+    $basePath = \Drupal::service('extension.list.module')->getPath($module);
+    $dir = sprintf('%s/translations/override', $basePath);
 
     $uris = [];
-    foreach ($this->fileSystem->scanDirectory($dir, '/\.po/') as $file) {
+    foreach ($this->fileSystem->scanDirectory($dir, "/$language.po/") as $file) {
       $uris[] = $file;
     }
     return $uris;
