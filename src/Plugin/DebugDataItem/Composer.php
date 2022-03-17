@@ -53,7 +53,7 @@ class Composer extends DebugDataItemPluginBase implements ContainerFactoryPlugin
    * @return bool
    *   TRUE if package should be included.
    */
-  public function isValidPackage(string $package) : bool {
+  private function isValidPackage(string $package) : bool {
     return match(TRUE) {
       str_starts_with($package, 'drupal/helfi_'),
       str_starts_with($package, 'drupal/hdbt') => TRUE,
@@ -87,6 +87,7 @@ class Composer extends DebugDataItemPluginBase implements ContainerFactoryPlugin
       $data['packages'][] = [
         'name' => $package->getName(),
         'source' => $package->getSource(),
+
         'version' => $package->getVersion(),
         'time' => $package->getTime()?->format('c'),
       ];

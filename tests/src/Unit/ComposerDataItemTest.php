@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_api_base\Unit;
 
 use ComposerLockParser\ComposerInfo;
 use ComposerLockParser\Package;
+use ComposerLockParser\PackagesCollection;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\helfi_api_base\Plugin\DebugDataItem\Composer;
 use Drupal\Tests\UnitTestCase;
@@ -28,13 +29,14 @@ class ComposerDataItemTest extends UnitTestCase {
    *   The container builder.
    */
   private function getContainer(array $packages) : ContainerBuilder {
+    $collection = new PackagesCollection(array_map(
+      fn(array $package) => Package::factory($package),
+      $packages
+    ));
     $composerInfo = $this->prophesize(ComposerInfo::class);
     $composerInfo
       ->getPackages()
-      ->willReturn(array_map(
-        fn(array $package) => Package::factory($package),
-        $packages
-      ));
+      ->willReturn($collection);
 
     $container = new ContainerBuilder();
     $container->set('helfi_api_base.composer_info', $composerInfo->reveal());
@@ -43,6 +45,11 @@ class ComposerDataItemTest extends UnitTestCase {
 
   /**
    * Tests collect method.
+   *
+   * @covers ::collect
+   * @covers ::isValidPackage
+   * @covers ::getPackages
+   * @covers ::create
    *
    * @dataProvider collectionDataProvider
    */
@@ -67,22 +74,38 @@ class ComposerDataItemTest extends UnitTestCase {
               'name' => 'drupal/helfi_tpr',
               'version' => '2.0.1',
               'time' => '2022-01-31T13:21:47+00:00',
+              'source' => [
+                'type' => 'git',
+                'url' => 'http://test/drupal-helfi-tpr',
+                'reference' => '123',
+              ],
             ],
             [
               'name' => 'drupal/helfi_hdbt_admin',
               'version' => '2.0.2',
               'time' => '2022-01-30T10:21:47+00:00',
+              'source' => [
+                'url' => 'http://test/hdbt-admin.git',
+              ],
             ],
           ],
         ],
         [
           [
             'name' => 'drupal/helfi_tpr',
+            'source' => [
+              'type' => 'git',
+              'url' => 'http://test/drupal-helfi-tpr',
+              'reference' => '123',
+            ],
             'version' => '2.0.1',
             'time' => '2022-01-31T13:21:47+00:00',
           ],
           [
             'name' => 'drupal/helfi_hdbt_admin',
+            'source' => [
+              'url' => 'http://test/hdbt-admin.git',
+            ],
             'version' => '2.0.2',
             'time' => '2022-01-30T10:21:47+00:00',
           ],

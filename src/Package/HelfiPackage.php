@@ -46,6 +46,7 @@ final class HelfiPackage implements VersionCheckerInterface {
       if (!isset($content['packages'][$packageName])) {
         return NULL;
       }
+      // Packages are sorted from oldest to newest.
       $latest = end($content['packages'][$packageName]);
 
       if (!isset($latest['version']) || !is_string($latest['version'])) {

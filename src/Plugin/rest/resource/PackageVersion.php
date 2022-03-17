@@ -65,7 +65,7 @@ final class PackageVersion extends ResourceBase implements DependentPluginInterf
       if (is_array($value)) {
         $value = reset($value);
       }
-      $args[$arg] = $value;
+      $args[$arg] = (string) $value;
     }
     ['name' => $name, 'version' => $version] = $args;
 
