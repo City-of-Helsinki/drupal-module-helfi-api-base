@@ -62,25 +62,27 @@ class LocaleCommands extends DrushCommands {
   }
 
   /**
-   * Gets the translation files.
+   * Gets the translation file per language.
    *
    * @param string $language
-   *   The langcode.
+   *   The language code.
    * @param string $module
    *   The module name.
    *
-   * @return \stdClass[]
-   *   Translation file objects.
+   * @return object|null
+   *   Translation file object or null.
    */
-  private function getTranslationFiles(string $language, string $module) : array {
+  private function getTranslationFile(string $language, string $module) : ?object {
     $basePath = \Drupal::service('extension.list.module')->getPath($module);
     $dir = sprintf('%s/translations/override', $basePath);
 
-    $uris = [];
-    foreach ($this->fileSystem->scanDirectory($dir, "/$language.po/") as $file) {
-      $uris[] = $file;
+    $files = $this->fileSystem->scanDirectory($dir, "/$language.po/");
+
+    if (!empty($files) && is_object(reset($files))) {
+      return reset($files);
     }
-    return $uris;
+
+    return NULL;
   }
 
   /**
@@ -117,45 +119,48 @@ class LocaleCommands extends DrushCommands {
         continue;
       }
 
-      foreach ($this->getTranslationFiles($language->getId(), $module) as $file) {
-        // Expose source strings (to make them translatable).
-        $reader = $this->createStreamReader($language->getId(), $file);
-
-        while ($item = $reader->readItem()) {
-          $options = [
-            'langcode' => $language->getId(),
-          ];
-
-          if ($context = $item->getContext()) {
-            $options['context'] = $context;
-          }
-          $sources = $item->getSource();
-
-          // We don't want to expose strings with plural form.
-          if ($item->isPlural()) {
-            continue;
-          }
-
-          if (!is_array($sources)) {
-            $sources = [$sources];
-          }
-          foreach ($sources as $source) {
-            $this->translationManager
-              // @codingStandardsIgnoreLine
-              ->translateString(new TranslatableMarkup($source, [], $options));
-          }
-        }
-        $process = $this->processManager()->process([
-          'drush',
-          'locale:import',
-          '--type=customized',
-          $language->getId(),
-          $file->uri,
-        ]);
-        $process->run(function ($type, $output) {
-          $this->io()->write($output);
-        });
+      // Continue if there are no translation files.
+      if (!$file = $this->getTranslationFile($language->getId(), $module)) {
+        continue;
       }
+
+      // Expose source strings (to make them translatable).
+      $reader = $this->createStreamReader($language->getId(), $file);
+
+      while ($item = $reader->readItem()) {
+        $options = [
+          'langcode' => $language->getId(),
+        ];
+
+        if ($context = $item->getContext()) {
+          $options['context'] = $context;
+        }
+        $sources = $item->getSource();
+
+        // We don't want to expose strings with plural form.
+        if ($item->isPlural()) {
+          continue;
+        }
+
+        if (!is_array($sources)) {
+          $sources = [$sources];
+        }
+        foreach ($sources as $source) {
+          $this->translationManager
+            // @codingStandardsIgnoreLine
+            ->translateString(new TranslatableMarkup($source, [], $options));
+        }
+      }
+      $process = $this->processManager()->process([
+        'drush',
+        'locale:import',
+        '--type=customized',
+        $language->getId(),
+        $file->uri,
+      ]);
+      $process->run(function ($type, $output) {
+        $this->io()->write($output);
+      });
     }
   }
 
