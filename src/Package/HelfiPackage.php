@@ -80,7 +80,7 @@ final class HelfiPackage implements VersionCheckerInterface {
     // Packages are sorted from oldest to newest.
     $latest = end($packages);
 
-    if (!isset($latest['version']) || !is_string($latest['version'])) {
+    if (empty($latest['version']) || !is_string($latest['version'])) {
       throw new InvalidPackageException('No version data found.');
     }
     return new Version($packageName, $latest['version'], version_compare($version, $latest['version'], '>='));

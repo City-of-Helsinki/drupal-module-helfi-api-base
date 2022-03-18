@@ -69,6 +69,8 @@ class DebugDataResourceDependencyTest extends UnitTestCase {
    * Tests that dependencies are populated.
    *
    * @covers ::calculateDependencies
+   * @covers ::create
+   * @covers ::getDataPlugins
    */
   public function testDependencies() : void {
     $pluginManager = $this->prophesize(DebugDataItemPluginManager::class);

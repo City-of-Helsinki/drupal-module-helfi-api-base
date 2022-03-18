@@ -72,7 +72,7 @@ class HelfiPackageTest extends UnitTestCase {
     ]);
     $sut = new HelfiPackage($client);
     $this->expectException(InvalidPackageException::class);
-    $this->expectExceptionMessage('Package not found.');
+    $this->expectExceptionMessage('No version data found.');
     $sut->get('drupal/helfi_api_base', '1.2.0');
   }
 
@@ -95,6 +95,7 @@ class HelfiPackageTest extends UnitTestCase {
    *
    * @covers ::get
    * @covers ::__construct
+   * @covers ::getPackageData
    */
   public function testException() : void {
     // First we try to fetch stable version, then fallback to dev.
@@ -113,6 +114,7 @@ class HelfiPackageTest extends UnitTestCase {
    *
    * @covers ::get
    * @covers ::__construct
+   * @covers ::getPackageData
    */
   public function testEmptyPackage() : void {
     $client = $this->createMockHttpClient([
@@ -132,6 +134,7 @@ class HelfiPackageTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::get
    * @covers \Drupal\helfi_api_base\Package\Version
+   * @covers ::getPackageData
    *
    * @dataProvider getData
    */
