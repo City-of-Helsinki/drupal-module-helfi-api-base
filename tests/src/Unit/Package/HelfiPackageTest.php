@@ -56,6 +56,7 @@ class HelfiPackageTest extends UnitTestCase {
    *
    * @covers ::get
    * @covers ::__construct
+   * @covers ::getPackageData
    * @dataProvider emptyVersionData
    */
   public function testEmptyVersion($version) : void {
