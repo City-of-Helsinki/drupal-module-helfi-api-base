@@ -40,6 +40,8 @@ final class VersionChecker {
    *
    * @return \Drupal\helfi_api_base\Package\Version|null
    *   The version object or null.
+   *
+   * @throws \Drupal\helfi_api_base\Exception\InvalidPackageException
    */
   public function get(string $packageName, string $version) : ? Version {
     foreach ($this->collectors as $collector) {

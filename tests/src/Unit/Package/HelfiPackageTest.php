@@ -4,14 +4,13 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_api_base\Unit\Package;
 
+use Drupal\helfi_api_base\Exception\InvalidPackageException;
 use Drupal\helfi_api_base\Package\HelfiPackage;
 use Drupal\helfi_api_base\Package\Version;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\UnitTestCase;
-use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
@@ -23,20 +22,7 @@ use GuzzleHttp\Psr7\Response;
  */
 class HelfiPackageTest extends UnitTestCase {
 
-  /**
-   * Creates an HTTP client.
-   *
-   * @param \GuzzleHttp\Psr7\Response[]|\GuzzleHttp\Exception\RequestException[] $responses
-   *   The responses.
-   *
-   * @return \GuzzleHttp\ClientInterface
-   *   The client.
-   */
-  private function createClient(array $responses) : ClientInterface {
-    $mock = new MockHandler($responses);
-    $handler = HandlerStack::create($mock);
-    return new Client(['handler' => $handler]);
-  }
+  use ApiTestTrait;
 
   /**
    * Tests applies().
@@ -73,21 +59,21 @@ class HelfiPackageTest extends UnitTestCase {
    * @dataProvider emptyVersionData
    */
   public function testEmptyVersion($version) : void {
-    $client = $this->createClient([
+    $client = $this->createMockHttpClient([
       new Response(body: json_encode([
         'packages' => [
-          [
-            'drupal/helfi_api_base' => [
-              [
-                'version' => $version,
-              ],
+          'drupal/helfi_api_base' => [
+            [
+              'version' => $version,
             ],
           ],
         ],
       ])),
     ]);
     $sut = new HelfiPackage($client);
-    $this->assertNull($sut->get('drupal/helfi_api_base', '1.2.0'));
+    $this->expectException(InvalidPackageException::class);
+    $this->expectExceptionMessage('Package not found.');
+    $sut->get('drupal/helfi_api_base', '1.2.0');
   }
 
   /**
@@ -111,11 +97,15 @@ class HelfiPackageTest extends UnitTestCase {
    * @covers ::__construct
    */
   public function testException() : void {
-    $client = $this->createClient([
-      new RequestException('some error', new Request('GET', 'test')),
+    // First we try to fetch stable version, then fallback to dev.
+    $client = $this->createMockHttpClient([
+      new RequestException('Stable package', new Request('GET', 'test')),
+      new RequestException('Dev package', new Request('GET', 'test')),
     ]);
     $sut = new HelfiPackage($client);
-    $this->assertNull($sut->get('drupal/helfi_api_base', '1.2.0'));
+    $this->expectException(InvalidPackageException::class);
+    $this->expectExceptionMessage('No version data found.');
+    $sut->get('drupal/helfi_api_base', '1.2.0');
   }
 
   /**
@@ -125,13 +115,15 @@ class HelfiPackageTest extends UnitTestCase {
    * @covers ::__construct
    */
   public function testEmptyPackage() : void {
-    $client = $this->createClient([
+    $client = $this->createMockHttpClient([
       new Response(body: json_encode([
         'packages' => [],
       ])),
     ]);
     $sut = new HelfiPackage($client);
-    $this->assertNull($sut->get('drupal/helfi_api_base', '1.2.0'));
+    $this->expectException(InvalidPackageException::class);
+    $this->expectExceptionMessage('Package not found.');
+    $sut->get('drupal/helfi_api_base', '1.2.0');
   }
 
   /**
@@ -150,7 +142,7 @@ class HelfiPackageTest extends UnitTestCase {
     string $expectedLatestVersion,
     bool $isLatest
   ) : void {
-    $client = $this->createClient([
+    $client = $this->createMockHttpClient([
       new Response(body: json_encode([
         'packages' => [
           $packageName => $packageVersions,
@@ -187,6 +179,21 @@ class HelfiPackageTest extends UnitTestCase {
         '1.3.0',
         '1.3.0',
         TRUE,
+      ],
+      // Test with dev-main.
+      [
+        'drupal/helfi_api_base',
+        [
+          [
+            'version' => '1.2.0',
+          ],
+          [
+            'version' => '1.3.0',
+          ],
+        ],
+        'dev-main',
+        '1.3.0',
+        FALSE,
       ],
       // Test with future release.
       [

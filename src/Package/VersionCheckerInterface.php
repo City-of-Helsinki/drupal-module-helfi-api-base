@@ -30,6 +30,8 @@ interface VersionCheckerInterface {
    *
    * @return \Drupal\helfi_api_base\Package\Version|null
    *   The version or null.
+   *
+   * @throws \Drupal\helfi_api_base\Exception\InvalidPackageException
    */
   public function get(string $packageName, string $version) : ? Version;
 

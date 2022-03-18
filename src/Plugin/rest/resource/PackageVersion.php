@@ -90,8 +90,9 @@ final class PackageVersion extends ResourceBase implements DependentPluginInterf
    * {@inheritdoc}
    */
   public function calculateDependencies() {
-    $dependencies = [];
-    return $dependencies;
+    return [
+      'module' => ['user'],
+    ];
   }
 
 }

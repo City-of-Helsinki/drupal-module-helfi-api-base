@@ -76,7 +76,7 @@ class ComposerDataItemTest extends UnitTestCase {
               'time' => '2022-01-31T13:21:47+00:00',
               'source' => [
                 'type' => 'git',
-                'url' => 'http://test/drupal-helfi-tpr',
+                'url' => 'https://test/drupal-helfi-tpr',
                 'reference' => '123',
               ],
             ],
@@ -85,7 +85,7 @@ class ComposerDataItemTest extends UnitTestCase {
               'version' => '2.0.2',
               'time' => '2022-01-30T10:21:47+00:00',
               'source' => [
-                'url' => 'http://test/hdbt-admin.git',
+                'url' => 'https://test/hdbt-admin.git',
               ],
             ],
           ],
@@ -95,7 +95,7 @@ class ComposerDataItemTest extends UnitTestCase {
             'name' => 'drupal/helfi_tpr',
             'source' => [
               'type' => 'git',
-              'url' => 'http://test/drupal-helfi-tpr',
+              'url' => 'https://test/drupal-helfi-tpr',
               'reference' => '123',
             ],
             'version' => '2.0.1',
@@ -104,7 +104,7 @@ class ComposerDataItemTest extends UnitTestCase {
           [
             'name' => 'drupal/helfi_hdbt_admin',
             'source' => [
-              'url' => 'http://test/hdbt-admin.git',
+              'url' => 'https://test/hdbt-admin.git',
             ],
             'version' => '2.0.2',
             'time' => '2022-01-30T10:21:47+00:00',

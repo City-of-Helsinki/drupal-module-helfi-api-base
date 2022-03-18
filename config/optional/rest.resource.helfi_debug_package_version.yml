@@ -1,6 +1,8 @@
 langcode: en
 status: true
-dependencies: { }
+dependencies:
+  module:
+    - user
 id: helfi_debug_package_version
 plugin_id: 'helfi_debug_package_version'
 granularity: resource

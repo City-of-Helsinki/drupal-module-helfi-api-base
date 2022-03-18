@@ -17,7 +17,7 @@ trait ApiTestTrait {
   /**
    * Creates HTTP client stub.
    *
-   * @param \Psr\Http\Message\ResponseInterface[] $responses
+   * @param \Psr\Http\Message\ResponseInterface[]|\GuzzleHttp\Exception\GuzzleException[] $responses
    *   The expected responses.
    *
    * @return \GuzzleHttp\Client
