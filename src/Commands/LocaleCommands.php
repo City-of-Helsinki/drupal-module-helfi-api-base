@@ -10,7 +10,6 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\StringTranslation\TranslationManager;
 use Drush\Commands\DrushCommands;
 
@@ -20,34 +19,6 @@ use Drush\Commands\DrushCommands;
 class LocaleCommands extends DrushCommands {
 
   use StringTranslationTrait;
-
-  /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  protected LanguageManagerInterface $languageManager;
-
-  /**
-   * The file system.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  protected FileSystemInterface $fileSystem;
-
-  /**
-   * The translation manager.
-   *
-   * @var \Drupal\Core\StringTranslation\TranslationInterface
-   */
-  protected TranslationInterface $translationManager;
-
-  /**
-   * The module extension list.
-   *
-   * @var \Drupal\Core\Extension\ModuleExtensionList
-   */
-  protected ModuleExtensionList $moduleExtensionList;
 
   /**
    * Constructs a new instance.
@@ -62,15 +33,11 @@ class LocaleCommands extends DrushCommands {
    *   The module extension list.
    */
   public function __construct(
-    LanguageManagerInterface $languageManager,
-    FileSystemInterface $fileSystem,
-    TranslationManager $translationManager,
-    ModuleExtensionList $moduleExtensionList
+    protected LanguageManagerInterface $languageManager,
+    protected FileSystemInterface $fileSystem,
+    protected TranslationManager $translationManager,
+    protected ModuleExtensionList $moduleExtensionList
   ) {
-    $this->languageManager = $languageManager;
-    $this->fileSystem = $fileSystem;
-    $this->translationManager = $translationManager;
-    $this->moduleExtensionList = $moduleExtensionList;
   }
 
   /**
