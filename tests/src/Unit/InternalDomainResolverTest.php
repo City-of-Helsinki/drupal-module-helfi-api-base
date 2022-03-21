@@ -33,6 +33,8 @@ class InternalDomainResolverTest extends UnitTestCase {
    * Tests whether the url is external or not.
    *
    * @dataProvider isExternalData
+   * @covers ::isExternal
+   * @covers ::__construct
    */
   public function testIsExternal(string $url, bool $expectedExternal) : void {
     $url = Url::fromUri($url);

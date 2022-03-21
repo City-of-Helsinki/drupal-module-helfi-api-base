@@ -13,3 +13,14 @@ See [src/Plugin/DebugDataItem/Composer.php](/src/Plugin/DebugDataItem/Composer.p
 At minimum, you need:
 - A plugin class that implements `\Drupal\helfi_debug\DebugDataItemInterface`
 - Create a plugin specific template (`debug-item--{plugin_id}.html.twig`). See [templates/debug-item.html.twig](/templates/debug-item.html.twig) for more information.
+
+## Package version checker
+
+The `/api/v1/version` endpoint can be used to fetch the latest version of a composer package.
+
+For example:
+
+Request `GET /api/v1/version?package=drupal/helfi_api_base&version=1.2.0` will respond with:
+
+- The latest version number
+- Whether the given version is the latest version

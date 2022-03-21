@@ -5,12 +5,13 @@ env:
   SIMPLETEST_BASE_URL: "http://127.0.0.1:8888"
   DRUPAL_CORE_VERSION: 9.3.x
   SYMFONY_DEPRECATIONS_HELPER: disabled
+  BROWSERTEST_OUTPUT_DIRECTORY: 'sites/simpletest'
 jobs:
   tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.0', '8.1']
+        php-versions: ['8.0']
     container:
       image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
 
@@ -30,8 +31,11 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Set variables
+      - name: Set Drupal root
         run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
+
+      - name: Set module folder
+        run: echo "MODULE_FOLDER=$DRUPAL_ROOT/modules/contrib/${{ secrets.MODULE_NAME }}" >> $GITHUB_ENV
 
       - name: Clone drupal
         run: git clone --depth 1 --branch "$DRUPAL_CORE_VERSION" http://git.drupal.org/project/drupal.git/ $DRUPAL_ROOT
@@ -46,6 +50,7 @@ jobs:
           composer run-script drupal-phpunit-upgrade
           composer require "drush/drush ^10.0"
           composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer require --dev donatj/mock-webserver
           composer require --dev "drupal/coder"
 
       - name: Install Drupal
@@ -57,11 +62,31 @@ jobs:
       - name: Run PHPCS
         run: |
           cd $DRUPAL_ROOT
-          vendor/bin/phpcs modules/contrib/${{ secrets.MODULE_NAME }} --standard=Drupal --extensions=php,module,inc,install,test,info
+          vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal --extensions=php,module,inc,install,test,info
 
-      - name: Run PHPUnit tests
+      - name: Start services
         run: |
           cd $DRUPAL_ROOT
           vendor/bin/drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
           chromedriver --port=4444 > /dev/null 2>&1 &
-          php ./core/scripts/run-tests.sh --dburl $SIMPLETEST_DB --php /usr/local/bin/php --color --verbose --sqlite /tmp/test.sqlite --url $SIMPLETEST_BASE_URL ${{ secrets.MODULE_NAME }}
+
+      - name: Run PHPUnit tests
+        run: |
+          cd $DRUPAL_ROOT
+          php -d pcov.directory=$MODULE_FOLDER \
+            vendor/bin/phpunit \
+            --bootstrap $DRUPAL_ROOT/core/tests/bootstrap.php \
+            -c $MODULE_FOLDER/phpunit.xml \
+            --coverage-clover=coverage.xml \
+            $MODULE_FOLDER
+          codecov
+
+      - name: Create an artifact from test report
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: results
+          path: |
+            ${{ env.DRUPAL_ROOT }}/sites/simpletest/browser_output/
+            ${{ env.DRUPAL_ROOT }}/coverage.xml
+          retention-days: 1

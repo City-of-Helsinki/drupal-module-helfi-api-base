@@ -42,7 +42,7 @@ final class DebugDataResource extends ResourceBase implements DependentPluginInt
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : DebugDataResource {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
     $instance = parent::create(
       $container,
       $configuration,
@@ -100,7 +100,9 @@ final class DebugDataResource extends ResourceBase implements DependentPluginInt
    * {@inheritdoc}
    */
   public function calculateDependencies() {
-    $dependencies = [];
+    $dependencies = [
+      'module' => ['user'],
+    ];
 
     foreach ($this->getDataPlugins() as $plugin) {
       foreach ($plugin->calculateDependencies() as $type => $value) {

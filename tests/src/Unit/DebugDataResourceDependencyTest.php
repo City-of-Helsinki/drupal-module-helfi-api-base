@@ -67,6 +67,10 @@ class DebugDataResourceDependencyTest extends UnitTestCase {
 
   /**
    * Tests that dependencies are populated.
+   *
+   * @covers ::calculateDependencies
+   * @covers ::create
+   * @covers ::getDataPlugins
    */
   public function testDependencies() : void {
     $pluginManager = $this->prophesize(DebugDataItemPluginManager::class);
@@ -80,12 +84,12 @@ class DebugDataResourceDependencyTest extends UnitTestCase {
         'config' => ['user.role.anonymous'],
         'theme' => ['seven'],
         'content' => ['node:article:f0a189e6-55fb-47fb-8005-5bef81c44d6d'],
-        'modules' => ['node', 'user'],
+        'module' => ['node'],
       ]));
     $pluginManager->createInstance('test2')
       ->willReturn($this->getDataItemPlugin([
         'config' => ['user.role.authenticated'],
-        'modules' => ['user', 'helfi_api_base'],
+        'module' => ['helfi_api_base'],
       ]));
     $logger = $this->prophesize(LoggerInterface::class);
     $loggerFactory = $this->prophesize(LoggerChannelFactoryInterface::class);
@@ -102,7 +106,7 @@ class DebugDataResourceDependencyTest extends UnitTestCase {
       'config' => ['user.role.anonymous', 'user.role.authenticated'],
       'theme' => ['seven'],
       'content' => ['node:article:f0a189e6-55fb-47fb-8005-5bef81c44d6d'],
-      'modules' => ['node', 'user', 'helfi_api_base'],
+      'module' => ['user', 'node', 'helfi_api_base'],
     ], $sut->calculateDependencies());
   }
 
