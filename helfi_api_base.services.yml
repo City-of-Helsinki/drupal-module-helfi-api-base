@@ -33,3 +33,15 @@ services:
   plugin.manager.debug_data_item:
     class: Drupal\helfi_api_base\DebugDataItemPluginManager
     parent: default_plugin_manager
+
+  helfi_api_base.package_version_checker:
+    class: Drupal\helfi_api_base\Package\VersionChecker
+    arguments: []
+    tags:
+      - { name: service_collector, call: add, tag: helfi_api_base.version_checker }
+
+  helfi_api_base.helfi_package_version_checker:
+    class: Drupal\helfi_api_base\Package\HelfiPackage
+    arguments: ['@http_client']
+    tags:
+      - { name: helfi_api_base.version_checker }

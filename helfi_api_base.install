@@ -54,3 +54,24 @@ function helfi_api_base_update_9002() : void {
   $config_name = 'rest.resource.helfi_debug_data';
   $config_storage->write($config_name, $source->read($config_name));
 }
+
+/**
+ * Install the package version rest config.
+ */
+function helfi_api_base_update_9003() : void {
+  if (!\Drupal::moduleHandler()->moduleExists('rest')) {
+    return;
+  }
+  $config_path = \Drupal::service('extension.list.module')
+    ->getPath('helfi_api_base') . '/config/optional';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+
+  $configs = [
+    'rest.resource.helfi_debug_package_version',
+  ];
+
+  foreach ($configs as $config) {
+    $config_storage->write($config, $source->read($config));
+  }
+}

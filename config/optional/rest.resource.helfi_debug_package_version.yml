@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - user
-id: helfi_debug_data
-plugin_id: 'helfi_debug_data'
+id: helfi_debug_package_version
+plugin_id: 'helfi_debug_package_version'
 granularity: resource
 configuration:
   methods:
