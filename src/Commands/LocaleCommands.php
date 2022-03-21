@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\helfi_api_base\Commands;
 
 use Drupal\Component\Gettext\PoStreamReader;
+use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -42,6 +43,13 @@ class LocaleCommands extends DrushCommands {
   protected TranslationInterface $translationManager;
 
   /**
+   * The module extension list.
+   *
+   * @var \Drupal\Core\Extension\ModuleExtensionList
+   */
+  protected ModuleExtensionList $moduleExtensionList;
+
+  /**
    * Constructs a new instance.
    *
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
@@ -50,15 +58,19 @@ class LocaleCommands extends DrushCommands {
    *   The file system service.
    * @param \Drupal\Core\StringTranslation\TranslationManager $translationManager
    *   The translation manager.
+   * @param \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList
+   *   The module extension list.
    */
   public function __construct(
     LanguageManagerInterface $languageManager,
     FileSystemInterface $fileSystem,
-    TranslationManager $translationManager
+    TranslationManager $translationManager,
+    ModuleExtensionList $moduleExtensionList
   ) {
     $this->languageManager = $languageManager;
     $this->fileSystem = $fileSystem;
     $this->translationManager = $translationManager;
+    $this->moduleExtensionList = $moduleExtensionList;
   }
 
   /**
@@ -73,7 +85,7 @@ class LocaleCommands extends DrushCommands {
    *   Translation file object or null.
    */
   private function getTranslationFile(string $language, string $module) : ?object {
-    $basePath = \Drupal::service('extension.list.module')->getPath($module);
+    $basePath = $this->moduleExtensionList->getPath($module);
     $dir = sprintf('%s/translations/override', $basePath);
 
     $files = $this->fileSystem->scanDirectory($dir, "/$language.po/");
