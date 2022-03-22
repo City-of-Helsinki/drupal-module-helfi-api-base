@@ -57,10 +57,13 @@ class LocaleCommands extends DrushCommands {
 
     $files = $this->fileSystem->scanDirectory($dir, "/$language.po/");
 
-    if (!empty($files) && is_object(reset($files))) {
-      return reset($files);
+    if (empty($files)) {
+      return NULL;
     }
 
+    if ($file = reset($files)) {
+      return $file?->uri ? $file : NULL;
+    }
     return NULL;
   }
 
