@@ -5,11 +5,11 @@ declare(strict_types = 1);
 namespace Drupal\helfi_api_base\Commands;
 
 use Drupal\Component\Gettext\PoStreamReader;
+use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\StringTranslation\TranslationManager;
 use Drush\Commands\DrushCommands;
 
@@ -21,27 +21,6 @@ class LocaleCommands extends DrushCommands {
   use StringTranslationTrait;
 
   /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  protected LanguageManagerInterface $languageManager;
-
-  /**
-   * The file system.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  protected FileSystemInterface $fileSystem;
-
-  /**
-   * The translation manager.
-   *
-   * @var \Drupal\Core\StringTranslation\TranslationInterface
-   */
-  protected TranslationInterface $translationManager;
-
-  /**
    * Constructs a new instance.
    *
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
@@ -50,41 +29,42 @@ class LocaleCommands extends DrushCommands {
    *   The file system service.
    * @param \Drupal\Core\StringTranslation\TranslationManager $translationManager
    *   The translation manager.
+   * @param \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList
+   *   The module extension list.
    */
   public function __construct(
-    LanguageManagerInterface $languageManager,
-    FileSystemInterface $fileSystem,
-    TranslationManager $translationManager
+    protected LanguageManagerInterface $languageManager,
+    protected FileSystemInterface $fileSystem,
+    protected TranslationManager $translationManager,
+    protected ModuleExtensionList $moduleExtensionList
   ) {
-    $this->languageManager = $languageManager;
-    $this->fileSystem = $fileSystem;
-    $this->translationManager = $translationManager;
   }
 
   /**
-   * Gets the translation files.
+   * Gets the translation file per language.
    *
    * @param string $language
-   *   The langcode.
+   *   The language code.
    * @param string $module
    *   The module name.
    *
-   * @return \stdClass[]
-   *   Translation file objects.
+   * @return object|null
+   *   Translation file object or null.
    */
-  private function getTranslationFiles(string $language, string $module) : array {
-    $basePath = drupal_get_path('module', $module);
-    $dir = sprintf('%s/translations/%s', $basePath, $language);
+  private function getTranslationFile(string $language, string $module) : ?object {
+    $basePath = $this->moduleExtensionList->getPath($module);
+    $dir = sprintf('%s/translations/override', $basePath);
 
-    if (!is_dir($dir)) {
-      return [];
+    $files = $this->fileSystem->scanDirectory($dir, "/$language.po/");
+
+    if (empty($files)) {
+      return NULL;
     }
 
-    $uris = [];
-    foreach ($this->fileSystem->scanDirectory($dir, '/\.po/') as $file) {
-      $uris[] = $file;
+    if ($file = reset($files)) {
+      return $file?->uri ? $file : NULL;
     }
-    return $uris;
+    return NULL;
   }
 
   /**
@@ -121,45 +101,48 @@ class LocaleCommands extends DrushCommands {
         continue;
       }
 
-      foreach ($this->getTranslationFiles($language->getId(), $module) as $file) {
-        // Expose source strings (to make them translatable).
-        $reader = $this->createStreamReader($language->getId(), $file);
-
-        while ($item = $reader->readItem()) {
-          $options = [
-            'langcode' => $language->getId(),
-          ];
-
-          if ($context = $item->getContext()) {
-            $options['context'] = $context;
-          }
-          $sources = $item->getSource();
-
-          // We don't want to expose strings with plural form.
-          if ($item->isPlural()) {
-            continue;
-          }
-
-          if (!is_array($sources)) {
-            $sources = [$sources];
-          }
-          foreach ($sources as $source) {
-            $this->translationManager
-              // @codingStandardsIgnoreLine
-              ->translateString(new TranslatableMarkup($source, [], $options));
-          }
-        }
-        $process = $this->processManager()->process([
-          'drush',
-          'locale:import',
-          '--type=customized',
-          $language->getId(),
-          $file->uri,
-        ]);
-        $process->run(function ($type, $output) {
-          $this->io()->write($output);
-        });
+      // Continue if there are no translation files.
+      if (!$file = $this->getTranslationFile($language->getId(), $module)) {
+        continue;
       }
+
+      // Expose source strings (to make them translatable).
+      $reader = $this->createStreamReader($language->getId(), $file);
+
+      while ($item = $reader->readItem()) {
+        $options = [
+          'langcode' => $language->getId(),
+        ];
+
+        if ($context = $item->getContext()) {
+          $options['context'] = $context;
+        }
+        $sources = $item->getSource();
+
+        // We don't want to expose strings with plural form.
+        if ($item->isPlural()) {
+          continue;
+        }
+
+        if (!is_array($sources)) {
+          $sources = [$sources];
+        }
+        foreach ($sources as $source) {
+          $this->translationManager
+            // @codingStandardsIgnoreLine
+            ->translateString(new TranslatableMarkup($source, [], $options));
+        }
+      }
+      $process = $this->processManager()->process([
+        'drush',
+        'locale:import',
+        '--type=customized',
+        $language->getId(),
+        $file->uri,
+      ]);
+      $process->run(function ($type, $output) {
+        $this->io()->write($output);
+      });
     }
   }
 
