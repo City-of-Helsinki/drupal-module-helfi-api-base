@@ -45,9 +45,3 @@ services:
     arguments: ['@http_client']
     tags:
       - { name: helfi_api_base.version_checker }
-
-  helfi_api_base.stdout_logger:
-    class: Drupal\helfi_api_base\Logger\StdOut
-    arguments: ['@logger.log_message_parser']
-    tags:
-      - { name: logger }
