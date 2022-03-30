@@ -77,10 +77,13 @@ function helfi_api_base_update_9003() : void {
 }
 
 /**
- * Disable syslog module.
+ * Disable syslog module and enable log_stdout.
  */
 function helfi_api_base_update_9004() : void {
   \Drupal::service('module_installer')->uninstall([
     'syslog',
+  ]);
+  \Drupal::service('module_installer')->install([
+    'log_stdout',
   ]);
 }
