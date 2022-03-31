@@ -13,20 +13,18 @@ use Drupal\Core\Config\FileStorage;
  * Implements hook_install().
  */
 function helfi_api_base_install() {
-  if (!\Drupal::moduleHandler()->moduleExists('filter')) {
-    return;
-  }
+  if (\Drupal::moduleHandler()->moduleExists('filter')) {
+    $formatters = \Drupal::entityTypeManager()
+      ->getStorage('filter_format')
+      ->loadMultiple();
 
-  $formatters = \Drupal::entityTypeManager()
-    ->getStorage('filter_format')
-    ->loadMultiple();
-
-  /** @var \Drupal\filter\Entity\FilterFormat $format */
-  foreach ($formatters as $format) {
-    $format->setFilterConfig('helfi_link_converter', [
-      'status' => 1,
-    ])
-      ->save();
+    /** @var \Drupal\filter\Entity\FilterFormat $format */
+    foreach ($formatters as $format) {
+      $format->setFilterConfig('helfi_link_converter', [
+        'status' => 1,
+      ])
+        ->save();
+    }
   }
 }
 
@@ -84,6 +82,6 @@ function helfi_api_base_update_9004() : void {
     'syslog',
   ]);
   \Drupal::service('module_installer')->install([
-    'log_stdout',
+    'filelog',
   ]);
 }
