@@ -75,3 +75,15 @@ function helfi_api_base_update_9003() : void {
     $config_storage->write($config, $source->read($config));
   }
 }
+
+/**
+ * Disable syslog module and enable filelog.
+ */
+function helfi_api_base_update_9004() : void {
+  \Drupal::service('module_installer')->uninstall([
+    'syslog',
+  ]);
+  \Drupal::service('module_installer')->install([
+    'filelog',
+  ]);
+}
