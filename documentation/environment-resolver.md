@@ -21,7 +21,9 @@ $domain = $resolver->getEnvironment($projectName, 'dev')->getDomain();
 // $domain = 'nginx-asuminen-dev.agw.arodevtest.hel.fi';
 ```
 
-Use `internal` environment to reference to current instance. This is useful when you need to create API requests against current instance for example.
+You can use `internal` environment to reference to current instance. This is useful when you need to create API requests against current instance for example.
+
+It will always default to `http://127.0.0.1:8080` domain.
 
 ## Usage in other projects
 
