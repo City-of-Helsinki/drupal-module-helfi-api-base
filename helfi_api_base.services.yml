@@ -1,4 +1,5 @@
 parameters:
+  helfi_api_base.environment_file: ''
   helfi_api_base.default_composer_lock: '%app.root%/../composer.lock'
   helfi_api_base.internal_domains:
     - 'hel.fi'
@@ -9,6 +10,10 @@ services:
   logger.channel.helfi_api_base:
     parent: logger.channel_base
     arguments: [ 'helfi_api_base' ]
+
+  helfi_api_base.environment_resolver:
+    class: Drupal\helfi_api_base\Environment\EnvironmentResolver
+    arguments: ['%helfi_api_base.environment_file%']
 
   helfi_api_base.internal_domain_resolver:
     class: Drupal\helfi_api_base\Link\InternalDomainResolver
