@@ -1,8 +1,10 @@
 # Environment resolver
 
-You can use `helfi_api_base.environment_resolver` service to fetch environment details, like full URL, paths or domain for given environment.
+`helfi_api_base.environment_resolver` service provides a way to fetch environment details for given project/environment, like:
+- Domain
+- Paths per language
 
-For example:
+## Usage
 
 ```php
 // See \Drupal\helfi_api_base\Environment\Project for all available project constants.
@@ -19,4 +21,6 @@ $domain = $resolver->getDomain($projectName, 'dev');
 // $domain = 'nginx-asuminen-dev.agw.arodevtest.hel.fi';
 ```
 
-The [fixtures/environments.json](/fixtures/environments.json) file should contain up-to-date information of all our available projects in JSON format.
+## Usage in other projects
+
+The [environments.json](/fixtures/environments.json) file should contain up-to-date information of all our available projects in JSON format.
