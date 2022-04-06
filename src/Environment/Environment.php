@@ -16,10 +16,13 @@ final class Environment {
    *   The domain.
    * @param array $paths
    *   The paths.
+   * @param string $protocol
+   *   The protocol.
    */
   public function __construct(
     private string $domain,
-    private array $paths
+    private array $paths,
+    private string $protocol
   ) {
   }
 
@@ -31,6 +34,33 @@ final class Environment {
    */
   public function getDomain() : string {
     return $this->domain;
+  }
+
+  /**
+   * Gets the protocol.
+   *
+   * @return string
+   *   The protocol.
+   */
+  public function getProtocol() : string {
+    return $this->protocol;
+  }
+
+  /**
+   * Gets the base URL for given language.
+   *
+   * @param string $language
+   *   The language.
+   *
+   * @return string
+   *   The URL.
+   */
+  public function getBaseUrl(string $language) : string {
+    return vsprintf('%s://%s/%s', [
+      $this->getProtocol(),
+      $this->getDomain(),
+      ltrim($this->getPath($language), '/'),
+    ]);
   }
 
   /**

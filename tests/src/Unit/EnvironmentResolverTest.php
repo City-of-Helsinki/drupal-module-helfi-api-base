@@ -29,10 +29,7 @@ class EnvironmentResolverTest extends UnitTestCase {
   /**
    * @covers ::populateEnvironments
    * @covers ::__construct
-   * @covers ::getProjectEnvironment
-   * @covers ::getPath
-   * @covers ::getDomain
-   * @covers ::getUrl
+   * @covers ::getEnvironment
    * @covers ::getProject
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
@@ -45,10 +42,7 @@ class EnvironmentResolverTest extends UnitTestCase {
   /**
    * @covers ::populateEnvironments
    * @covers ::__construct
-   * @covers ::getProjectEnvironment
-   * @covers ::getPath
-   * @covers ::getDomain
-   * @covers ::getUrl
+   * @covers ::getEnvironment
    * @covers ::getProject
    * @covers ::getProjects
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
@@ -98,14 +92,13 @@ class EnvironmentResolverTest extends UnitTestCase {
   /**
    * @covers ::populateEnvironments
    * @covers ::__construct
-   * @covers ::getProjectEnvironment
-   * @covers ::getPath
-   * @covers ::getDomain
-   * @covers ::getUrl
+   * @covers ::getEnvironment
    * @covers ::getProject
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
    * @covers \Drupal\helfi_api_base\Environment\Environment::getDomain
+   * @covers \Drupal\helfi_api_base\Environment\Environment::getProtocol
+   * @covers \Drupal\helfi_api_base\Environment\Environment::getBaseUrl
    * @dataProvider resolvePathExceptionData
    */
   public function testResolveUrlException(
@@ -117,7 +110,8 @@ class EnvironmentResolverTest extends UnitTestCase {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage($message);
     $this->getEnvironmentResolver()
-      ->getUrl($project, $language, $environment);
+      ->getEnvironment($project, $environment)
+      ->getBaseUrl($language);
   }
 
   /**
@@ -130,21 +124,20 @@ class EnvironmentResolverTest extends UnitTestCase {
     return [
       ['nonexistent', '', '', 'Project "nonexistent" not found.'],
       ['asuminen', 'sk', 'dev', 'Path not found for "sk" language.'],
-      ['asuminen', 'en', 'local', 'Environment "local" not found.'],
+      ['asuminen', 'en', 'staging', 'Environment "staging" not found.'],
     ];
   }
 
   /**
    * @covers ::populateEnvironments
    * @covers ::__construct
-   * @covers ::getProjectEnvironment
-   * @covers ::getPath
-   * @covers ::getDomain
-   * @covers ::getUrl
+   * @covers ::getEnvironment
    * @covers ::getProject
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
    * @covers \Drupal\helfi_api_base\Environment\Environment::getDomain
+   * @covers \Drupal\helfi_api_base\Environment\Environment::getProtocol
+   * @covers \Drupal\helfi_api_base\Environment\Environment::getBaseUrl
    * @dataProvider validUrlData
    */
   public function testValidUrl(
@@ -154,7 +147,8 @@ class EnvironmentResolverTest extends UnitTestCase {
     string $expected
   ) : void {
     $url = $this->getEnvironmentResolver()
-      ->getUrl($project, $language, $environment);
+      ->getEnvironment($project, $environment)
+      ->getBaseUrl($language);
     $this->assertEquals($expected, $url);
   }
 
@@ -188,19 +182,37 @@ class EnvironmentResolverTest extends UnitTestCase {
         'asuminen',
         'fi',
         'prod',
-        'https://helfi-asuminen.docker.so/fi/asuminen',
+        'https://www.hel.fi/fi/asuminen',
       ],
       [
         'asuminen',
         'en',
         'prod',
-        'https://helfi-asuminen.docker.so/en/housing',
+        'https://www.hel.fi/en/housing',
       ],
       [
         'asuminen',
         'sv',
         'prod',
-        'https://helfi-asuminen.docker.so/sv/boende',
+        'https://www.hel.fi/sv/boende',
+      ],
+      [
+        'asuminen',
+        'sv',
+        'internal',
+        'http://127.0.0.1:8080/sv/boende',
+      ],
+      [
+        'asuminen',
+        'en',
+        'internal',
+        'http://127.0.0.1:8080/en/housing',
+      ],
+      [
+        'asuminen',
+        'fi',
+        'internal',
+        'http://127.0.0.1:8080/fi/asuminen',
       ],
     ];
   }

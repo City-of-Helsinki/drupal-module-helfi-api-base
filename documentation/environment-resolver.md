@@ -11,15 +11,17 @@
 $projectName = \Drupal\helfi_api_base\Environment\Project::ASUMINEN;
 /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $resolver */
 $resolver = \Drupal::service('helfi_api_base.environment_resolver');
-$url = $resolver->getUrl($projectName, 'fi', 'dev');
-$path = $resolver->getPath($projectName, 'fi', 'dev');
-$domain = $resolver->getDomain($projectName, 'dev');
+$url = $resolver->getEnvironment($projectName,'dev')->getBaseUrl('fi');
+$path = $resolver->getEnvironment($projectName, 'dev')->getPath('fi');
+$domain = $resolver->getEnvironment($projectName, 'dev')->getDomain();
 
 // These will resolve to something like:
 // $url = 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi/fi/dev-asuminen';
 // $path = '/fi/dev-asuminen';
 // $domain = 'nginx-asuminen-dev.agw.arodevtest.hel.fi';
 ```
+
+Use `internal` environment to reference to current instance. This is useful when you need to create API requests against current instance for example.
 
 ## Usage in other projects
 

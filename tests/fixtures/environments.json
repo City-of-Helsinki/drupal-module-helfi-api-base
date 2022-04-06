@@ -1,12 +1,20 @@
 {
   "asuminen": {
-    "prod": {
+    "local": {
       "path": {
         "fi": "/fi/asuminen",
         "sv": "/sv/boende",
         "en": "/en/housing"
       },
       "domain": "helfi-asuminen.docker.so"
+    },
+    "prod": {
+      "path": {
+        "fi": "/fi/asuminen",
+        "sv": "/sv/boende",
+        "en": "/en/housing"
+      },
+      "domain": "www.hel.fi"
     },
     "dev": {
       "path": {

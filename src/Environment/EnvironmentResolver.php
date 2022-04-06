@@ -52,7 +52,22 @@ final class EnvironmentResolver {
         if (!isset($settings['domain'], $settings['path'])) {
           throw new \InvalidArgumentException('Project missing domain or paths setting.');
         }
-        $this->environments[$name][$environment] = new Environment($settings['domain'], $settings['path']);
+        $this->environments[$name][$environment] = new Environment(
+          $settings['domain'],
+          $settings['path'],
+          $settings['protocol'] ?? 'https'
+        );
+
+        // Create 'internal' environment that points to currently active
+        // instance. It should contain identical settings with local environment
+        // except for domain.
+        if ($environment === 'local') {
+          $this->environments[$name]['internal'] = new Environment(
+            '127.0.0.1:8080',
+            $settings['path'],
+            'http'
+          );
+        }
       }
     }
   }
@@ -94,67 +109,13 @@ final class EnvironmentResolver {
    * @return \Drupal\helfi_api_base\Environment\Environment
    *   The environment.
    */
-  public function getProjectEnvironment(string $project, string $environment) : Environment {
+  public function getEnvironment(string $project, string $environment) : Environment {
     $project = $this->getProject($project);
 
     if (!isset($project[$environment])) {
       throw new \InvalidArgumentException(sprintf('Environment "%s" not found.', $environment));
     }
     return $project[$environment];
-  }
-
-  /**
-   * Gets the path for given project, language and environment.
-   *
-   * @param string $project
-   *   The project.
-   * @param string $language
-   *   The language.
-   * @param string $environment
-   *   The environment.
-   *
-   * @return string
-   *   The path.
-   */
-  public function getPath(string $project, string $language, string $environment) : string {
-    return $this->getProjectEnvironment($project, $environment)
-      ->getPath($language);
-  }
-
-  /**
-   * Gets the domain for given project and environment.
-   *
-   * @param string $project
-   *   The project.
-   * @param string $environment
-   *   Gets the instance domain for given project and environment.
-   *
-   * @return string
-   *   The domain.
-   */
-  public function getDomain(string $project, string $environment) : string {
-    return $this->getProjectEnvironment($project, $environment)
-      ->getDomain();
-  }
-
-  /**
-   * Gets the full URL for given project, language and environment.
-   *
-   * @param string $project
-   *   The project.
-   * @param string $language
-   *   The language.
-   * @param string $environment
-   *   The environment.
-   *
-   * @return string
-   *   The url.
-   */
-  public function getUrl(string $project, string $language, string $environment) : string {
-    return vsprintf('https://%s/%s', [
-      $this->getDomain($project, $environment),
-      ltrim($this->getPath($project, $language, $environment), '/'),
-    ]);
   }
 
 }
