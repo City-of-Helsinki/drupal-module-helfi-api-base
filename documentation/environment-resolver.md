@@ -1,8 +1,6 @@
 # Environment resolver
 
-`helfi_api_base.environment_resolver` service provides a way to fetch environment details for given project/environment, like:
-- Domain
-- Paths per language
+`helfi_api_base.environment_resolver` service provides a way to fetch environment details for given project/environment.
 
 ## Usage
 
@@ -23,7 +21,7 @@ $domain = $resolver->getEnvironment($projectName, 'dev')->getDomain();
 
 You can use `internal` environment to reference to current instance. This is useful when you need to create API requests against current instance for example.
 
-It will always default to `http://127.0.0.1:8080` domain.
+Internal environment will always default to `http://127.0.0.1:8080` domain.
 
 ## Usage in other projects
 

@@ -55,11 +55,23 @@ final class Environment {
    * @return string
    *   The URL.
    */
-  public function getBaseUrl(string $language) : string {
-    return vsprintf('%s://%s/%s', [
+  public function getUrl(string $language) : string {
+    return vsprintf('%s/%s', [
+      $this->getBaseUrl(),
+      ltrim($this->getPath($language), '/'),
+    ]);
+  }
+
+  /**
+   * Gets the base url.
+   *
+   * @return string
+   *   The base url.
+   */
+  public function getBaseUrl() : string {
+    return vsprintf('%s://%s', [
       $this->getProtocol(),
       $this->getDomain(),
-      ltrim($this->getPath($language), '/'),
     ]);
   }
 

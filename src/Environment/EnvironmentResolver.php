@@ -88,7 +88,7 @@ final class EnvironmentResolver {
    * @param string $project
    *   The project name.
    *
-   * @return array
+   * @return \Drupal\helfi_api_base\Environment\Environment[]
    *   The project environments.
    */
   public function getProject(string $project) : array {
