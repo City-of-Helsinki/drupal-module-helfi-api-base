@@ -42,13 +42,13 @@ trait TestLoggerTrait {
       foreach ($this->expectedLogMessages as $item) {
         ['message' => $expectedMessage, 'type' => $expectedType] = $item;
 
-        $key = array_search($expectedMessage, array_column($messages, '@message'));
+        $key = array_search($expectedMessage, array_column($messages, 'message'));
 
         if (!$message = $messages[$key] ?? FALSE) {
           continue;
         }
-        $this->assertEquals($expectedMessage, $message['@message']);
-        $this->assertEquals($expectedType, $message['%type']);
+        $this->assertEquals($expectedMessage, $message['message']);
+        $this->assertEquals($expectedType, $message['type']);
         unset($messages[$key]);
       }
 
