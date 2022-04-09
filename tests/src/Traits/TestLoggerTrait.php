@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Traits;
 
-use Drupal\Core\Logger\LogMessageParserInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a test logger trait to catch log messages.
@@ -30,15 +28,8 @@ trait TestLoggerTrait {
   /**
    * Setups the mock logger.
    */
-  protected function setUpMockLogger(?LogMessageParserInterface $parser = NULL) : void {
-    if (!$parser) {
-      if (!$this->container instanceof ContainerInterface) {
-        throw new \LogicException('The container is not initialized or LogMessageParserInterface $parser is not given.');
-      }
-      $parser = $this->container->get('logger.log_message_parser');
-    }
-
-    $this->testLogger = new RfcLogger($parser);
+  protected function setUpMockLogger() : void {
+    $this->testLogger = new RfcLogger();
     $this->container->get('logger.factory')->addLogger($this->testLogger);
   }
 
