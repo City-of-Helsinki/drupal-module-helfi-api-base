@@ -27,7 +27,8 @@ class RfcLogger implements LoggerInterface {
   public function log($level, $message, array $context = []) : void {
     // We use this same method to test messages from logger channel and
     // watchdog_exception(). The message logged by watchdog_exception()
-    // is just a placeholder without any information.
+    // defaults to a placeholder message. Always default to @message from
+    // context if available.
     $entry = [
       'message' => $context['@message'] ?? $message,
       'type' => $context['%type'] ?? NULL,

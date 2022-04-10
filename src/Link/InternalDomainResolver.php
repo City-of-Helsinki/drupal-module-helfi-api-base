@@ -49,7 +49,7 @@ final class InternalDomainResolver {
     // Allow whitelisted links to act as an internal.
     return !in_array(
       parse_url($url->getUri(), PHP_URL_HOST),
-      $this->domains
+      $this->getDomains()
     );
   }
 
