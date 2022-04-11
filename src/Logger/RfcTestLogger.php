@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helfi_api_base\Traits;
+namespace Drupal\helfi_api_base\Logger;
 
 use Drupal\Core\Logger\RfcLoggerTrait;
 use Psr\Log\LoggerInterface;
@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Provides an RFC logger to catch logged messages.
  */
-class RfcLogger implements LoggerInterface {
+class RfcTestLogger implements LoggerInterface {
 
   use RfcLoggerTrait;
 

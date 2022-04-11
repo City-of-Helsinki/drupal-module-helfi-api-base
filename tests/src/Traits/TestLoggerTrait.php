@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Traits;
 
+use Drupal\helfi_api_base\Logger\RfcTestLogger;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -21,7 +22,7 @@ trait TestLoggerTrait {
   /**
    * The expected log messages.
    *
-   * @var array
+   * @var null|array
    */
   protected ?array $expectedLogMessages = [];
 
@@ -29,7 +30,7 @@ trait TestLoggerTrait {
    * Setups the mock logger.
    */
   protected function setUpMockLogger() : void {
-    $this->testLogger = new RfcLogger();
+    $this->testLogger = new RfcTestLogger();
     $this->container->get('logger.factory')->addLogger($this->testLogger);
   }
 
