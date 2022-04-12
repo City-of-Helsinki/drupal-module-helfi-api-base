@@ -159,6 +159,7 @@ class HelfiPackageTest extends UnitTestCase {
     $this->assertEquals($packageName, $result->name);
     $this->assertEquals($expectedLatestVersion, $result->latestVersion);
     $this->assertEquals($isLatest, $result->isLatest);
+    $this->assertNotEmpty($result->toArray());
   }
 
   /**

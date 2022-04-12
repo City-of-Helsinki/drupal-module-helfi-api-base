@@ -1,0 +1,11 @@
+{
+  "asuminen": {
+    "prod": {
+      "path": {
+        "fi": "/fi/asuminen",
+        "sv": "/sv/boende",
+        "en": "/en/housing"
+      }
+    }
+  }
+}

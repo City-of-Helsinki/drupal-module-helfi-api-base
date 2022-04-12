@@ -1,0 +1,380 @@
+{
+  "asuminen": {
+    "local": {
+      "path": {
+        "fi": "/fi/asuminen",
+        "sv": "/sv/boende",
+        "en": "/en/housing"
+      },
+      "domain": "helfi-asuminen.docker.so"
+    },
+    "dev": {
+      "path": {
+        "fi": "/fi/dev-asuminen",
+        "sv": "/sv/dev-boende",
+        "en": "/en/dev-housing"
+      },
+      "domain": "nginx-asuminen-dev.agw.arodevtest.hel.fi"
+    },
+    "test": {
+      "path": {
+        "fi": "/fi/test-asuminen",
+        "sv": "/sv/test-boende",
+        "en": "/en/test-housing"
+      },
+      "domain": "nginx-asuminen-test.agw.arodevtest.hel.fi"
+    },
+    "stage": {
+      "path": {
+        "fi": "/fi/staging-asuminen",
+        "sv": "/sv/staging-boende",
+        "en": "/en/staging-housing"
+      },
+      "domain": "www.hel.fi"
+    },
+    "prod": {
+      "path": {
+        "fi": "/fi/asuminen",
+        "sv": "/sv/boende",
+        "en": "/en/housing"
+      },
+      "domain": "www.hel.fi"
+    }
+  },
+  "etusivu": {
+    "local": {
+      "path": {
+        "fi": "/fi",
+        "sv": "/sv",
+        "en": "/en"
+      },
+      "domain": "helfi-etusivu.docker.so"
+    },
+    "dev": {
+      "path": {
+        "fi": "/fi/dev-etusivu",
+        "sv": "/sv/dev-framsidan",
+        "en": "/en/dev-front"
+      },
+      "domain": "nginx-etusivu-dev.agw.arodevtest.hel.fi"
+    },
+    "test": {
+      "path": {
+        "fi": "/fi/test-etusivu",
+        "sv": "/sv/test-framsidan",
+        "en": "/en/test-front"
+      },
+      "domain": "nginx-etusivu-test.agw.arodevtest.hel.fi"
+    },
+    "stage": {
+      "path": {
+        "fi": "/fi/staging-etusivu",
+        "sv": "/sv/staging-framsidan",
+        "en": "/en/staging-front"
+      },
+      "domain": "www.hel.fi"
+    },
+    "prod": {
+      "path": {
+        "fi": "/fi",
+        "sv": "/sv",
+        "en": "/en"
+      },
+      "domain": "www.hel.fi"
+    }
+  },
+  "kasvatus-koulutus": {
+    "local": {
+      "path": {
+        "fi": "/fi/kasvatus-koulutus",
+        "sv": "/sv/fostran-och-utbildning",
+        "en": "/en/childhood-and-education"
+      },
+      "domain": "helfi-kasko.docker.so"
+    },
+    "dev": {
+      "path": {
+        "fi": "/fi/dev-kasvatus-koulutus",
+        "sv": "/sv/dev-fostran-och-utbildning",
+        "en": "/en/dev-childhood-and-education"
+      },
+      "domain": "nginx-kasvatus-koulutus-dev.agw.arodevtest.hel.fi"
+    },
+    "test": {
+      "path": {
+        "fi": "/fi/test-kasvatus-koulutus",
+        "sv": "/sv/test-fostran-och-utbildning",
+        "en": "/en/test-childhood-and-education"
+      },
+      "domain": "nginx-kasvatus-koulutus-test.agw.arodevtest.hel.fi"
+    },
+    "stage": {
+      "path": {
+        "fi": "/fi/staging-kasvatus-koulutus",
+        "sv": "/sv/staging-fostran-och-utbildning",
+        "en": "/en/staging-childhood-and-education"
+      },
+      "domain": "www.hel.fi"
+    },
+    "prod": {
+      "path": {
+        "fi": "/fi/kasvatus-koulutus",
+        "sv": "/sv/fostran-och-utbildning",
+        "en": "/en/childhood-and-education"
+      },
+      "domain": "www.hel.fi"
+    }
+  },
+  "kuva": {
+    "local": {
+      "path": {
+        "fi": "/fi/kulttuuri-ja-vapaa-aika",
+        "sv": "/sv/kultur-och-fritid",
+        "en": "/en/culture-and-leisure"
+      },
+      "domain": "helfi-kuva.docker.so"
+    },
+    "dev": {
+      "path": {
+        "fi": "/fi/dev-kulttuuri-ja-vapaa-aika",
+        "sv": "/sv/dev-kultur-och-fritid",
+        "en": "/en/dev-culture-and-leisure"
+      },
+      "domain": "nginx-kuva-dev.agw.arodevtest.hel.fi"
+    },
+    "test": {
+      "path": {
+        "fi": "/fi/test-kulttuuri-ja-vapaa-aika",
+        "sv": "/sv/test-kultur-och-fritid",
+        "en": "/en/test-culture-and-leisure"
+      },
+      "domain": "nginx-kuva-test.agw.arodevtest.hel.fi"
+    },
+    "stage": {
+      "path": {
+        "fi": "/fi/staging-kulttuuri-ja-vapaa-aika",
+        "sv": "/sv/staging-kultur-och-fritid",
+        "en": "/en/staging-culture-and-leisure"
+      },
+      "domain": "www.hel.fi"
+    },
+    "prod": {
+      "path": {
+        "fi": "/fi/kulttuuri-ja-vapaa-aika",
+        "sv": "/sv/kultur-och-fritid",
+        "en": "/en/culture-and-leisure"
+      },
+      "domain": "www.hel.fi"
+    }
+  },
+  "liikenne": {
+    "local": {
+      "path": {
+        "fi": "/fi/kaupunkiymparisto-ja-liikenne",
+        "sv": "/sv/stadsmiljo-och-trafik",
+        "en": "/en/urban-environment-and-traffic"
+      },
+      "domain": "helfi-kymp.docker.so"
+    },
+    "dev": {
+      "path": {
+        "fi": "/fi/dev-kaupunkiymparisto-ja-liikenne",
+        "sv": "/sv/dev-stadsmiljo-och-trafik",
+        "en": "/en/dev-urban-environment-and-traffic"
+      },
+      "domain": "nginx-liikenne-dev.agw.arodevtest.hel.fi"
+    },
+    "test": {
+      "path": {
+        "fi": "/fi/test-kaupunkiymparisto-ja-liikenne",
+        "sv": "/sv/test-stadsmiljo-och-trafik",
+        "en": "/en/test-urban-environment-and-traffic"
+      },
+      "domain": "nginx-liikenne-test.agw.arodevtest.hel.fi"
+    },
+    "stage": {
+      "path": {
+        "fi": "/fi/staging-kaupunkiymparisto-ja-liikenne",
+        "sv": "/sv/staging-stadsmiljo-och-trafik",
+        "en": "/en/staging-urban-environment-and-traffic"
+      },
+      "domain": "www.hel.fi"
+    },
+    "prod": {
+      "path": {
+        "fi": "/fi/kaupunkiymparisto-ja-liikenne",
+        "sv": "/sv/stadsmiljo-och-trafik",
+        "en": "/en/urban-environment-and-traffic"
+      },
+      "domain": "www.hel.fi"
+    }
+  },
+  "rekry": {
+    "local": {
+      "path": {
+        "fi": "/fi/avoimet-tyopaikat",
+        "sv": "/sv/lediga-jobb",
+        "en": "/en/open-jobs"
+      },
+      "domain": "helfi-rekry.docker.so"
+    },
+    "dev": {
+      "path": {
+        "fi": "/fi/dev-avoimet-tyopaikat",
+        "sv": "/sv/dev-lediga-jobb",
+        "en": "/en/dev-open-jobs"
+      },
+      "domain": "nginx-rekry-dev.agw.arodevtest.hel.fi"
+    },
+    "test": {
+      "path": {
+        "fi": "/fi/test-avoimet-tyopaikat",
+        "sv": "/sv/test-lediga-jobb",
+        "en": "/en/test-open-jobs"
+      },
+      "domain": "nginx-rekry-test.agw.arodevtest.hel.fi"
+    },
+    "stage": {
+      "path": {
+        "fi": "/fi/staging-avoimet-tyopaikat",
+        "sv": "/sv/staging-lediga-jobb",
+        "en": "/en/staging-open-jobs"
+      },
+      "domain": "www.hel.fi"
+    },
+    "prod": {
+      "path": {
+        "fi": "/fi/avoimet-tyopaikat",
+        "sv": "/sv/lediga-jobb",
+        "en": "/en/open-jobs"
+      },
+      "domain": "www.hel.fi"
+    }
+  },
+  "strategia": {
+    "local": {
+      "path": {
+        "fi": "/fi/paatoksenteko-ja-hallinto",
+        "sv": "/sv/beslutsfattande-och-forvaltning",
+        "en": "/en/decision-making"
+      },
+      "domain": "strategia.docker.so"
+    },
+    "dev": {
+      "path": {
+        "fi": "/fi/dev-paatoksenteko-ja-hallinto",
+        "sv": "/sv/dev-beslutsfattande-och-forvaltning",
+        "en": "/en/dev-decision-making"
+      },
+      "domain": "nginx-strategia-talous-dev.agw.arodevtest.hel.fi"
+    },
+    "test": {
+      "path": {
+        "fi": "/fi/test-paatoksenteko-ja-hallinto",
+        "sv": "/sv/test-beslutsfattande-och-forvaltning",
+        "en": "/en/test-decision-making"
+      },
+      "domain": "nginx-strategia-talous-test.agw.arodevtest.hel.fi"
+    },
+    "stage": {
+      "path": {
+        "fi": "/fi/staging-paatoksenteko-ja-hallinto",
+        "sv": "/sv/staging-beslutsfattande-och-forvaltning",
+        "en": "/en/staging-decision-making"
+      },
+      "domain": "www.hel.fi"
+    },
+    "prod": {
+      "path": {
+        "fi": "/fi/paatoksenteko-ja-hallinto",
+        "sv": "/sv/beslutsfattande-och-forvaltning",
+        "en": "/en/decision-making"
+      },
+      "domain": "www.hel.fi"
+    }
+  },
+  "terveys": {
+    "local": {
+      "path": {
+        "fi": "/fi/sosiaali-ja-terveyspalvelut",
+        "sv": "/sv/social-och-halsovardstjanster",
+        "en": "/en/health-and-social-services"
+      },
+      "domain": "helfi-sote.docker.so"
+    },
+    "dev": {
+      "path": {
+        "fi": "/fi/dev-sosiaali-ja-terveyspalvelut",
+        "sv": "/sv/dev-social-och-halsovardstjanster",
+        "en": "/en/dev-health-and-social-services"
+      },
+      "domain": "nginx-terveys-dev.agw.arodevtest.hel.fi"
+    },
+    "test": {
+      "path": {
+        "fi": "/fi/test-sosiaali-ja-terveyspalvelut",
+        "sv": "/sv/test-social-och-halsovardstjanster",
+        "en": "/en/test-health-and-social-services"
+      },
+      "domain": "nginx-terveys-test.agw.arodevtest.hel.fi"
+    },
+    "stage": {
+      "path": {
+        "fi": "/fi/staging-sosiaali-ja-terveyspalvelut",
+        "sv": "/sv/staging-social-och-halsovardstjanster",
+        "en": "/en/staging-health-and-social-services"
+      },
+      "domain": "www.hel.fi"
+    },
+    "prod": {
+      "path": {
+        "fi": "/fi/sosiaali-ja-terveyspalvelut",
+        "sv": "/sv/social-och-halsovardstjanster",
+        "en": "/en/health-and-social-services"
+      },
+      "domain": "www.hel.fi"
+    }
+  },
+  "tyo-yrittaminen": {
+    "local": {
+      "path": {
+        "fi": "/fi/yritykset-ja-tyo",
+        "sv": "/sv/foretag-och-arbete",
+        "en": "/en/business-and-work"
+      },
+      "domain": "helfi-elo.docker.so"
+    },
+    "dev": {
+      "path": {
+        "fi": "/fi/dev-yritykset-ja-tyo",
+        "sv": "/sv/dev-foretag-och-arbete",
+        "en": "/en/dev-business-and-work"
+      },
+      "domain": "nginx-tyo-yrittaminen-dev.agw.arodevtest.hel.fi"
+    },
+    "test": {
+      "path": {
+        "fi": "/fi/test-yritykset-ja-tyo",
+        "sv": "/sv/test-foretag-och-arbete",
+        "en": "/en/test-business-and-work"
+      },
+      "domain": "nginx-tyo-yrittaminen-test.agw.arodevtest.hel.fi"
+    },
+    "stage": {
+      "path": {
+        "fi": "/fi/staging-yritykset-ja-tyo",
+        "sv": "/sv/staging-foretag-och-arbete",
+        "en": "/en/staging-business-and-work"
+      },
+      "domain": "www.hel.fi"
+    },
+    "prod": {
+      "path": {
+        "fi": "/fi/yritykset-ja-tyo",
+        "sv": "/sv/foretag-och-arbete",
+        "en": "/en/business-and-work"
+      },
+      "domain": "www.hel.fi"
+    }
+  }
+}
