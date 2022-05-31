@@ -12,7 +12,7 @@ See [src/Plugin/DebugDataItem/Composer.php](/src/Plugin/DebugDataItem/Composer.p
 
 At minimum, you need:
 - A plugin class that implements `\Drupal\helfi_debug\DebugDataItemInterface`
-- Create a plugin specific template (`debug-item--{plugin_id}.html.twig`). See [templates/debug-item.html.twig](/templates/debug-item.html.twig) for more information.
+- A plugin specific template (`debug-item--{plugin_id}.html.twig`). See [templates/debug-item.html.twig](/templates/debug-item.html.twig) for more information.
 
 ## Package version checker
 
