@@ -53,24 +53,24 @@
     "dev": {
       "path": {
         "fi": "/fi/dev-etusivu",
-        "sv": "/sv/dev-framsidan",
-        "en": "/en/dev-front"
+        "sv": "/sv/dev-huvudsida",
+        "en": "/en/dev-frontpage"
       },
       "domain": "nginx-etusivu-dev.agw.arodevtest.hel.fi"
     },
     "test": {
       "path": {
         "fi": "/fi/test-etusivu",
-        "sv": "/sv/test-framsidan",
-        "en": "/en/test-front"
+        "sv": "/sv/test-huvudsida",
+        "en": "/en/test-frontpage"
       },
       "domain": "nginx-etusivu-test.agw.arodevtest.hel.fi"
     },
     "stage": {
       "path": {
         "fi": "/fi/staging-etusivu",
-        "sv": "/sv/staging-framsidan",
-        "en": "/en/staging-front"
+        "sv": "/sv/staging-huvudsida",
+        "en": "/en/staging-frontpage"
       },
       "domain": "www.hel.fi"
     },
