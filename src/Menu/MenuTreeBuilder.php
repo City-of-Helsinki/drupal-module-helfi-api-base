@@ -143,14 +143,15 @@ class MenuTreeBuilder {
   /**
    * Sort menu items by weight.
    *
-   * @param $item1
+   * @param object $item1
    *   First object.
-   * @param $item2
+   * @param object $item2
    *   Second object.
    *
    * @return int
+   *   Returns sorting order.
    */
-  private function sortMenuItems($item1, $item2) {
+  private function sortMenuItems(object $item1, object $item2): int {
     $weight1 = $item1->weight;
     $weight2 = $item2->weight;
     if ($weight1 == $weight2) {
