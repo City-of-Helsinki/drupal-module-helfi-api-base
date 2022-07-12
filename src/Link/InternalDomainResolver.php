@@ -15,14 +15,14 @@ final class InternalDomainResolver {
   /**
    * Constructs a new instance.
    *
-   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver
-   *   The environment resolver.
    * @param array $domains
    *   The domains.
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver
+   *   The environment resolver.
    */
   public function __construct(
-    protected EnvironmentResolver $environmentResolver,
-    private array $domains = []
+    private array $domains = [],
+    protected EnvironmentResolver $environmentResolver
   ) {}
 
   /**
