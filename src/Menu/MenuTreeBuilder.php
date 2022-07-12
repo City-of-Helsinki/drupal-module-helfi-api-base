@@ -85,7 +85,7 @@ class MenuTreeBuilder {
         continue;
       }
 
-      /** @var MenuLinkInterface $menu_link */
+      /** @var \Drupal\Core\Menu\MenuLinkInterface $menu_link */
       $menu_link = $menu_link_content->getTranslation($lang_code);
 
       // Handle only published menu links.

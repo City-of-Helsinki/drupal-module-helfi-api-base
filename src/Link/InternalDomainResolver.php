@@ -15,6 +15,8 @@ final class InternalDomainResolver {
   /**
    * Constructs a new instance.
    *
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver
+   *   The environment resolver.
    * @param array $domains
    *   The domains.
    */

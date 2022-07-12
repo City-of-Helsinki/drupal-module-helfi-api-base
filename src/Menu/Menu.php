@@ -2,6 +2,9 @@
 
 namespace Drupal\helfi_api_base\Menu;
 
+/**
+ *
+ */
 class Menu {
   const MENUS = [
     'footer-bottom-navigation',
@@ -17,7 +20,11 @@ class Menu {
   const HEADER_TOP_NAVIGATION = 'header-top-navigation';
   const MAIN_MENU = 'main';
 
+  /**
+   *
+   */
   public static function menuExists(string $menu_type = ''): bool {
     return $menu_type && in_array($menu_type, self::MENUS);
   }
+
 }
