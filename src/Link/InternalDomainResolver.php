@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\helfi_api_base\Link;
 
 use Drupal\Core\Url;
+use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 
 /**
  * Resolves internal domains.
@@ -17,8 +18,10 @@ final class InternalDomainResolver {
    * @param array $domains
    *   The domains.
    */
-  public function __construct(private array $domains = []) {
-  }
+  public function __construct(
+    protected EnvironmentResolver $environmentResolver,
+    private array $domains = []
+  ) {}
 
   /**
    * Gets an array of domains considered as an 'internal'.
@@ -30,7 +33,17 @@ final class InternalDomainResolver {
    *   The domains.
    */
   public function getDomains() : array {
-    return $this->domains;
+    $domains = [];
+
+    if ($env = getenv('APP_ENV')) {
+      foreach ($this->environmentResolver->getProjects() as $project) {
+        if (array_key_exists($env, $project)) {
+          $domains[] = $project[$env]->getDomain();
+        }
+      }
+    }
+
+    return $this->domains + $domains;
   }
 
   /**
