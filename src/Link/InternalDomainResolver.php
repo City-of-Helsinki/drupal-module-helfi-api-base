@@ -21,8 +21,8 @@ final class InternalDomainResolver {
    *   The environment resolver.
    */
   public function __construct(
-    private array $domains = [],
-    protected EnvironmentResolver $environmentResolver
+    protected EnvironmentResolver $environmentResolver,
+    private array $domains = []
   ) {}
 
   /**
