@@ -143,13 +143,13 @@ final class EnvironmentResolver {
   /**
    * Temporary mapping function to match APP_ENV with environment resolver.
    *
-   * @param $env
+   * @param string $env
    *   APP_ENV or environment name.
    *
    * @return string
    *   Current environment name translated enviroment resolver enviroment name.
    */
-  public static function getCurrentEnvironmentName($env = NULL) : string {
+  public static function getCurrentEnvironmentName(string $env = NULL) : string {
     // Dev,test,stage,prod are the environment names in environment resolver.
     // APP_ENV values on environments doesn't match the environment resolver.
     // Thus a mapping is required.
