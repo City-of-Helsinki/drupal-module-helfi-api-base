@@ -33,6 +33,7 @@ final class Environment {
    * Gets the project identifier.
    *
    * @return string
+   *   Site identifier.
    */
   public function getId():string {
     return $this->id;

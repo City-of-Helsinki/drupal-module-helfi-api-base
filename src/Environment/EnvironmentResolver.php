@@ -127,12 +127,13 @@ final class EnvironmentResolver {
    *   Url to search for.
    *
    * @return Environment
+   *   Environment object.
    */
-  public function getEnvironmentByUrl(string $url): Environment {
-    foreach($this->getProjects() as $environments) {
-      foreach($environments as $environment) {
+  public function getEnvironmentByUrl(string $url) : Environment {
+    foreach ($this->getProjects() as $environments) {
+      foreach ($environments as $environment) {
         if ($environment->getDomain() === $url) {
-           return $environment;
+          return $environment;
         }
       }
     }
@@ -143,12 +144,12 @@ final class EnvironmentResolver {
    * Temporary mapping function to match APP_ENV with environment resolver.
    *
    * @param $env
-   *   APP_ENV or environment name
+   *   APP_ENV or environment name.
    *
    * @return string
    *   Current environment name translated enviroment resolver enviroment name.
    */
-  public static function getCurrentEnvironmentName($env = NULL) {
+  public static function getCurrentEnvironmentName($env = NULL) : string {
     // Dev,test,stage,prod are the environment names in environment resolver.
     // APP_ENV values on environments doesn't match the environment resolver.
     // Thus a mapping is required.
@@ -164,7 +165,7 @@ final class EnvironmentResolver {
       'stage' => 'stage',
       'staging' => 'stage',
       'prod' => 'prod',
-      'production' => 'prod'
+      'production' => 'prod',
     ];
 
     if (array_key_exists($env, $environments)) {
