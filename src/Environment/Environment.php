@@ -18,12 +18,25 @@ final class Environment {
    *   The paths.
    * @param string $protocol
    *   The protocol.
+   * @param string $id
+   *   Environment resolver identifier for the project.
    */
   public function __construct(
     private string $domain,
     private array $paths,
-    private string $protocol
+    private string $protocol,
+    private string $id
   ) {
+  }
+
+  /**
+   * Gets the project identifier.
+   *
+   * @return string
+   *   Site identifier.
+   */
+  public function getId():string {
+    return $this->id;
   }
 
   /**

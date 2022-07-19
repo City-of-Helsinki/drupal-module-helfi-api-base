@@ -55,7 +55,8 @@ final class EnvironmentResolver {
         $this->environments[$name][$environment] = new Environment(
           $settings['domain'],
           $settings['path'],
-          $settings['protocol'] ?? 'https'
+          $settings['protocol'] ?? 'https',
+          $name
         );
 
         // Create 'internal' environment that points to currently active
@@ -65,7 +66,8 @@ final class EnvironmentResolver {
           $this->environments[$name]['internal'] = new Environment(
             '127.0.0.1:8080',
             $settings['path'],
-            'http'
+            'http',
+            $name
           );
         }
       }
@@ -116,6 +118,61 @@ final class EnvironmentResolver {
       throw new \InvalidArgumentException(sprintf('Environment "%s" not found.', $environment));
     }
     return $project[$environment];
+  }
+
+  /**
+   * Find environment by url.
+   *
+   * @param string $url
+   *   Url to search for.
+   *
+   * @return Environment
+   *   Environment object.
+   */
+  public function getEnvironmentByUrl(string $url) : Environment {
+    foreach ($this->getProjects() as $environments) {
+      foreach ($environments as $environment) {
+        if ($environment->getDomain() === $url) {
+          return $environment;
+        }
+      }
+    }
+    throw new \InvalidArgumentException(sprintf('Environment not found by url %s', $url));
+  }
+
+  /**
+   * Temporary mapping function to match APP_ENV with environment resolver.
+   *
+   * @param string $env
+   *   APP_ENV or environment name.
+   *
+   * @return string
+   *   Current environment name translated enviroment resolver enviroment name.
+   */
+  public static function getCurrentEnvironmentName(string $env = NULL) : string {
+    // Dev,test,stage,prod are the environment names in environment resolver.
+    // APP_ENV values on environments doesn't match the environment resolver.
+    // Thus a mapping is required.
+    $env = $env ?? getenv('APP_ENV');
+
+    $environments = [
+      'local' => 'local',
+      'dev' => 'dev',
+      'devel' => 'dev',
+      'development' => 'dev',
+      'test' => 'test',
+      'testing' => 'test',
+      'stage' => 'stage',
+      'staging' => 'stage',
+      'prod' => 'prod',
+      'production' => 'prod',
+    ];
+
+    if (array_key_exists($env, $environments)) {
+      return $environments[$env];
+    }
+
+    throw new \InvalidArgumentException(sprintf('%s is not a proper environment name', $env));
   }
 
 }
