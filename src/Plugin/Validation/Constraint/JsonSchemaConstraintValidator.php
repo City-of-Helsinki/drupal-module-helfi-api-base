@@ -22,13 +22,16 @@ final class JsonSchemaConstraintValidator extends ConstraintValidator {
         '%schema' => $constraint->schema,
       ]);
     }
-    try {
-      $content = \GuzzleHttp\json_decode($value->value, TRUE);
-    }
-    catch (\InvalidArgumentException $e) {
-      $this->context->addViolation('Failed to parse JSON: %message', [
-        '%message' => $e->getMessage(),
-      ]);
+
+    if (!is_object($value->value)) {
+      try {
+        $content = \GuzzleHttp\json_decode($value->value);
+      }
+      catch (\InvalidArgumentException $e) {
+        $this->context->addViolation('Failed to parse JSON: %message', [
+          '%message' => $e->getMessage(),
+        ]);
+      }
     }
     $validator = new Validator();
     $validator->validate($content, (object) [
