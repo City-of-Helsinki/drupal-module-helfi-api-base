@@ -5,11 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
 use Drupal\Core\TypedData\DataDefinition;
-use Drupal\helfi_api_base\Plugin\Validation\Constraint\JsonSchemaConstraint;
-use Drupal\helfi_api_base\Plugin\Validation\Constraint\JsonSchemaConstraintValidator;
 use Drupal\KernelTests\KernelTestBase;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Tests JsonSchemaConstraintValidator.
@@ -47,7 +44,7 @@ class JsonSchemaConstraintValidatorTest extends KernelTestBase {
    *
    * @param mixed $value
    *   The value to validate.
-   * @param string|NULL $schema
+   * @param string|null $schema
    *   The schema.
    *
    * @return \Symfony\Component\Validator\ConstraintViolationListInterface
