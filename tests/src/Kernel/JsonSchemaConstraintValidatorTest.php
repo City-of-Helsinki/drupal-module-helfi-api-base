@@ -74,7 +74,7 @@ class JsonSchemaConstraintValidatorTest extends KernelTestBase {
    * Tests invalid json.
    */
   public function testInvalidJson() : void {
-    $violations = $this->assertViolations((object) ['value' => '-']);
+    $violations = $this->assertViolations('-');
     $this->assertEquals('Failed to parse JSON: json_decode error: Syntax error', $violations[0]->getMessage());
   }
 

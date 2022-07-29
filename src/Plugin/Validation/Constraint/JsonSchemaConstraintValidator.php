@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\Plugin\Validation\Constraint;
 
+use Drupal\Core\Field\FieldItemListInterface;
 use JsonSchema\Validator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -24,8 +25,10 @@ final class JsonSchemaConstraintValidator extends ConstraintValidator {
       return;
     }
 
-    if (!is_scalar($value) && isset($value->value)) {
-      $value = $value->value;
+    if ($value instanceof FieldItemListInterface) {
+      $propertyName = $value->getFieldDefinition()
+        ->getMainPropertyName();
+      $value = $value->{$propertyName};
     }
 
     if (!is_object($value)) {
