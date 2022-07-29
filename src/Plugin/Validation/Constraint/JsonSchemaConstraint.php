@@ -12,11 +12,18 @@ use Symfony\Component\Validator\Constraint;
  * @Constraint(
  *   id = "JsonSchema",
  *   label = @Translation("Json Schema", context = "Validation"),
- *   type = "json"
+ *   type = {"json", "string"}
  * )
  */
 class JsonSchemaConstraint extends Constraint {
 
+  /**
+   * Path to json schema.
+   *
+   * Example: file://path/to/module/schema.json.
+   *
+   * @var string
+   */
   public string $schema;
 
   /**

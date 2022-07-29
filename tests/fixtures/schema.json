@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "id": { "type": "integer" },
+    "children": {
+      "type": "array",
+      "items": { "$ref": "#" }
+    }
+  },
+  "required": ["id"]
+}

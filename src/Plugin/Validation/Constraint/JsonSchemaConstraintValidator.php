@@ -18,31 +18,37 @@ final class JsonSchemaConstraintValidator extends ConstraintValidator {
    */
   public function validate($value, Constraint $constraint) : void {
     if (!file_exists($constraint->schema)) {
-      $this->context->addViolation('Failed to load JSON schema: "%schema"', [
-        '%schema' => $constraint->schema,
+      $this->context->addViolation('Failed to load JSON schema: "@schema"', [
+        '@schema' => $constraint->schema,
       ]);
+      return;
     }
 
-    if (!is_object($value->value)) {
+    if (!is_scalar($value) && isset($value->value)) {
+      $value = $value->value;
+    }
+
+    if (!is_object($value)) {
       try {
-        $content = \GuzzleHttp\json_decode($value->value);
+        $value = \GuzzleHttp\json_decode($value);
       }
       catch (\InvalidArgumentException $e) {
-        $this->context->addViolation('Failed to parse JSON: %message', [
-          '%message' => $e->getMessage(),
+        $this->context->addViolation('Failed to parse JSON: @message', [
+          '@message' => $e->getMessage(),
         ]);
+        return;
       }
     }
     $validator = new Validator();
-    $validator->validate($content, (object) [
+    $validator->validate($value, (object) [
       '$ref' => $constraint->schema,
     ]);
 
     if (!$validator->isValid()) {
       foreach ($validator->getErrors() as $error) {
         $message = sprintf('%s (property: "%s")', $error['message'], $error['property']);
-        $this->context->addViolation('Failed to validate JSON: %message', [
-          '%message' => $message,
+        $this->context->addViolation('Failed to validate JSON: @message', [
+          '@message' => $message,
         ]);
       }
     }
