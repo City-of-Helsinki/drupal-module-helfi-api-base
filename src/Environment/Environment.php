@@ -20,12 +20,15 @@ final class Environment {
    *   The protocol.
    * @param string $id
    *   Environment resolver identifier for the project.
+   * @param string $environmentName
+   *   The environment name.
    */
   public function __construct(
     private string $domain,
     private array $paths,
     private string $protocol,
-    private string $id
+    private string $id,
+    private string $environmentName
   ) {
   }
 
@@ -104,6 +107,16 @@ final class Environment {
       );
     }
     return $this->paths[$language];
+  }
+
+  /**
+   * Gets the environment name.
+   *
+   * @return string
+   *   The environment.
+   */
+  public function getEnvironmentName(): string {
+    return $this->environmentName;
   }
 
 }

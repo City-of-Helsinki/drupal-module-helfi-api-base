@@ -16,6 +16,14 @@
       },
       "domain": "www.hel.fi"
     },
+    "stage": {
+      "path": {
+        "fi": "/fi/staging-asuminen",
+        "sv": "/sv/staging-boende",
+        "en": "/en/staging-housing"
+      },
+      "domain": "www.hel.fi"
+    },
     "dev": {
       "path": {
         "fi": "/fi/dev-asuminen",
@@ -23,6 +31,14 @@
         "en": "/en/dev-housing"
       },
       "domain": "helfi-asuminen-dev.docker.so"
+    },
+    "test": {
+      "path": {
+        "fi": "/fi/test-asuminen",
+        "sv": "/sv/test-boende",
+        "en": "/en/test-housing"
+      },
+      "domain": "helfi-asuminen-test.docker.so"
     }
   }
 }

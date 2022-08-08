@@ -1,3 +1,13 @@
 action.configuration.remote_entity:migration_update:*:
   type: action_configuration_default
   label: 'Update given remote entity'
+
+helfi_api_base.environment_resolver.settings:
+  type: mapping
+  mapping:
+    environment_name:
+      type: string
+      label: 'The currently active environment name'
+    project_name:
+      type: string
+      label: 'The currently active project name'

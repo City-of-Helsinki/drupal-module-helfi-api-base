@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_tpr\Unit;
+namespace Drupal\Tests\helfi_api_base\Unit;
 
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
@@ -30,19 +30,22 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::populateEnvironments
    * @covers ::__construct
    * @covers ::getEnvironment
+   * @covers ::mapEnvironmentName
    * @covers ::getProject
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
    * @covers \Drupal\helfi_api_base\Environment\Environment::getDomain
    */
   public function testFallbackEnvironmentFile() : void {
-    new EnvironmentResolver('');
+    $resolver = new EnvironmentResolver('');
+    $this->assertTrue(count($resolver->getProjects()) > 5);
   }
 
   /**
    * @covers ::populateEnvironments
    * @covers ::__construct
    * @covers ::getEnvironment
+   * @covers ::mapEnvironmentName
    * @covers ::getProject
    * @covers ::getProjects
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
@@ -57,6 +60,8 @@ class EnvironmentResolverTest extends UnitTestCase {
       $this->assertNotEmpty($resolver->getProject($value));
     }
 
+    // Make sure we have multiple projects.
+    $this->assertTrue(count($resolver->getProjects()) > 5);
     // Make sure all projects have constant.
     $this->assertEquals(count($resolver->getProjects()), count($constants->getConstants()));
   }
@@ -93,6 +98,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::populateEnvironments
    * @covers ::__construct
    * @covers ::getEnvironment
+   * @covers ::mapEnvironmentName
    * @covers ::getProject
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
@@ -125,7 +131,7 @@ class EnvironmentResolverTest extends UnitTestCase {
     return [
       ['nonexistent', '', '', 'Project "nonexistent" not found.'],
       ['asuminen', 'sk', 'dev', 'Path not found for "sk" language.'],
-      ['asuminen', 'en', 'staging', 'Environment "staging" not found.'],
+      ['asuminen', 'en', 'nonexistent', 'Environment "nonexistent" not found.'],
     ];
   }
 
@@ -133,6 +139,43 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::populateEnvironments
    * @covers ::__construct
    * @covers ::getEnvironment
+   * @covers ::mapEnvironmentName
+   * @covers ::getProject
+   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
+   * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
+   * @covers \Drupal\helfi_api_base\Environment\Environment::getDomain
+   * @covers \Drupal\helfi_api_base\Environment\Environment::getProtocol
+   * @covers \Drupal\helfi_api_base\Environment\Environment::getBaseUrl
+   * @covers \Drupal\helfi_api_base\Environment\Environment::getUrl
+   * @dataProvider environmentMapData
+   */
+  public function testEnvironmentMap(string $envName, string $expected) : void {
+    $env = $this->getEnvironmentResolver()
+      ->getEnvironment(Project::ASUMINEN, $envName);
+    $this->assertEquals($expected, $env->getEnvironmentName());
+  }
+
+  /**
+   * Data provider for testEnvironmentMap().
+   *
+   * @return \string[][]
+   *   The data.
+   */
+  public function environmentMapData() : array {
+    return [
+      ['development', 'dev'],
+      ['devel', 'dev'],
+      ['testing', 'test'],
+      ['production', 'prod'],
+      ['staging', 'stage'],
+    ];
+  }
+
+  /**
+   * @covers ::populateEnvironments
+   * @covers ::__construct
+   * @covers ::getEnvironment
+   * @covers ::mapEnvironmentName
    * @covers ::getProject
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
@@ -197,24 +240,6 @@ class EnvironmentResolverTest extends UnitTestCase {
         'sv',
         'prod',
         'https://www.hel.fi/sv/boende',
-      ],
-      [
-        'asuminen',
-        'sv',
-        'internal',
-        'http://127.0.0.1:8080/sv/boende',
-      ],
-      [
-        'asuminen',
-        'en',
-        'internal',
-        'http://127.0.0.1:8080/en/housing',
-      ],
-      [
-        'asuminen',
-        'fi',
-        'internal',
-        'http://127.0.0.1:8080/fi/asuminen',
       ],
     ];
   }

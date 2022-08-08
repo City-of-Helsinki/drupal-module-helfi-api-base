@@ -10,11 +10,11 @@ namespace Drupal\helfi_api_base\Environment;
 final class EnvironmentResolver {
 
   /**
-   * The cached environments.
+   * The cached projects.
    *
-   * @var array
+   * @var \Drupal\helfi_api_base\Environment\Project[]
    */
-  private array $environments;
+  private array $projects;
 
   /**
    * Constructs a new instance.
@@ -23,7 +23,7 @@ final class EnvironmentResolver {
    *   The path to environments.json file.
    */
   public function __construct(string $path) {
-    $this->populateEnvironments($path);
+    $this->populateProjects($path);
   }
 
   /**
@@ -32,7 +32,7 @@ final class EnvironmentResolver {
    * @param string $path
    *   The path to config.json file.
    */
-  private function populateEnvironments(string $path) : void {
+  private function populateProjects(string $path) : void {
     // Fallback to default environments.json file.
     if ($path === '') {
       $path = __DIR__ . '/../../fixtures/environments.json';
@@ -47,30 +47,22 @@ final class EnvironmentResolver {
       throw new \InvalidArgumentException('Failed to parse projects.');
     }
 
-    foreach ($projects as $name => $project) {
-      foreach ($project as $environment => $settings) {
+    foreach ($projects as $name => $item) {
+      $project = new Project();
+
+      foreach ($item as $environment => $settings) {
         if (!isset($settings['domain'], $settings['path'])) {
           throw new \InvalidArgumentException('Project missing domain or paths setting.');
         }
-        $this->environments[$name][$environment] = new Environment(
+        $project->addEnvironment($environment, new Environment(
           $settings['domain'],
           $settings['path'],
           $settings['protocol'] ?? 'https',
-          $name
-        );
-
-        // Create 'internal' environment that points to currently active
-        // instance. It should contain identical settings with local environment
-        // except for domain.
-        if ($environment === 'local') {
-          $this->environments[$name]['internal'] = new Environment(
-            '127.0.0.1:8080',
-            $settings['path'],
-            'http',
-            $name
-          );
-        }
+          $name,
+          $environment
+        ));
       }
+      $this->projects[$name] = $project;
     }
   }
 
@@ -81,7 +73,7 @@ final class EnvironmentResolver {
    *   The projects.
    */
   public function getProjects() : array {
-    return $this->environments;
+    return $this->projects;
   }
 
   /**
@@ -90,14 +82,14 @@ final class EnvironmentResolver {
    * @param string $project
    *   The project name.
    *
-   * @return \Drupal\helfi_api_base\Environment\Environment[]
-   *   The project environments.
+   * @return \Drupal\helfi_api_base\Environment\Project
+   *   The project.
    */
-  public function getProject(string $project) : array {
-    if (!isset($this->environments[$project])) {
+  public function getProject(string $project) : Project {
+    if (!isset($this->projects[$project])) {
       throw new \InvalidArgumentException(sprintf('Project "%s" not found.', $project));
     }
-    return $this->environments[$project];
+    return $this->projects[$project];
   }
 
   /**
@@ -112,12 +104,8 @@ final class EnvironmentResolver {
    *   The environment.
    */
   public function getEnvironment(string $project, string $environment) : Environment {
-    $project = $this->getProject($project);
-
-    if (!isset($project[$environment])) {
-      throw new \InvalidArgumentException(sprintf('Environment "%s" not found.', $environment));
-    }
-    return $project[$environment];
+    return $this->getProject($project)
+      ->getEnvironment($environment);
   }
 
   /**
@@ -138,41 +126,6 @@ final class EnvironmentResolver {
       }
     }
     throw new \InvalidArgumentException(sprintf('Environment not found by url %s', $url));
-  }
-
-  /**
-   * Temporary mapping function to match APP_ENV with environment resolver.
-   *
-   * @param string $env
-   *   APP_ENV or environment name.
-   *
-   * @return string
-   *   Current environment name translated enviroment resolver enviroment name.
-   */
-  public static function getCurrentEnvironmentName(string $env = NULL) : string {
-    // Dev,test,stage,prod are the environment names in environment resolver.
-    // APP_ENV values on environments doesn't match the environment resolver.
-    // Thus a mapping is required.
-    $env = $env ?? getenv('APP_ENV');
-
-    $environments = [
-      'local' => 'local',
-      'dev' => 'dev',
-      'devel' => 'dev',
-      'development' => 'dev',
-      'test' => 'test',
-      'testing' => 'test',
-      'stage' => 'stage',
-      'staging' => 'stage',
-      'prod' => 'prod',
-      'production' => 'prod',
-    ];
-
-    if (array_key_exists($env, $environments)) {
-      return $environments[$env];
-    }
-
-    throw new \InvalidArgumentException(sprintf('%s is not a proper environment name', $env));
   }
 
 }
