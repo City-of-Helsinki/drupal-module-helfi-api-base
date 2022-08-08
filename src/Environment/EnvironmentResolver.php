@@ -108,24 +108,4 @@ final class EnvironmentResolver {
       ->getEnvironment($environment);
   }
 
-  /**
-   * Find environment by url.
-   *
-   * @param string $url
-   *   Url to search for.
-   *
-   * @return Environment
-   *   Environment object.
-   */
-  public function getEnvironmentByUrl(string $url) : Environment {
-    foreach ($this->getProjects() as $environments) {
-      foreach ($environments as $environment) {
-        if ($environment->getDomain() === $url) {
-          return $environment;
-        }
-      }
-    }
-    throw new \InvalidArgumentException(sprintf('Environment not found by url %s', $url));
-  }
-
 }
