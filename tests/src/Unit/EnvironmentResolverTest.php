@@ -31,6 +31,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::getEnvironment
    * @covers ::getProject
+   * @covers ::getProjects
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
    * @covers \Drupal\helfi_api_base\Environment\Environment::getDomain
@@ -75,6 +76,7 @@ class EnvironmentResolverTest extends UnitTestCase {
   /**
    * @covers ::populateEnvironments
    * @covers ::__construct
+   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @dataProvider populateEnvironmentsExceptionsData
    */
   public function testPopulateEnvironmentsExceptions(string $file, string $message) : void {
@@ -155,6 +157,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\Environment::getProtocol
    * @covers \Drupal\helfi_api_base\Environment\Environment::getBaseUrl
    * @covers \Drupal\helfi_api_base\Environment\Environment::getUrl
+   * @covers \Drupal\helfi_api_base\Environment\Environment::getEnvironmentName
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
    * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
