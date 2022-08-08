@@ -23,7 +23,7 @@ final class EnvironmentResolver {
    *   The path to environments.json file.
    */
   public function __construct(string $path) {
-    $this->populateProjects($path);
+    $this->populateEnvironments($path);
   }
 
   /**
@@ -32,7 +32,7 @@ final class EnvironmentResolver {
    * @param string $path
    *   The path to config.json file.
    */
-  private function populateProjects(string $path) : void {
+  private function populateEnvironments(string $path) : void {
     // Fallback to default environments.json file.
     if ($path === '') {
       $path = __DIR__ . '/../../fixtures/environments.json';
