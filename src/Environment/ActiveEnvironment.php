@@ -12,6 +12,9 @@ use Drupal\Core\Config\ImmutableConfig;
  */
 final class ActiveEnvironment {
 
+  public const PROJECT_NAME_KEY = 'project_name';
+  public const ENVIRONMENT_NAME_KEY = 'environment_name';
+
   /**
    * The configuration.
    *
@@ -78,9 +81,9 @@ final class ActiveEnvironment {
    *   The environment name.
    */
   public function getActiveEnvironmentName() : string {
-    if (!$env = $this->config->get('environment_name')) {
+    if (!$env = $this->config->get(self::ENVIRONMENT_NAME_KEY)) {
       throw new \InvalidArgumentException(
-        $this->configurationMissingExceptionMessage('No active environment found.', 'environment_name')
+        $this->configurationMissingExceptionMessage('No active environment found', self::ENVIRONMENT_NAME_KEY)
       );
     }
     return $env;
@@ -93,9 +96,9 @@ final class ActiveEnvironment {
    *   The project name.
    */
   public function getActiveProjectName() : string {
-    if (!$name = $this->config->get('project_name')) {
+    if (!$name = $this->config->get(self::PROJECT_NAME_KEY)) {
       throw new \InvalidArgumentException(
-        $this->configurationMissingExceptionMessage('No active project found.', 'project_name')
+        $this->configurationMissingExceptionMessage('No active project found', self::PROJECT_NAME_KEY)
       );
     }
     return $name;
