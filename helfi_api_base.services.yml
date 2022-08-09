@@ -13,11 +13,7 @@ services:
 
   helfi_api_base.environment_resolver:
     class: Drupal\helfi_api_base\Environment\EnvironmentResolver
-    arguments: ['%helfi_api_base.environment_file%']
-
-  helfi_api_base.active_environment:
-    class: Drupal\helfi_api_base\Environment\ActiveEnvironment
-    arguments: ['@helfi_api_base.environment_resolver', '@config.factory']
+    arguments: ['%helfi_api_base.environment_file%', '@config.factory']
 
   helfi_api_base.internal_domain_resolver:
     class: Drupal\helfi_api_base\Link\InternalDomainResolver

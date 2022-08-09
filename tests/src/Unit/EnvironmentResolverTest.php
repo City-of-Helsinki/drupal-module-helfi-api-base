@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Unit;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Tests\UnitTestCase;
@@ -17,13 +19,39 @@ use Drupal\Tests\UnitTestCase;
 class EnvironmentResolverTest extends UnitTestCase {
 
   /**
+   * Constructs a new config factory instance.
+   *
+   * @param string|null $projectName
+   *   The project name.
+   * @param string|null $envName
+   *   The environment name.
+   *
+   * @return \Drupal\Core\Config\ConfigFactoryInterface
+   *   The config factory stub.
+   */
+  private function getConfigStub(string $projectName = NULL, string $envName = NULL) :  ConfigFactoryInterface {
+    $config = [];
+
+    if ($projectName) {
+      $config[EnvironmentResolver::PROJECT_NAME_KEY] = $projectName;
+    }
+    if ($envName) {
+      $config[EnvironmentResolver::ENVIRONMENT_NAME_KEY] = $envName;
+    }
+    return $this->getConfigFactoryStub([
+      'helfi_api_base.environment_resolver.settings' => $config,
+    ]);
+  }
+
+  /**
    * Gets the environment resolver.
    *
    * @return \Drupal\helfi_api_base\Environment\EnvironmentResolver
    *   The sut.
    */
-  private function getEnvironmentResolver() : EnvironmentResolver {
-    return new EnvironmentResolver(__DIR__ . '/../../fixtures/environments.json');
+  private function getEnvironmentResolver(string $projectName = NULL, string $envName = NULL) : EnvironmentResolver {
+    $configStub = $this->getConfigStub($projectName, $envName);
+    return new EnvironmentResolver(__DIR__ . '/../../fixtures/environments.json', $configStub);
   }
 
   /**
@@ -41,7 +69,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\Project::mapEnvironmentName
    */
   public function testFallbackEnvironmentFile() : void {
-    $resolver = new EnvironmentResolver('');
+    $resolver = new EnvironmentResolver('', $this->getConfigStub());
     $this->assertTrue(count($resolver->getProjects()) > 5);
   }
 
@@ -61,7 +89,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    */
   public function testProjectConstant() : void {
     $constants = new \ReflectionClass(Project::class);
-    $resolver = new EnvironmentResolver('');
+    $resolver = new EnvironmentResolver('', $this->getConfigStub());
 
     foreach ($constants->getConstants() as $value) {
       $this->assertNotEmpty($resolver->getProject($value));
@@ -82,7 +110,7 @@ class EnvironmentResolverTest extends UnitTestCase {
   public function testPopulateEnvironmentsExceptions(string $file, string $message) : void {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage($message);
-    new EnvironmentResolver($file);
+    new EnvironmentResolver($file, $this->getConfigStub());
   }
 
   /**
@@ -260,6 +288,79 @@ class EnvironmentResolverTest extends UnitTestCase {
         'https://www.hel.fi/sv/boende',
       ],
     ];
+  }
+
+  /**
+   * @covers ::populateEnvironments
+   * @covers ::__construct
+   * @covers ::getEnvironment
+   * @covers ::getProject
+   * @covers ::configurationMissingExceptionMessage
+   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
+   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
+   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
+   */
+  public function testGetActiveProjectException() : void {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessageMatches('/^No active project found./');
+    $this->getEnvironmentResolver()->getActiveProject();
+  }
+
+  /**
+   * @covers ::populateEnvironments
+   * @covers ::__construct
+   * @covers ::getEnvironment
+   * @covers ::getProject
+   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
+   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
+   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::getProject
+   */
+  public function testGetActiveProject() : void {
+    $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'dev');
+    $this->assertInstanceOf(Project::class, $sut->getActiveProject());
+  }
+
+  /**
+   * @covers ::populateEnvironments
+   * @covers ::__construct
+   * @covers ::getEnvironment
+   * @covers ::getProject
+   * @covers ::configurationMissingExceptionMessage
+   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::getProject
+   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
+   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
+   */
+  public function testGetActiveEnvironmentException() : void {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessageMatches('/^No active environment found./');
+    $this->getEnvironmentResolver(Project::ASUMINEN)->getActiveEnvironment();
+  }
+
+  /**
+   * @covers ::populateEnvironments
+   * @covers ::__construct
+   * @covers ::getEnvironment
+   * @covers ::getProject
+   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::getProject
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
+   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
+   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
+   * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
+   * @covers \Drupal\helfi_api_base\Environment\Project::mapEnvironmentName
+   */
+  public function testGetActiveEnvironment() : void {
+    $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'dev');
+    $this->assertInstanceOf(Environment::class, $sut->getActiveEnvironment());
   }
 
 }
