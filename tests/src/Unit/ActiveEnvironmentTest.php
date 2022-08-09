@@ -70,6 +70,7 @@ class ActiveEnvironmentTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::getProject
    */
   public function testGetActiveProject() : void {
     $sut = $this->getActiveEnvironment(Project::ASUMINEN, 'dev');
@@ -86,6 +87,7 @@ class ActiveEnvironmentTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::getProject
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
    */
