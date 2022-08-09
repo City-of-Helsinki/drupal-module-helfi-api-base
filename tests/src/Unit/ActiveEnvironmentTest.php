@@ -44,6 +44,11 @@ class ActiveEnvironmentTest extends UnitTestCase {
     return new ActiveEnvironment($configStub, new EnvironmentResolver(''));
   }
 
+  /**
+   * @covers ::getActiveProject
+   * @covers ::getActiveProjectName
+   * @covers ::__construct
+   */
   public function testGetActiveProjectException() : void {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessageMatches('/^No active project found./');
