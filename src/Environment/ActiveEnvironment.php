@@ -8,7 +8,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
 
 /**
- * Resolvers currently active environment.
+ * Resolves currently active environment.
  */
 final class ActiveEnvironment {
 
