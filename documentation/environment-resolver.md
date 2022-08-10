@@ -36,11 +36,13 @@ $config['helfi_api_base.environment_resolver.settings']['project_name'] = 'liike
 ```
 
 ```php
-/** @var \Drupal\helfi_api_base\Environment\ActiveEnvironment $environment */
-$service = \Drupal::service('helfi_api_base.active_environment');
+/** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $resolver */
+$resolver = \Drupal::service('helfi_api_base.environment_resolver');
 /** @var \Drupal\helfi_api_base\Environment\Environment $environment */
-// See environment resolver for available data.
+// Fetches the currently active project and environment. For example liikenne dev.
 $environment = $service->getActiveEnvironment();
+// Fetches the currently active project. For example liikenne.
+$project = $service->getActiveProject();
 ```
 
 ## Usage in other projects
