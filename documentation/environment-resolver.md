@@ -1,9 +1,11 @@
 # Environment resolver
 
 `helfi_api_base.environment_resolver` service provides a way to fetch environment details for given project/environment.
+`helfi_api_base.active_environment` service provides a way to fetch currently active environment.
 
 ## Usage
 
+### Environment resolver
 ```php
 // See \Drupal\helfi_api_base\Environment\Project for all available project constants.
 $projectName = \Drupal\helfi_api_base\Environment\Project::ASUMINEN;
@@ -23,9 +25,25 @@ $baseUrl = $environment->getBaseUrl();
 // $baseUrl = 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi';
 ```
 
-You can use `internal` environment to reference to current instance. This is useful when you need to create API requests against current instance for example.
+### Active environment
 
-Internal environment will always default to `http://127.0.0.1:8080` domain.
+This requires `helfi_api_base.environment_resolver.settings` configuration to be set properly:
+
+```php
+# settings.php
+$config['helfi_api_base.environment_resolver.settings']['environment_name'] = getenv('APP_ENV');
+$config['helfi_api_base.environment_resolver.settings']['project_name'] = 'liikenne';
+```
+
+```php
+/** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $resolver */
+$resolver = \Drupal::service('helfi_api_base.environment_resolver');
+/** @var \Drupal\helfi_api_base\Environment\Environment $environment */
+// Fetches the currently active project and environment. For example liikenne dev.
+$environment = $service->getActiveEnvironment();
+// Fetches the currently active project. For example liikenne.
+$project = $service->getActiveProject();
+```
 
 ## Usage in other projects
 

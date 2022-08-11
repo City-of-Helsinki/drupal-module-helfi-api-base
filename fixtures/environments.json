@@ -6,7 +6,8 @@
         "sv": "/sv/boende",
         "en": "/en/housing"
       },
-      "domain": "helfi-asuminen.docker.so"
+      "protocol": "http",
+      "domain": "helfi-asuminen.docker.so:8080"
     },
     "dev": {
       "path": {
@@ -48,7 +49,8 @@
         "sv": "/sv",
         "en": "/en"
       },
-      "domain": "helfi-etusivu.docker.so"
+      "protocol": "http",
+      "domain": "helfi-etusivu.docker.so:8080"
     },
     "dev": {
       "path": {
@@ -90,7 +92,8 @@
         "sv": "/sv/fostran-och-utbildning",
         "en": "/en/childhood-and-education"
       },
-      "domain": "helfi-kasko.docker.so"
+      "protocol": "http",
+      "domain": "helfi-kasko.docker.so:8080"
     },
     "dev": {
       "path": {
@@ -132,7 +135,8 @@
         "sv": "/sv/kultur-och-fritid",
         "en": "/en/culture-and-leisure"
       },
-      "domain": "helfi-kuva.docker.so"
+      "protocol": "http",
+      "domain": "helfi-kuva.docker.so:8080"
     },
     "dev": {
       "path": {
@@ -174,7 +178,8 @@
         "sv": "/sv/stadsmiljo-och-trafik",
         "en": "/en/urban-environment-and-traffic"
       },
-      "domain": "helfi-kymp.docker.so"
+      "protocol": "http",
+      "domain": "helfi-kymp.docker.so:8080"
     },
     "dev": {
       "path": {
@@ -216,7 +221,8 @@
         "sv": "/sv/lediga-jobb",
         "en": "/en/open-jobs"
       },
-      "domain": "helfi-rekry.docker.so"
+      "protocol": "http",
+      "domain": "helfi-rekry.docker.so:8080"
     },
     "dev": {
       "path": {
@@ -258,7 +264,8 @@
         "sv": "/sv/beslutsfattande-och-forvaltning",
         "en": "/en/decision-making"
       },
-      "domain": "strategia.docker.so"
+      "protocol": "http",
+      "domain": "strategia.docker.so:8080"
     },
     "dev": {
       "path": {
@@ -300,7 +307,8 @@
         "sv": "/sv/social-och-halsovardstjanster",
         "en": "/en/health-and-social-services"
       },
-      "domain": "helfi-sote.docker.so"
+      "protocol": "http",
+      "domain": "helfi-sote.docker.so:8080"
     },
     "dev": {
       "path": {
@@ -342,7 +350,8 @@
         "sv": "/sv/foretag-och-arbete",
         "en": "/en/business-and-work"
       },
-      "domain": "helfi-elo.docker.so"
+      "protocol": "http",
+      "domain": "helfi-elo.docker.so:8080"
     },
     "dev": {
       "path": {
