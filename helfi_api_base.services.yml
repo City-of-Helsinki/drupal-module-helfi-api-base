@@ -50,3 +50,9 @@ services:
     arguments: ['@http_client']
     tags:
       - { name: helfi_api_base.version_checker }
+
+  helfi_api_base.environment_response_subscriber:
+    class: Drupal\helfi_api_base\EventSubscriber\EnvironmentResponseSubscriber
+    arguments: ['@helfi_api_base.environment_resolver']
+    tags:
+      - { name: event_subscriber }
