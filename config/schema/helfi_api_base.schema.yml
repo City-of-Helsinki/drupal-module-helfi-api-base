@@ -3,7 +3,7 @@ action.configuration.remote_entity:migration_update:*:
   label: 'Update given remote entity'
 
 helfi_api_base.environment_resolver.settings:
-  type: mapping
+  type: config_entity
   mapping:
     environment_name:
       type: string
