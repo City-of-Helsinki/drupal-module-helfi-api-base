@@ -77,7 +77,7 @@ abstract class ApiKernelTestBase extends EntityKernelTestBase implements Service
   ): Request {
     $document = $document ? Json::encode($document) : NULL;
 
-    $request = Request::create($uri, $method, $parameters, [], [], [], $document ? Json::encode($document) : NULL);
+    $request = Request::create($uri, $method, $parameters, [], [], [], $document);
     if ($document !== []) {
       $request->headers->set('Content-Type', 'application/json');
     }
