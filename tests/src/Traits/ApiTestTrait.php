@@ -36,6 +36,8 @@ trait ApiTestTrait {
    *
    * @param array $container
    *   The container.
+   * @param \Psr\Http\Message\ResponseInterface[]|\GuzzleHttp\Exception\GuzzleException[] $responses
+   *   The expected responses.
    *
    * @return \GuzzleHttp\Client
    *   The client.
