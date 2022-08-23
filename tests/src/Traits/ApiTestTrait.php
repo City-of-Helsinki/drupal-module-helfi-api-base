@@ -8,6 +8,7 @@ use Drupal\Core\Extension\ExtensionPathResolver;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 
 /**
  * Provides shared functionality for api tests.
@@ -26,6 +27,24 @@ trait ApiTestTrait {
   protected function createMockHttpClient(array $responses) : Client {
     $mock = new MockHandler($responses);
     $handlerStack = HandlerStack::create($mock);
+
+    return new Client(['handler' => $handlerStack]);
+  }
+
+  /**
+   * Creates HTTP history middleware client stub.
+   *
+   * @param array $container
+   *   The container.
+   *
+   * @return \GuzzleHttp\Client
+   *   The client.
+   */
+  protected function createMockHistoryMiddlewareHttpClient(array &$container, array $responses = []) : Client {
+    $history = Middleware::history($container);
+    $mock = new MockHandler($responses);
+    $handlerStack = HandlerStack::create($mock);
+    $handlerStack->push($history);
 
     return new Client(['handler' => $handlerStack]);
   }
