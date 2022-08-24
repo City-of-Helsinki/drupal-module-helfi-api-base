@@ -50,7 +50,7 @@ trait CacheKeyTrait {
    */
   protected function getCacheKey(string $baseKey, array $options = []) : string {
     if ($optionsKey = $this->requestOptionsToCacheKey('', $options)) {
-      return sprintf('%s:%s', $baseKey, md5($optionsKey));
+      return sprintf('%s:%s', $baseKey, $optionsKey);
     }
     return $baseKey;
   }
