@@ -64,6 +64,17 @@ class CacheKeyTraitTest extends UnitTestCase {
           'key2' => ['value2', 'key3' => 'value3'],
         ],
       ],
+      // Make sure non-scalar values are ignored.
+      [
+        'test:4:value',
+        'test:4',
+        [
+          'value',
+          [
+            (object) ['key' => 'value'],
+          ],
+        ],
+      ],
     ];
   }
 

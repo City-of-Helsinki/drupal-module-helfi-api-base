@@ -49,10 +49,10 @@ trait CacheKeyTrait {
    *   The cache key.
    */
   protected function getCacheKey(string $baseKey, array $options = []) : string {
-    if ($optionsKey = $this->requestOptionsToCacheKey('', $options)) {
-      return sprintf('%s:%s', $baseKey, $optionsKey);
-    }
-    return $baseKey;
+    return rtrim(
+      sprintf('%s:%s', $baseKey, $this->requestOptionsToCacheKey('', $options)),
+      ':'
+    );
   }
 
 }
