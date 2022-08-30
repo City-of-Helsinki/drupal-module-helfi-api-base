@@ -46,11 +46,21 @@ final class InternalDomainResolver {
       return FALSE;
     }
 
-    // Allow whitelisted links to act as an internal.
-    return !in_array(
-      parse_url($url->getUri(), PHP_URL_HOST),
-      $this->getDomains()
-    );
+    $host = parse_url($url->getUri(), PHP_URL_HOST);
+
+    foreach ($this->getDomains() as $domain) {
+      // Support wildcard domains.
+      if (
+        str_starts_with($domain, '*.') &&
+        str_ends_with($host, substr($domain, 2))
+      ) {
+        return FALSE;
+      }
+      if ($domain === $host) {
+        return FALSE;
+      }
+    }
+    return TRUE;
   }
 
 }
