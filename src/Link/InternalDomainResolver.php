@@ -49,14 +49,11 @@ final class InternalDomainResolver {
     $host = parse_url($url->getUri(), PHP_URL_HOST);
 
     foreach ($this->getDomains() as $domain) {
-      // Support wildcard domains.
       if (
-        str_starts_with($domain, '*.') &&
-        str_ends_with($host, substr($domain, 2))
+        // Support wildcard domains (*.docker.so for example).
+        (str_starts_with($domain, '*.') && str_ends_with($host, substr($domain, 2))) ||
+        $domain === $host
       ) {
-        return FALSE;
-      }
-      if ($domain === $host) {
         return FALSE;
       }
     }
