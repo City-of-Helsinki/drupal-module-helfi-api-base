@@ -50,16 +50,17 @@ final class InternalDomainResolver {
       return TRUE;
     }
 
+    $isExternal = TRUE;
     foreach ($this->getDomains() as $domain) {
       if (
         // Support wildcard domains (*.docker.so for example).
         (str_starts_with($domain, '*.') && str_ends_with($host, substr($domain, 2))) ||
         $domain === $host
       ) {
-        return FALSE;
+        $isExternal = FALSE;
       }
     }
-    return TRUE;
+    return $isExternal;
   }
 
 }
