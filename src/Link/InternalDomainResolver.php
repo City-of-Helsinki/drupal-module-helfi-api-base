@@ -46,7 +46,9 @@ final class InternalDomainResolver {
       return FALSE;
     }
 
-    $host = parse_url($url->getUri(), PHP_URL_HOST);
+    if (!$host = parse_url($url->getUri(), PHP_URL_HOST)) {
+      return TRUE;
+    }
 
     foreach ($this->getDomains() as $domain) {
       if (
