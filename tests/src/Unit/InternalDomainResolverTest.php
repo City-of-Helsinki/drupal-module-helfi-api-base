@@ -39,7 +39,7 @@ class InternalDomainResolverTest extends UnitTestCase {
    */
   public function testIsExternal(string $url, bool $expectedExternal) : void {
     $url = Url::fromUri($url);
-    // Mark www.hel.fi as internal.
+    // Mark www.hel.fi and all docker.so addresses as internal.
     $sut = new InternalDomainResolver(['www.hel.fi', '*.docker.so']);
     $this->assertEquals($expectedExternal, $sut->isExternal($url));
   }
