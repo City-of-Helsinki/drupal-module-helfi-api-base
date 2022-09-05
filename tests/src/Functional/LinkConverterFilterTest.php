@@ -119,6 +119,11 @@ class LinkConverterFilterTest extends BrowserTestBase {
     $children = $element->find('css', '.helfi-external-link');
     $this->assertEquals('This is external link', $children->getText());
 
+    // Make sure links without host are not marked as external.
+    $element = $this->getSession()->getPage()->find('css', '.no-href');
+    $this->assertFalse($element->hasAttribute('data-protocol'));
+    $this->assertFalse($element->hasAttribute('data-is-external'));
+
     // Make sure whitelisted external URLs are not marked as external.
     $element = $this->getSession()->getPage()->find('css', '.whitelisted-external-link');
     $this->assertFalse($element->hasAttribute('data-protocol'));
@@ -143,6 +148,7 @@ class LinkConverterFilterTest extends BrowserTestBase {
       $this->assertEquals($type, $element->getAttribute('data-protocol'));
       $children = $element->find('css', sprintf('.helfi-%s-link', $type));
       $this->assertEquals(sprintf('This is %s link', $type), $children->getText());
+      $this->assertFalse($children->hasAttribute('data-is-external'));
     }
     $element = $this->getSession()->getPage()->find('css', '.nested-dom-link');
     $children = $element->find('css', '.nested');

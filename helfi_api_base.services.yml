@@ -6,6 +6,7 @@ parameters:
     - 'www.hel.fi'
     - 'paatokset.hel.fi'
     - 'avustukset.hel.fi'
+    - '*.docker.so'
 services:
   logger.channel.helfi_api_base:
     parent: logger.channel_base

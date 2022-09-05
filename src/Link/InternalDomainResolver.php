@@ -46,11 +46,21 @@ final class InternalDomainResolver {
       return FALSE;
     }
 
-    // Allow whitelisted links to act as an internal.
-    return !in_array(
-      parse_url($url->getUri(), PHP_URL_HOST),
-      $this->getDomains()
-    );
+    if (!$host = parse_url($url->getUri(), PHP_URL_HOST)) {
+      return TRUE;
+    }
+
+    $isExternal = TRUE;
+    foreach ($this->getDomains() as $domain) {
+      if (
+        // Support wildcard domains (*.docker.so for example).
+        (str_starts_with($domain, '*.') && str_ends_with($host, substr($domain, 2))) ||
+        $domain === $host
+      ) {
+        $isExternal = FALSE;
+      }
+    }
+    return $isExternal;
   }
 
 }
