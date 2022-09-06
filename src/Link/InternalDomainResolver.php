@@ -58,6 +58,7 @@ final class InternalDomainResolver {
         $domain === $host
       ) {
         $isExternal = FALSE;
+        break;
       }
     }
     return $isExternal;
