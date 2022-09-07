@@ -37,10 +37,13 @@ class InternalDomainResolverTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::getDomains
    */
-  public function testIsExternal(string $url, bool $expectedExternal) : void {
+  public function testIsExternal(?string $url, bool $expectedExternal) : void {
     $url = Url::fromUri($url);
-    // Mark www.hel.fi and all docker.so addresses as internal.
-    $sut = new InternalDomainResolver(['www.hel.fi', '*.docker.so']);
+    $sut = new InternalDomainResolver([
+      'www.hel.fi',
+      '*.docker.so',
+      'avustukset.hel.fi',
+    ]);
     $this->assertEquals($expectedExternal, $sut->isExternal($url));
   }
 
@@ -58,6 +61,8 @@ class InternalDomainResolverTest extends UnitTestCase {
       ['https://www.hel.fi', FALSE],
       ['https://kymp.docker.so', FALSE],
       ['https://helfi-proxy.docker.so/test', FALSE],
+      ['tel:+358123456', TRUE],
+      ['mailto:admin@example.com', TRUE],
     ];
   }
 
