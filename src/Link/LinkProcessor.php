@@ -31,10 +31,7 @@ final class LinkProcessor extends Link {
       if ($resolver->isExternal($element['#url'])) {
         $element['#attributes']['data-is-external'] = 'true';
 
-        $scheme = parse_url($element['#url']->getUri(), PHP_URL_SCHEME);
-
-        // Skip generic schemes since we're not interested in them.
-        if (!in_array($scheme, ['http', 'https'])) {
+        if ($scheme = $resolver->getProtocol($element['#url'])) {
           $element['#attributes']['data-protocol'] = $scheme;
         }
       }
