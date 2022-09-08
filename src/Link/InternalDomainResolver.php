@@ -34,6 +34,25 @@ final class InternalDomainResolver {
   }
 
   /**
+   * Gets the url protocol.
+   *
+   * @param \Drupal\Core\Url $url
+   *   The URL.
+   *
+   * @return string|null
+   *   The protocol.
+   */
+  public function getProtocol(Url $url) : ? string {
+    if (!$url->isExternal()) {
+      return NULL;
+    }
+    $scheme = parse_url($url->getUri(), PHP_URL_SCHEME);
+
+    // Skip generic schemes since we're not interested in them.
+    return !in_array($scheme, ['http', 'https']) ? $scheme : NULL;
+  }
+
+  /**
    * Checks if the given URL is external.
    *
    * This is used to whitelist certain domains as internal.

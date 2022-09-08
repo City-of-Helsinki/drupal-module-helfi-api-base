@@ -66,4 +66,41 @@ class InternalDomainResolverTest extends UnitTestCase {
     ];
   }
 
+  /**
+   * Tests getProtocol().
+   *
+   * @covers ::__construct
+   * @covers ::getDomains
+   * @covers ::getProtocol
+   *
+   * @dataProvider getProtocolData
+   */
+  public function testGetProtocol(string $url, ?string $expected) : void {
+    $url = Url::fromUri($url);
+    $sut = new InternalDomainResolver([
+      'www.hel.fi',
+      '*.docker.so',
+      'avustukset.hel.fi',
+    ]);
+    $this->assertEquals($expected, $sut->getProtocol($url));
+  }
+
+  /**
+   * Data provider for testGetProtocol().
+   *
+   * @return array[]
+   *   The data.
+   */
+  public function getProtocolData() : array {
+    return [
+      ['entity:node/1', NULL],
+      ['internal:/test', NULL],
+      ['https://example.com', NULL],
+      ['https://www.hel.fi', NULL],
+      ['tel:+123456', 'tel'],
+      ['mailto:admin@example.com', 'mailto'],
+      ['steam://test', 'steam'],
+    ];
+  }
+
 }
