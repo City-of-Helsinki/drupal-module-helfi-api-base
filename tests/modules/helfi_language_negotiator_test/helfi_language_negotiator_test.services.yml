@@ -1,0 +1,6 @@
+services:
+  helfi_language_negotiator_test.language_negotiator:
+    class: Drupal\helfi_language_negotiator_test\LanguageNegotiator
+    arguments: ['@language_manager', '@plugin.manager.language_negotiation_method', '@config.factory', '@settings', '@request_stack']
+    calls:
+      - [initLanguageManager]
