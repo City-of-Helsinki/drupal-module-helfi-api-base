@@ -19,10 +19,8 @@ class LanguageNegotiatorTest extends KernelTestBase {
    */
   protected static $modules = [
     'helfi_api_base',
-    'language',
-    'config_translation',
-    'content_translation',
     'helfi_language_negotiator_test',
+    'language',
   ];
 
   /**

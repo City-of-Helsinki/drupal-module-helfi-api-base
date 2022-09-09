@@ -23,6 +23,8 @@ trait LanguageManagerTrait {
    * Setup languages.
    */
   protected function setupLanguages() : void {
+    \Drupal::moduleHandler()->getModule('helfi_language_negotiator_test');
+
     foreach (['fi', 'sv'] as $langcode) {
       ConfigurableLanguage::createFromLangcode($langcode)->save();
     }
