@@ -21,14 +21,24 @@ trait LanguageManagerTrait {
 
   /**
    * Setup languages.
+   *
+   * @throws \Drupal\Core\Extension\Exception\UnknownExtensionException
    */
   protected function setupLanguages() : void {
-    \Drupal::moduleHandler()->getModule('helfi_language_negotiator_test');
-
     foreach (['fi', 'sv'] as $langcode) {
       ConfigurableLanguage::createFromLangcode($langcode)->save();
     }
     $this->installConfig(['language']);
+
+    \Drupal::moduleHandler()->getModule('helfi_language_negotiator_test');
+    $types = $this->config('language.types')->get('negotiation');
+
+    foreach ($types as $key => $value) {
+      $types[$key]['enabled']['language-selected'] = -1;
+    }
+    $this->config('language.types')->set('negotiation', $types)->save();
+    // Override the language manager to make sure it's available everywhere.
+    $this->container->set('language_manager', $this->languageManager());
   }
 
   /**

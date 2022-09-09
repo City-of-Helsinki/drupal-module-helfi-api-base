@@ -22,7 +22,6 @@ class LanguageNegotiator extends CoreLanguageNegotiator {
    * {@inheritdoc}
    */
   public function initializeType($type) : array {
-    $id = static::METHOD_ID;
     $availableLanguages = $this->languageManager->getLanguages();
 
     if ($this->languageCode && isset($availableLanguages[$this->languageCode])) {
@@ -33,7 +32,7 @@ class LanguageNegotiator extends CoreLanguageNegotiator {
       $language = $this->languageManager->getDefaultLanguage();
     }
 
-    return [$id => $language];
+    return [static::METHOD_ID => $language];
   }
 
   /**

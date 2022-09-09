@@ -3,4 +3,5 @@ type: module
 package: Custom
 core_version_requirement: ^9 || ^10
 dependencies:
+  - language
   - helfi_api_base

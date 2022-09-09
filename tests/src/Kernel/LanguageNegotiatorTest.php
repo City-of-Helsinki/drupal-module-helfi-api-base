@@ -40,7 +40,7 @@ class LanguageNegotiatorTest extends KernelTestBase {
 
     foreach (['fi', 'sv'] as $language) {
       $this->setOverrideLanguageCode($language);
-      $this->assertEquals($language, $this->languageManager()->getCurrentLanguage()->getId());
+      $this->assertEquals($language, $this->container->get('language_manager')->getCurrentLanguage()->getId());
     }
   }
 
