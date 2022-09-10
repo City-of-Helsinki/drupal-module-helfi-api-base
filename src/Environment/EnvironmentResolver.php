@@ -10,7 +10,7 @@ use Drupal\Core\Config\ImmutableConfig;
 /**
  * Environment resolver.
  */
-final class EnvironmentResolver {
+final class EnvironmentResolver implements EnvironmentResolverInterface {
 
   public const PROJECT_NAME_KEY = 'project_name';
   public const ENVIRONMENT_NAME_KEY = 'environment_name';
@@ -83,20 +83,14 @@ final class EnvironmentResolver {
   }
 
   /**
-   * Gets all projects.
-   *
-   * @return array
-   *   The projects.
+   * {@inheritdoc}
    */
   public function getProjects() : array {
     return $this->projects;
   }
 
   /**
-   * Gets the currently active project.
-   *
-   * @return \Drupal\helfi_api_base\Environment\Project
-   *   The currently active project.
+   * {@inheritdoc}
    */
   public function getActiveProject() : Project {
     if (!$name = $this->config->get(self::PROJECT_NAME_KEY)) {
@@ -109,10 +103,7 @@ final class EnvironmentResolver {
   }
 
   /**
-   * Gets the currently active environment.
-   *
-   * @return \Drupal\helfi_api_base\Environment\Environment
-   *   The currently active environment.
+   * {@inheritdoc}
    */
   public function getActiveEnvironment() : Environment {
     if (!$env = $this->config->get(self::ENVIRONMENT_NAME_KEY)) {
@@ -140,13 +131,7 @@ final class EnvironmentResolver {
   }
 
   /**
-   * Gets the project data.
-   *
-   * @param string $project
-   *   The project name.
-   *
-   * @return \Drupal\helfi_api_base\Environment\Project
-   *   The project.
+   * {@inheritdoc}
    */
   public function getProject(string $project) : Project {
     if (!isset($this->projects[$project])) {
@@ -156,15 +141,7 @@ final class EnvironmentResolver {
   }
 
   /**
-   * Gets the environment for given project.
-   *
-   * @param string $project
-   *   The project name.
-   * @param string $environment
-   *   The environment name.
-   *
-   * @return \Drupal\helfi_api_base\Environment\Environment
-   *   The environment.
+   * {@inheritdoc}
    */
   public function getEnvironment(string $project, string $environment) : Environment {
     return $this->getProject($project)
