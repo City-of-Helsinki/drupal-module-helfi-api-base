@@ -141,6 +141,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\Environment::getProtocol
    * @covers \Drupal\helfi_api_base\Environment\Environment::getBaseUrl
    * @covers \Drupal\helfi_api_base\Environment\Environment::getUrl
+   * @covers \Drupal\helfi_api_base\Environment\Environment::doGetUrl
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
    * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
@@ -185,6 +186,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\Environment::getProtocol
    * @covers \Drupal\helfi_api_base\Environment\Environment::getBaseUrl
    * @covers \Drupal\helfi_api_base\Environment\Environment::getUrl
+   * @covers \Drupal\helfi_api_base\Environment\Environment::doGetUrl
    * @covers \Drupal\helfi_api_base\Environment\Environment::getEnvironmentName
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
@@ -222,9 +224,11 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
    * @covers \Drupal\helfi_api_base\Environment\Environment::getUrl
+   * @covers \Drupal\helfi_api_base\Environment\Environment::doGetUrl
    * @covers \Drupal\helfi_api_base\Environment\Environment::getDomain
    * @covers \Drupal\helfi_api_base\Environment\Environment::getProtocol
    * @covers \Drupal\helfi_api_base\Environment\Environment::getBaseUrl
+   * @covers \Drupal\helfi_api_base\Environment\Environment::getInternalAddress
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
    * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
@@ -235,12 +239,18 @@ class EnvironmentResolverTest extends UnitTestCase {
     string $project,
     string $language,
     string $environment,
-    string $expected
+    string $expected,
+    string $expectedInternal
   ) : void {
     $url = $this->getEnvironmentResolver()
       ->getEnvironment($project, $environment)
       ->getUrl($language);
     $this->assertEquals($expected, $url);
+
+    $internalUrl = $this->getEnvironmentResolver()
+      ->getEnvironment($project, $environment)
+      ->getInternalAddress($language);
+    $this->assertEquals($expectedInternal, $internalUrl);
   }
 
   /**
@@ -256,11 +266,13 @@ class EnvironmentResolverTest extends UnitTestCase {
         'fi',
         'dev',
         'https://helfi-asuminen-dev.docker.so/fi/dev-asuminen',
+        'https://helfi-asuminen-dev.docker.so/fi/dev-asuminen',
       ],
       [
         'asuminen',
         'en',
         'dev',
+        'https://helfi-asuminen-dev.docker.so/en/dev-housing',
         'https://helfi-asuminen-dev.docker.so/en/dev-housing',
       ],
       [
@@ -268,11 +280,13 @@ class EnvironmentResolverTest extends UnitTestCase {
         'sv',
         'dev',
         'https://helfi-asuminen-dev.docker.so/sv/dev-boende',
+        'https://helfi-asuminen-dev.docker.so/sv/dev-boende',
       ],
       [
         'asuminen',
         'fi',
         'prod',
+        'https://www.hel.fi/fi/asuminen',
         'https://www.hel.fi/fi/asuminen',
       ],
       [
@@ -280,12 +294,21 @@ class EnvironmentResolverTest extends UnitTestCase {
         'en',
         'prod',
         'https://www.hel.fi/en/housing',
+        'https://www.hel.fi/en/housing',
       ],
       [
         'asuminen',
         'sv',
         'prod',
         'https://www.hel.fi/sv/boende',
+        'https://www.hel.fi/sv/boende',
+      ],
+      [
+        'asuminen',
+        'sv',
+        'local',
+        'https://helfi-asuminen.docker.so/sv/boende',
+        'http://helfi-asuminen.docker.so:8080/sv/boende',
       ],
     ];
   }

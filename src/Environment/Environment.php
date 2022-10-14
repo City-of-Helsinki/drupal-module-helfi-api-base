@@ -63,7 +63,23 @@ final class Environment {
   }
 
   /**
-   * Gets the base URL for given language.
+   * Gets the original URL for given language.
+   *
+   * @param string $language
+   *   The language.
+   *
+   * @return string
+   *   The URL.
+   */
+  private function doGetUrl(string $language) : string {
+    return vsprintf('%s/%s', [
+      $this->getBaseUrl(),
+      ltrim($this->getPath($language), '/'),
+    ]);
+  }
+
+  /**
+   * Gets the full URL for given language.
    *
    * @param string $language
    *   The language.
@@ -72,10 +88,24 @@ final class Environment {
    *   The URL.
    */
   public function getUrl(string $language) : string {
-    return vsprintf('%s/%s', [
-      $this->getBaseUrl(),
-      ltrim($this->getPath($language), '/'),
-    ]);
+    $url = $this->doGetUrl($language);
+    // Local uses an internal address by default, to allow containers to
+    // communicate via API requests. Convert URL back to a proper link that work
+    // with browsers.
+    return str_replace(['http://', ':8080'], ['https://', ''], $url);
+  }
+
+  /**
+   * Gets the canonical URL for given language.
+   *
+   * @param string $language
+   *   The language.
+   *
+   * @return string
+   *   The canonical URL.
+   */
+  public function getInternalAddress(string $language) : string {
+    return $this->doGetUrl($language);
   }
 
   /**
