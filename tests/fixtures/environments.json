@@ -6,7 +6,8 @@
         "sv": "/sv/boende",
         "en": "/en/housing"
       },
-      "domain": "helfi-asuminen.docker.so"
+      "protocol": "http",
+      "domain": "helfi-asuminen.docker.so:8080"
     },
     "prod": {
       "path": {
