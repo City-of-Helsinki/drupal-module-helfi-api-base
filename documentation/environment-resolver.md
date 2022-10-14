@@ -13,7 +13,10 @@ $projectName = \Drupal\helfi_api_base\Environment\Project::ASUMINEN;
 $resolver = \Drupal::service('helfi_api_base.environment_resolver');
 /** @var \Drupal\helfi_api_base\Environment\Environment $environment */
 $environment = $resolver->getEnvironment($projectName, 'dev');
+// A canonical URL.
 $url = $environment->getUrl('fi');
+// An internal address that is guaranteed to work for inter container communication (API requests for example).
+$internalUrl = $environment->getInternalAddress('fi');
 $path = $environment->getPath('fi');
 $domain = $environment->getDomain();
 $baseUrl = $environment->getBaseUrl();
