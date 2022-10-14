@@ -89,8 +89,8 @@ final class Environment {
    */
   public function getUrl(string $language) : string {
     $url = $this->doGetUrl($language);
-    // Local uses an internal address by default, to allow containers to
-    // communicate via API requests. Convert URL back to a proper link that work
+    // Local uses an internal address by default to allow containers to
+    // communicate via API requests. Convert URL back to a proper link that works
     // with browsers.
     return str_replace(['http://', ':8080'], ['https://', ''], $url);
   }
