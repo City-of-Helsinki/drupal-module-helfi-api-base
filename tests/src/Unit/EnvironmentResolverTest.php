@@ -357,6 +357,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::getProject
    * @covers ::configurationMissingExceptionMessage
    * @covers ::getActiveEnvironment
+   * @covers ::getActiveEnvironmentName
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
@@ -365,6 +366,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
    */
   public function testGetActiveEnvironmentException() : void {
+    putenv('APP_ENV=');
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessageMatches('/^No active environment found./');
     $this->getEnvironmentResolver(Project::ASUMINEN)->getActiveEnvironment();
@@ -373,9 +375,25 @@ class EnvironmentResolverTest extends UnitTestCase {
   /**
    * @covers ::populateEnvironments
    * @covers ::__construct
+   * @covers ::getActiveEnvironmentName
+   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
+   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
+   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
+   */
+  public function testGetActiveEnvironmentFallback() : void {
+    // Make sure environment resolver fallbacks to APP_ENV env variable when
+    // active environment configuration is not set.
+    putenv('APP_ENV=random');
+    $this->assertEquals('random', $this->getEnvironmentResolver(Project::ASUMINEN)->getActiveEnvironmentName());
+  }
+
+  /**
+   * @covers ::populateEnvironments
+   * @covers ::__construct
    * @covers ::getEnvironment
    * @covers ::getProject
    * @covers ::getActiveEnvironment
+   * @covers ::getActiveEnvironmentName
    * @covers ::getActiveProject
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
