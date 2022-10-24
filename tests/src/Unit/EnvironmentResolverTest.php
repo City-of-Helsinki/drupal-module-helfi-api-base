@@ -376,6 +376,9 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::populateEnvironments
    * @covers ::__construct
    * @covers ::getActiveEnvironmentName
+   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
+   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
+   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
    */
   public function testGetActiveEnvironmentFallback() : void {
     // Make sure environment resolver fallbacks to APP_ENV env variable when
