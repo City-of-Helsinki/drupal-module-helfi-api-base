@@ -103,14 +103,30 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * Gets the active environment configuration.
+   *
+   * @return string
+   *   The active environment name.
    */
-  public function getActiveEnvironment() : Environment {
+  public function getActiveEnvironmentName() : string {
     if (!$env = $this->config->get(self::ENVIRONMENT_NAME_KEY)) {
+      // Fallback to APP_ENV env variable.
+      $env = getenv('APP_ENV');
+    }
+    if (!$env) {
       throw new \InvalidArgumentException(
         $this->configurationMissingExceptionMessage('No active environment found', self::ENVIRONMENT_NAME_KEY)
       );
     }
+    return $env;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getActiveEnvironment() : Environment {
+    $env = $this->getActiveEnvironmentName();
+
     return $this->getActiveProject()
       ->getEnvironment($env);
   }

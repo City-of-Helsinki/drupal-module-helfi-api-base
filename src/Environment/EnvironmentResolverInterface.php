@@ -34,6 +34,14 @@ interface EnvironmentResolverInterface {
   public function getActiveEnvironment() : Environment;
 
   /**
+   * Gets the active environment configuration.
+   *
+   * @return string
+   *   The active environment name.
+   */
+  public function getActiveEnvironmentName() : string;
+
+  /**
    * Gets the project data.
    *
    * @param string $project
