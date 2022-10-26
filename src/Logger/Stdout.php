@@ -28,9 +28,8 @@ final class Stdout implements LoggerInterface {
   /**
    * {@inheritdoc}
    */
-  public function log($level, $message, array $context = []) {
-    // Do nothing when running tests.
-    if (drupal_valid_test_ua()) {
+  public function log($level, $message, array $context = []) : void {
+    if (php_sapi_name() === 'cli') {
       return;
     }
     global $base_url;
