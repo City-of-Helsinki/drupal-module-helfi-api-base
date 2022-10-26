@@ -78,22 +78,10 @@ function helfi_api_base_update_9003() : void {
  * Disable syslog module and enable filelog.
  */
 function helfi_api_base_update_9004() : void {
-  Drupal::service('module_installer')->uninstall([
+  \Drupal::service('module_installer')->uninstall([
     'syslog',
   ]);
-  Drupal::service('module_installer')->install([
+  \Drupal::service('module_installer')->install([
     'filelog',
-  ]);
-}
-
-/**
- * Disable filelog module, enable log_stdout module.
- */
-function helfi_api_base_update_9005() : void {
-  Drupal::service('module_installer')->uninstall([
-    'filelog',
-  ]);
-  Drupal::service('module_installer')->install([
-    'log_stdout',
   ]);
 }
