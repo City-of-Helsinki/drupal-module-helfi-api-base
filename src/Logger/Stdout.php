@@ -61,4 +61,3 @@ final class Stdout implements LoggerInterface {
   }
 
 }
-
