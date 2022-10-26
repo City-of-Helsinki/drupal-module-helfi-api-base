@@ -93,7 +93,4 @@ function helfi_api_base_update_9005() : void {
   Drupal::service('module_installer')->uninstall([
     'filelog',
   ]);
-  Drupal::service('module_installer')->install([
-    'log_stdout',
-  ]);
 }

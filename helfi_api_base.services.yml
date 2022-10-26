@@ -57,3 +57,9 @@ services:
     arguments: ['@helfi_api_base.environment_resolver']
     tags:
       - { name: event_subscriber }
+
+  helfi_api_base.logger_stdout:
+    class: Drupal\helfi_api_base\Logger\Stdout
+    arguments: ['@logger.log_message_parser']
+    tags:
+      - { name: logger }
