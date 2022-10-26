@@ -3,6 +3,6 @@ type: module
 package: Custom
 core_version_requirement: ^9 || ^10
 dependencies:
-  - migrate
-  - entity
-  - filelog
+  - drupal:migrate
+  - drupal:entity
+  - drupal:log_stdout
