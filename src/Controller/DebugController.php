@@ -43,7 +43,19 @@ final class DebugController extends ControllerBase {
   }
 
   /**
+   * Tests invalid argument exception.
+   *
+   * @todo Remove this.
+   */
+  public function exceptionTest() : array {
+    throw new \InvalidArgumentException('Test');
+  }
+
+  /**
    * Builds the response.
+   *
+   * @return array
+   *   The response.
    */
   public function build() : array {
     $build = [];
