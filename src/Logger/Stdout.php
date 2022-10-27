@@ -84,7 +84,7 @@ final class Stdout implements LoggerInterface {
       '@request_uri' => $context['request_uri'],
       '@referer'     => $context['referer'],
       '@ip'          => $context['ip'],
-      '@link'        => strip_tags($context['link']),
+      '@link'        => strip_tags((string) $context['link']),
       '@date'        => date('Y-m-d\TH:i:s', $context['timestamp']),
     ]);
     $output = $level <= RfcLogLevel::WARNING ? 'php://stderr' : 'php://stdout';
