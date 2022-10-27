@@ -22,8 +22,13 @@ final class Stdout implements LoggerInterface {
    *
    * @param \Drupal\Core\Logger\LogMessageParserInterface $parser
    *   The parser to use when extracting message variables.
+   * @param bool $enableCliLogging
+   *   Whether to log messages when running via CLI.
    */
-  public function __construct(private LogMessageParserInterface $parser) {
+  public function __construct(
+    private LogMessageParserInterface $parser,
+    private bool $enableCliLogging = FALSE
+  ) {
   }
 
   /**
@@ -37,9 +42,15 @@ final class Stdout implements LoggerInterface {
   private function output(string $output, string $entry) : void {
     // Use php://output stream when dealing with CLI.
     // PHPUnit uses php://stdout by default, and will cause tests to fail
-    // because it doesn't know how to differentiate messages, and  we cannot
-    // capture the output with ::expectOutputString().
+    // because it doesn't know how to differentiate log entries from normal
+    // output, thus we cannot the output with ::expectOutputString().
     if (php_sapi_name() === 'cli') {
+      // Never output anything unless logging is enabled explicitly.
+      // This can be enabled by setting `helfi_api_base.enable_cli_logging`
+      // service container parameter to true.
+      if (!$this->enableCliLogging) {
+        return;
+      }
       $output = 'php://output';
     }
     $stream = fopen($output, 'w');

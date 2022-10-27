@@ -1,4 +1,5 @@
 parameters:
+  helfi_api_base.enable_cli_logging: false
   helfi_api_base.environment_file: ''
   helfi_api_base.default_composer_lock: '%app.root%/../composer.lock'
   helfi_api_base.internal_domains:
@@ -60,6 +61,6 @@ services:
 
   helfi_api_base.logger_stdout:
     class: Drupal\helfi_api_base\Logger\Stdout
-    arguments: ['@logger.log_message_parser']
+    arguments: ['@logger.log_message_parser', '%helfi_api_base.enable_cli_logging%']
     tags:
       - { name: logger }
