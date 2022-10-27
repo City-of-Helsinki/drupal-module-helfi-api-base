@@ -52,6 +52,16 @@ final class DebugController extends ControllerBase {
   }
 
   /**
+   * Tests broken include.
+   *
+   * @todo Remove this.
+   */
+  public function includeTest() : array {
+    include_once 'broken_include';
+    return ['#cache' => ['max-age' => 0]];
+  }
+
+  /**
    * Builds the response.
    *
    * @return array
