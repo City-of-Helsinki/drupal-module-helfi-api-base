@@ -8,12 +8,12 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\KernelTests\KernelTestBase;
 
 /**
- * Tests stdout logger.
+ * Tests json logger.
  *
- * @coversDefaultClass \Drupal\helfi_api_base\Logger\Stdout
+ * @coversDefaultClass \Drupal\helfi_api_base\Logger\JsonLog
  * @group helfi_api_base
  */
-class StdoutLoggerTest extends KernelTestBase {
+class JsonLoggerTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -28,7 +28,7 @@ class StdoutLoggerTest extends KernelTestBase {
   public function register(ContainerBuilder $container) : void {
     parent::register($container);
 
-    $container->setParameter('helfi_api_base.enable_cli_logging', TRUE);
+    $container->setParameter('helfi_api_base.json_logger_path', 'public://drupal.log');
   }
 
   /**
@@ -36,8 +36,10 @@ class StdoutLoggerTest extends KernelTestBase {
    * @covers ::output
    */
   public function testLog() : void {
-    $this->expectOutputRegex("/\[WARNING\] \[helfi_api_base\] \[(.*)\] Test (.*)/");
     \Drupal::logger('helfi_api_base')->warning('Test');
+    $loggerEntry = json_decode(file_get_contents('public://drupal.log'));
+    $this->assertEquals('Test', $loggerEntry->message->message);
+    $this->assertEquals('helfi_api_base', $loggerEntry->message->type);
   }
 
 }

@@ -1,5 +1,5 @@
 parameters:
-  helfi_api_base.enable_cli_logging: false
+  helfi_api_base.json_logger_path: 'temporary://drupal.log'
   helfi_api_base.environment_file: ''
   helfi_api_base.default_composer_lock: '%app.root%/../composer.lock'
   helfi_api_base.internal_domains:
@@ -59,8 +59,8 @@ services:
     tags:
       - { name: event_subscriber }
 
-  helfi_api_base.logger_stdout:
-    class: Drupal\helfi_api_base\Logger\Stdout
-    arguments: ['@logger.log_message_parser', '%helfi_api_base.enable_cli_logging%']
+  helfi_api_base.logger_json:
+    class: Drupal\helfi_api_base\Logger\JsonLog
+    arguments: ['@logger.log_message_parser', '%helfi_api_base.json_logger_path%']
     tags:
       - { name: logger }
