@@ -43,25 +43,6 @@ final class DebugController extends ControllerBase {
   }
 
   /**
-   * Tests invalid argument exception.
-   *
-   * @todo Remove this.
-   */
-  public function exceptionTest() : array {
-    throw new \InvalidArgumentException('Test');
-  }
-
-  /**
-   * Tests broken include.
-   *
-   * @todo Remove this.
-   */
-  public function includeTest() : array {
-    include_once 'broken_include';
-    return ['#cache' => ['max-age' => 0]];
-  }
-
-  /**
    * Builds the response.
    *
    * @return array

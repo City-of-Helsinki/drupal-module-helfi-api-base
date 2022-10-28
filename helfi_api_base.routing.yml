@@ -13,19 +13,3 @@ helfi_api_base.debug_list:
     _controller: '\Drupal\helfi_api_base\Controller\DebugController::build'
   requirements:
     _permission: 'restful get helfi_debug_data'
-
-helfi_api_base.debug_list_test:
-  path: '/admin/debug/test'
-  defaults:
-    _title: 'Debug'
-    _controller: '\Drupal\helfi_api_base\Controller\DebugController::exceptionTest'
-  requirements:
-    _permission: 'restful get helfi_debug_data'
-
-helfi_api_base.debug_list_test_include:
-  path: '/admin/debug/include'
-  defaults:
-    _title: 'Debug'
-    _controller: '\Drupal\helfi_api_base\Controller\DebugController::includeTest'
-  requirements:
-    _permission: 'restful get helfi_debug_data'
