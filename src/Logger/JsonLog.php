@@ -24,10 +24,13 @@ final class JsonLog implements LoggerInterface {
    *   The parser to use when extracting message variables.
    * @param string $stream
    *   The output path.
+   * @param bool $loggerEnabled
+   *   Whether logger is enabled or not.
    */
   public function __construct(
     private LogMessageParserInterface $parser,
-    private string $stream
+    private string $stream,
+    private bool $loggerEnabled = TRUE
   ) {
   }
 
@@ -47,6 +50,9 @@ final class JsonLog implements LoggerInterface {
    * {@inheritdoc}
    */
   public function log($level, $message, array $context = []) : void {
+    if (!$this->loggerEnabled) {
+      return;
+    }
     global $base_url;
     $severity = RfcLogLevel::getLevels()[$level];
 
@@ -63,11 +69,11 @@ final class JsonLog implements LoggerInterface {
       'severity'    => $severity,
       'type'        => $context['channel'],
       'message'     => $message,
-      'uid'         => $context['uid'],
-      'request_uri' => $context['request_uri'],
-      'referer'     => $context['referer'],
-      'ip'          => $context['ip'],
-      'link'        => (string) $context['link'],
+      'uid'         => $context['uid'] ?? 0,
+      'request_uri' => $context['request_uri'] ?? NULL,
+      'referer'     => $context['referer'] ?? NULL,
+      'ip'          => $context['ip'] ?? NULL,
+      'link'        => (string) ($context['link'] ?? NULL),
       'date'        => date(\DateTimeInterface::ATOM, $context['timestamp']),
     ]);
   }

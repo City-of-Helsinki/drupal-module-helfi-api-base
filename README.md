@@ -1,6 +1,6 @@
 # Drupal base
 
-![CI](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/workflows/CI/badge.svg)
+![CI](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/City-of-Helsinki/drupal-module-helfi-api-base/branch/main/graph/badge.svg?token=P6CG4IIAO9)](https://codecov.io/gh/City-of-Helsinki/drupal-module-helfi-api-base)
 
 Base module for `drupal-helfi-platform` ecosystem.
 
@@ -12,6 +12,7 @@ Base module for `drupal-helfi-platform` ecosystem.
 
 - [Debug collector](documentation/debug.md): A plugin to collect and show various debug information in one place.
 - [Environment resolver](documentation/environment-resolver.md): A service to fetch metadata for given project.
+- [Logging](documentation/logging.md): Log to Docker container stdout.
 - [Migrate](documentation/migrate.md): Various features to help with migrations.
 - [PO Importer](documentation/po-importer.md): Allows modules to define translations that can be imported using Drush.
 - [Remote Entity](documentation/remote-entity.md): A base entity to be used with migrations.
