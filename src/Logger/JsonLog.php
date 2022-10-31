@@ -24,6 +24,8 @@ final class JsonLog implements LoggerInterface {
    *   The parser to use when extracting message variables.
    * @param string $stream
    *   The output path.
+   * @param bool $loggerEnabled
+   *   Whether logger is enabled or not.
    */
   public function __construct(
     private LogMessageParserInterface $parser,
