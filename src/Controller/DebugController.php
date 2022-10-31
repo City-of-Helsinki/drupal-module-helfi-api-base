@@ -44,6 +44,9 @@ final class DebugController extends ControllerBase {
 
   /**
    * Builds the response.
+   *
+   * @return array
+   *   The response.
    */
   public function build() : array {
     $build = [];

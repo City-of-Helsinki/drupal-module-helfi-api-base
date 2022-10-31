@@ -9,6 +9,8 @@ use Drupal\Tests\helfi_api_base\Traits\LanguageManagerTrait;
 
 /**
  * Tests custom language negotiator functionality.
+ *
+ * @group helfi_api_base
  */
 class LanguageNegotiatorTest extends KernelTestBase {
 
