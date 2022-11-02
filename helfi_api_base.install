@@ -94,3 +94,10 @@ function helfi_api_base_update_9005() : void {
     'filelog',
   ]);
 }
+
+/**
+ * Re-run 9005 update.
+ */
+function helfi_api_base_9006() : void {
+  helfi_api_base_update_9005();
+}

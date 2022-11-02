@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.0",
         "drupal/entity": "^1.0",
+        "drupal/filelog": "^2.1",
         "t4web/composer-lock-parser": "^1.0"
     },
     "conflict": {
