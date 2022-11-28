@@ -6,6 +6,11 @@ namespace Drupal\Tests\helfi_api_base\Traits;
 
 use donatj\MockWebServer\MockWebServer;
 
+// @todo Remove this if https://github.com/donatj/mock-webserver/pull/48 gets merged.
+if (!defined('STDIN')) {
+  define('STDIN', fopen('php://stdin', 'r'));
+}
+
 /**
  * Provides shared functionality for web server tests.
  */
