@@ -6,6 +6,10 @@ namespace Drupal\Tests\helfi_api_base\Traits;
 
 use donatj\MockWebServer\MockWebServer;
 
+if (!defined('STDIN')) {
+  define('STDIN', fopen('php://stdin', 'r'));
+}
+
 /**
  * Provides shared functionality for web server tests.
  */
