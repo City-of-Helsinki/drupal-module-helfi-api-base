@@ -33,9 +33,9 @@ final class JsonSchemaConstraintValidator extends ConstraintValidator {
 
     if (!is_object($value)) {
       try {
-        $value = \GuzzleHttp\json_decode($value);
+        $value = \json_decode((string) $value, flags: JSON_THROW_ON_ERROR);
       }
-      catch (\InvalidArgumentException $e) {
+      catch (\JsonException $e) {
         $this->context->addViolation('Failed to parse JSON: @message', [
           '@message' => $e->getMessage(),
         ]);
