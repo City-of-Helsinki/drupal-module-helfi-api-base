@@ -3,7 +3,7 @@ name: CI
 env:
   SIMPLETEST_DB: "mysql://drupal:drupal@db:3306/drupal"
   SIMPLETEST_BASE_URL: "http://127.0.0.1:8888"
-  DRUPAL_CORE_VERSION: 9.3.x
+  DRUPAL_CORE_VERSION: 9.4.x
   SYMFONY_DEPRECATIONS_HELPER: disabled
   BROWSERTEST_OUTPUT_DIRECTORY: 'sites/simpletest'
 jobs:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.0']
+        php-versions: ['8.0', '8.1']
     container:
       image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
 
