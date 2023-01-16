@@ -26,11 +26,6 @@ function helfi_api_base_install() {
         ->save();
     }
   }
-  if (!Drupal::moduleHandler()->moduleExists('health_check')) {
-    Drupal::service('module_installer')->install([
-      'health_check',
-    ]);
-  }
 }
 
 /**
