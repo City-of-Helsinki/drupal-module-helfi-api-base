@@ -101,3 +101,14 @@ function helfi_api_base_update_9005() : void {
 function helfi_api_base_9006() : void {
   helfi_api_base_update_9005();
 }
+
+/**
+ * Enable health check.
+ */
+function helfi_api_base_update_9007() : void {
+  if (!Drupal::moduleHandler()->moduleExists('health_check')) {
+    Drupal::service('module_installer')->install([
+      'health_check',
+    ]);
+  }
+}
