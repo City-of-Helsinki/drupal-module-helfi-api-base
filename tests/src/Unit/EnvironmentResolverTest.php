@@ -208,8 +208,6 @@ class EnvironmentResolverTest extends UnitTestCase {
    */
   public function environmentMapData() : array {
     return [
-      ['development', 'dev'],
-      ['devel', 'dev'],
       ['testing', 'test'],
       ['production', 'prod'],
       ['staging', 'stage'],

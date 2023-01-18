@@ -98,8 +98,6 @@ final class Project {
     // and 'prod'.
     // Map all known environment name variations to match environment resolver.
     $environments = [
-      'devel' => 'dev',
-      'development' => 'dev',
       'testing' => 'test',
       'staging' => 'stage',
       'production' => 'prod',
