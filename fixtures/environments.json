@@ -15,7 +15,7 @@
         "sv": "/sv/dev-boende",
         "en": "/en/dev-housing"
       },
-      "domain": "nginx-asuminen-dev.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "test": {
       "path": {
@@ -23,7 +23,7 @@
         "sv": "/sv/test-boende",
         "en": "/en/test-housing"
       },
-      "domain": "nginx-asuminen-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -58,7 +58,7 @@
         "sv": "/sv/dev-huvudsida",
         "en": "/en/dev-frontpage"
       },
-      "domain": "nginx-etusivu-dev.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "test": {
       "path": {
@@ -66,7 +66,7 @@
         "sv": "/sv/test-huvudsida",
         "en": "/en/test-frontpage"
       },
-      "domain": "nginx-etusivu-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -101,7 +101,7 @@
         "sv": "/sv/dev-fostran-och-utbildning",
         "en": "/en/dev-childhood-and-education"
       },
-      "domain": "nginx-kasvatus-koulutus-dev.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "test": {
       "path": {
@@ -109,7 +109,7 @@
         "sv": "/sv/test-fostran-och-utbildning",
         "en": "/en/test-childhood-and-education"
       },
-      "domain": "nginx-kasvatus-koulutus-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -144,7 +144,7 @@
         "sv": "/sv/dev-kultur-och-fritid",
         "en": "/en/dev-culture-and-leisure"
       },
-      "domain": "nginx-kuva-dev.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "test": {
       "path": {
@@ -152,7 +152,7 @@
         "sv": "/sv/test-kultur-och-fritid",
         "en": "/en/test-culture-and-leisure"
       },
-      "domain": "nginx-kuva-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -187,7 +187,7 @@
         "sv": "/sv/dev-stadsmiljo-och-trafik",
         "en": "/en/dev-urban-environment-and-traffic"
       },
-      "domain": "nginx-liikenne-dev.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "test": {
       "path": {
@@ -195,7 +195,7 @@
         "sv": "/sv/test-stadsmiljo-och-trafik",
         "en": "/en/test-urban-environment-and-traffic"
       },
-      "domain": "nginx-liikenne-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -230,7 +230,7 @@
         "sv": "/sv/dev-lediga-jobb",
         "en": "/en/dev-open-jobs"
       },
-      "domain": "nginx-rekry-dev.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "test": {
       "path": {
@@ -238,7 +238,7 @@
         "sv": "/sv/test-lediga-jobb",
         "en": "/en/test-open-jobs"
       },
-      "domain": "nginx-rekry-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -273,7 +273,7 @@
         "sv": "/sv/dev-beslutsfattande-och-forvaltning",
         "en": "/en/dev-decision-making"
       },
-      "domain": "nginx-strategia-talous-dev.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "test": {
       "path": {
@@ -281,7 +281,7 @@
         "sv": "/sv/test-beslutsfattande-och-forvaltning",
         "en": "/en/test-decision-making"
       },
-      "domain": "nginx-strategia-talous-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -316,7 +316,7 @@
         "sv": "/sv/dev-social-och-halsovardstjanster",
         "en": "/en/dev-health-and-social-services"
       },
-      "domain": "nginx-terveys-dev.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "test": {
       "path": {
@@ -324,7 +324,7 @@
         "sv": "/sv/test-social-och-halsovardstjanster",
         "en": "/en/test-health-and-social-services"
       },
-      "domain": "nginx-terveys-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -359,7 +359,7 @@
         "sv": "/sv/dev-foretag-och-arbete",
         "en": "/en/dev-business-and-work"
       },
-      "domain": "nginx-tyo-yrittaminen-dev.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "test": {
       "path": {
@@ -367,7 +367,7 @@
         "sv": "/sv/test-foretag-och-arbete",
         "en": "/en/test-business-and-work"
       },
-      "domain": "nginx-tyo-yrittaminen-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
