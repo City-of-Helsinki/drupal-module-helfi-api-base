@@ -9,21 +9,13 @@
       "protocol": "http",
       "domain": "helfi-asuminen.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-asuminen",
-        "sv": "/sv/dev-boende",
-        "en": "/en/dev-housing"
-      },
-      "domain": "nginx-asuminen-dev.agw.arodevtest.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-asuminen",
         "sv": "/sv/test-boende",
         "en": "/en/test-housing"
       },
-      "domain": "nginx-asuminen-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -52,21 +44,13 @@
       "protocol": "http",
       "domain": "helfi-etusivu.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-etusivu",
-        "sv": "/sv/dev-huvudsida",
-        "en": "/en/dev-frontpage"
-      },
-      "domain": "nginx-etusivu-dev.agw.arodevtest.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-etusivu",
         "sv": "/sv/test-huvudsida",
         "en": "/en/test-frontpage"
       },
-      "domain": "nginx-etusivu-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -95,21 +79,13 @@
       "protocol": "http",
       "domain": "helfi-kasko.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-kasvatus-koulutus",
-        "sv": "/sv/dev-fostran-och-utbildning",
-        "en": "/en/dev-childhood-and-education"
-      },
-      "domain": "nginx-kasvatus-koulutus-dev.agw.arodevtest.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-kasvatus-koulutus",
         "sv": "/sv/test-fostran-och-utbildning",
         "en": "/en/test-childhood-and-education"
       },
-      "domain": "nginx-kasvatus-koulutus-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -138,21 +114,13 @@
       "protocol": "http",
       "domain": "helfi-kuva.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-kulttuuri-ja-vapaa-aika",
-        "sv": "/sv/dev-kultur-och-fritid",
-        "en": "/en/dev-culture-and-leisure"
-      },
-      "domain": "nginx-kuva-dev.agw.arodevtest.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-kulttuuri-ja-vapaa-aika",
         "sv": "/sv/test-kultur-och-fritid",
         "en": "/en/test-culture-and-leisure"
       },
-      "domain": "nginx-kuva-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -181,21 +149,13 @@
       "protocol": "http",
       "domain": "helfi-kymp.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-kaupunkiymparisto-ja-liikenne",
-        "sv": "/sv/dev-stadsmiljo-och-trafik",
-        "en": "/en/dev-urban-environment-and-traffic"
-      },
-      "domain": "nginx-liikenne-dev.agw.arodevtest.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-kaupunkiymparisto-ja-liikenne",
         "sv": "/sv/test-stadsmiljo-och-trafik",
         "en": "/en/test-urban-environment-and-traffic"
       },
-      "domain": "nginx-liikenne-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -224,21 +184,13 @@
       "protocol": "http",
       "domain": "helfi-rekry.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-avoimet-tyopaikat",
-        "sv": "/sv/dev-lediga-jobb",
-        "en": "/en/dev-open-jobs"
-      },
-      "domain": "nginx-rekry-dev.agw.arodevtest.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-avoimet-tyopaikat",
         "sv": "/sv/test-lediga-jobb",
         "en": "/en/test-open-jobs"
       },
-      "domain": "nginx-rekry-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -267,21 +219,13 @@
       "protocol": "http",
       "domain": "strategia.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-paatoksenteko-ja-hallinto",
-        "sv": "/sv/dev-beslutsfattande-och-forvaltning",
-        "en": "/en/dev-decision-making"
-      },
-      "domain": "nginx-strategia-talous-dev.agw.arodevtest.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-paatoksenteko-ja-hallinto",
         "sv": "/sv/test-beslutsfattande-och-forvaltning",
         "en": "/en/test-decision-making"
       },
-      "domain": "nginx-strategia-talous-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -310,21 +254,13 @@
       "protocol": "http",
       "domain": "helfi-sote.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-sosiaali-ja-terveyspalvelut",
-        "sv": "/sv/dev-social-och-halsovardstjanster",
-        "en": "/en/dev-health-and-social-services"
-      },
-      "domain": "nginx-terveys-dev.agw.arodevtest.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-sosiaali-ja-terveyspalvelut",
         "sv": "/sv/test-social-och-halsovardstjanster",
         "en": "/en/test-health-and-social-services"
       },
-      "domain": "nginx-terveys-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {
@@ -353,21 +289,13 @@
       "protocol": "http",
       "domain": "helfi-elo.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-yritykset-ja-tyo",
-        "sv": "/sv/dev-foretag-och-arbete",
-        "en": "/en/dev-business-and-work"
-      },
-      "domain": "nginx-tyo-yrittaminen-dev.agw.arodevtest.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-yritykset-ja-tyo",
         "sv": "/sv/test-foretag-och-arbete",
         "en": "/en/test-business-and-work"
       },
-      "domain": "nginx-tyo-yrittaminen-test.agw.arodevtest.hel.fi"
+      "domain": "www.hel.fi"
     },
     "stage": {
       "path": {

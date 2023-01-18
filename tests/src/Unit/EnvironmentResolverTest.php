@@ -170,7 +170,7 @@ class EnvironmentResolverTest extends UnitTestCase {
   public function resolvePathExceptionData() : array {
     return [
       ['nonexistent', '', '', 'Project "nonexistent" not found.'],
-      ['asuminen', 'sk', 'dev', 'Path not found for "sk" language.'],
+      ['asuminen', 'sk', 'test', 'Path not found for "sk" language.'],
       ['asuminen', 'en', 'nonexistent', 'Environment "nonexistent" not found.'],
     ];
   }
@@ -208,8 +208,6 @@ class EnvironmentResolverTest extends UnitTestCase {
    */
   public function environmentMapData() : array {
     return [
-      ['development', 'dev'],
-      ['devel', 'dev'],
       ['testing', 'test'],
       ['production', 'prod'],
       ['staging', 'stage'],
@@ -261,27 +259,6 @@ class EnvironmentResolverTest extends UnitTestCase {
    */
   public function validUrlData() : array {
     return [
-      [
-        'asuminen',
-        'fi',
-        'dev',
-        'https://helfi-asuminen-dev.docker.so/fi/dev-asuminen',
-        'https://helfi-asuminen-dev.docker.so/fi/dev-asuminen',
-      ],
-      [
-        'asuminen',
-        'en',
-        'dev',
-        'https://helfi-asuminen-dev.docker.so/en/dev-housing',
-        'https://helfi-asuminen-dev.docker.so/en/dev-housing',
-      ],
-      [
-        'asuminen',
-        'sv',
-        'dev',
-        'https://helfi-asuminen-dev.docker.so/sv/dev-boende',
-        'https://helfi-asuminen-dev.docker.so/sv/dev-boende',
-      ],
       [
         'asuminen',
         'fi',
@@ -405,7 +382,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\Project::mapEnvironmentName
    */
   public function testGetActiveEnvironment() : void {
-    $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'dev');
+    $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'test');
     $this->assertInstanceOf(Environment::class, $sut->getActiveEnvironment());
   }
 
