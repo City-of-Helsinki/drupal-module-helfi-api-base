@@ -25,14 +25,6 @@
       },
       "domain": "www.hel.fi"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-asuminen",
-        "sv": "/sv/dev-boende",
-        "en": "/en/dev-housing"
-      },
-      "domain": "helfi-asuminen-dev.docker.so"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-asuminen",
