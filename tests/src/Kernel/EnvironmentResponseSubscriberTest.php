@@ -67,7 +67,7 @@ class EnvironmentResponseSubscriberTest extends KernelTestBase {
    */
   public function testHeadersExist() : void {
     $this->config('helfi_api_base.environment_resolver.settings')
-      ->set('environment_name', 'dev')
+      ->set('environment_name', 'test')
       ->set('project_name', 'liikenne')
       ->save();
 
