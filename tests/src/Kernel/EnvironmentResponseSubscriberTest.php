@@ -73,6 +73,7 @@ class EnvironmentResponseSubscriberTest extends KernelTestBase {
 
     $event = $this->getResponseEvent();
     $this->getSut()->onResponse($event);
+    $this->assertEquals('test', $event->getResponse()->headers->get(EnvironmentResponseSubscriber::ENVIRONMENT_HEADER_NAME));
     $this->assertEquals('liikenne', $event->getResponse()->headers->get(EnvironmentResponseSubscriber::INSTANCE_HEADER_NAME));
   }
 
