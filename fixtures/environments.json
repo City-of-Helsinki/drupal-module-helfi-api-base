@@ -9,14 +9,6 @@
       "protocol": "http",
       "domain": "helfi-asuminen.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-asuminen",
-        "sv": "/sv/dev-boende",
-        "en": "/en/dev-housing"
-      },
-      "domain": "www.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-asuminen",
@@ -51,14 +43,6 @@
       },
       "protocol": "http",
       "domain": "helfi-etusivu.docker.so:8080"
-    },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-etusivu",
-        "sv": "/sv/dev-huvudsida",
-        "en": "/en/dev-frontpage"
-      },
-      "domain": "www.hel.fi"
     },
     "test": {
       "path": {
@@ -95,14 +79,6 @@
       "protocol": "http",
       "domain": "helfi-kasko.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-kasvatus-koulutus",
-        "sv": "/sv/dev-fostran-och-utbildning",
-        "en": "/en/dev-childhood-and-education"
-      },
-      "domain": "www.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-kasvatus-koulutus",
@@ -137,14 +113,6 @@
       },
       "protocol": "http",
       "domain": "helfi-kuva.docker.so:8080"
-    },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-kulttuuri-ja-vapaa-aika",
-        "sv": "/sv/dev-kultur-och-fritid",
-        "en": "/en/dev-culture-and-leisure"
-      },
-      "domain": "www.hel.fi"
     },
     "test": {
       "path": {
@@ -181,14 +149,6 @@
       "protocol": "http",
       "domain": "helfi-kymp.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-kaupunkiymparisto-ja-liikenne",
-        "sv": "/sv/dev-stadsmiljo-och-trafik",
-        "en": "/en/dev-urban-environment-and-traffic"
-      },
-      "domain": "www.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-kaupunkiymparisto-ja-liikenne",
@@ -223,14 +183,6 @@
       },
       "protocol": "http",
       "domain": "helfi-rekry.docker.so:8080"
-    },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-avoimet-tyopaikat",
-        "sv": "/sv/dev-lediga-jobb",
-        "en": "/en/dev-open-jobs"
-      },
-      "domain": "www.hel.fi"
     },
     "test": {
       "path": {
@@ -267,14 +219,6 @@
       "protocol": "http",
       "domain": "strategia.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-paatoksenteko-ja-hallinto",
-        "sv": "/sv/dev-beslutsfattande-och-forvaltning",
-        "en": "/en/dev-decision-making"
-      },
-      "domain": "www.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-paatoksenteko-ja-hallinto",
@@ -310,14 +254,6 @@
       "protocol": "http",
       "domain": "helfi-sote.docker.so:8080"
     },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-sosiaali-ja-terveyspalvelut",
-        "sv": "/sv/dev-social-och-halsovardstjanster",
-        "en": "/en/dev-health-and-social-services"
-      },
-      "domain": "www.hel.fi"
-    },
     "test": {
       "path": {
         "fi": "/fi/test-sosiaali-ja-terveyspalvelut",
@@ -352,14 +288,6 @@
       },
       "protocol": "http",
       "domain": "helfi-elo.docker.so:8080"
-    },
-    "dev": {
-      "path": {
-        "fi": "/fi/dev-yritykset-ja-tyo",
-        "sv": "/sv/dev-foretag-och-arbete",
-        "en": "/en/dev-business-and-work"
-      },
-      "domain": "www.hel.fi"
     },
     "test": {
       "path": {
