@@ -93,8 +93,8 @@ final class Project {
    *   The environment name.
    */
   private function mapEnvironmentName(string $environment) : ? string {
-    // APP_ENV uses 'production', 'staging', 'testing' and 'development' as
-    // a name, while environment resolver uses 'local', 'dev', 'test,' 'stage'
+    // APP_ENV uses 'production', 'staging' and 'testing' as
+    // a name, while environment resolver uses 'local', 'test,' 'stage'
     // and 'prod'.
     // Map all known environment name variations to match environment resolver.
     $environments = [
