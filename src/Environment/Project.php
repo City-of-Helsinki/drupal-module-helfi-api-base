@@ -11,6 +11,8 @@ use Webmozart\Assert\Assert;
  */
 final class Project {
 
+  use EnvironmentTrait;
+
   public const ASUMINEN = 'asuminen';
   public const ETUSIVU = 'etusivu';
   public const KASVATUS_KOULUTUS = 'kasvatus-koulutus';
@@ -75,38 +77,12 @@ final class Project {
    *   The environment.
    */
   public function getEnvironment(string $environment) : Environment {
-    $environment = $this->mapEnvironmentName($environment);
+    $environment = $this->normalizeEnvironmentName($environment);
 
     if (!isset($this->environments[$environment])) {
       throw new \InvalidArgumentException(sprintf('Environment "%s" not found.', $environment));
     }
     return $this->environments[$environment];
-  }
-
-  /**
-   * Temporary mapping function to match APP_ENV with environment resolver.
-   *
-   * @param string $environment
-   *   APP_ENV or environment name.
-   *
-   * @return null|string
-   *   The environment name.
-   */
-  private function mapEnvironmentName(string $environment) : ? string {
-    // APP_ENV uses 'production', 'staging' and 'testing' as
-    // a name, while environment resolver uses 'local', 'test,' 'stage'
-    // and 'prod'.
-    // Map all known environment name variations to match environment resolver.
-    $environments = [
-      'testing' => 'test',
-      'staging' => 'stage',
-      'production' => 'prod',
-    ];
-
-    if (array_key_exists($environment, $environments)) {
-      return $environments[$environment];
-    }
-    return $environment;
   }
 
 }
