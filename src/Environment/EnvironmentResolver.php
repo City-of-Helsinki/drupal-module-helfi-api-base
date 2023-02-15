@@ -12,6 +12,8 @@ use Drupal\Core\Config\ImmutableConfig;
  */
 final class EnvironmentResolver implements EnvironmentResolverInterface {
 
+  use EnvironmentTrait;
+
   public const PROJECT_NAME_KEY = 'project_name';
   public const ENVIRONMENT_NAME_KEY = 'environment_name';
 
@@ -118,7 +120,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         $this->configurationMissingExceptionMessage('No active environment found', self::ENVIRONMENT_NAME_KEY)
       );
     }
-    return $env;
+    return $this->normalizeEnvironmentName($env);
   }
 
   /**
