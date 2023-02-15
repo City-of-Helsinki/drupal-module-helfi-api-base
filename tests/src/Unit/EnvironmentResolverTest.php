@@ -85,7 +85,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
    * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\Project::mapEnvironmentName
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentTrait::normalizeEnvironmentName
    */
   public function testProjectConstant() : void {
     $constants = new \ReflectionClass(Project::class);
@@ -356,6 +356,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentTrait::normalizeEnvironmentName
    */
   public function testGetActiveEnvironmentFallback() : void {
     // Make sure environment resolver fallbacks to APP_ENV env variable when
