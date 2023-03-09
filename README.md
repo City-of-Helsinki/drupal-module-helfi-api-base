@@ -22,4 +22,4 @@ Base module for `drupal-helfi-platform` ecosystem.
 
 Slack: #helfi-drupal (http://helsinkicity.slack.com/)
 
-Mail: drupal@hel.fi
+Mail: `drupal@hel.fi`
