@@ -41,7 +41,7 @@ jobs:
         run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
 
       - name: Set module folder
-        run: echo "MODULE_FOLDER=$DRUPAL_ROOT/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
+        run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
 
       - name: Clone platform
         run: git clone https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
@@ -74,7 +74,7 @@ jobs:
           cd $DRUPAL_ROOT
           php -d pcov.directory=$MODULE_FOLDER \
             vendor/bin/phpunit \
-            --bootstrap $DRUPAL_ROOT/core/tests/bootstrap.php \
+            --bootstrap $DRUPAL_ROOT/public/core/tests/bootstrap.php \
             -c $MODULE_FOLDER/phpunit.xml \
             --coverage-clover=coverage.xml \
             $MODULE_FOLDER
