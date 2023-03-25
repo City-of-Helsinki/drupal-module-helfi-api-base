@@ -47,31 +47,31 @@ jobs:
         run: git clone https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
 
       - name: Install required composer dependencies
+        working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
-          cd $DRUPAL_ROOT
           composer config repositories.5 path $GITHUB_WORKSPACE
           composer require drupal/$MODULE_NAME -W
 
       - name: Install Drupal
+        working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
-          cd $DRUPAL_ROOT
           php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
           vendor/bin/drush en $MODULE_NAME -y
 
       - name: Run PHPCS
+        working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
-          cd $DRUPAL_ROOT
           vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal --extensions=php,module,inc,install,test,info
 
       - name: Start services
+        working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
-          cd $DRUPAL_ROOT
           vendor/bin/drush runserver $SIMPLETEST_BASE_URL > /dev/null 2>&1 &
           chromedriver --port=4444 > /dev/null 2>&1 &
 
       - name: Run PHPUnit tests
+        working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
-          cd $DRUPAL_ROOT
           php -d pcov.directory=$MODULE_FOLDER \
             vendor/bin/phpunit \
             --bootstrap $DRUPAL_ROOT/public/core/tests/bootstrap.php \
