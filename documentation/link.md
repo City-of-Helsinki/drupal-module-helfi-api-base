@@ -4,7 +4,7 @@
 
 You can enable the filter from `Configuration -> Text formats and editors -> Configure -> Enable the Hel.fi: Link converter filter`. This must be run after `Convert URLs into links` filter if enabled.
 
-The filter parses all links from markup fields and runs them through `#type => link` render element, so they can be processed the same way all other links are processed. See [src/Plugin/Filter/LinkConverter.php](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/src/Plugin/Filter/LinkConverter.php).
+The filter parses all links from markup fields and runs them through `#type => link` render element, so they can be processed the same way as other links are processed. See [src/Plugin/Filter/LinkConverter.php](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/src/Plugin/Filter/LinkConverter.php).
 
 ## Link preprocessor
 
