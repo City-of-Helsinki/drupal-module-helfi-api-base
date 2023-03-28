@@ -4,5 +4,5 @@ package: Custom
 core_version_requirement: ^9 || ^10
 dependencies:
   - drupal:migrate
-  - drupal:entity
-  - drupal:health_check
+  - entity:entity
+  - health_check:health_check
