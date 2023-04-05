@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\LanguageManagerTrait;
 
@@ -38,11 +39,11 @@ class LanguageNegotiatorTest extends KernelTestBase {
    * Make sure language negotiator can override the currently active language.
    */
   public function testLanguageOverride() : void {
-    $this->assertEquals('en', $this->languageManager()->getCurrentLanguage()->getId());
+    $this->assertEquals('en', $this->languageManager()->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)->getId());
 
     foreach (['fi', 'sv'] as $language) {
       $this->setOverrideLanguageCode($language);
-      $this->assertEquals($language, $this->container->get('language_manager')->getCurrentLanguage()->getId());
+      $this->assertEquals($language, $this->container->get('language_manager')->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE)->getId());
     }
   }
 
