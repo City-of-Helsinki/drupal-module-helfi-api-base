@@ -10,7 +10,7 @@ namespace Drupal\helfi_api_base\Environment;
 trait EnvironmentTrait {
 
   /**
-   * Temporary mapping function to match APP_ENV with environment resolver.
+   * A mapping function to match APP_ENV with environment resolver.
    *
    * @param string $environment
    *   APP_ENV or environment name.
