@@ -146,7 +146,7 @@ final class Environment {
    *   The environment.
    */
   public function getEnvironmentName(): string {
-    return $this->environment->name;
+    return $this->environment->value;
   }
 
   /**
