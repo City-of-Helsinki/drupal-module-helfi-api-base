@@ -12,7 +12,7 @@ interface EnvironmentResolverInterface {
   /**
    * Gets all projects.
    *
-   * @return array
+   * @return \Drupal\helfi_api_base\Environment\Project[]
    *   The projects.
    */
   public function getProjects() : array;

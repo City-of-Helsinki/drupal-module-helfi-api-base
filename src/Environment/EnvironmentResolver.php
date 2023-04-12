@@ -77,7 +77,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
           $settings['path'],
           $settings['protocol'] ?? 'https',
           $name,
-          $environment
+          EnvMapping::tryFrom($environment),
         ));
       }
       $this->projects[$name] = $project;
