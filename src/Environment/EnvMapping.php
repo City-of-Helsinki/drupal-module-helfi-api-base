@@ -15,6 +15,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 enum EnvMapping : string {
 
   case Local = 'local';
+  case Dev = 'dev';
   case Test = 'test';
   case Stage = 'stage';
   case Prod = 'prod';
@@ -28,6 +29,7 @@ enum EnvMapping : string {
   public function label() : TranslatableMarkup {
     return match ($this) {
       self::Local => new TranslatableMarkup('Local'),
+      self::Dev => new TranslatableMarkup('Development'),
       self::Test => new TranslatableMarkup('Testing'),
       self::Stage => new TranslatableMarkup('Staging'),
       self::Prod => new TranslatableMarkup('Production'),

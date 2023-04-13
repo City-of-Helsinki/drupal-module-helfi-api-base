@@ -68,6 +68,21 @@ final class Project {
   }
 
   /**
+   * Checks if environment exists.
+   *
+   * @param string $environment
+   *   The environment key.
+   *
+   * @return bool
+   *   TRUE if environment exists.
+   */
+  public function hasEnvironment(string $environment) : bool {
+    $environment = $this->normalizeEnvironmentName($environment);
+
+    return isset($this->environments[$environment]);
+  }
+
+  /**
    * Gets the given environment.
    *
    * @param string $environment
@@ -79,7 +94,7 @@ final class Project {
   public function getEnvironment(string $environment) : Environment {
     $environment = $this->normalizeEnvironmentName($environment);
 
-    if (!isset($this->environments[$environment])) {
+    if (!$this->hasEnvironment($environment)) {
       throw new \InvalidArgumentException(sprintf('Environment "%s" not found.', $environment));
     }
     return $this->environments[$environment];
