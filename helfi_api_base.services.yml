@@ -59,6 +59,12 @@ services:
     tags:
       - { name: event_subscriber }
 
+  helfi_api_base.ensure_api_accounts_subscriber:
+    class: Drupal\helfi_api_base\EventSubscriber\EnsureApiAccountsSubscriber
+    arguments: ['@entity_type.manager', '@messenger']
+    tags:
+      - { name: event_subscriber }
+
   helfi_api_base.logger_json:
     class: Drupal\helfi_api_base\Logger\JsonLog
     arguments:
