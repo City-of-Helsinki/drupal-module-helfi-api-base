@@ -46,7 +46,7 @@ final class EnsureApiAccountsSubscriber extends DeployHookEventSubscriberBase {
     /** @var \Drupal\user\UserStorageInterface $storage */
     $storage = $this->entityTypeManager->getStorage('user');
 
-    foreach ($accounts as $account) {
+    foreach ($accounts ?? [] as $account) {
       if (!isset($account['roles'])) {
         $account['roles'] = [];
       }
@@ -57,10 +57,6 @@ final class EnsureApiAccountsSubscriber extends DeployHookEventSubscriberBase {
         'roles' => $roles,
       ] = $account;
 
-      $this->messenger
-        ->addMessage(
-          sprintf('[helfi_api_base]: %s found. Resetting password.', $username)
-        );
       /** @var \Drupal\user\UserInterface $user */
       if (!$user = user_load_by_name($username)) {
         $this->messenger
