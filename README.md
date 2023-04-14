@@ -10,7 +10,9 @@ Base module for `drupal-helfi-platform` ecosystem.
 
 ## Features
 
+- [Environment API accounts](documentation/api-accounts.md): Allows API accounts to be mapped from an environment variable.
 - [Debug collector](documentation/debug.md): A plugin to collect and show various debug information in one place.
+- [Deploy hooks](documentation/deploy-hooks.md): Allows custom tasks to be defined that are run before or after deployment.
 - [Environment resolver](documentation/environment-resolver.md): A service to fetch metadata for given project.
 - [Logging](documentation/logging.md): Log to Docker container stdout.
 - [Link text filter](documentation/link.md): A custom `filter` plugin to scan and parse external links

@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_api_base\Kernel\Plugin\DebugDataItem;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\user\Entity\Role;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -22,6 +23,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
    */
   protected static $modules = [
     'helfi_api_base',
+    'system',
     'user',
   ];
 
@@ -32,6 +34,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
     parent::setUp();
 
     $this->installEntitySchema('user');
+    $this->installEntitySchema('action');
   }
 
   /**
@@ -42,22 +45,42 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
    * @covers \Drupal\helfi_api_base\EventSubscriber\EnsureApiAccountsSubscriber::__construct
    */
   public function testPasswordReset(): void {
+    /** @var \Drupal\Core\Password\PhpassHashedPassword $passwordHasher */
     $passwordHasher = $this->container->get('password');
+
     $this->assertFalse(user_load_by_name('helfi-admin'));
     // Make sure account is created if one does not exist yet.
-    putenv('DRUPAL_NAVIGATION_API_KEY=' . base64_encode('helfi-admin:123'));
+    $this->config('helfi_api_base.api_accounts')
+      ->set('accounts', [
+        [
+          'username' => 'helfi-admin',
+          'password' => '123',
+        ],
+      ])
+      ->save();
     /** @var \Drupal\helfi_api_base\EventSubscriber\EnsureApiAccountsSubscriber $service */
     $service = $this->container->get('helfi_api_base.ensure_api_accounts_subscriber');
     $service->onPostDeploy(new Event());
 
-    /** @var \Drupal\Core\Password\PhpassHashedPassword $passwordHasher */
     $this->assertTrue($passwordHasher->check('123', user_load_by_name('helfi-admin')->getPassword()));
 
-    // Make sure we can change the password.
-    putenv('DRUPAL_NAVIGATION_API_KEY=' . base64_encode('helfi-admin:666'));
+    Role::create(['id' => 'test', 'label' => 'Test'])->save();
+    Role::create(['id' => 'test2', 'label' => 'Test2'])->save();
+    // Make sure we can change the password and add roles.
+    $this->config('helfi_api_base.api_accounts')
+      ->set('accounts', [
+        [
+          'username' => 'helfi-admin',
+          'password' => '666',
+          'roles' => ['test', 'test2'],
+        ],
+      ])
+      ->save();
     $service->onPostDeploy(new Event());
-    /** @var \Drupal\Core\Password\PhpassHashedPassword $passwordHasher */
-    $this->assertTrue($passwordHasher->check('666', user_load_by_name('helfi-admin')->getPassword()));
+    $account = user_load_by_name('helfi-admin');
+    $this->assertTrue($account->hasRole('test'));
+    $this->assertTrue($account->hasRole('test2'));
+    $this->assertTrue($passwordHasher->check('666', $account->getPassword()));
   }
 
 }
