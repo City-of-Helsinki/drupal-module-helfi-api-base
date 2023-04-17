@@ -36,7 +36,11 @@ final class EnsureApiAccountsSubscriber extends DeployHookEventSubscriberBase {
    * {@inheritdoc}
    *
    * This is used to ensure that API accounts always retain the same
-   * credentials.
+   * credentials, i.e. it creates any missing accounts and then force
+   * resets the password.
+   *
+   * The event is triggered by 'drush helfi:post-deploy'
+   * command as part of deployment tasks.
    */
   public function onPostDeploy(Event $event) : void {
     $accounts = $this->configFactory

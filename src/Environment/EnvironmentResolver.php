@@ -65,8 +65,8 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
       throw new \InvalidArgumentException('Failed to parse projects.');
     }
 
-    foreach ($projects as $name => $item) {
-      $project = new Project();
+    foreach ($projects as $id => $item) {
+      $project = new Project($id);
 
       foreach ($item as $environment => $settings) {
         if (!isset($settings['domain'], $settings['path'])) {
@@ -76,11 +76,11 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
           $settings['domain'],
           $settings['path'],
           $settings['protocol'] ?? 'https',
-          $name,
-          EnvMapping::tryFrom($environment),
+          $id,
+          EnvironmentEnum::tryFrom($environment),
         ));
       }
-      $this->projects[$name] = $project;
+      $this->projects[$id] = $project;
     }
   }
 

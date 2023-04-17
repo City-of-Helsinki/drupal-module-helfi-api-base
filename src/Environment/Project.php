@@ -4,10 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\Environment;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Webmozart\Assert\Assert;
 
 /**
- * A value object to store all projects.
+ * A value object of a project.
  */
 final class Project {
 
@@ -33,12 +34,37 @@ final class Project {
   /**
    * Constructs a new instance.
    *
+   * @param string $name
+   *   The project name.
    * @param \Drupal\helfi_api_base\Environment\Environment[] $environments
    *   The environments.
    */
-  public function __construct(array $environments = []) {
+  public function __construct(
+    private readonly string $name,
+    array $environments = []
+  ) {
     Assert::allIsInstanceOf($environments, Environment::class);
     $this->environments = $environments;
+  }
+
+  /**
+   * Gets the project label.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The label.
+   */
+  public function label() : TranslatableMarkup {
+    return match ($this->name) {
+      self::ASUMINEN => new TranslatableMarkup('Housing'),
+      self::ETUSIVU => new TranslatableMarkup('Frontpage'),
+      self::KASVATUS_KOULUTUS => new TranslatableMarkup('Childhood and education'),
+      self::KUVA => new TranslatableMarkup('Culture and leisure'),
+      self::LIIKENNE => new TranslatableMarkup('Urban environment and traffic'),
+      self::REKRY => new TranslatableMarkup('Open jobs'),
+      self::STRATEGIA => new TranslatableMarkup('Decision-making'),
+      self::TERVEYS => new TranslatableMarkup('Health and social services'),
+      self::TYO_YRITTAMINEN => new TranslatableMarkup('Business and work'),
+    };
   }
 
   /**
