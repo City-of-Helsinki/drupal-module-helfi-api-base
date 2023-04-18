@@ -89,7 +89,7 @@ final class PackageVersion extends ResourceBase implements DependentPluginInterf
   /**
    * {@inheritdoc}
    */
-  public function calculateDependencies() {
+  public function calculateDependencies() : array {
     return [
       'module' => ['user'],
     ];
