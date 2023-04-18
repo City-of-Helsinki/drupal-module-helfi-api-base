@@ -10,7 +10,7 @@ Base module for `drupal-helfi-platform` ecosystem.
 
 ## Features
 
-- [API credential manager](documentation/api-accounts.md): Allows API credentials to be created/managed from an environment variable.
+- [API user manager](documentation/api-accounts.md): Allows API users to be created/managed from an environment variable.
 - [Debug collector](documentation/debug.md): A plugin to collect and show various debug information in one place.
 - [Deploy hooks](documentation/deploy-hooks.md): Allows custom tasks to be defined that are run before or after deployment.
 - [Environment resolver](documentation/environment-resolver.md): A service to fetch metadata for given project.

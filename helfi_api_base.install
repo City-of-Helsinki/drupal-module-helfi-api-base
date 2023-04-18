@@ -12,7 +12,7 @@ use Drupal\Core\Config\FileStorage;
 /**
  * Implements hook_install().
  */
-function helfi_api_base_install() {
+function helfi_api_base_install() : void {
   if (\Drupal::moduleHandler()->moduleExists('filter')) {
     $formatters = \Drupal::entityTypeManager()
       ->getStorage('filter_format')
@@ -111,4 +111,11 @@ function helfi_api_base_update_9007() : void {
       'health_check',
     ]);
   }
+}
+
+/**
+ * Create 'debug_api' role if configured so.
+ */
+function helfi_api_base_update_9008() : void {
+  helfi_api_base_modules_installed([], FALSE);
 }

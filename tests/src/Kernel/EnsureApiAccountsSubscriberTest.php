@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helfi_api_base\Kernel\Plugin\DebugDataItem;
+namespace Drupal\Tests\helfi_api_base\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
@@ -35,6 +35,16 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('action');
+
+    $this->config('helfi_api_base.api_accounts')
+      ->set('accounts', [
+        [
+          'username' => 'helfi-admin',
+          'password' => '123',
+          'roles' => ['debug_api'],
+        ],
+      ])
+      ->save();
   }
 
   /**
@@ -50,19 +60,12 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
 
     $this->assertFalse(user_load_by_name('helfi-admin'));
     // Make sure account is created if one does not exist yet.
-    $this->config('helfi_api_base.api_accounts')
-      ->set('accounts', [
-        [
-          'username' => 'helfi-admin',
-          'password' => '123',
-        ],
-      ])
-      ->save();
     /** @var \Drupal\helfi_api_base\EventSubscriber\EnsureApiAccountsSubscriber $service */
     $service = $this->container->get('helfi_api_base.ensure_api_accounts_subscriber');
     $service->onPostDeploy(new Event());
-
-    $this->assertTrue($passwordHasher->check('123', user_load_by_name('helfi-admin')->getPassword()));
+    $account = user_load_by_name('helfi-admin');
+    $this->assertTrue($account->hasRole('debug_api'));
+    $this->assertTrue($passwordHasher->check('123', $account->getPassword()));
 
     Role::create(['id' => 'test', 'label' => 'Test'])->save();
     Role::create(['id' => 'test2', 'label' => 'Test2'])->save();
