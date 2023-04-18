@@ -79,6 +79,7 @@ final class EnsureApiAccountsSubscriber extends DeployHookEventSubscriberBase {
         $user->addRole($role);
       }
       $user->setPassword($password)
+        ->activate()
         ->save();
     }
   }

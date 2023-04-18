@@ -82,6 +82,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
     $service->onPostDeploy(new Event());
     $account = user_load_by_name('helfi-admin');
     $this->assertTrue($account->hasRole('test'));
+    $this->assertFalse($account->isBlocked());
     $this->assertTrue($account->hasRole('test2'));
     $this->assertTrue($passwordHasher->check('666', $account->getPassword()));
   }
