@@ -20,15 +20,15 @@ final class Environment {
    *   The protocol.
    * @param string $id
    *   Environment resolver identifier for the project.
-   * @param string $environmentName
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentEnum $environment
    *   The environment name.
    */
   public function __construct(
-    private string $domain,
-    private array $paths,
-    private string $protocol,
-    private string $id,
-    private string $environmentName
+    private readonly string $domain,
+    private readonly array $paths,
+    private readonly string $protocol,
+    private readonly string $id,
+    private readonly EnvironmentEnum $environment
   ) {
   }
 
@@ -146,7 +146,17 @@ final class Environment {
    *   The environment.
    */
   public function getEnvironmentName(): string {
-    return $this->environmentName;
+    return $this->environment->value;
+  }
+
+  /**
+   * Gets the environment mapping.
+   *
+   * @return \Drupal\helfi_api_base\Environment\EnvironmentEnum
+   *   The environment mapping.
+   */
+  public function getEnvironment() : EnvironmentEnum {
+    return $this->environment;
   }
 
 }

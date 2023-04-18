@@ -2,6 +2,23 @@ action.configuration.remote_entity:migration_update:*:
   type: action_configuration_default
   label: 'Update given remote entity'
 
+helfi_api_base.api_accounts:
+  type: config_object
+  mapping:
+    accounts:
+      type: sequence
+      sequence:
+        type: mapping
+        mapping:
+          username:
+            type: string
+          password:
+            type: string
+          roles:
+            type: sequence
+            sequence:
+              type: string
+
 helfi_api_base.environment_resolver.settings:
   type: config_entity
   mapping:

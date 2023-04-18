@@ -99,7 +99,7 @@ final class DebugDataResource extends ResourceBase implements DependentPluginInt
   /**
    * {@inheritdoc}
    */
-  public function calculateDependencies() {
+  public function calculateDependencies() : array {
     $dependencies = [
       'module' => ['user'],
     ];

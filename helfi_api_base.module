@@ -8,11 +8,12 @@
 declare(strict_types = 1);
 
 use Drupal\helfi_api_base\Link\LinkProcessor;
+use Drupal\user\Entity\Role;
 
 /**
  * Implements hook_element_info_alter().
  */
-function helfi_api_base_element_info_alter(array &$info) {
+function helfi_api_base_element_info_alter(array &$info) : void {
   $info['link']['#pre_render'] = [
     [LinkProcessor::class, 'preRenderLink'],
   ];
@@ -45,8 +46,34 @@ function helfi_api_base_theme() : array {
 /**
  * Implements hook_theme_suggestions_HOOK().
  */
-function helfi_api_base_theme_suggestions_debug_item(array $variables) {
+function helfi_api_base_theme_suggestions_debug_item(array $variables) : array {
   $suggestions = [];
   $suggestions[] = 'debug_item__' . strtr($variables['id'], '.', '_');
   return $suggestions;
+}
+
+/**
+ * Implements hook_modules_installed().
+ */
+function helfi_api_base_modules_installed(array $modules, bool $is_syncing) : void {
+  if ($is_syncing) {
+    return;
+  }
+  $apiAccounts = \Drupal::config('helfi_api_base.api_accounts')->get('accounts') ?? [];
+  $hasDebugApiAccount = array_filter($apiAccounts, function (array $account) : bool {
+    return isset($account['roles']) && in_array('debug_api', $account['roles']);
+  });
+
+  // Create 'Debug API' role that has access to Debug data API endpoint if
+  // we have any API accounts defined with 'debug_api' role.
+  if ($hasDebugApiAccount) {
+    if (!$role = Role::load('debug_api')) {
+      $role = Role::create(['label' => 'Debug API', 'id' => 'debug_api']);
+    }
+
+    if (\Drupal::moduleHandler()->moduleExists('rest')) {
+      $role->grantPermission('restful get helfi_debug_data');
+    }
+    $role->save();
+  }
 }

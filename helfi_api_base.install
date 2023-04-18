@@ -8,13 +8,14 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Config\FileStorage;
+use Drupal\rest\Entity\RestResourceConfig;
 
 /**
  * Implements hook_install().
  */
-function helfi_api_base_install() {
-  if (\Drupal::moduleHandler()->moduleExists('filter')) {
-    $formatters = \Drupal::entityTypeManager()
+function helfi_api_base_install() : void {
+  if (Drupal::moduleHandler()->moduleExists('filter')) {
+    $formatters = Drupal::entityTypeManager()
       ->getStorage('filter_format')
       ->loadMultiple();
 
@@ -39,14 +40,14 @@ function helfi_api_base_update_9001() : void {
  * Install the debug rest config.
  */
 function helfi_api_base_update_9002() : void {
-  if (!\Drupal::moduleHandler()->moduleExists('rest')) {
+  if (!Drupal::moduleHandler()->moduleExists('rest')) {
     return;
   }
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $extensionPathResolver */
-  $extensionPathResolver = \Drupal::service('extension.path.resolver');
+  $extensionPathResolver = Drupal::service('extension.path.resolver');
   $config_path = $extensionPathResolver->getPath('module', 'helfi_api_base') . '/config/optional';
   $source = new FileStorage($config_path);
-  $config_storage = \Drupal::service('config.storage');
+  $config_storage = Drupal::service('config.storage');
 
   // Install rest resource config.
   $config_name = 'rest.resource.helfi_debug_data';
@@ -57,13 +58,13 @@ function helfi_api_base_update_9002() : void {
  * Install the package version rest config.
  */
 function helfi_api_base_update_9003() : void {
-  if (!\Drupal::moduleHandler()->moduleExists('rest')) {
+  if (!Drupal::moduleHandler()->moduleExists('rest')) {
     return;
   }
-  $config_path = \Drupal::service('extension.list.module')
+  $config_path = Drupal::service('extension.list.module')
     ->getPath('helfi_api_base') . '/config/optional';
   $source = new FileStorage($config_path);
-  $config_storage = \Drupal::service('config.storage');
+  $config_storage = Drupal::service('config.storage');
 
   $configs = [
     'rest.resource.helfi_debug_package_version',
@@ -110,5 +111,34 @@ function helfi_api_base_update_9007() : void {
     Drupal::service('module_installer')->install([
       'health_check',
     ]);
+  }
+}
+
+/**
+ * Create 'debug_api' role if configured so.
+ */
+function helfi_api_base_update_9008() : void {
+  helfi_api_base_modules_installed([], FALSE);
+}
+
+/**
+ * Enable basic_auth authentication method for debug endpoints.
+ */
+function helfi_api_base_update_9009() : void {
+  if (Drupal::moduleHandler()->moduleExists('rest')) {
+    Drupal::service('module_installer')->install([
+      'basic_auth',
+    ]);
+
+    $endpoints = RestResourceConfig::loadMultiple([
+      'helfi_debug_data',
+      'helfi_debug_package_version',
+    ]);
+    foreach ($endpoints as $endpoint) {
+      $config = $endpoint->get('configuration');
+      $config['authentication'][] = 'basic_auth';
+      $endpoint->set('configuration', $config);
+      $endpoint->save();
+    }
   }
 }
