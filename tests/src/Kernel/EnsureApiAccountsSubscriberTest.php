@@ -81,6 +81,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
       ->save();
     $service->onPostDeploy(new Event());
     $account = user_load_by_name('helfi-admin');
+    $this->assertEquals('drupal+helfi-admin@hel.fi', $account->getEmail());
     $this->assertTrue($account->hasRole('test'));
     $this->assertFalse($account->isBlocked());
     $this->assertTrue($account->hasRole('test2'));

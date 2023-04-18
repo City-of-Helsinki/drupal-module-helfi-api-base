@@ -55,9 +55,13 @@ final class EnsureApiAccountsSubscriber extends DeployHookEventSubscriberBase {
         $account['roles'] = [];
       }
 
+      if (!isset($account['mail'])) {
+        $account['mail'] = 'drupal+' . $account['username'] . '@hel.fi';
+      }
       [
         'username' => $username,
         'password' => $password,
+        'mail' => $mail,
         'roles' => $roles,
       ] = $account;
 
@@ -79,6 +83,7 @@ final class EnsureApiAccountsSubscriber extends DeployHookEventSubscriberBase {
         $user->addRole($role);
       }
       $user->setPassword($password)
+        ->setEmail($mail)
         ->activate()
         ->save();
     }
