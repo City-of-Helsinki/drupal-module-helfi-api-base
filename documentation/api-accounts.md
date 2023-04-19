@@ -10,9 +10,10 @@ Define an environment variable called `DRUPAL_API_ACCOUNTS`. These accounts are 
 
 The value should be a base64 encoded JSON string that contains an array of `username`, `password` and an optional `roles` and `mail` pairs:
 
-```json
-[{"username":"account1","password":"password1","roles":["role1","role2"]},{"username":"account2","password":"password2","mail":"some-email@example.com"}]
+```bash
+php -r "print base64_encode('[{"username":"account1","password":"password1","roles":["role1","role2"]},{"username":"account2","password":"password2","mail":"some-email@example.com"}]');"
 ```
+Then map the given output to `DRUPAL_API_ACCOUNTS` environment variable:
 
 ```bash
 DRUPAL_API_ACCOUNTS=W3t1c2VybmFtZTphY2NvdW50MSxwYXNzd29yZDpwYXNzd29yZDEscm9sZXM6W3JvbGUxLHJvbGUyXX0se3VzZXJuYW1lOmFjY291bnQyLHBhc3N3b3JkOnBhc3N3b3JkMixtYWlsOnNvbWUtZW1haWxAZXhhbXBsZS5jb219XQ==
