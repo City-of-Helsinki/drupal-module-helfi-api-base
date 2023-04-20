@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Core\Config\FileStorage;
 use Drupal\rest\Entity\RestResourceConfig;
+use Drupal\user\Entity\Role;
 
 /**
  * Implements hook_install().
@@ -26,6 +27,31 @@ function helfi_api_base_install() : void {
       ])
         ->save();
     }
+  }
+
+  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $envResolver */
+  $envResolver = \Drupal::service('helfi_api_base.environment_resolver');
+
+  try {
+    // Only create the role if we have a valid project. This should
+    // only be run for projects defined in environments.json
+    // file.
+    $envResolver->getActiveProject();
+
+    // Make sure 'rest' module is enabled.
+    if (!Drupal::moduleHandler()->moduleExists('rest')) {
+      Drupal::service('module_installer')->install([
+        'rest',
+      ]);
+    }
+
+    if (!$role = Role::load('debug_api')) {
+      $role = Role::create(['label' => 'Debug API', 'id' => 'debug_api']);
+    }
+    $role->grantPermission('restful get helfi_debug_data')
+      ->save();
+  }
+  catch (\InvalidArgumentException) {
   }
 }
 
@@ -136,12 +162,9 @@ function helfi_api_base_update_9009() : void {
   }
 }
 
+/**
+ * Create 'debug_api' role for hel.fi projects.
+ */
 function helfi_api_base_update_9010() : void {
-  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $envResolver */
-  $envResolver = \Drupal::service('helfi_api_base.environment_resolver');
-  try {
-    $envResolver->getActiveProject()->getName();
-  } catch (\InvalidArgumentException) {
-
-  }
+  helfi_api_base_install();
 }

@@ -65,7 +65,7 @@ final class Metadata {
    * Gets the URL to repository.
    *
    * @return string
-   *  The repository URL.
+   *   The repository URL.
    */
   public function getRepositoryUrl() : string {
     return sprintf('https://github.com/%s', $this->repository);
