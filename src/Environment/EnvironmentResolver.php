@@ -93,9 +93,6 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         ));
       }
       $this->projects[$id] = $project;
-      // Allow project to be fetched using repository. Our GitHub automation
-      // tools use repository name to figure out currently active project.
-      $this->projects[$project->getMetadata()->getNormalizedRepository()] = $project;
     }
   }
 
