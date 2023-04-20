@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_api_base\Functional;
 
 use Drupal\Core\Config\Schema\SchemaIncompleteException;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Tests\BrowserTestBase as CoreBrowserTestBase;
 use Drupal\user\Entity\Role;
 
@@ -54,15 +55,28 @@ class InstallTest extends CoreBrowserTestBase {
    * Make sure debug api role is created when accounts are defined.
    */
   public function testInstall() : void {
-    // Enable the 'helfi_api_base' module to trigger hook_modules_installed().
-    $this->container->get('module_installer')->install(['helfi_api_base']);
-    // Make sure debug api role is created when we have api accounts with
-    // 'debug_api' roles.
-    $this->assertFalse(Role::load('debug_api')->hasPermission('restful get helfi_debug_data'));
+    /** @var \Drupal\Core\Extension\ModuleInstaller $moduleInstaller */
+    $moduleInstaller = $this->container->get('module_installer');
+    // Enable the 'helfi_api_base' module to trigger hook_install().
+    $moduleInstaller->install(['helfi_api_base']);
+    // Make sure 'debug_api' role is not created when active project is not
+    // defined.
+    $this->assertNull(Role::load('debug_api'));
 
-    // Make sure required 'rest' permissions are granted when the 'rest' module
-    // is enabled.
-    $this->container->get('module_installer')->install(['rest']);
+    // Re-install the module to make sure 'debug_api' role is created and
+    // required permissions are granted when active environment is defined.
+    $moduleInstaller->uninstall(['helfi_api_base']);
+
+    try {
+      $this->config('helfi_api_base.environment_resolver.settings')
+        ->set('environment_name', 'local')
+        ->set('project_name', Project::ASUMINEN)
+        ->save();
+    }
+    catch (SchemaIncompleteException) {
+    }
+    $moduleInstaller->install(['helfi_api_base']);
+
     $this->assertTrue(Role::load('debug_api')->hasPermission('restful get helfi_debug_data'));
   }
 
