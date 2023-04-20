@@ -131,6 +131,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::getEnvironment
    * @covers ::getProject
+   * @covers ::getProjectForRepository
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
    * @covers \Drupal\helfi_api_base\Environment\Environment::getDomain
@@ -142,9 +143,11 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
    * @covers \Drupal\helfi_api_base\Environment\Project::hasEnvironment
    * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
+   * @covers \Drupal\helfi_api_base\Environment\Project::getMetadata
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentTrait::normalizeEnvironmentName
    * @covers \Drupal\helfi_api_base\Environment\Metadata::__construct
    * @covers \Drupal\helfi_api_base\Environment\Metadata::createFromArray
+   * @covers \Drupal\helfi_api_base\Environment\Metadata::getNormalizedRepository
    * @dataProvider resolvePathExceptionData
    */
   public function testResolveUrlException(
@@ -442,6 +445,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::getActiveEnvironment
    * @covers ::getActiveEnvironmentName
    * @covers ::getActiveProject
+   * @covers ::getProjectForRepository
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::getProject
@@ -450,9 +454,11 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
    * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
    * @covers \Drupal\helfi_api_base\Environment\Project::hasEnvironment
+   * @covers \Drupal\helfi_api_base\Environment\Project::getMetadata
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentTrait::normalizeEnvironmentName
    * @covers \Drupal\helfi_api_base\Environment\Metadata::__construct
    * @covers \Drupal\helfi_api_base\Environment\Metadata::createFromArray
+   * @covers \Drupal\helfi_api_base\Environment\Metadata::getNormalizedRepository
    */
   public function testGetProjectForRepository() : void {
     $sut = $this->getEnvironmentResolver('City-of-Helsinki/drupal-helfi-asuminen', 'prod');
