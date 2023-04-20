@@ -155,9 +155,12 @@ function helfi_api_base_update_9009() : void {
     ]);
     foreach ($endpoints as $endpoint) {
       $config = $endpoint->get('configuration');
-      $config['authentication'][] = 'basic_auth';
-      $endpoint->set('configuration', $config);
-      $endpoint->save();
+
+      if (!in_array('basic_auth', $config['authentication'])) {
+        $config['authentication'][] = 'basic_auth';
+        $endpoint->set('configuration', $config);
+        $endpoint->save();
+      }
     }
   }
 }
@@ -165,6 +168,6 @@ function helfi_api_base_update_9009() : void {
 /**
  * Create 'debug_api' role for hel.fi projects.
  */
-function helfi_api_base_update_9011() : void {
+function helfi_api_base_update_9012() : void {
   helfi_api_base_install();
 }
