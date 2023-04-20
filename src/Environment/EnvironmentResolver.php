@@ -34,41 +34,53 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
   /**
    * Constructs a new instance.
    *
-   * @param string $path
+   * @param string $pathOrJson
    *   The path to environments.json file.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The configuration factory.
    */
-  public function __construct(string $path, ConfigFactoryInterface $configFactory) {
-    $this->populateEnvironments($path);
+  public function __construct(string $pathOrJson, ConfigFactoryInterface $configFactory) {
+    $this->populateEnvironments($pathOrJson);
     $this->config = $configFactory->get('helfi_api_base.environment_resolver.settings');
   }
 
   /**
    * Populates the environments for given json config file.
    *
-   * @param string $path
+   * @param string $pathOrJson
    *   The path to config.json file.
    */
-  private function populateEnvironments(string $path) : void {
+  private function populateEnvironments(string $pathOrJson) : void {
     // Fallback to default environments.json file.
-    if ($path === '') {
-      $path = __DIR__ . '/../../fixtures/environments.json';
-    }
-    if (!file_exists($path)) {
-      throw new \InvalidArgumentException('Environment file not found.');
+    if ($pathOrJson === '') {
+      $pathOrJson = __DIR__ . '/../../fixtures/environments.json';
     }
 
-    $projects = json_decode(file_get_contents($path), TRUE);
+    if (!is_file($pathOrJson)) {
+      try {
+        $projects = json_decode($pathOrJson, TRUE, flags: JSON_THROW_ON_ERROR);
+      }
+      catch (\JsonException) {
+        throw new \InvalidArgumentException('Environment file not found or is not a valid JSON.');
+      }
+    }
+    else {
+      $projects = json_decode(file_get_contents($pathOrJson), TRUE);
+    }
 
     if (empty($projects)) {
       throw new \InvalidArgumentException('Failed to parse projects.');
     }
 
     foreach ($projects as $id => $item) {
-      $project = new Project($id);
+      if (!isset($item['meta'], $item['environments'])) {
+        throw new \InvalidArgumentException('Project missing meta or environments.');
+      }
+      ['meta' => $meta, 'environments' => $environments] = $item;
 
-      foreach ($item as $environment => $settings) {
+      $project = new Project($id, Metadata::createFromArray($meta));
+
+      foreach ($environments as $environment => $settings) {
         if (!isset($settings['domain'], $settings['path'])) {
           throw new \InvalidArgumentException('Project missing domain or paths setting.');
         }
