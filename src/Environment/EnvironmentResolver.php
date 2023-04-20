@@ -161,11 +161,34 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
   }
 
   /**
+   * Gets the project for given repository.
+   *
+   * @param string $repository
+   *   The repository name.
+   *
+   * @return \Drupal\helfi_api_base\Environment\Project
+   *   The project.
+   */
+  private function getProjectForRepository(string $repository) : Project {
+    $projects = array_filter(
+      $this->projects,
+      fn (Project $project) => $project->getMetadata()->getNormalizedRepository() === strtolower($repository)
+    );
+
+    if ($project = reset($projects)) {
+      return $project;
+    }
+    throw new \InvalidArgumentException(
+      sprintf('Project "%s" not found.', $repository)
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getProject(string $project) : Project {
     if (!isset($this->projects[$project])) {
-      throw new \InvalidArgumentException(sprintf('Project "%s" not found.', $project));
+      return $this->getProjectForRepository($project);
     }
     return $this->projects[$project];
   }
