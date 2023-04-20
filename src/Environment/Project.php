@@ -36,15 +36,38 @@ final class Project {
    *
    * @param string $name
    *   The project name.
+   * @param \Drupal\helfi_api_base\Environment\Metadata $metadata
+   *   The metadata.
    * @param \Drupal\helfi_api_base\Environment\Environment[] $environments
    *   The environments.
    */
   public function __construct(
     private readonly string $name,
+    private readonly Metadata $metadata,
     array $environments = []
   ) {
     Assert::allIsInstanceOf($environments, Environment::class);
     $this->environments = $environments;
+  }
+
+  /**
+   * Gets the project machine name.
+   *
+   * @return string
+   *   The project name.
+   */
+  public function getName() : string {
+    return $this->name;
+  }
+
+  /**
+   * Gets the project metadata.
+   *
+   * @return \Drupal\helfi_api_base\Environment\Metadata
+   *   The metadata.
+   */
+  public function getMetadata() : Metadata {
+    return $this->metadata;
   }
 
   /**

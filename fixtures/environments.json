@@ -1,317 +1,362 @@
 {
   "asuminen": {
-    "local": {
-      "path": {
-        "fi": "/fi/asuminen",
-        "sv": "/sv/boende",
-        "en": "/en/housing"
-      },
-      "protocol": "http",
-      "domain": "helfi-asuminen.docker.so:8080"
+    "meta": {
+      "repository": "City-of-Helsinki/drupal-helfi-asuminen"
     },
-    "test": {
-      "path": {
-        "fi": "/fi/test-asuminen",
-        "sv": "/sv/test-boende",
-        "en": "/en/test-housing"
+    "environments": {
+      "local": {
+        "path": {
+          "fi": "/fi/asuminen",
+          "sv": "/sv/boende",
+          "en": "/en/housing"
+        },
+        "protocol": "http",
+        "domain": "helfi-asuminen.docker.so:8080"
       },
-      "domain": "www.hel.fi"
-    },
-    "stage": {
-      "path": {
-        "fi": "/fi/staging-asuminen",
-        "sv": "/sv/staging-boende",
-        "en": "/en/staging-housing"
+      "test": {
+        "path": {
+          "fi": "/fi/test-asuminen",
+          "sv": "/sv/test-boende",
+          "en": "/en/test-housing"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
-    },
-    "prod": {
-      "path": {
-        "fi": "/fi/asuminen",
-        "sv": "/sv/boende",
-        "en": "/en/housing"
+      "stage": {
+        "path": {
+          "fi": "/fi/staging-asuminen",
+          "sv": "/sv/staging-boende",
+          "en": "/en/staging-housing"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
+      "prod": {
+        "path": {
+          "fi": "/fi/asuminen",
+          "sv": "/sv/boende",
+          "en": "/en/housing"
+        },
+        "domain": "www.hel.fi"
+      }
     }
   },
   "etusivu": {
-    "local": {
-      "path": {
-        "fi": "/fi",
-        "sv": "/sv",
-        "en": "/en"
-      },
-      "protocol": "http",
-      "domain": "helfi-etusivu.docker.so:8080"
+    "meta": {
+      "repository": "City-of-Helsinki/drupal-helfi-etusivu"
     },
-    "test": {
-      "path": {
-        "fi": "/fi/test-etusivu",
-        "sv": "/sv/test-huvudsida",
-        "en": "/en/test-frontpage"
+    "environments": {
+      "local": {
+        "path": {
+          "fi": "/fi",
+          "sv": "/sv",
+          "en": "/en"
+        },
+        "protocol": "http",
+        "domain": "helfi-etusivu.docker.so:8080"
       },
-      "domain": "www.hel.fi"
-    },
-    "stage": {
-      "path": {
-        "fi": "/fi/staging-etusivu",
-        "sv": "/sv/staging-huvudsida",
-        "en": "/en/staging-frontpage"
+      "test": {
+        "path": {
+          "fi": "/fi/test-etusivu",
+          "sv": "/sv/test-huvudsida",
+          "en": "/en/test-frontpage"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
-    },
-    "prod": {
-      "path": {
-        "fi": "/fi",
-        "sv": "/sv",
-        "en": "/en"
+      "stage": {
+        "path": {
+          "fi": "/fi/staging-etusivu",
+          "sv": "/sv/staging-huvudsida",
+          "en": "/en/staging-frontpage"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
+      "prod": {
+        "path": {
+          "fi": "/fi",
+          "sv": "/sv",
+          "en": "/en"
+        },
+        "domain": "www.hel.fi"
+      }
     }
   },
   "kasvatus-koulutus": {
-    "local": {
-      "path": {
-        "fi": "/fi/kasvatus-koulutus",
-        "sv": "/sv/fostran-och-utbildning",
-        "en": "/en/childhood-and-education"
-      },
-      "protocol": "http",
-      "domain": "helfi-kasko.docker.so:8080"
+    "meta": {
+      "repository": "City-of-Helsinki/drupal-helfi-kasvatus-koulutus"
     },
-    "test": {
-      "path": {
-        "fi": "/fi/test-kasvatus-koulutus",
-        "sv": "/sv/test-fostran-och-utbildning",
-        "en": "/en/test-childhood-and-education"
+    "environments": {
+      "local": {
+        "path": {
+          "fi": "/fi/kasvatus-koulutus",
+          "sv": "/sv/fostran-och-utbildning",
+          "en": "/en/childhood-and-education"
+        },
+        "protocol": "http",
+        "domain": "helfi-kasko.docker.so:8080"
       },
-      "domain": "www.hel.fi"
-    },
-    "stage": {
-      "path": {
-        "fi": "/fi/staging-kasvatus-koulutus",
-        "sv": "/sv/staging-fostran-och-utbildning",
-        "en": "/en/staging-childhood-and-education"
+      "test": {
+        "path": {
+          "fi": "/fi/test-kasvatus-koulutus",
+          "sv": "/sv/test-fostran-och-utbildning",
+          "en": "/en/test-childhood-and-education"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
-    },
-    "prod": {
-      "path": {
-        "fi": "/fi/kasvatus-koulutus",
-        "sv": "/sv/fostran-och-utbildning",
-        "en": "/en/childhood-and-education"
+      "stage": {
+        "path": {
+          "fi": "/fi/staging-kasvatus-koulutus",
+          "sv": "/sv/staging-fostran-och-utbildning",
+          "en": "/en/staging-childhood-and-education"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
+      "prod": {
+        "path": {
+          "fi": "/fi/kasvatus-koulutus",
+          "sv": "/sv/fostran-och-utbildning",
+          "en": "/en/childhood-and-education"
+        },
+        "domain": "www.hel.fi"
+      }
     }
   },
   "kuva": {
-    "local": {
-      "path": {
-        "fi": "/fi/kulttuuri-ja-vapaa-aika",
-        "sv": "/sv/kultur-och-fritid",
-        "en": "/en/culture-and-leisure"
-      },
-      "protocol": "http",
-      "domain": "helfi-kuva.docker.so:8080"
+    "meta": {
+      "repository": "City-of-Helsinki/drupal-helfi-kuva"
     },
-    "test": {
-      "path": {
-        "fi": "/fi/test-kulttuuri-ja-vapaa-aika",
-        "sv": "/sv/test-kultur-och-fritid",
-        "en": "/en/test-culture-and-leisure"
+    "environments": {
+      "local": {
+        "path": {
+          "fi": "/fi/kulttuuri-ja-vapaa-aika",
+          "sv": "/sv/kultur-och-fritid",
+          "en": "/en/culture-and-leisure"
+        },
+        "protocol": "http",
+        "domain": "helfi-kuva.docker.so:8080"
       },
-      "domain": "www.hel.fi"
-    },
-    "stage": {
-      "path": {
-        "fi": "/fi/staging-kulttuuri-ja-vapaa-aika",
-        "sv": "/sv/staging-kultur-och-fritid",
-        "en": "/en/staging-culture-and-leisure"
+      "test": {
+        "path": {
+          "fi": "/fi/test-kulttuuri-ja-vapaa-aika",
+          "sv": "/sv/test-kultur-och-fritid",
+          "en": "/en/test-culture-and-leisure"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
-    },
-    "prod": {
-      "path": {
-        "fi": "/fi/kulttuuri-ja-vapaa-aika",
-        "sv": "/sv/kultur-och-fritid",
-        "en": "/en/culture-and-leisure"
+      "stage": {
+        "path": {
+          "fi": "/fi/staging-kulttuuri-ja-vapaa-aika",
+          "sv": "/sv/staging-kultur-och-fritid",
+          "en": "/en/staging-culture-and-leisure"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
+      "prod": {
+        "path": {
+          "fi": "/fi/kulttuuri-ja-vapaa-aika",
+          "sv": "/sv/kultur-och-fritid",
+          "en": "/en/culture-and-leisure"
+        },
+        "domain": "www.hel.fi"
+      }
     }
   },
   "liikenne": {
-    "local": {
-      "path": {
-        "fi": "/fi/kaupunkiymparisto-ja-liikenne",
-        "sv": "/sv/stadsmiljo-och-trafik",
-        "en": "/en/urban-environment-and-traffic"
-      },
-      "protocol": "http",
-      "domain": "helfi-kymp.docker.so:8080"
+    "meta": {
+      "repository": "City-of-Helsinki/drupal-helfi-kymp"
     },
-    "test": {
-      "path": {
-        "fi": "/fi/test-kaupunkiymparisto-ja-liikenne",
-        "sv": "/sv/test-stadsmiljo-och-trafik",
-        "en": "/en/test-urban-environment-and-traffic"
+    "environments": {
+      "local": {
+        "path": {
+          "fi": "/fi/kaupunkiymparisto-ja-liikenne",
+          "sv": "/sv/stadsmiljo-och-trafik",
+          "en": "/en/urban-environment-and-traffic"
+        },
+        "protocol": "http",
+        "domain": "helfi-kymp.docker.so:8080"
       },
-      "domain": "www.hel.fi"
-    },
-    "stage": {
-      "path": {
-        "fi": "/fi/staging-kaupunkiymparisto-ja-liikenne",
-        "sv": "/sv/staging-stadsmiljo-och-trafik",
-        "en": "/en/staging-urban-environment-and-traffic"
+      "test": {
+        "path": {
+          "fi": "/fi/test-kaupunkiymparisto-ja-liikenne",
+          "sv": "/sv/test-stadsmiljo-och-trafik",
+          "en": "/en/test-urban-environment-and-traffic"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
-    },
-    "prod": {
-      "path": {
-        "fi": "/fi/kaupunkiymparisto-ja-liikenne",
-        "sv": "/sv/stadsmiljo-och-trafik",
-        "en": "/en/urban-environment-and-traffic"
+      "stage": {
+        "path": {
+          "fi": "/fi/staging-kaupunkiymparisto-ja-liikenne",
+          "sv": "/sv/staging-stadsmiljo-och-trafik",
+          "en": "/en/staging-urban-environment-and-traffic"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
+      "prod": {
+        "path": {
+          "fi": "/fi/kaupunkiymparisto-ja-liikenne",
+          "sv": "/sv/stadsmiljo-och-trafik",
+          "en": "/en/urban-environment-and-traffic"
+        },
+        "domain": "www.hel.fi"
+      }
     }
   },
   "rekry": {
-    "local": {
-      "path": {
-        "fi": "/fi/avoimet-tyopaikat",
-        "sv": "/sv/lediga-jobb",
-        "en": "/en/open-jobs"
-      },
-      "protocol": "http",
-      "domain": "helfi-rekry.docker.so:8080"
+    "meta": {
+      "repository": "City-of-Helsinki/drupal-helfi-rekry"
     },
-    "test": {
-      "path": {
-        "fi": "/fi/test-avoimet-tyopaikat",
-        "sv": "/sv/test-lediga-jobb",
-        "en": "/en/test-open-jobs"
+    "environments": {
+      "local": {
+        "path": {
+          "fi": "/fi/avoimet-tyopaikat",
+          "sv": "/sv/lediga-jobb",
+          "en": "/en/open-jobs"
+        },
+        "protocol": "http",
+        "domain": "helfi-rekry.docker.so:8080"
       },
-      "domain": "www.hel.fi"
-    },
-    "stage": {
-      "path": {
-        "fi": "/fi/staging-avoimet-tyopaikat",
-        "sv": "/sv/staging-lediga-jobb",
-        "en": "/en/staging-open-jobs"
+      "test": {
+        "path": {
+          "fi": "/fi/test-avoimet-tyopaikat",
+          "sv": "/sv/test-lediga-jobb",
+          "en": "/en/test-open-jobs"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
-    },
-    "prod": {
-      "path": {
-        "fi": "/fi/avoimet-tyopaikat",
-        "sv": "/sv/lediga-jobb",
-        "en": "/en/open-jobs"
+      "stage": {
+        "path": {
+          "fi": "/fi/staging-avoimet-tyopaikat",
+          "sv": "/sv/staging-lediga-jobb",
+          "en": "/en/staging-open-jobs"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
+      "prod": {
+        "path": {
+          "fi": "/fi/avoimet-tyopaikat",
+          "sv": "/sv/lediga-jobb",
+          "en": "/en/open-jobs"
+        },
+        "domain": "www.hel.fi"
+      }
     }
   },
   "strategia": {
-    "local": {
-      "path": {
-        "fi": "/fi/paatoksenteko-ja-hallinto",
-        "sv": "/sv/beslutsfattande-och-forvaltning",
-        "en": "/en/decision-making"
-      },
-      "protocol": "http",
-      "domain": "strategia.docker.so:8080"
+    "meta": {
+      "repository": "City-of-Helsinki/drupal-helfi-strategia"
     },
-    "test": {
-      "path": {
-        "fi": "/fi/test-paatoksenteko-ja-hallinto",
-        "sv": "/sv/test-beslutsfattande-och-forvaltning",
-        "en": "/en/test-decision-making"
+    "environments": {
+      "local": {
+        "path": {
+          "fi": "/fi/paatoksenteko-ja-hallinto",
+          "sv": "/sv/beslutsfattande-och-forvaltning",
+          "en": "/en/decision-making"
+        },
+        "protocol": "http",
+        "domain": "strategia.docker.so:8080"
       },
-      "domain": "www.hel.fi"
-    },
-    "stage": {
-      "path": {
-        "fi": "/fi/staging-paatoksenteko-ja-hallinto",
-        "sv": "/sv/staging-beslutsfattande-och-forvaltning",
-        "en": "/en/staging-decision-making"
+      "test": {
+        "path": {
+          "fi": "/fi/test-paatoksenteko-ja-hallinto",
+          "sv": "/sv/test-beslutsfattande-och-forvaltning",
+          "en": "/en/test-decision-making"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
-    },
-    "prod": {
-      "path": {
-        "fi": "/fi/paatoksenteko-ja-hallinto",
-        "sv": "/sv/beslutsfattande-och-forvaltning",
-        "en": "/en/decision-making"
+      "stage": {
+        "path": {
+          "fi": "/fi/staging-paatoksenteko-ja-hallinto",
+          "sv": "/sv/staging-beslutsfattande-och-forvaltning",
+          "en": "/en/staging-decision-making"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
+      "prod": {
+        "path": {
+          "fi": "/fi/paatoksenteko-ja-hallinto",
+          "sv": "/sv/beslutsfattande-och-forvaltning",
+          "en": "/en/decision-making"
+        },
+        "domain": "www.hel.fi"
+      }
     }
   },
   "terveys": {
-    "local": {
-      "path": {
-        "fi": "/fi/sosiaali-ja-terveyspalvelut",
-        "sv": "/sv/social-och-halsovardstjanster",
-        "en": "/en/health-and-social-services"
-      },
-      "protocol": "http",
-      "domain": "helfi-sote.docker.so:8080"
+    "meta": {
+      "repository": "City-of-Helsinki/drupal-helfi-sote"
     },
-    "test": {
-      "path": {
-        "fi": "/fi/test-sosiaali-ja-terveyspalvelut",
-        "sv": "/sv/test-social-och-halsovardstjanster",
-        "en": "/en/test-health-and-social-services"
+    "environments": {
+      "local": {
+        "path": {
+          "fi": "/fi/sosiaali-ja-terveyspalvelut",
+          "sv": "/sv/social-och-halsovardstjanster",
+          "en": "/en/health-and-social-services"
+        },
+        "protocol": "http",
+        "domain": "helfi-sote.docker.so:8080"
       },
-      "domain": "www.hel.fi"
-    },
-    "stage": {
-      "path": {
-        "fi": "/fi/staging-sosiaali-ja-terveyspalvelut",
-        "sv": "/sv/staging-social-och-halsovardstjanster",
-        "en": "/en/staging-health-and-social-services"
+      "test": {
+        "path": {
+          "fi": "/fi/test-sosiaali-ja-terveyspalvelut",
+          "sv": "/sv/test-social-och-halsovardstjanster",
+          "en": "/en/test-health-and-social-services"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
-    },
-    "prod": {
-      "path": {
-        "fi": "/fi/sosiaali-ja-terveyspalvelut",
-        "sv": "/sv/social-och-halsovardstjanster",
-        "en": "/en/health-and-social-services"
+      "stage": {
+        "path": {
+          "fi": "/fi/staging-sosiaali-ja-terveyspalvelut",
+          "sv": "/sv/staging-social-och-halsovardstjanster",
+          "en": "/en/staging-health-and-social-services"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
+      "prod": {
+        "path": {
+          "fi": "/fi/sosiaali-ja-terveyspalvelut",
+          "sv": "/sv/social-och-halsovardstjanster",
+          "en": "/en/health-and-social-services"
+        },
+        "domain": "www.hel.fi"
+      }
     }
   },
   "tyo-yrittaminen": {
-    "local": {
-      "path": {
-        "fi": "/fi/yritykset-ja-tyo",
-        "sv": "/sv/foretag-och-arbete",
-        "en": "/en/business-and-work"
-      },
-      "protocol": "http",
-      "domain": "helfi-elo.docker.so:8080"
+    "meta": {
+      "repository": "City-of-Helsinki/drupal-helfi-tyo-yrittaminen"
     },
-    "test": {
-      "path": {
-        "fi": "/fi/test-yritykset-ja-tyo",
-        "sv": "/sv/test-foretag-och-arbete",
-        "en": "/en/test-business-and-work"
+    "environments": {
+      "local": {
+        "path": {
+          "fi": "/fi/yritykset-ja-tyo",
+          "sv": "/sv/foretag-och-arbete",
+          "en": "/en/business-and-work"
+        },
+        "protocol": "http",
+        "domain": "helfi-elo.docker.so:8080"
       },
-      "domain": "www.hel.fi"
-    },
-    "stage": {
-      "path": {
-        "fi": "/fi/staging-yritykset-ja-tyo",
-        "sv": "/sv/staging-foretag-och-arbete",
-        "en": "/en/staging-business-and-work"
+      "test": {
+        "path": {
+          "fi": "/fi/test-yritykset-ja-tyo",
+          "sv": "/sv/test-foretag-och-arbete",
+          "en": "/en/test-business-and-work"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
-    },
-    "prod": {
-      "path": {
-        "fi": "/fi/yritykset-ja-tyo",
-        "sv": "/sv/foretag-och-arbete",
-        "en": "/en/business-and-work"
+      "stage": {
+        "path": {
+          "fi": "/fi/staging-yritykset-ja-tyo",
+          "sv": "/sv/staging-foretag-och-arbete",
+          "en": "/en/staging-business-and-work"
+        },
+        "domain": "www.hel.fi"
       },
-      "domain": "www.hel.fi"
+      "prod": {
+        "path": {
+          "fi": "/fi/yritykset-ja-tyo",
+          "sv": "/sv/foretag-och-arbete",
+          "en": "/en/business-and-work"
+        },
+        "domain": "www.hel.fi"
+      }
     }
   }
 }

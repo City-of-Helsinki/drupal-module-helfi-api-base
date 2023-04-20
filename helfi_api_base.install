@@ -115,13 +115,6 @@ function helfi_api_base_update_9007() : void {
 }
 
 /**
- * Create 'debug_api' role if configured so.
- */
-function helfi_api_base_update_9008() : void {
-  helfi_api_base_modules_installed([], FALSE);
-}
-
-/**
  * Enable basic_auth authentication method for debug endpoints.
  */
 function helfi_api_base_update_9009() : void {
@@ -140,5 +133,15 @@ function helfi_api_base_update_9009() : void {
       $endpoint->set('configuration', $config);
       $endpoint->save();
     }
+  }
+}
+
+function helfi_api_base_update_9010() : void {
+  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $envResolver */
+  $envResolver = \Drupal::service('helfi_api_base.environment_resolver');
+  try {
+    $envResolver->getActiveProject()->getName();
+  } catch (\InvalidArgumentException) {
+
   }
 }
