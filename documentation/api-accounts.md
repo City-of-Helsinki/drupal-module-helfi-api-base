@@ -81,7 +81,6 @@ Add something like this to your `local.settings.php`:
 
 ```php
 # local.settings.php
-
 $vault_accounts = [
   [
     'id' => 'etusivu_local',

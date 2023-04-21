@@ -21,9 +21,15 @@ class VaultManagerTest extends UnitTestCase {
    * @covers ::__construct
    */
   public function testInvalidVaultItem() : void {
-    $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessageMatches('/Expected an instance of /');
-    new VaultManager(['string']);
+    $caught = FALSE;
+    try {
+      new VaultManager(['string']);
+    }
+    catch (\InvalidArgumentException $e) {
+      $caught = TRUE;
+      $this->assertMatchesRegularExpression('/Expected an instance of /', $e->getMessage());
+    }
+    $this->assertTrue($caught);
   }
 
   /**
@@ -32,14 +38,20 @@ class VaultManagerTest extends UnitTestCase {
    * @dataProvider factoryExceptionData
    */
   public function testFactoryException(array $vault) : void {
-    $this->expectException(\InvalidArgumentException::class);
-    $this->expectErrorMessageMatches('/Missing required/');
-    $sut = new VaultManagerFactory($this->getConfigFactoryStub([
-      'helfi_api_base.api_accounts' => [
-        'vault' => $vault,
-      ],
-    ]));
-    $sut->create();
+    $caught = FALSE;
+    try {
+      $sut = new VaultManagerFactory($this->getConfigFactoryStub([
+        'helfi_api_base.api_accounts' => [
+          'vault' => $vault,
+        ],
+      ]));
+      $sut->create();
+    }
+    catch (\InvalidArgumentException $e) {
+      $this->assertMatchesRegularExpression('/Missing required/', $e->getMessage());
+      $caught = TRUE;
+    }
+    $this->assertTrue($caught);
   }
 
   /**
