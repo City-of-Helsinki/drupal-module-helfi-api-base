@@ -4,7 +4,7 @@ Allows API user credentials to be specified in an environment variables.
 
 This can be used to:
  - Ensure that API users always retain the same credentials, i.e. it creates any missing accounts and then force resets the password
- - Store API credentials for other projects
+ - Store external API credentials
 
 ## Managing local API accounts
 
@@ -30,6 +30,8 @@ If no `mail` is provided, an email address like `drupal+$username@hel.fi` is use
 We hook into `helfi_api_base.post_deploy` event ([src/EventSubscriber/EnsureApiAccountsSubscriber.php](/src/EventSubscriber/EnsureApiAccountsSubscriber.php)), triggered by `drush helfi:post-deploy` command executed as a part of deployment tasks: [https://github.com/City-of-Helsinki/drupal-helfi-platform/blob/main/docker/openshift/entrypoints/20-deploy.sh](https://github.com/City-of-Helsinki/drupal-helfi-platform/blob/main/docker/openshift/entrypoints/20-deploy.sh)
 
 ## Managing API credentials
+
+This is used to store external API credentials.
 
 Define an environment variable called `DRUPAL_VAULT_ACCOUNTS`. These accounts are read and mapped in [settings.php](https://github.com/City-of-Helsinki/drupal-helfi-platform/blob/main/public/sites/default/settings.php) file shipped with `City-of-Helsinki/drupal-helfi-platform`.
 
