@@ -3,8 +3,8 @@
 Allows API user credentials to be specified in an environment variables.
 
 This can be used to:
- - Ensure that API users always retain the same credentials, i.e. it creates any missing accounts and then force resets the password
- - Store external API credentials
+ - [Ensure that API users always retain the same credentials, i.e. it creates any missing accounts and then force resets the password](#managing-local-api-accounts)
+ - [Store external API credentials](#managing-external-api-credentials)
 
 ## Managing local API accounts
 
@@ -29,7 +29,24 @@ If no `mail` is provided, an email address like `drupal+$username@hel.fi` is use
 
 We hook into `helfi_api_base.post_deploy` event ([src/EventSubscriber/EnsureApiAccountsSubscriber.php](/src/EventSubscriber/EnsureApiAccountsSubscriber.php)), triggered by `drush helfi:post-deploy` command executed as a part of deployment tasks: [https://github.com/City-of-Helsinki/drupal-helfi-platform/blob/main/docker/openshift/entrypoints/20-deploy.sh](https://github.com/City-of-Helsinki/drupal-helfi-platform/blob/main/docker/openshift/entrypoints/20-deploy.sh)
 
-## Managing API credentials
+### Testing locally
+
+Add something like this to your `local.settings.php`:
+
+```php
+# local.settings.php
+$api_accounts = [
+  [
+    'username' => 'helfi-debug-data',
+    'password' => '123',
+    'mail' => 'drupal+debug_api@hel.fi',
+    'roles' => ['debug_api'],
+  ],
+];
+$config['helfi_api_base.api_accounts']['accounts'] = $api_accounts;
+```
+
+## Managing external API credentials
 
 This is used to store external API credentials.
 
@@ -56,6 +73,21 @@ $service = \Drupal::service('helfi_api_base.vault_manager');
 $item = $service->get('etusivu_local'); // 'etusivu_local' is the ID previously defined in DRUPAL_VAULT_ACCOUNTS.
 $id = $item->id(); // $id = 'etusivu_local'.
 $data = $item->data() // $data = 'aGVsZmktYWRtaW46MTIz'. This is a base64 encoded basic auth token (helfi-admin:123).
+```
 
+### Testing locally
 
+Add something like this to your `local.settings.php`:
+
+```php
+# local.settings.php
+
+$vault_accounts = [
+  [
+    'id' => 'etusivu_local',
+    'plugin' => 'authorization_token',
+    'data' => base64_encode('helfi-debug-data:123'),
+  ],
+];
+$config['helfi_api_base.api_accounts']['vault'] = $vault_accounts;
 ```
