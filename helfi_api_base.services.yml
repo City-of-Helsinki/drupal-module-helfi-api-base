@@ -73,3 +73,12 @@ services:
       - '%helfi_api_base.logger_enabled%'
     tags:
       - { name: logger }
+
+  helfi_api_base.vault_manager:
+    class: Drupal\helfi_api_base\Vault\VaultManager
+    factory: ['@helfi_api_base.vault_factory', 'create']
+
+  helfi_api_base.vault_factory:
+    class: Drupal\helfi_api_base\Vault\VaultManagerFactory
+    arguments:
+      - '@config.factory'

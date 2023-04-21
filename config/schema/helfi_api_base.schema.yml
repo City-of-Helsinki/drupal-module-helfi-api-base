@@ -5,6 +5,17 @@ action.configuration.remote_entity:migration_update:*:
 helfi_api_base.api_accounts:
   type: config_object
   mapping:
+    vault:
+      type: sequence
+      sequence:
+        type: mapping
+        mapping:
+          id:
+            type: string
+          plugin:
+            type: string
+          data:
+            type: string
     accounts:
       type: sequence
       sequence:
