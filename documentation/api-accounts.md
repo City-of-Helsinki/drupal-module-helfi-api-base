@@ -90,3 +90,16 @@ $vault_accounts = [
 ];
 $config['helfi_api_base.api_accounts']['vault'] = $vault_accounts;
 ```
+
+## Tool to create/update the secret
+
+This module provides a Drush command to easily update and create API secrets. The command returns a base64 encoded string that can directly be copied to Azure Key Vault.
+
+### Update
+
+Use `drush helfi:update-api-secret` command to update the API secret.
+
+### Create
+
+Use `drush helfi:create-api-secret` command to create the API secret.
+

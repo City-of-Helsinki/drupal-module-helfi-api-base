@@ -1,4 +1,8 @@
 services:
+  helfi_api_base.api_account_commands:
+    class: \Drupal\helfi_api_base\Commands\ApiAccountCommands
+    tags:
+      - { name: drush.command }
   helfi_api_base.deploy_commands:
     class: \Drupal\helfi_api_base\Commands\DeployCommands
     arguments: ['@event_dispatcher']
