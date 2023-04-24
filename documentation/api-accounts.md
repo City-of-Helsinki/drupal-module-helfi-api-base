@@ -93,6 +93,8 @@ $config['helfi_api_base.api_accounts']['vault'] = $vault_accounts;
 
 ## Tool to create/update the secret
 
+See https://helsinkisolutionoffice.atlassian.net/wiki/spaces/HEL/pages/6785826654/Ymp+rist+t (in Finnish) for more information on how to actually update the value for given environment variable.
+
 This module provides a Drush command to easily update and create API secrets. The command returns a base64 encoded string that can directly be copied to Azure Key Vault.
 
 ### Update
