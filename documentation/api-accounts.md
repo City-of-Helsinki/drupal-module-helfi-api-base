@@ -103,3 +103,6 @@ Use `drush helfi:update-api-secret` command to update the API secret.
 
 Use `drush helfi:create-api-secret` command to create the API secret.
 
+### Show current value
+
+Call `drush helfi:reveal-api-secret {secret value}` to show the value of given secret.
