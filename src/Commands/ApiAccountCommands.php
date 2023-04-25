@@ -32,7 +32,6 @@ final class ApiAccountCommands extends DrushCommands {
    *
    * @return int
    *   The exit code.
-   * @throws \JsonException
    */
   #[Command(name: 'helfi:reveal-api-secret')]
   public function reveal(string $value) : int {
