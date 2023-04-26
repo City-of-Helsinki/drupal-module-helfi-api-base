@@ -165,10 +165,10 @@ final class Environment {
   /**
    * Gets the environment metadata.
    *
-   * @return \Drupal\helfi_api_base\Environment\EnvironmentMetadata
+   * @return \Drupal\helfi_api_base\Environment\EnvironmentMetadata|null
    *   The metadata.
    */
-  public function getMetadata(): EnvironmentMetadata {
+  public function getMetadata(): ?EnvironmentMetadata {
     return $this->metadata;
   }
 

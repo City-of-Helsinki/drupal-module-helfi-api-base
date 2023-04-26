@@ -8,7 +8,7 @@ use Drupal\helfi_api_base\Environment\EnvironmentMetadata;
 use Drupal\Tests\UnitTestCase;
 
 /**
- * Tests environment resolver value objects.
+ * Tests EnvironmentMetadata value object.
  *
  * @coversDefaultClass \Drupal\helfi_api_base\Environment\EnvironmentMetadata
  * @group helfi_api_base
