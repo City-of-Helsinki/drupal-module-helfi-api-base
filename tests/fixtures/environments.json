@@ -1,7 +1,8 @@
 {
   "asuminen": {
     "meta": {
-      "repository": "City-of-Helsinki/drupal-helfi-asuminen"
+      "repository": "City-of-Helsinki/drupal-helfi-asuminen",
+      "azure_devops_link": "https://example.com"
     },
     "environments": {
       "local": {
@@ -19,7 +20,8 @@
           "sv": "/sv/boende",
           "en": "/en/housing"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {}
       },
       "stage": {
         "path": {
@@ -27,7 +29,10 @@
           "sv": "/sv/staging-boende",
           "en": "/en/staging-housing"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://example.com"
+        }
       },
       "test": {
         "path": {
@@ -35,7 +40,10 @@
           "sv": "/sv/test-boende",
           "en": "/en/test-housing"
         },
-        "domain": "helfi-asuminen-test.docker.so"
+        "domain": "helfi-asuminen-test.docker.so",
+        "meta": {
+          "openshift_console_link": "https://example.com"
+        }
       }
     }
   }

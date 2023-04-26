@@ -7,16 +7,19 @@ namespace Drupal\helfi_api_base\Environment;
 /**
  * A value object to store project metadata.
  */
-final class Metadata {
+final class ProjectMetadata {
 
   /**
    * Constructs a new instance.
    *
    * @param string $repository
    *   The repository.
+   * @param string $azureDevopsLink
+   *   The azure devops link.
    */
   public function __construct(
     private readonly string $repository,
+    private readonly string $azureDevopsLink,
   ) {
   }
 
@@ -30,15 +33,33 @@ final class Metadata {
    *   The
    */
   public static function createFromArray(array $data) : self {
-    if (!isset($data['repository'])) {
-      throw new \InvalidArgumentException('Missing required "repository".');
+    $required = [
+      'repository',
+      'azure_devops_link',
+    ];
+
+    foreach ($required as $key) {
+      if (!isset($data[$key])) {
+        throw new \InvalidArgumentException(sprintf('Missing required "%s".', $key));
+      }
     }
 
     [
       'repository' => $repository,
+      'azure_devops_link' => $devopsLink,
     ] = $data;
 
-    return new self($repository);
+    return new self($repository, $devopsLink);
+  }
+
+  /**
+   * Gets the Azure DevOps link.
+   *
+   * @return string
+   *   The azure_devops_link link.
+   */
+  public function getAzureDevopsLink() : string {
+    return $this->azureDevopsLink;
   }
 
   /**

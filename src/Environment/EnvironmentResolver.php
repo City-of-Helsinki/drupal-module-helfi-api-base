@@ -78,7 +78,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
       }
       ['meta' => $meta, 'environments' => $environments] = $item;
 
-      $project = new Project($id, Metadata::createFromArray($meta));
+      $project = new Project($id, ProjectMetadata::createFromArray($meta));
 
       foreach ($environments as $environment => $settings) {
         if (!isset($settings['domain'], $settings['path'])) {
@@ -90,6 +90,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
           $settings['protocol'] ?? 'https',
           $id,
           EnvironmentEnum::tryFrom($environment),
+          EnvironmentMetadata::createFromArray($settings['meta'] ?? [])
         ));
       }
       $this->projects[$id] = $project;

@@ -1,7 +1,8 @@
 {
   "asuminen": {
     "meta": {
-      "repository": "City-of-Helsinki/drupal-helfi-asuminen"
+      "repository": "City-of-Helsinki/drupal-helfi-asuminen",
+      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/asuminen"
     },
     "environments": {
       "local": {
@@ -11,7 +12,8 @@
           "en": "/en/housing"
         },
         "protocol": "http",
-        "domain": "helfi-asuminen.docker.so:8080"
+        "domain": "helfi-asuminen.docker.so:8080",
+        "meta": {}
       },
       "test": {
         "path": {
@@ -19,7 +21,10 @@
           "sv": "/sv/test-boende",
           "en": "/en/test-housing"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-asuminen-test"
+        }
       },
       "stage": {
         "path": {
@@ -27,7 +32,10 @@
           "sv": "/sv/staging-boende",
           "en": "/en/staging-housing"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-asuminen-staging"
+        }
       },
       "prod": {
         "path": {
@@ -35,13 +43,17 @@
           "sv": "/sv/boende",
           "en": "/en/housing"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-asuminen-prod"
+        }
       }
     }
   },
   "etusivu": {
     "meta": {
-      "repository": "City-of-Helsinki/drupal-helfi-etusivu"
+      "repository": "City-of-Helsinki/drupal-helfi-etusivu",
+      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/helfi-etusivu"
     },
     "environments": {
       "local": {
@@ -51,7 +63,8 @@
           "en": "/en"
         },
         "protocol": "http",
-        "domain": "helfi-etusivu.docker.so:8080"
+        "domain": "helfi-etusivu.docker.so:8080",
+        "meta": {}
       },
       "test": {
         "path": {
@@ -59,7 +72,10 @@
           "sv": "/sv/test-huvudsida",
           "en": "/en/test-frontpage"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-helfi-etusivu-test"
+        }
       },
       "stage": {
         "path": {
@@ -67,7 +83,10 @@
           "sv": "/sv/staging-huvudsida",
           "en": "/en/staging-frontpage"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-helfi-etusivu-staging"
+        }
       },
       "prod": {
         "path": {
@@ -75,13 +94,17 @@
           "sv": "/sv",
           "en": "/en"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-helfi-etusivu-prod"
+        }
       }
     }
   },
   "kasvatus-koulutus": {
     "meta": {
-      "repository": "City-of-Helsinki/drupal-helfi-kasvatus-koulutus"
+      "repository": "City-of-Helsinki/drupal-helfi-kasvatus-koulutus",
+      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/kasvatus-koulutus"
     },
     "environments": {
       "local": {
@@ -91,7 +114,8 @@
           "en": "/en/childhood-and-education"
         },
         "protocol": "http",
-        "domain": "helfi-kasko.docker.so:8080"
+        "domain": "helfi-kasko.docker.so:8080",
+        "meta": {}
       },
       "test": {
         "path": {
@@ -99,7 +123,10 @@
           "sv": "/sv/test-fostran-och-utbildning",
           "en": "/en/test-childhood-and-education"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kasko-kasvatus-koulutus-test"
+        }
       },
       "stage": {
         "path": {
@@ -107,7 +134,10 @@
           "sv": "/sv/staging-fostran-och-utbildning",
           "en": "/en/staging-childhood-and-education"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kasko-kasvatus-koulutus-staging"
+        }
       },
       "prod": {
         "path": {
@@ -115,13 +145,17 @@
           "sv": "/sv/fostran-och-utbildning",
           "en": "/en/childhood-and-education"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kasko-kasvatus-koulutus-prod"
+        }
       }
     }
   },
   "kuva": {
     "meta": {
-      "repository": "City-of-Helsinki/drupal-helfi-kuva"
+      "repository": "City-of-Helsinki/drupal-helfi-kuva",
+      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/helfi-kuva"
     },
     "environments": {
       "local": {
@@ -131,7 +165,8 @@
           "en": "/en/culture-and-leisure"
         },
         "protocol": "http",
-        "domain": "helfi-kuva.docker.so:8080"
+        "domain": "helfi-kuva.docker.so:8080",
+        "meta": {}
       },
       "test": {
         "path": {
@@ -139,7 +174,10 @@
           "sv": "/sv/test-kultur-och-fritid",
           "en": "/en/test-culture-and-leisure"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kuva-helfi-kuva-test"
+        }
       },
       "stage": {
         "path": {
@@ -147,7 +185,10 @@
           "sv": "/sv/staging-kultur-och-fritid",
           "en": "/en/staging-culture-and-leisure"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kuva-helfi-kuva-staging"
+        }
       },
       "prod": {
         "path": {
@@ -155,13 +196,17 @@
           "sv": "/sv/kultur-och-fritid",
           "en": "/en/culture-and-leisure"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kuva-helfi-kuva-prod"
+        }
       }
     }
   },
   "liikenne": {
     "meta": {
-      "repository": "City-of-Helsinki/drupal-helfi-kymp"
+      "repository": "City-of-Helsinki/drupal-helfi-kymp",
+      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/liikenne"
     },
     "environments": {
       "local": {
@@ -171,7 +216,8 @@
           "en": "/en/urban-environment-and-traffic"
         },
         "protocol": "http",
-        "domain": "helfi-kymp.docker.so:8080"
+        "domain": "helfi-kymp.docker.so:8080",
+        "meta": {}
       },
       "test": {
         "path": {
@@ -179,7 +225,10 @@
           "sv": "/sv/test-stadsmiljo-och-trafik",
           "en": "/en/test-urban-environment-and-traffic"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-liikenne-test"
+        }
       },
       "stage": {
         "path": {
@@ -187,7 +236,10 @@
           "sv": "/sv/staging-stadsmiljo-och-trafik",
           "en": "/en/staging-urban-environment-and-traffic"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-liikenne-staging"
+        }
       },
       "prod": {
         "path": {
@@ -195,13 +247,17 @@
           "sv": "/sv/stadsmiljo-och-trafik",
           "en": "/en/urban-environment-and-traffic"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-liikenne-prod"
+        }
       }
     }
   },
   "rekry": {
     "meta": {
-      "repository": "City-of-Helsinki/drupal-helfi-rekry"
+      "repository": "City-of-Helsinki/drupal-helfi-rekry",
+      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/helfi-rekry"
     },
     "environments": {
       "local": {
@@ -211,7 +267,8 @@
           "en": "/en/open-jobs"
         },
         "protocol": "http",
-        "domain": "helfi-rekry.docker.so:8080"
+        "domain": "helfi-rekry.docker.so:8080",
+        "meta": {}
       },
       "test": {
         "path": {
@@ -219,7 +276,10 @@
           "sv": "/sv/test-lediga-jobb",
           "en": "/en/test-open-jobs"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-helfi-rekry-test"
+        }
       },
       "stage": {
         "path": {
@@ -227,7 +287,10 @@
           "sv": "/sv/staging-lediga-jobb",
           "en": "/en/staging-open-jobs"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-helfi-rekry-staging"
+        }
       },
       "prod": {
         "path": {
@@ -235,13 +298,17 @@
           "sv": "/sv/lediga-jobb",
           "en": "/en/open-jobs"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-helfi-rekry-prod"
+        }
       }
     }
   },
   "strategia": {
     "meta": {
-      "repository": "City-of-Helsinki/drupal-helfi-strategia"
+      "repository": "City-of-Helsinki/drupal-helfi-strategia",
+      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/strategia-talous"
     },
     "environments": {
       "local": {
@@ -251,7 +318,8 @@
           "en": "/en/decision-making"
         },
         "protocol": "http",
-        "domain": "strategia.docker.so:8080"
+        "domain": "strategia.docker.so:8080",
+        "meta": {}
       },
       "test": {
         "path": {
@@ -259,7 +327,10 @@
           "sv": "/sv/test-beslutsfattande-och-forvaltning",
           "en": "/en/test-decision-making"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-strategia-talous-test"
+        }
       },
       "stage": {
         "path": {
@@ -267,7 +338,10 @@
           "sv": "/sv/staging-beslutsfattande-och-forvaltning",
           "en": "/en/staging-decision-making"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-strategia-talous-staging"
+        }
       },
       "prod": {
         "path": {
@@ -275,13 +349,17 @@
           "sv": "/sv/beslutsfattande-och-forvaltning",
           "en": "/en/decision-making"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-strategia-talous-prod"
+        }
       }
     }
   },
   "terveys": {
     "meta": {
-      "repository": "City-of-Helsinki/drupal-helfi-sote"
+      "repository": "City-of-Helsinki/drupal-helfi-sote",
+      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/terveys"
     },
     "environments": {
       "local": {
@@ -291,7 +369,8 @@
           "en": "/en/health-and-social-services"
         },
         "protocol": "http",
-        "domain": "helfi-sote.docker.so:8080"
+        "domain": "helfi-sote.docker.so:8080",
+        "meta": {}
       },
       "test": {
         "path": {
@@ -299,7 +378,10 @@
           "sv": "/sv/test-social-och-halsovardstjanster",
           "en": "/en/test-health-and-social-services"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-terveys-test"
+        }
       },
       "stage": {
         "path": {
@@ -307,7 +389,10 @@
           "sv": "/sv/staging-social-och-halsovardstjanster",
           "en": "/en/staging-health-and-social-services"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-terveys-staging"
+        }
       },
       "prod": {
         "path": {
@@ -315,13 +400,17 @@
           "sv": "/sv/social-och-halsovardstjanster",
           "en": "/en/health-and-social-services"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-terveys-prod"
+        }
       }
     }
   },
   "tyo-yrittaminen": {
     "meta": {
-      "repository": "City-of-Helsinki/drupal-helfi-tyo-yrittaminen"
+      "repository": "City-of-Helsinki/drupal-helfi-tyo-yrittaminen",
+      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/tyo-yrittaminen"
     },
     "environments": {
       "local": {
@@ -331,7 +420,8 @@
           "en": "/en/business-and-work"
         },
         "protocol": "http",
-        "domain": "helfi-elo.docker.so:8080"
+        "domain": "helfi-elo.docker.so:8080",
+        "meta": {}
       },
       "test": {
         "path": {
@@ -339,7 +429,10 @@
           "sv": "/sv/test-foretag-och-arbete",
           "en": "/en/test-business-and-work"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-tyo-yrittaminen-test"
+        }
       },
       "stage": {
         "path": {
@@ -347,7 +440,10 @@
           "sv": "/sv/staging-foretag-och-arbete",
           "en": "/en/staging-business-and-work"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-tyo-yrittaminen-staging"
+        }
       },
       "prod": {
         "path": {
@@ -355,7 +451,10 @@
           "sv": "/sv/foretag-och-arbete",
           "en": "/en/business-and-work"
         },
-        "domain": "www.hel.fi"
+        "domain": "www.hel.fi",
+        "meta": {
+          "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-tyo-yrittaminen-prod"
+        }
       }
     }
   }
