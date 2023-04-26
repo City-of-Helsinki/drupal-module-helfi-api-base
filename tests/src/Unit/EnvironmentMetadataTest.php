@@ -49,4 +49,5 @@ class EnvironmentMetadataTest extends UnitTestCase {
     ]);
     $this->assertEquals('https://example.com', $sut->getOpenshiftConsoleLink());
   }
+
 }

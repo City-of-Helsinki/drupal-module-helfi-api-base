@@ -48,4 +48,5 @@ class ProjectMetadataTest extends UnitTestCase {
     $this->assertEquals('https://github.com/City-of-Helsinki/test', $sut->getRepositoryUrl());
     $this->assertEquals('https://example.com/2', $sut->getAzureDevopsLink());
   }
+
 }
