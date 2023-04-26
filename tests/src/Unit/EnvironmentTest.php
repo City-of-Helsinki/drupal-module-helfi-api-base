@@ -41,6 +41,9 @@ class EnvironmentTest extends UnitTestCase {
    * @covers ::doGetUrl
    * @covers ::getPath
    * @covers ::getInternalAddress
+   * @covers ::getBaseUrl
+   * @covers ::getDomain
+   * @covers ::getProtocol
    */
   public function testGetUrl() : void {
     $sut = new Environment('www.hel.fi', ['fi' => 'test-path'], 'https', 'test', EnvironmentEnum::Local, NULL);
