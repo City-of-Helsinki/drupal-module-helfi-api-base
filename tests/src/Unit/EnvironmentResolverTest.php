@@ -260,6 +260,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
+   * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironments
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::getProject
    * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::__construct
    * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::createFromArray
@@ -269,6 +270,7 @@ class EnvironmentResolverTest extends UnitTestCase {
   public function testGetActiveProject() : void {
     $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'dev');
     $this->assertInstanceOf(Project::class, $sut->getActiveProject());
+    $this->assertCount(4, $sut->getActiveProject()->getEnvironments());
   }
 
   /**
