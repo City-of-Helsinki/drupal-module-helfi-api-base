@@ -22,16 +22,16 @@
 </php>
 <testsuites>
   <testsuite name="unit">
-    <directory>./tests/src/Unit</directory>
+    <directory>./public/modules/helfi_api_base/tests/src/Unit</directory>
   </testsuite>
   <testsuite name="kernel">
-    <directory>./tests/src/Kernel</directory>
+    <directory>./public/modules/helfi_api_base/tests/src/Kernel</directory>
   </testsuite>
   <testsuite name="functional">
-    <directory>./tests/src/Functional</directory>
+    <directory>./public/modules/helfi_api_base/tests/src/Functional</directory>
   </testsuite>
   <testsuite name="functional-javascript">
-    <directory>./tests/src/FunctionalJavascript</directory>
+    <directory>./public/modules/helfi_api_base/tests/src/FunctionalJavascript</directory>
   </testsuite>
 </testsuites>
 <listeners>
@@ -40,8 +40,8 @@
 </listeners>
 <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true">
   <include>
-    <directory suffix=".php">./src</directory>
-    <file>./*.module</file>
+    <directory suffix=".php">./public/modules/helfi_api_base/src</directory>
+    <file>./public/modules/helfi_api_base/*.module</file>
   </include>
 </coverage>
 </phpunit>
