@@ -75,9 +75,9 @@ jobs:
           $DRUPAL_ROOT/vendor/bin/phpunit \
             --bootstrap $DRUPAL_ROOT/public/core/tests/bootstrap.php \
             -c $MODULE_FOLDER/phpunit.xml \
-            --coverage-clover=coverage.xml \
+            --coverage-clover=$DRUPAL_ROOT/coverage.xml \
             .
-          codecov -f $MODULE_FOLDER/coverage.xml
+          codecov
 
       - name: Create an artifact from test report
         uses: actions/upload-artifact@v3
