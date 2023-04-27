@@ -2,7 +2,7 @@
   "asuminen": {
     "meta": {
       "repository": "City-of-Helsinki/drupal-helfi-asuminen",
-      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/asuminen"
+      "azure_devops_link": "https://dev.azure.com/City-of-Helsinki/asuminen"
     },
     "environments": {
       "local": {
@@ -53,7 +53,7 @@
   "etusivu": {
     "meta": {
       "repository": "City-of-Helsinki/drupal-helfi-etusivu",
-      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/helfi-etusivu"
+      "azure_devops_link": "https://dev.azure.com/City-of-Helsinki/helfi-etusivu"
     },
     "environments": {
       "local": {
@@ -104,7 +104,7 @@
   "kasvatus-koulutus": {
     "meta": {
       "repository": "City-of-Helsinki/drupal-helfi-kasvatus-koulutus",
-      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/kasvatus-koulutus"
+      "azure_devops_link": "https://dev.azure.com/City-of-Helsinki/kasvatus-koulutus"
     },
     "environments": {
       "local": {
@@ -155,7 +155,7 @@
   "kuva": {
     "meta": {
       "repository": "City-of-Helsinki/drupal-helfi-kuva",
-      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/helfi-kuva"
+      "azure_devops_link": "https://dev.azure.com/City-of-Helsinki/helfi-kuva"
     },
     "environments": {
       "local": {
@@ -206,7 +206,7 @@
   "liikenne": {
     "meta": {
       "repository": "City-of-Helsinki/drupal-helfi-kymp",
-      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/liikenne"
+      "azure_devops_link": "https://dev.azure.com/City-of-Helsinki/liikenne"
     },
     "environments": {
       "local": {
@@ -257,7 +257,7 @@
   "rekry": {
     "meta": {
       "repository": "City-of-Helsinki/drupal-helfi-rekry",
-      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/helfi-rekry"
+      "azure_devops_link": "https://dev.azure.com/City-of-Helsinki/helfi-rekry"
     },
     "environments": {
       "local": {
@@ -308,7 +308,7 @@
   "strategia": {
     "meta": {
       "repository": "City-of-Helsinki/drupal-helfi-strategia",
-      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/strategia-talous"
+      "azure_devops_link": "https://dev.azure.com/City-of-Helsinki/strategia-talous"
     },
     "environments": {
       "local": {
@@ -359,7 +359,7 @@
   "terveys": {
     "meta": {
       "repository": "City-of-Helsinki/drupal-helfi-sote",
-      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/terveys"
+      "azure_devops_link": "https://dev.azure.com/City-of-Helsinki/terveys"
     },
     "environments": {
       "local": {
@@ -410,7 +410,7 @@
   "tyo-yrittaminen": {
     "meta": {
       "repository": "City-of-Helsinki/drupal-helfi-tyo-yrittaminen",
-      "azure_devops_link": "https://dev.azure_devops_link.com/City-of-Helsinki/tyo-yrittaminen"
+      "azure_devops_link": "https://dev.azure.com/City-of-Helsinki/tyo-yrittaminen"
     },
     "environments": {
       "local": {
