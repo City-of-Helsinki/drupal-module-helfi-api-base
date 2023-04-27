@@ -20,6 +20,7 @@ class UrlHelperTest extends KernelTestBase {
    */
   protected static $modules = [
     'helfi_api_base',
+    'system',
     'remote_entity_test',
   ];
 
@@ -40,11 +41,11 @@ class UrlHelperTest extends KernelTestBase {
   public function testInvalidLink() : void {
     $caught = FALSE;
     try {
-      $url = UrlHelper::parse('#123');
+      UrlHelper::parse('@');
     }
     catch (\InvalidArgumentException $e) {
       $caught = TRUE;
-      $this->assertEquals("The URI 'https://#123' is malformed.", $e->getMessage());
+      $this->assertEquals("The URI 'https://@' is malformed.", $e->getMessage());
     }
     $this->assertTrue($caught);
   }
@@ -63,6 +64,7 @@ class UrlHelperTest extends KernelTestBase {
       ['/test', '/test'],
       // Make sure scheme defaults to https.
       ['www.hel.fi', 'https://www.hel.fi'],
+      ['#123', '#123'],
     ];
   }
 
