@@ -3,6 +3,7 @@
 namespace Drupal\helfi_api_base\Annotation;
 
 use Drupal\Component\Annotation\Plugin;
+use Drupal\Core\Annotation\Translation;
 
 /**
  * Defines debug_data_item annotation object.
@@ -16,24 +17,24 @@ class DebugDataItem extends Plugin {
    *
    * @var string
    */
-  public $id;
+  public string $id;
 
   /**
    * The human-readable name of the plugin.
    *
-   * @var \Drupal\Core\Annotation\Translation
+   * @var \Drupal\Core\Annotation\Translation|string
    *
    * @ingroup plugin_translatable
    */
-  public $title;
+  public Translation|string $title;
 
   /**
    * The description of the plugin.
    *
-   * @var \Drupal\Core\Annotation\Translation
+   * @var \Drupal\Core\Annotation\Translation|string
    *
    * @ingroup plugin_translatable
    */
-  public $description;
+  public Translation|string $description;
 
 }

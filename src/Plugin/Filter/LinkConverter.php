@@ -92,8 +92,8 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
         $build = Link::fromTextAndUrl($this->getLinkText($node), UrlHelper::parse($value))
           ->toRenderable();
       }
-      catch (\InvalidArgumentException $e) {
-        $this->logger->error(
+      catch (\InvalidArgumentException) {
+        $this->logger->notice(
           sprintf('Failed to parse link: %s', $node->nodeValue)
         );
         continue;

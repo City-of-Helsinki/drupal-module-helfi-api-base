@@ -168,6 +168,6 @@ function helfi_api_base_update_9009() : void {
 /**
  * Create 'debug_api' role for hel.fi projects.
  */
-function helfi_api_base_update_9012() : void {
+function helfi_api_base_update_9013() : void {
   helfi_api_base_install();
 }
