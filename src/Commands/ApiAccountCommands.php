@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Commands;
 
+use Drupal\Core\Password\PasswordGeneratorInterface;
 use Drush\Attributes\Command;
 use Drush\Commands\DrushCommands;
 
@@ -11,6 +12,35 @@ use Drush\Commands\DrushCommands;
  * A drush command file to manage API accounts.
  */
 final class ApiAccountCommands extends DrushCommands {
+
+  /**
+   * Constructs a new instance.
+   *
+   * @param \Drupal\Core\Password\PasswordGeneratorInterface $passwordGenerator
+   *   The password generator service.
+   */
+  public function __construct(
+    private PasswordGeneratorInterface $passwordGenerator,
+  ) {
+  }
+
+  /**
+   * Reveals the secret value.
+   *
+   * @param string $value
+   *   The value.
+   *
+   * @return int
+   *   The exit code.
+   */
+  #[Command(name: 'helfi:reveal-api-secret')]
+  public function reveal(string $value) : int {
+    $currentValue = json_decode(base64_decode($value), flags: JSON_THROW_ON_ERROR);
+    $this->io()->note('Current value:');
+    $this->io()->writeln(json_encode($currentValue, flags: JSON_PRETTY_PRINT));
+
+    return DrushCommands::EXIT_SUCCESS;
+  }
 
   /**
    * Updates the base64 and json encoded Azure secret.
@@ -28,7 +58,7 @@ final class ApiAccountCommands extends DrushCommands {
     $values = json_decode(base64_decode($value), TRUE, flags: JSON_THROW_ON_ERROR);
 
     $this->io()
-      ->note(sprintf('Current value: %s', json_encode($values)));
+      ->note(sprintf('Current value: %s', json_encode($values, flags: JSON_PRETTY_PRINT)));
 
     $values = array_merge($values, [$this->processValues($type)]);
 
@@ -111,11 +141,12 @@ final class ApiAccountCommands extends DrushCommands {
 
       $value = $this->io()
         ->ask(sprintf('Provide %s [%s]', $name, $description), $defaultValue);
+      $value = $callback($value);
 
       if (!$value) {
         continue;
       }
-      $values[$name] = $callback($value);
+      $values[$name] = $value;
     }
     return $values;
   }
@@ -134,7 +165,7 @@ final class ApiAccountCommands extends DrushCommands {
       'DRUPAL_VAULT_ACCOUNTS' => [
         'id' => [
           'description' => 'An unique ID for given item',
-          'default_value' => NULL,
+          'default_value' => '',
           'callback' => NULL,
         ],
         'plugin' => [
@@ -144,29 +175,31 @@ final class ApiAccountCommands extends DrushCommands {
         ],
         'data' => [
           'description' => 'The data. An authorization token or basic auth string for example.',
-          'default_value' => NULL,
+          'default_value' => '',
           'callback' => NULL,
         ],
       ],
       'DRUPAL_API_ACCOUNTS' => [
         'username' => [
           'description' => 'The username',
-          'default_value' => NULL,
+          'default_value' => '',
           'callback' => NULL,
         ],
         'password' => [
-          'description' => 'The password',
+          'description' => 'The password. Leave empty to generate a random password.',
           'default_value' => NULL,
-          'callback' => NULL,
+          'callback' => function (?string $value) : string {
+            return $value ?: $this->passwordGenerator->generate(30);
+          },
         ],
         'mail' => [
           'description' => 'Leave empty to use automatically generated email',
-          'default_value' => NULL,
+          'default_value' => '',
           'callback' => NULL,
         ],
         'roles' => [
           'description' => 'A comma separated list of roles',
-          'default_value' => NULL,
+          'default_value' => '',
           'callback' => function (string $value) : array {
             return array_map('trim', explode(',', $value));
           },
