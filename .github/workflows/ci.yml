@@ -70,14 +70,13 @@ jobs:
           chromedriver --port=4444 > /dev/null 2>&1 &
 
       - name: Run PHPUnit tests
-        working-directory: ${{ env.DRUPAL_ROOT }}
+        working-directory: ${{ env.MODULE_FOLDER }}
         run: |
-          php -d pcov.directory=$GITHUB_WORKSPACE \
-            vendor/bin/phpunit \
+          $DRUPAL_ROOT/vendor/bin/phpunit \
             --bootstrap $DRUPAL_ROOT/public/core/tests/bootstrap.php \
-            -c $MODULE_FOLDER/phpunit.xml \
+            -c phpunit.xml \
             --coverage-clover=coverage.xml \
-            $MODULE_FOLDER
+            .
           codecov
 
       - name: Create an artifact from test report
