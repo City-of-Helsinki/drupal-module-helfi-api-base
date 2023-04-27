@@ -30,7 +30,7 @@ jobs:
           - 3306:3306
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 1
 
@@ -44,7 +44,7 @@ jobs:
         run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
 
       - name: Clone platform
-        run: git clone https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
+        run: git clone --depth=1 https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
 
       - name: Install required composer dependencies
         working-directory: ${{ env.DRUPAL_ROOT }}
@@ -70,18 +70,17 @@ jobs:
           chromedriver --port=4444 > /dev/null 2>&1 &
 
       - name: Run PHPUnit tests
-        working-directory: ${{ env.DRUPAL_ROOT }}
+        working-directory: ${{ env.MODULE_FOLDER }}
         run: |
-          php -d pcov.directory=$MODULE_FOLDER \
-            vendor/bin/phpunit \
+          $DRUPAL_ROOT/vendor/bin/phpunit \
             --bootstrap $DRUPAL_ROOT/public/core/tests/bootstrap.php \
             -c $MODULE_FOLDER/phpunit.xml \
-            --coverage-clover=coverage.xml \
-            $MODULE_FOLDER
+            --coverage-clover=$MODULE_FOLDER/coverage.xml \
+            .
           codecov
 
       - name: Create an artifact from test report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: results

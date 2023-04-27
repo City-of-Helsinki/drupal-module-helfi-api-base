@@ -22,13 +22,16 @@ final class Environment {
    *   Environment resolver identifier for the project.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentEnum $environment
    *   The environment name.
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentMetadata|null $metadata
+   *   The environment specific metadata.
    */
   public function __construct(
     private readonly string $domain,
     private readonly array $paths,
     private readonly string $protocol,
     private readonly string $id,
-    private readonly EnvironmentEnum $environment
+    private readonly EnvironmentEnum $environment,
+    private readonly ?EnvironmentMetadata $metadata,
   ) {
   }
 
@@ -157,6 +160,16 @@ final class Environment {
    */
   public function getEnvironment() : EnvironmentEnum {
     return $this->environment;
+  }
+
+  /**
+   * Gets the environment metadata.
+   *
+   * @return \Drupal\helfi_api_base\Environment\EnvironmentMetadata|null
+   *   The metadata.
+   */
+  public function getMetadata(): ?EnvironmentMetadata {
+    return $this->metadata;
   }
 
 }
