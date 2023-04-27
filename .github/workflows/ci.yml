@@ -75,7 +75,7 @@ jobs:
           $DRUPAL_ROOT/vendor/bin/phpunit \
             --bootstrap $DRUPAL_ROOT/public/core/tests/bootstrap.php \
             -c $MODULE_FOLDER/phpunit.xml \
-            --coverage-clover=$DRUPAL_ROOT/coverage.xml \
+            --coverage-clover=$MODULE_FOLDER/coverage.xml \
             .
           codecov
 
