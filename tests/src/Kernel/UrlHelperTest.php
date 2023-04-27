@@ -35,6 +35,21 @@ class UrlHelperTest extends KernelTestBase {
   }
 
   /**
+   * @covers ::parse
+   */
+  public function testInvalidLink() : void {
+    $caught = FALSE;
+    try {
+      $url = UrlHelper::parse('#123');
+    }
+    catch (\InvalidArgumentException $e) {
+      $caught = TRUE;
+      $this->assertEquals("The URI 'https://#123' is malformed.", $e->getMessage());
+    }
+    $this->assertTrue($caught);
+  }
+
+  /**
    * Data provider for ::testIsExternal().
    *
    * @return array[]
@@ -45,6 +60,7 @@ class UrlHelperTest extends KernelTestBase {
       ['entity:remote_entity_test/1', '/rmt/1'],
       ['internal:/test', '/test'],
       ['https://www.hel.fi', 'https://www.hel.fi'],
+      ['/test', '/test'],
       // Make sure scheme defaults to https.
       ['www.hel.fi', 'https://www.hel.fi'],
     ];
