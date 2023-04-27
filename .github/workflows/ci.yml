@@ -72,7 +72,7 @@ jobs:
       - name: Run PHPUnit tests
         working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
-          php -d pcov.directory=$MODULE_FOLDER \
+          php -d pcov.directory=$GITHUB_WORKSPACE \
             vendor/bin/phpunit \
             --bootstrap $DRUPAL_ROOT/public/core/tests/bootstrap.php \
             -c $MODULE_FOLDER/phpunit.xml \
