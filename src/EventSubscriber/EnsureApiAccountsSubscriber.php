@@ -79,6 +79,7 @@ final class EnsureApiAccountsSubscriber extends DeployHookEventSubscriberBase {
         if (!Role::load($role)) {
           $this->messenger
             ->addError(sprintf('Role %s not found. Skipping.', $role));
+          continue;
         }
         $user->addRole($role);
       }

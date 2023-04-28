@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\user\Entity\Role;
@@ -11,6 +13,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Tests EnsureApiAccountSubscriber.
+ *
+ * @coversDefaultClass \Drupal\helfi_api_base\EventSubscriber\EnsureApiAccountsSubscriber
  *
  * @group helfi_api_base
  */
@@ -22,9 +26,10 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_api_base',
     'system',
     'user',
+    'migrate',
+    'helfi_api_base',
   ];
 
   /**
@@ -36,6 +41,11 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
     $this->installEntitySchema('user');
     $this->installEntitySchema('action');
 
+    $this->config('helfi_api_base.environment_resolver.settings')
+      ->set('project_name', Project::ASUMINEN)
+      ->set('environment_name', EnvironmentEnum::Test->value)
+      ->save();
+
     $this->config('helfi_api_base.api_accounts')
       ->set('accounts', [
         [
@@ -45,16 +55,23 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
         ],
       ])
       ->save();
+    /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
+    $moduleHandler = $this->container->get('module_handler');
+    $moduleHandler->loadInclude('helfi_api_base', 'install');
+    // Make sure install hook is run.
+    helfi_api_base_install();
   }
 
   /**
    * Tests that existing API account's password is reset.
    *
-   * @covers \Drupal\helfi_api_base\EventSubscriber\EnsureApiAccountsSubscriber::getSubscribedEvents
-   * @covers \Drupal\helfi_api_base\EventSubscriber\EnsureApiAccountsSubscriber::onPostDeploy
-   * @covers \Drupal\helfi_api_base\EventSubscriber\EnsureApiAccountsSubscriber::__construct
+   * @covers ::getSubscribedEvents
+   * @covers ::onPostDeploy
+   * @covers ::__construct
    */
   public function testPasswordReset(): void {
+    /** @var \Drupal\Core\Messenger\MessengerInterface $messenger */
+    $messenger = $this->container->get('messenger');
     /** @var \Drupal\Core\Password\PhpassHashedPassword $passwordHasher */
     $passwordHasher = $this->container->get('password');
 
@@ -75,7 +92,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
         [
           'username' => 'helfi-admin',
           'password' => '666',
-          'roles' => ['test', 'test2'],
+          'roles' => ['test', 'test2', 'test3'],
         ],
       ])
       ->save();
@@ -85,7 +102,23 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
     $this->assertTrue($account->hasRole('test'));
     $this->assertFalse($account->isBlocked());
     $this->assertTrue($account->hasRole('test2'));
+    $this->assertFalse($account->hasRole('test3'));
     $this->assertTrue($passwordHasher->check('666', $account->getPassword()));
+
+    $messages = $messenger->messagesByType('status');
+    $this->assertCount(1, $messages);
+
+    $found = array_filter($messages, function (string $message) {
+      return $message === '[helfi_api_base]: Account helfi-admin not found. Creating a new account.';
+    });
+    $this->assertCount(1, $found);
+
+    $messages = $messenger->messagesByType('error');
+    $this->assertCount(1, $messages);
+    $found = array_filter($messenger->messagesByType('error'), function (string $message) {
+      return $message === 'Role test3 not found. Skipping.';
+    });
+    $this->assertCount(1, $found);
   }
 
 }
