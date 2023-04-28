@@ -54,7 +54,7 @@ class LinkConverterTest extends KernelTestBase {
    */
   public function testInvalidLink() : void {
     $this->expectLogMessage('Failed to parse link: dsa');
-    $this->processText('<a href="#_msocom_1">dsa</a>');
+    $this->processText('<a href="@">dsa</a>');
   }
 
   /**
