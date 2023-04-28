@@ -20,9 +20,13 @@ class EnvironmentEnumTest extends UnitTestCase {
    * @covers ::label
    */
   public function testLabel() : void {
+    $found = 0;
+
     foreach (EnvironmentEnum::cases() as $case) {
+      $found++;
       $this->assertInstanceOf(TranslatableMarkup::class, $case->label());
     }
+    $this->assertTrue($found > 0);
   }
 
 }
