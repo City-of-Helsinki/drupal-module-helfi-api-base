@@ -45,9 +45,11 @@ trait TestLoggerTrait {
 
         $key = array_search($expectedMessage, array_column($messages, 'message'));
 
-        if (!$message = $messages[$key] ?? FALSE) {
-          continue;
+        if (!isset($messages[$key])) {
+          $this->fail(sprintf('No message %s found.', $expectedMessage));
         }
+        $message = $messages[$key];
+
         $this->assertEquals($expectedMessage, $message['message']);
         $this->assertEquals($expectedType, $message['type']);
         unset($messages[$key]);

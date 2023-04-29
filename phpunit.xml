@@ -43,5 +43,8 @@
     <directory suffix=".php">./src</directory>
     <file>./*.module</file>
   </include>
+  <exclude>
+    <directory suffix=".php">./src/Commands</directory>
+  </exclude>
 </coverage>
 </phpunit>

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_api_base\Unit;
+namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\helfi_api_base\Environment\EnvironmentMetadata;
 use Drupal\Tests\UnitTestCase;

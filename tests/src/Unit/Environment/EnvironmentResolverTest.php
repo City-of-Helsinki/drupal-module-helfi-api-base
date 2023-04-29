@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_api_base\Unit;
+namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_api_base\Environment\Environment;
@@ -51,7 +51,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    */
   private function getEnvironmentResolver(string $projectName = NULL, string $envName = NULL) : EnvironmentResolver {
     $configStub = $this->getConfigStub($projectName, $envName);
-    return new EnvironmentResolver(__DIR__ . '/../../fixtures/environments.json', $configStub);
+    return new EnvironmentResolver(__DIR__ . '/../../../fixtures/environments.json', $configStub);
   }
 
   /**
