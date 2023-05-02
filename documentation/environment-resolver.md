@@ -33,6 +33,7 @@ $baseUrl = $environment->getBaseUrl(); // 'https://nginx-asuminen-dev.agw.arodev
 $environmentMetadata = $environment->getMetadata();
 // A link to the OpenShift service.
 $environmentMetadata->getOpenshiftConsoleLink(); // 'https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-asuminen-test'
+```
 
 ### Active environment
 
