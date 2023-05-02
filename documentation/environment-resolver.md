@@ -11,22 +11,28 @@
 $projectName = \Drupal\helfi_api_base\Environment\Project::ASUMINEN;
 /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $resolver */
 $resolver = \Drupal::service('helfi_api_base.environment_resolver');
+/** @var \Drupal\helfi_api_base\Environment\Project $project */
+$project = $resolver->getProject($projectName);
+/** @var \Drupal\helfi_api_base\Environment\ProjectMetadata $projectMetadata */
+$projectMetadata = $project->getMetadata();
+// A link to the Azure DevOps service.
+$projectMetadata->getAzureDevopsLink(); // 'https://dev.azure.com/City-of-Helsinki/asuminen'.
+// A link to the Git repository.
+$projectMetadata->getRepositoryUrl(); // 'https://github.com/City-of-Helsinki/drupal-helfi-asuminen'.
+
 /** @var \Drupal\helfi_api_base\Environment\Environment $environment */
 $environment = $resolver->getEnvironment($projectName, 'dev');
-// A canonical URL.
-$url = $environment->getUrl('fi');
-// An internal address that is guaranteed to work for inter container communication (API requests for example).
-$internalUrl = $environment->getInternalAddress('fi');
-$path = $environment->getPath('fi');
-$domain = $environment->getDomain();
-$baseUrl = $environment->getBaseUrl();
 
-// These will resolve to something like:
-// $url = 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi/fi/dev-asuminen';
-// $path = '/fi/dev-asuminen';
-// $domain = 'nginx-asuminen-dev.agw.arodevtest.hel.fi';
-// $baseUrl = 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi';
-```
+$url = $environment->getUrl('fi'); // 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi/fi/dev-asuminen'.
+// Internal address that is guaranteed to work for inter container communication (API requests for example).
+$internalUrl = $environment->getInternalAddress('fi'); // 'https://helfi-asuminen.docker.so:8080/fi/asuminen'.
+$path = $environment->getPath('fi'); // '/fi/dev-asuminen'.
+$domain = $environment->getDomain(); // 'nginx-asuminen-dev.agw.arodevtest.hel.fi'.
+$baseUrl = $environment->getBaseUrl(); // 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi'
+/** @var \Drupal\helfi_api_base\Environment\EnvironmentMetadata $environmentMetadata */
+$environmentMetadata = $environment->getMetadata();
+// A link to the OpenShift service.
+$environmentMetadata->getOpenshiftConsoleLink(); // 'https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-asuminen-test'
 
 ### Active environment
 
