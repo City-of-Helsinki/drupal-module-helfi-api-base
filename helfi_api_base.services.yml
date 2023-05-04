@@ -12,6 +12,7 @@ parameters:
     - 'en'
     - 'fi'
     - 'sv'
+  helfi_api_base.fallback_language: 'en'
 services:
   logger.channel.helfi_api_base:
     parent: logger.channel_base
@@ -24,6 +25,10 @@ services:
   helfi_api_base.internal_domain_resolver:
     class: Drupal\helfi_api_base\Link\InternalDomainResolver
     arguments: ['%helfi_api_base.internal_domains%']
+
+  helfi_api_base.default_language_resolver:
+    class: Drupal\helfi_api_base\Language\DefaultLanguageResolver
+    arguments: ['%helfi_api_base.default_languages%', '%helfi_api_base.fallback_language%', '@language_manager']
 
   helfi_api_base.migration_subscriber:
     class: Drupal\helfi_api_base\EventSubscriber\MigrationSubscriber
