@@ -8,6 +8,10 @@ parameters:
     - 'www.hel.fi'
     - 'avustukset.hel.fi'
     - '*.docker.so'
+  helfi_api_base.default_languages:
+    - 'en'
+    - 'fi'
+    - 'sv'
 services:
   logger.channel.helfi_api_base:
     parent: logger.channel_base
