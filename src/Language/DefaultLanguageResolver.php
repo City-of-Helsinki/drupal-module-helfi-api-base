@@ -79,6 +79,20 @@ final class DefaultLanguageResolver {
   }
 
   /**
+   * Get current or fallback langcode.
+   *
+   * @return string
+   *   Current or fallback language ID if current doesn't have full support.
+   */
+  public function getCurrentOrFallbackLanguage(): string {
+    $langcode = $this->languageManager->getCurrentLanguage()->getId();
+    if ($this->isAltLanguage($langcode)) {
+      return $this->getFallbackLanguage();
+    }
+    return $langcode;
+  }
+
+  /**
    * Gets lang, dir and other attributes for fallback language.
    *
    * @return array
