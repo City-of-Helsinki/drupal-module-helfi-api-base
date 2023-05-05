@@ -33,13 +33,13 @@ final class DefaultLanguageResolver {
   }
 
   /**
-   * Gets an array of languages with standard support.
+   * Gets an array of language IDs with standard support.
    *
    * These can be configured by overriding the
    * 'helfi_api_base.default_languages' parameter in services.yml file.
    *
    * @return array
-   *   The default languages.
+   *   The default languages IDs.
    */
   public function getDefaultLanguages() : array {
     return $this->defaultLanguages;
@@ -53,7 +53,7 @@ final class DefaultLanguageResolver {
    * 'helfi_api_base.fallback_language' parameter in servies.yml  file.
    *
    * @return string
-   *   The fallback language.
+   *   The fallback language ID.
    */
   public function getFallbackLanguage(): string {
     return $this->fallbackLanguage;
