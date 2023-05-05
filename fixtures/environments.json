@@ -109,7 +109,7 @@
     "environments": {
       "local": {
         "path": {
-          "fi": "/fi/kasvatus-koulutus",
+          "fi": "/fi/kasvatus-ja-koulutus",
           "sv": "/sv/fostran-och-utbildning",
           "en": "/en/childhood-and-education"
         },
@@ -119,7 +119,7 @@
       },
       "test": {
         "path": {
-          "fi": "/fi/test-kasvatus-koulutus",
+          "fi": "/fi/test-kasvatus-ja-koulutus",
           "sv": "/sv/test-fostran-och-utbildning",
           "en": "/en/test-childhood-and-education"
         },
@@ -130,7 +130,7 @@
       },
       "stage": {
         "path": {
-          "fi": "/fi/staging-kasvatus-koulutus",
+          "fi": "/fi/staging-kasvatus-ja-koulutus",
           "sv": "/sv/staging-fostran-och-utbildning",
           "en": "/en/staging-childhood-and-education"
         },
@@ -141,7 +141,7 @@
       },
       "prod": {
         "path": {
-          "fi": "/fi/kasvatus-koulutus",
+          "fi": "/fi/kasvatus-ja-koulutus",
           "sv": "/sv/fostran-och-utbildning",
           "en": "/en/childhood-and-education"
         },
