@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * A cache invalidator subscriber.
  */
-final class CacheInvalidatorSubscriber implements EventSubscriberInterface {
+final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
 
   /**
    * Constructs a new instance.

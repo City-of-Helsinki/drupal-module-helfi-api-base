@@ -14,6 +14,7 @@ use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\remote_entity_test\Entity\RemoteEntityTest;
 use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the entity_changed plugin.
@@ -24,6 +25,7 @@ use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 class EntityChangedTest extends ApiKernelTestBase {
 
   use MigrateTrait;
+  use ProphecyTrait;
 
   /**
    * {@inheritdoc}
@@ -107,7 +109,7 @@ class EntityChangedTest extends ApiKernelTestBase {
    * @return array[]
    *   The data.
    */
-  public function entityNotChangedData() {
+  public function entityNotChangedData() : array {
     return [
       [1, '2020-10-29T10:05:05', '2020-10-29T10:05:05'],
       [2, '2020-10-29T09:05:05', '2020-10-28T10:05:05'],
@@ -142,6 +144,8 @@ class EntityChangedTest extends ApiKernelTestBase {
 
   /**
    * Tests entity when it has changed.
+   *
+   * @covers ::transform
    */
   public function testEntityHasChanged() : void {
     $this->assertTransform(1, '2020-10-28T10:00:01', '2020-10-30T12:00:00');

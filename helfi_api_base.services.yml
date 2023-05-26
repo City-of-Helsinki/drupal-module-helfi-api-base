@@ -119,7 +119,14 @@ services:
       - '@datetime.time'
       - '@helfi_api_base.pubsub_settings'
 
-  helfi_api_base.cache_invalidator_subscriber:
-    class: Drupal\helfi_api_base\EventSubscriber\CacheInvalidatorSubscriber
+  helfi_api_base.cache_tag_invalidator:
+    class: Drupal\helfi_api_base\Cache\CacheTagInvalidator
+    arguments:
+      - '@helfi_api_base.pubsub_manager'
+
+  helfi_api_base.cache_tag_invalidator_subscriber:
+    class: Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber
     arguments:
       - '@cache_tags.invalidator'
+    tags:
+      - { name: event_subscriber }

@@ -6,13 +6,13 @@ namespace Drupal\Tests\helfi_api_base\Unit\EventSubscriber;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
-use Drupal\helfi_api_base\EventSubscriber\CacheInvalidatorSubscriber;
+use Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
- * @coversDefaultClass \Drupal\helfi_api_base\EventSubscriber\CacheInvalidatorSubscriber
+ * @coversDefaultClass \Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber
  * @group helfi_api_base
  */
 class CacheInvalidatorSubscriberTest extends UnitTestCase {
@@ -23,7 +23,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
    * @covers ::getSubscribedEvents
    */
   public function testEvents() : void {
-    $this->assertIsArray(CacheInvalidatorSubscriber::getSubscribedEvents());
+    $this->assertIsArray(CacheTagInvalidatorSubscriber::getSubscribedEvents());
   }
 
   /**
@@ -34,7 +34,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
   public function testInvalidCacheTags() : void {
     $invalidator = $this->prophesize(CacheTagsInvalidatorInterface::class);
     $invalidator->invalidateTags(Argument::any())->shouldNotBeCalled();
-    $sut = new CacheInvalidatorSubscriber($invalidator->reveal());
+    $sut = new CacheTagInvalidatorSubscriber($invalidator->reveal());
     $sut->onReceive(new PubSubMessage([]));
   }
 
@@ -46,7 +46,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
   public function testValidCacheTags() : void {
     $invalidator = $this->prophesize(CacheTagsInvalidatorInterface::class);
     $invalidator->invalidateTags(['node:123'])->shouldBeCalled();
-    $sut = new CacheInvalidatorSubscriber($invalidator->reveal());
+    $sut = new CacheTagInvalidatorSubscriber($invalidator->reveal());
     $sut->onReceive(new PubSubMessage(['tags' => ['node:123']]));
   }
 
