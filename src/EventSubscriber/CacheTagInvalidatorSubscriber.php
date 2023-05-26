@@ -31,10 +31,10 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
    *   The event to respond to.
    */
   public function onReceive(PubSubMessage $message) : void {
-    if (!isset($message->data['tags'])) {
+    if (!isset($message->data['data']['tags'])) {
       return;
     }
-    $this->cacheTagsInvalidator->invalidateTags($message->data['tags']);
+    $this->cacheTagsInvalidator->invalidateTags($message->data['data']['tags']);
   }
 
   /**

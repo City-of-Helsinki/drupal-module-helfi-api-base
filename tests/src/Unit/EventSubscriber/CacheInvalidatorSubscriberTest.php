@@ -47,7 +47,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
     $invalidator = $this->prophesize(CacheTagsInvalidatorInterface::class);
     $invalidator->invalidateTags(['node:123'])->shouldBeCalled();
     $sut = new CacheTagInvalidatorSubscriber($invalidator->reveal());
-    $sut->onReceive(new PubSubMessage(['tags' => ['node:123']]));
+    $sut->onReceive(new PubSubMessage(['data' => ['tags' => ['node:123']]]));
   }
 
 }
