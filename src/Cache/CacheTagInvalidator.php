@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\Cache;
 
-use Drupal\helfi_api_base\Azure\PubSub\PubSubManager;
+use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
 
 /**
  * A service to invalidate cache tags on all instances.
@@ -14,11 +14,11 @@ final class CacheTagInvalidator {
   /**
    * Constructs a new instance.
    *
-   * @param \Drupal\helfi_api_base\Azure\PubSub\PubSubManager $client
+   * @param \Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface $client
    *   The client.
    */
   public function __construct(
-    private readonly PubSubManager $client,
+    private readonly PubSubManagerInterface $client,
   ) {
   }
 

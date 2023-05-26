@@ -21,6 +21,7 @@ class PubSubClientFactoryTest extends UnitTestCase {
 
   /**
    * @covers ::create
+   * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
    */
   public function testConstruct() : void {
     $settings = new Settings(
