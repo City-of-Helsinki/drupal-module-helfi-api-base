@@ -20,7 +20,6 @@ class PubSubClientFactoryTest extends UnitTestCase {
   use ProphecyTrait;
 
   /**
-   * @covers ::__construct
    * @covers ::create
    */
   public function testConstruct() : void {

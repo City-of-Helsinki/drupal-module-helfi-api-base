@@ -25,6 +25,8 @@ class PubSubManagerTest extends UnitTestCase {
    * @covers ::sendMessage
    * @covers ::joinGroup
    * @covers ::encodeMessage
+   * @covers ::__construct
+   * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
    */
   public function testSendMessage() : void {
     $time = $this->prophesize(TimeInterface::class);
@@ -53,6 +55,10 @@ class PubSubManagerTest extends UnitTestCase {
   /**
    * @covers ::joinGroup
    * @covers ::receive
+   * @covers ::encodeMessage
+   * @covers ::__construct
+   * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
+   * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
    */
   public function testReceive() : void {
     $expectedMessage = '{"message":"test"}';
