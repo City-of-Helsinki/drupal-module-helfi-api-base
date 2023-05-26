@@ -98,7 +98,7 @@ services:
       - '@config.factory'
 
   helfi_api_base.pubsub_client_factory:
-    class: Drupal\helfi_api_base\PubSub\PubSubClientFactory
+    class: Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactory
 
   helfi_api_base.pubsub_client:
     class: \WebSocket\Client
