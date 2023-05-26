@@ -20,6 +20,13 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
   use ProphecyTrait;
 
   /**
+   * @covers ::getSubscribedEvents
+   */
+  public function testEvents() : void {
+    $this->assertIsArray(CacheInvalidatorSubscriber::getSubscribedEvents());
+  }
+
+  /**
    * @covers ::__construct
    * @covers ::onReceive
    * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct

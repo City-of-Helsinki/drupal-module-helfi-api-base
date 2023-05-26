@@ -39,20 +39,6 @@ final class PubSubCommands extends DrushCommands {
    * @return int
    *   The exit code.
    */
-  #[Command(name: 'helfi:azure:pubsub-send')]
-  public function send() : int {
-    $this->pubSubClient->sendMessage([
-      'test' => 'test',
-    ]);
-    return DrushCommands::EXIT_SUCCESS;
-  }
-
-  /**
-   * Listen to PubSub messages.
-   *
-   * @return int
-   *   The exit code.
-   */
   #[Command(name: 'helfi:azure:pubsub-listen')]
   public function listen() : int {
     for ($received = 0; $received < self::MAX_MESSAGES; $received++) {
