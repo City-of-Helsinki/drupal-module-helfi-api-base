@@ -6,8 +6,8 @@ namespace Drupal\helfi_api_base\Commands;
 
 use Drush\Attributes\Command;
 use Drush\Commands\DrushCommands;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * A drush command file.
