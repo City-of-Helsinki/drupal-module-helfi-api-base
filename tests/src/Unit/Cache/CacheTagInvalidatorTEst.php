@@ -9,23 +9,41 @@ use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use WebSocket\ConnectionException;
 
 /**
  * @coversDefaultClass \Drupal\helfi_api_base\Cache\CacheTagInvalidator
  * @group helfi_api_base
  */
-class CacheInvalidatorSubscriberTest extends UnitTestCase {
+class CacheTagInvalidatorTEst extends UnitTestCase {
 
   use ProphecyTrait;
 
   /**
+   * Make sure PubSub message is sent when we invalidate cache tags.
+   *
    * @covers ::__construct
    * @covers ::invalidateTags
    */
-  public function testInvalidCacheTags() : void {
+  public function testCacheTags() : void {
     $client = $this->prophesize(PubSubManagerInterface::class);
     $client->sendMessage(Argument::any())->shouldBeCalledTimes(1);
 
+    $sut = new CacheTagInvalidator($client->reveal());
+    $sut->invalidateTags(['node:123']);
+  }
+
+  /**
+   * Tests that ConnectionExceptions are caught.
+   *
+   * @covers ::__construct
+   * @covers ::invalidateTags
+   */
+  public function testConnectionException() : void {
+    $client = $this->prophesize(PubSubManagerInterface::class);
+    $client->sendMessage(Argument::any())
+      ->willThrow(ConnectionException::class)
+      ->shouldBeCalledTimes(1);
     $sut = new CacheTagInvalidator($client->reveal());
     $sut->invalidateTags(['node:123']);
   }

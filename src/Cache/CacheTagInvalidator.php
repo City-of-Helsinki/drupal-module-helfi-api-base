@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\helfi_api_base\Cache;
 
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
+use WebSocket\ConnectionException;
 
 /**
  * A service to invalidate cache tags on all instances.
@@ -14,11 +15,11 @@ final class CacheTagInvalidator {
   /**
    * Constructs a new instance.
    *
-   * @param \Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface $client
-   *   The client.
+   * @param \Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface $pubSubManager
+   *   The PubSub manager.
    */
   public function __construct(
-    private readonly PubSubManagerInterface $client,
+    private readonly PubSubManagerInterface $pubSubManager,
   ) {
   }
 
@@ -32,9 +33,13 @@ final class CacheTagInvalidator {
    *   The self.
    */
   public function invalidateTags(array $tags) : self {
-    $this->client->sendMessage([
-      'tags' => $tags,
-    ]);
+    try {
+      $this->pubSubManager->sendMessage([
+        'tags' => $tags,
+      ]);
+    }
+    catch (ConnectionException) {
+    }
     return $this;
   }
 

@@ -19,6 +19,8 @@ interface PubSubManagerInterface {
    *   The self.
    *
    * @throws \JsonException
+   * @throws \WebSocket\ConnectionException
+   * @throws \WebSocket\TimeoutException
    */
   public function sendMessage(array $message): self;
 
