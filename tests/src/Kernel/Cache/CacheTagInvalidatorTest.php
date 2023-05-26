@@ -45,7 +45,7 @@ class CacheTagInvalidatorTest extends KernelTestBase {
 
     $client = $this->prophesize(Client::class);
     $client->text(Argument::any());
-    $client->receive()->willReturn('{"tags":["node:123"]}');
+    $client->receive()->willReturn('{"data": {"tags":["node:123"]}}');
     $pubSubManager = new PubSubManager(
       $client->reveal(),
       $this->container->get('event_dispatcher'),
