@@ -15,7 +15,7 @@ use WebSocket\ConnectionException;
  * @coversDefaultClass \Drupal\helfi_api_base\Cache\CacheTagInvalidator
  * @group helfi_api_base
  */
-class CacheTagInvalidatorTEst extends UnitTestCase {
+class CacheTagInvalidatorTest extends UnitTestCase {
 
   use ProphecyTrait;
 
