@@ -41,6 +41,8 @@ final class PubSubCommands extends DrushCommands {
    */
   #[Command(name: 'helfi:azure:pubsub-listen')]
   public function listen() : int {
+    $this->pubSubClient->setTimeout(120);
+
     for ($received = 0; $received < self::MAX_MESSAGES; $received++) {
       try {
         $message = $this->pubSubClient->receive();
