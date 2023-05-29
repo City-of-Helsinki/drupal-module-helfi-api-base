@@ -23,8 +23,46 @@ class PubSubManagerTest extends UnitTestCase {
   use ProphecyTrait;
 
   /**
+   * @covers ::__construct
+   * @covers ::assertSettings
+   * @covers ::receive
+   * @cover ::sendMessage
+   * @dataProvider assertSettingsExceptionData
+   */
+  public function testAssertSettingsException(string $method, array $args) : void {
+    $this->expectException(ConnectionException::class);
+    $this->expectExceptionMessage("Azure PubSub 'hub' is not configured");
+    $sut = new PubSubManager(
+      $this->prophesize(Client::class)->reveal(),
+      $this->prophesize(EventDispatcherInterface::class)->reveal(),
+      $this->prophesize(TimeInterface::class)->reveal(),
+      new Settings(
+        '',
+        'local',
+        'localhost',
+        'token',
+      )
+    );
+    call_user_func_array([$sut, $method], $args);
+  }
+
+  /**
+   * Data provider for testAssertSettingsException.
+   *
+   * @return array[]
+   *   The data.
+   */
+  public function assertSettingsExceptionData() : array {
+    return [
+      ['receive', []],
+      ['sendMessage', [['message' => 'message']]],
+    ];
+  }
+
+  /**
    * @covers ::setTimeout
    * @covers ::__construct
+   * @covers ::assertSettings
    * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
    */
   public function testSetTimeout() : void {
@@ -50,6 +88,7 @@ class PubSubManagerTest extends UnitTestCase {
    * @covers ::encodeMessage
    * @covers ::decodeMessage
    * @covers ::__construct
+   * @covers ::assertSettings
    * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
    */
   public function testJoinGroupException() : void {
@@ -83,6 +122,7 @@ class PubSubManagerTest extends UnitTestCase {
    * @covers ::encodeMessage
    * @covers ::decodeMessage
    * @covers ::__construct
+   * @covers ::assertSettings
    * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
    */
   public function testSendMessage() : void {
@@ -116,6 +156,7 @@ class PubSubManagerTest extends UnitTestCase {
    * @covers ::encodeMessage
    * @covers ::decodeMessage
    * @covers ::__construct
+   * @covers ::assertSettings
    * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
    * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
    */

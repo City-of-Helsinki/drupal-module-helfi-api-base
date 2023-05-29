@@ -114,10 +114,28 @@ final class PubSubManager implements PubSubManagerInterface {
   }
 
   /**
+   * Asserts the settings.
+   *
+   * This is used to exit early if required settings are not populated.
+   */
+  private function assertSettings() : self {
+    $vars = get_object_vars($this->settings);
+
+    foreach ($vars as $key => $value) {
+      if (empty($this->settings->{$key})) {
+        throw new ConnectionException("Azure PubSub '$key' is not configured.");
+      }
+    }
+    return $this;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function sendMessage(array $message) : self {
-    $this->joinGroup();
+    $this->assertSettings()
+      ->joinGroup();
+
     $this->client
       ->text(
         $this->encodeMessage([
@@ -137,7 +155,8 @@ final class PubSubManager implements PubSubManagerInterface {
    * {@inheritdoc}
    */
   public function receive() : string {
-    $this->joinGroup();
+    $this->assertSettings()
+      ->joinGroup();
     $message = $this->client->receive();
     $json = json_decode($message, TRUE, flags: JSON_THROW_ON_ERROR);
 

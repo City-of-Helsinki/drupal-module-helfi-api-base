@@ -29,6 +29,20 @@ class CacheTagInvalidatorTest extends KernelTestBase {
   ];
 
   /**
+   * {@inheritdoc}
+   */
+  protected function setUp() : void {
+    parent::setUp();
+
+    $this->config('helfi_api_base.pubsub.settings')
+      ->set('endpoint', 'wss://localhost')
+      ->set('hub', 'hub')
+      ->set('group', 'group')
+      ->set('access_token', '123')
+      ->save();
+  }
+
+  /**
    * @covers ::__construct
    * @covers ::invalidateTags
    * @covers \Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber::onReceive
