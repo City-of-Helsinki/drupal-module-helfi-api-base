@@ -23,6 +23,26 @@ class PubSubManagerTest extends UnitTestCase {
   use ProphecyTrait;
 
   /**
+   * @covers ::setTimeout
+   */
+  public function testSetTimeout() : void {
+    $client = $this->prophesize(Client::class);
+    $client->setTimeout(5)->shouldBeCalled();
+    $sut = new PubSubManager(
+      $client->reveal(),
+      $this->prophesize(EventDispatcherInterface::class)->reveal(),
+      $this->prophesize(TimeInterface::class)->reveal(),
+      new Settings(
+        'hub',
+        'local',
+        'localhost',
+        'token',
+      )
+    );
+    $sut->setTimeout(5);
+  }
+
+  /**
    * @covers ::sendMessage
    * @covers ::joinGroup
    * @covers ::encodeMessage

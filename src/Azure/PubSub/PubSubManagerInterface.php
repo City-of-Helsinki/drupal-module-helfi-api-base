@@ -36,4 +36,15 @@ interface PubSubManagerInterface {
    */
   public function receive(): string;
 
+  /**
+   * Sets the client timeout.
+   *
+   * @param int $timeout
+   *   The timeout in seconds.
+   *
+   * @return self
+   *   The self.
+   */
+  public function setTimeout(int $timeout): self;
+
 }

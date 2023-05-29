@@ -108,6 +108,14 @@ final class PubSubManager implements PubSubManagerInterface {
   /**
    * {@inheritdoc}
    */
+  public function setTimeout(int $timeout) : self {
+    $this->client->setTimeout($timeout);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function sendMessage(array $message) : self {
     $this->joinGroup();
     $this->client
