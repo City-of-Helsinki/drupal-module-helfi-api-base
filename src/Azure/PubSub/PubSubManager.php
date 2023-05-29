@@ -7,11 +7,19 @@ namespace Drupal\helfi_api_base\Azure\PubSub;
 use Drupal\Component\Datetime\TimeInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use WebSocket\Client;
+use WebSocket\ConnectionException;
 
 /**
  * A client to interact with Azure's PubSub service.
  */
 final class PubSubManager implements PubSubManagerInterface {
+
+  /**
+   * A flag indicating whether we've joined the group.
+   *
+   * @var bool
+   */
+  private bool $joinedGroup = FALSE;
 
   /**
    * Constructs a new instance.
@@ -34,23 +42,37 @@ final class PubSubManager implements PubSubManagerInterface {
   }
 
   /**
-   * Joins to a group.
-   *
-   * @return self
-   *   The self.
+   * Joins a group.
    *
    * @throws \JsonException
    * @throws \WebSocket\ConnectionException
    * @throws \WebSocket\TimeoutException
    */
-  private function joinGroup() : self {
+  private function joinGroup() : void {
+    if ($this->joinedGroup) {
+      return;
+    }
     $this->client->text(
       $this->encodeMessage([
         'type' => 'joinGroup',
         'group' => $this->settings->group,
       ])
     );
-    return $this;
+
+    try {
+      // Wait until we've actually joined the group.
+      $message = $this->decodeMessage($this->client->receive());
+
+      if (isset($message['event']) && $message['event'] === 'connected') {
+        $this->joinedGroup = TRUE;
+
+        return;
+      }
+    }
+    catch (\JsonException) {
+    }
+
+    throw new ConnectionException('Failed to join a group.');
   }
 
   /**
@@ -69,15 +91,25 @@ final class PubSubManager implements PubSubManagerInterface {
   }
 
   /**
+   * Decodes the received message.
+   *
+   * @param string $message
+   *   The message to decode.
+   *
+   * @return array
+   *   The decoded message.
+   *
+   * @throws \JsonException
+   */
+  private function decodeMessage(string $message) : array {
+    return json_decode($message, TRUE, flags: JSON_THROW_ON_ERROR);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function sendMessage(array $message) : self {
-    static $group = NULL;
-
-    // Join group only once per session.
-    if ($group === NULL) {
-      $group = $this->joinGroup();
-    }
+    $this->joinGroup();
     $this->client
       ->text(
         $this->encodeMessage([
@@ -97,12 +129,7 @@ final class PubSubManager implements PubSubManagerInterface {
    * {@inheritdoc}
    */
   public function receive() : string {
-    static $group = NULL;
-
-    // Join group only once per session.
-    if ($group === NULL) {
-      $group = $this->joinGroup();
-    }
+    $this->joinGroup();
     $message = $this->client->receive();
     $json = json_decode($message, TRUE, flags: JSON_THROW_ON_ERROR);
 

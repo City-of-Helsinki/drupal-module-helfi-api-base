@@ -42,8 +42,6 @@ final class PubSubClientFactory {
         'Authorization' => 'Bearer ' . $authorizationToken,
         'Sec-WebSocket-Protocol' => 'json.webpubsub.azure.v1',
       ],
-      'timeout' => 120,
-      'persistent' => TRUE,
     ]);
   }
 
