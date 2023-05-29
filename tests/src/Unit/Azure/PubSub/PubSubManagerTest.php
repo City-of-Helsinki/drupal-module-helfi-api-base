@@ -26,7 +26,8 @@ class PubSubManagerTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::assertSettings
    * @covers ::receive
-   * @cover ::sendMessage
+   * @covers ::sendMessage
+   * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
    * @dataProvider assertSettingsExceptionData
    */
   public function testAssertSettingsException(string $method, array $args) : void {
