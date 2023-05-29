@@ -21,6 +21,7 @@ use WebSocket\TimeoutException;
 final class PubSubCommands extends DrushCommands {
 
   public const MAX_MESSAGES = 500;
+  public const CLIENT_TIMEOUT = 120;
 
   /**
    * Constructs a new instance.
@@ -41,7 +42,7 @@ final class PubSubCommands extends DrushCommands {
    */
   #[Command(name: 'helfi:azure:pubsub-listen')]
   public function listen() : int {
-    $this->pubSubClient->setTimeout(120);
+    $this->pubSubClient->setTimeout(self::CLIENT_TIMEOUT);
 
     for ($received = 0; $received < self::MAX_MESSAGES; $received++) {
       try {

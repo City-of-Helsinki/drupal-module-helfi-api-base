@@ -24,6 +24,8 @@ class PubSubManagerTest extends UnitTestCase {
 
   /**
    * @covers ::setTimeout
+   * @covers ::__construct
+   * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
    */
   public function testSetTimeout() : void {
     $client = $this->prophesize(Client::class);
