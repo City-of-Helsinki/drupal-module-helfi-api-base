@@ -35,6 +35,21 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
       return;
     }
     $this->cacheTagsInvalidator->invalidateTags($message->data['data']['tags']);
+    // Cache invalidator service keeps already invalidated cache tags in a
+    // static cache and prevents the invalidation of the same tag multiple
+    // times.
+    // We run this service via Drush command, meaning the same cache tag is
+    // never invalidated unless we manually reset the checksums.
+    // ::resetCheckSums() seems to be an internal function meant to only be
+    // used in tests.
+    // Throw an exception in case someone overrides the default
+    // 'cache_tags.invalidator' service or the method is removed in the future.
+    // @see \Drupal\Core\Çache\CacheTagsInvalidator::resetChecksums().
+    // @see \Drupal\Core\Çache\CacheTagsCheckSumTrait::invalidateTags().
+    if (!method_exists($this->cacheTagsInvalidator, 'resetChecksums')) {
+      throw new \LogicException('CacheTagsInvalidatorInterface::resetCheckSums() does not exist anymore.');
+    }
+    $this->cacheTagsInvalidator->resetCheckSums();
   }
 
   /**
