@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_api_base\Kernel\Cache;
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManager;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\helfi_api_base\Traits\CacheTagInvalidatorTrait;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use WebSocket\Client;
@@ -20,6 +21,7 @@ use WebSocket\Client;
 class CacheTagInvalidatorTest extends KernelTestBase {
 
   use ProphecyTrait;
+  use CacheTagInvalidatorTrait;
 
   /**
    * {@inheritdoc}
@@ -53,9 +55,8 @@ class CacheTagInvalidatorTest extends KernelTestBase {
     // the event subscriber is actually run and the invalidation logic is
     // actually triggered.
     // @see \Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber
-    $cacheTagInvalidator = $this->prophesize(CacheTagsInvalidatorInterface::class);
-    $cacheTagInvalidator->invalidateTags(['node:123'])->shouldBeCalledTimes(1);
-    $this->container->set('cache_tags.invalidator', $cacheTagInvalidator->reveal());
+    $cacheTagInvalidator = $this->mockCacheInvalidator();
+    $this->container->set('cache_tags.invalidator', $cacheTagInvalidator);
 
     $client = $this->prophesize(Client::class);
     $client->text(Argument::any());
@@ -75,6 +76,7 @@ class CacheTagInvalidatorTest extends KernelTestBase {
     /** @var \Drupal\helfi_api_base\Cache\CacheTagInvalidator $sut */
     $sut = $this->container->get('helfi_api_base.cache_tag_invalidator');
     $sut->invalidateTags(['node:123']);
+    $this->assertArrayHasKey('node:123', $cacheTagInvalidator->tags);
   }
 
 }
