@@ -49,7 +49,7 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
     if (!method_exists($this->cacheTagsInvalidator, 'resetChecksums')) {
       throw new \LogicException('CacheTagsInvalidatorInterface::resetCheckSums() does not exist anymore.');
     }
-    $this->cacheTagsInvalidator->resetCheckSums();
+    $this->cacheTagsInvalidator->resetChecksums();
   }
 
   /**

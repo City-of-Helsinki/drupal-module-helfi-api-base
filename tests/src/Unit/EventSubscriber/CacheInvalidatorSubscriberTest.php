@@ -8,7 +8,6 @@ use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
 use Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber;
 use Drupal\Tests\UnitTestCase;
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
@@ -31,11 +30,74 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
    * @covers ::onReceive
    * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
    */
-  public function testInvalidCacheTags() : void {
+  public function testInvalidServiceException() : void {
+    // CacheTagsInvalidatorInterface does not have ::resetChecksums method.
+    // Make sure exception is thrown unless we use the default core service.
+    $this->expectException(\LogicException::class);
     $invalidator = $this->prophesize(CacheTagsInvalidatorInterface::class);
-    $invalidator->invalidateTags(Argument::any())->shouldNotBeCalled();
+    $invalidator->invalidateTags(['node:123'])->shouldBeCalled();
     $sut = new CacheTagInvalidatorSubscriber($invalidator->reveal());
+    $sut->onReceive(new PubSubMessage(['data' => ['tags' => ['node:123']]]));
+  }
+
+  /**
+   * Mock core's CacheTagsInvalidator class.
+   *
+   * The CacheTagsInvalidatorInterface does not define 'resetChecksums()'
+   * method and since the default CacheTagsInvalidator class is marked
+   * as final we cannot mock it.
+   *
+   * @return \Drupal\Core\Cache\CacheTagsInvalidatorInterface
+   *   The cache invalidator class.
+   */
+  private function mockCacheInvalidator() : CacheTagsInvalidatorInterface {
+    return new class () implements CacheTagsInvalidatorInterface {
+
+      /**
+       * A list of invalidated tags.
+       *
+       * @var array
+       */
+      public array $tags = [];
+
+      /**
+       * The number of times resetChecksums has been called.
+       *
+       * @var int
+       */
+      public int $checkSumResets = 0;
+
+      /**
+       * {@inheritdoc}
+       */
+      public function invalidateTags(array $tags) : void {
+        foreach ($tags as $tag) {
+          $this->tags[$tag] = $tag;
+        }
+      }
+
+      /**
+       * Add missing resetChecksums() method.
+       *
+       * @see \Drupal\Core\Cache\CacheTagsInvalidator::resetChecksums()
+       */
+      public function resetChecksums() : void {
+        $this->checkSumResets++;
+      }
+
+    };
+  }
+
+  /**
+   * @covers ::__construct
+   * @covers ::onReceive
+   * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
+   */
+  public function testInvalidCacheTags() : void {
+    $mock = $this->mockCacheInvalidator();
+    $sut = new CacheTagInvalidatorSubscriber($mock);
     $sut->onReceive(new PubSubMessage([]));
+    $this->assertEmpty($mock->tags);
   }
 
   /**
@@ -44,10 +106,12 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
    */
   public function testValidCacheTags() : void {
-    $invalidator = $this->prophesize(CacheTagsInvalidatorInterface::class);
-    $invalidator->invalidateTags(['node:123'])->shouldBeCalled();
-    $sut = new CacheTagInvalidatorSubscriber($invalidator->reveal());
+    $mock = $this->mockCacheInvalidator();
+    $sut = new CacheTagInvalidatorSubscriber($mock);
     $sut->onReceive(new PubSubMessage(['data' => ['tags' => ['node:123']]]));
+
+    $this->assertArrayHasKey('node:123', $mock->tags);
+    $this->assertEquals(1, $mock->checkSumResets);
   }
 
 }
