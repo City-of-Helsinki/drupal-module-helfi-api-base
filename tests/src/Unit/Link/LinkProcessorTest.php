@@ -22,6 +22,9 @@ class LinkProcessorTest extends UnitTestCase {
 
   /**
    * @covers ::preRenderLink
+   * @covers \Drupal\helfi_api_base\Link\InternalDomainResolver::__construct
+   * @covers \Drupal\helfi_api_base\Link\InternalDomainResolver::getProtocol
+   * @covers \Drupal\helfi_api_base\Link\InternalDomainResolver::isExternal
    */
   public function testPreRenderLink() : void {
     $container = new ContainerBuilder();
