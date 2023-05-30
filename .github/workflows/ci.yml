@@ -74,7 +74,7 @@ jobs:
         working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
           vendor/bin/phpunit \
-            --bootstrap public/core/tests/bootstrap.php \
+            --bootstrap ./public/core/tests/bootstrap.php \
             -c $MODULE_FOLDER/phpunit.xml \
             --coverage-clover=coverage.xml \
             $MODULE_FOLDER
