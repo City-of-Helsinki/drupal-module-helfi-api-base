@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentMetadata;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -24,15 +25,19 @@ class EnvironmentTest extends UnitTestCase {
    * @covers ::getEnvironment
    * @covers ::getEnvironmentName
    * @covers ::getBaseUrl
+   * @covers ::getMetadata
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::__construct
+   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::getOpenshiftConsoleLink
    */
   public function testSimpleGetters() : void {
-    $sut = new Environment('www.hel.fi', [], 'https', 'test', EnvironmentEnum::Test, NULL);
+    $sut = new Environment('www.hel.fi', [], 'https', 'test', EnvironmentEnum::Test, new EnvironmentMetadata('https://localhost'));
     $this->assertEquals('test', $sut->getId());
     $this->assertEquals('www.hel.fi', $sut->getDomain());
     $this->assertEquals('https', $sut->getProtocol());
     $this->assertEquals(EnvironmentEnum::Test, $sut->getEnvironment());
     $this->assertEquals(EnvironmentEnum::Test->value, $sut->getEnvironmentName());
     $this->assertEquals('https://www.hel.fi', $sut->getBaseUrl());
+    $this->assertEquals('https://localhost', $sut->getMetadata()->getOpenshiftConsoleLink());
   }
 
   /**

@@ -91,3 +91,42 @@ services:
     class: Drupal\helfi_api_base\Vault\VaultManagerFactory
     arguments:
       - '@config.factory'
+
+  helfi_api_base.pubsub_settings_factory:
+    class: Drupal\helfi_api_base\Azure\PubSub\SettingsFactory
+    arguments:
+      - '@config.factory'
+
+  helfi_api_base.pubsub_client_factory:
+    class: Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactory
+
+  helfi_api_base.pubsub_client:
+    class: \WebSocket\Client
+    factory: ['@helfi_api_base.pubsub_client_factory', 'create']
+    arguments:
+      - '@helfi_api_base.pubsub_settings'
+      - '@datetime.time'
+
+  helfi_api_base.pubsub_settings:
+    class: Drupal\helfi_api_base\Azure\PubSub\Settings
+    factory: ['@helfi_api_base.pubsub_settings_factory', 'create']
+
+  helfi_api_base.pubsub_manager:
+    class: Drupal\helfi_api_base\Azure\PubSub\PubSubManager
+    arguments:
+      - '@helfi_api_base.pubsub_client'
+      - '@event_dispatcher'
+      - '@datetime.time'
+      - '@helfi_api_base.pubsub_settings'
+
+  helfi_api_base.cache_tag_invalidator:
+    class: Drupal\helfi_api_base\Cache\CacheTagInvalidator
+    arguments:
+      - '@helfi_api_base.pubsub_manager'
+
+  helfi_api_base.cache_tag_invalidator_subscriber:
+    class: Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber
+    arguments:
+      - '@cache_tags.invalidator'
+    tags:
+      - { name: event_subscriber }

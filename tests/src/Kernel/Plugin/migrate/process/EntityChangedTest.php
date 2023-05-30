@@ -14,6 +14,7 @@ use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\remote_entity_test\Entity\RemoteEntityTest;
 use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the entity_changed plugin.
@@ -24,6 +25,7 @@ use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 class EntityChangedTest extends ApiKernelTestBase {
 
   use MigrateTrait;
+  use ProphecyTrait;
 
   /**
    * {@inheritdoc}
@@ -66,8 +68,7 @@ class EntityChangedTest extends ApiKernelTestBase {
     $configuration = [
       'entity_type' => 'remote_entity_test',
     ];
-    return \Drupal::service('plugin.manager.migrate.process')
-      ->createInstance('entity_has_changed', $configuration, $migration);
+    return EntityChanged::create($this->container, $configuration, 'entity_has_changed', [], $migration);
   }
 
   /**
@@ -107,7 +108,7 @@ class EntityChangedTest extends ApiKernelTestBase {
    * @return array[]
    *   The data.
    */
-  public function entityNotChangedData() {
+  public function entityNotChangedData() : array {
     return [
       [1, '2020-10-29T10:05:05', '2020-10-29T10:05:05'],
       [2, '2020-10-29T09:05:05', '2020-10-28T10:05:05'],
@@ -118,6 +119,7 @@ class EntityChangedTest extends ApiKernelTestBase {
    * Tests entity when it has not changed.
    *
    * @covers ::transform
+   * @covers ::create
    * @dataProvider entityNotChangedData
    */
   public function testEntityNotChanged(int $id, string $date1, string $date2): void {
@@ -131,6 +133,7 @@ class EntityChangedTest extends ApiKernelTestBase {
    * Tests entity when it has not changed.
    *
    * @covers ::transform
+   * @covers ::create
    * @dataProvider entityNotChangedData
    */
   public function testEntityNotChangedNotPartialMigrate(int $id, string $date1, string $date2): void {
@@ -142,6 +145,9 @@ class EntityChangedTest extends ApiKernelTestBase {
 
   /**
    * Tests entity when it has changed.
+   *
+   * @covers ::transform
+   * @covers ::create
    */
   public function testEntityHasChanged() : void {
     $this->assertTransform(1, '2020-10-28T10:00:01', '2020-10-30T12:00:00');

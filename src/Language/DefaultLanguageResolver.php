@@ -12,24 +12,20 @@ use Drupal\Core\Language\LanguageManagerInterface;
 final class DefaultLanguageResolver {
 
   /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  protected LanguageManagerInterface $languageManager;
-
-  /**
    * Constructs a new instance.
    *
    * @param array $defaultLanguages
    *   Default languages.
    * @param string $fallbackLanguage
    *   Fallback language.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
+   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   Language manager.
    */
-  public function __construct(private array $defaultLanguages, private string $fallbackLanguage, LanguageManagerInterface $language_manager) {
-    $this->languageManager = $language_manager;
+  public function __construct(
+    private readonly array $defaultLanguages,
+    private readonly string $fallbackLanguage,
+    private readonly LanguageManagerInterface $languageManager
+  ) {
   }
 
   /**

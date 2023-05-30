@@ -1,4 +1,10 @@
 services:
+  helfi_api_base.pubsub_commands:
+    class: \Drupal\helfi_api_base\Commands\PubSubCommands
+    arguments:
+      - '@helfi_api_base.pubsub_manager'
+    tags:
+      - { name: drush.command }
   helfi_api_base.api_account_commands:
     class: \Drupal\helfi_api_base\Commands\ApiAccountCommands
     arguments: ['@password_generator']

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helfi_api_base\Kernel;
+namespace Drupal\Tests\helfi_api_base\Kernel\EventSubscriber;
 
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
