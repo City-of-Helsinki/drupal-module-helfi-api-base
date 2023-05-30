@@ -9,6 +9,7 @@ env:
   SIMPLETEST_BASE_URL: "http://127.0.0.1:8888"
   SYMFONY_DEPRECATIONS_HELPER: disabled
   BROWSERTEST_OUTPUT_DIRECTORY: 'sites/simpletest'
+  COMPOSER_MIRROR_PATH_REPOS: 1
 jobs:
   tests:
     runs-on: ubuntu-latest
