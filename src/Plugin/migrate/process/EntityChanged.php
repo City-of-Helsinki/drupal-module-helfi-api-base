@@ -50,7 +50,13 @@ final class EntityChanged extends ProcessPluginBase implements ContainerFactoryP
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) : self {
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    MigrationInterface $migration = NULL
+  ) : self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
     $instance->entityTypeManager = $container->get('entity_type.manager');
 
