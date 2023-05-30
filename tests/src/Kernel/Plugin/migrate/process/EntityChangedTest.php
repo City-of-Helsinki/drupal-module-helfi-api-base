@@ -68,8 +68,7 @@ class EntityChangedTest extends ApiKernelTestBase {
     $configuration = [
       'entity_type' => 'remote_entity_test',
     ];
-    return \Drupal::service('plugin.manager.migrate.process')
-      ->createInstance('entity_has_changed', $configuration, $migration);
+    return EntityChanged::create($this->container, $configuration, 'entity_has_changed', [], $migration);
   }
 
   /**

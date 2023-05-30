@@ -13,6 +13,7 @@ use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\MigrationPluginManager;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests Migrate plugin.
@@ -21,6 +22,8 @@ use Prophecy\Argument;
  * @group helfi_api_base
  */
 class MigrateDataItemTest extends UnitTestCase {
+
+  use ProphecyTrait;
 
   /**
    * Gets the sut.

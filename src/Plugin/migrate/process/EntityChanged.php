@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\Plugin\migrate\process;
 
-use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_api_base\MigrateTrait;
 use Drupal\migrate\MigrateExecutableInterface;
@@ -41,20 +41,18 @@ final class EntityChanged extends ProcessPluginBase implements ContainerFactoryP
   use MigrateTrait;
 
   /**
-   * The entity storage.
+   * The entity type manager.
    *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected EntityStorageInterface $entityStorage;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $pluginId, $pluginDefinition, MigrationInterface $migration = NULL) {
-    $instance = new static($configuration, $pluginId, $pluginDefinition);
-
-    $instance->entityStorage = $container->get('entity_type.manager')
-      ->getStorage($configuration['entity_type']);
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) : self {
+    $instance = new self($configuration, $plugin_id, $plugin_definition);
+    $instance->entityTypeManager = $container->get('entity_type.manager');
 
     return $instance;
   }
@@ -67,8 +65,10 @@ final class EntityChanged extends ProcessPluginBase implements ContainerFactoryP
 
     $value = (int) $value;
 
+    $storage = $this->entityTypeManager->getStorage($this->configuration['entity_type']);
+
     /** @var \Drupal\helfi_api_base\Entity\RemoteEntityBase $entity */
-    if (!$id || $value <= 0 || !$entity = $this->entityStorage->load($id)) {
+    if (!$id || $value <= 0 || !$entity = $storage->load($id)) {
       return $value;
     }
 
