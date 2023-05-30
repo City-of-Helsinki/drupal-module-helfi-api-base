@@ -119,6 +119,7 @@ class EntityChangedTest extends ApiKernelTestBase {
    * Tests entity when it has not changed.
    *
    * @covers ::transform
+   * @covers ::create
    * @dataProvider entityNotChangedData
    */
   public function testEntityNotChanged(int $id, string $date1, string $date2): void {
@@ -132,6 +133,7 @@ class EntityChangedTest extends ApiKernelTestBase {
    * Tests entity when it has not changed.
    *
    * @covers ::transform
+   * @covers ::create
    * @dataProvider entityNotChangedData
    */
   public function testEntityNotChangedNotPartialMigrate(int $id, string $date1, string $date2): void {
@@ -145,6 +147,7 @@ class EntityChangedTest extends ApiKernelTestBase {
    * Tests entity when it has changed.
    *
    * @covers ::transform
+   * @covers ::create
    */
   public function testEntityHasChanged() : void {
     $this->assertTransform(1, '2020-10-28T10:00:01', '2020-10-30T12:00:00');
