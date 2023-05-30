@@ -78,7 +78,7 @@ jobs:
             -c $MODULE_FOLDER/phpunit.xml \
             --coverage-clover=coverage.xml \
             $MODULE_FOLDER
-          codecov
+          codecov --rootDir $MODULE_FOLDER
 
       - name: Create an artifact from test report
         uses: actions/upload-artifact@v3
