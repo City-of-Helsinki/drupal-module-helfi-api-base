@@ -8,6 +8,7 @@ You must define the following settings to use this feature:
 
 ```php
 $config['helfi_api_base.pubsub.settings']['access_token'] = '<access-token>';
+// Url to Azure's wss endpoint, usually something like: yourservicename.webpubsub.azure.com
 $config['helfi_api_base.pubsub.settings']['endpoint'] = '<url to azure pubsub endpoint>';
 // Hub and group must be same in all instances that talk with each other.
 $config['helfi_api_base.pubsub.settings']['hub'] = '<hub>';
