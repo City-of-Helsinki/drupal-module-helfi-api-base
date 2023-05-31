@@ -6,7 +6,7 @@ on:
 name: CI
 env:
   SYMFONY_DEPRECATIONS_HELPER: disabled
-  BROWSERTEST_OUTPUT_DIRECTORY: 'sites/simpletest'
+  BROWSERTEST_OUTPUT_DIRECTORY: 'public/sites/simpletest'
 jobs:
   tests:
     runs-on: ubuntu-latest
