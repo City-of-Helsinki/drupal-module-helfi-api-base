@@ -9,6 +9,9 @@ env:
   SIMPLETEST_BASE_URL: "http://127.0.0.1:8888"
   SYMFONY_DEPRECATIONS_HELPER: disabled
   BROWSERTEST_OUTPUT_DIRECTORY: 'sites/simpletest'
+  # PHPUnit reports incorrect test coverage if $MODULE_FOLDER is a symlink. Change
+  # composer's default path repository strategy to mirror instead to mitigate this.
+  # See https://getcomposer.org/doc/03-cli.md#composer-mirror-path-repos
   COMPOSER_MIRROR_PATH_REPOS: 1
 jobs:
   tests:
