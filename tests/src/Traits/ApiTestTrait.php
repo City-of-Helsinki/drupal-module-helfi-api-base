@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Traits;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Extension\ExtensionPathResolver;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Provides shared functionality for api tests.
@@ -29,6 +32,50 @@ trait ApiTestTrait {
     $handlerStack = HandlerStack::create($mock);
 
     return new Client(['handler' => $handlerStack]);
+  }
+
+  /**
+   * Process a request.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The request.
+   *
+   * @return \Symfony\Component\HttpFoundation\Response
+   *   The response.
+   */
+  protected function processRequest(Request $request): Response {
+    return $this->container->get('http_kernel')->handle($request);
+  }
+
+  /**
+   * Creates a request object.
+   *
+   * @param string $uri
+   *   The uri.
+   * @param string $method
+   *   The method.
+   * @param array $parameters
+   *   The parameters.
+   * @param array $document
+   *   The document.
+   *
+   * @return \Symfony\Component\HttpFoundation\Request
+   *   The request.
+   */
+  protected function getMockedRequest(
+    string $uri,
+    string $method = 'GET',
+    array $parameters = [],
+    array $document = []
+  ): Request {
+    $document = $document ? Json::encode($document) : NULL;
+
+    $request = Request::create($uri, $method, $parameters, [], [], [], $document);
+    if ($document !== []) {
+      $request->headers->set('Content-Type', 'application/json');
+    }
+    $request->headers->set('Accept', 'application/json');
+    return $request;
   }
 
   /**
