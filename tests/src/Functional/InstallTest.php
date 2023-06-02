@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_api_base\Functional;
 
 use Drupal\Core\Config\Schema\SchemaIncompleteException;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Tests\BrowserTestBase as CoreBrowserTestBase;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\user\Entity\Role;
 
 /**
@@ -15,6 +17,8 @@ use Drupal\user\Entity\Role;
  * @group helfi_api_base
  */
 class InstallTest extends CoreBrowserTestBase {
+
+  use EnvironmentResolverTrait;
 
   /**
    * {@inheritdoc}
@@ -68,10 +72,7 @@ class InstallTest extends CoreBrowserTestBase {
     $moduleInstaller->uninstall(['helfi_api_base']);
 
     try {
-      $this->config('helfi_api_base.environment_resolver.settings')
-        ->set('environment_name', 'local')
-        ->set('project_name', Project::ASUMINEN)
-        ->save();
+      $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Local);
     }
     catch (SchemaIncompleteException) {
     }

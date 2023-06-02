@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_api_base\Kernel\EventSubscriber;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\user\Entity\Role;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -21,6 +22,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 class EnsureApiAccountsSubscriberTest extends KernelTestBase {
 
   use UserCreationTrait;
+  use EnvironmentResolverTrait;
 
   /**
    * {@inheritdoc}
@@ -40,11 +42,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('action');
-
-    $this->config('helfi_api_base.environment_resolver.settings')
-      ->set('project_name', Project::ASUMINEN)
-      ->set('environment_name', EnvironmentEnum::Test->value)
-      ->save();
+    $this->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Test);
 
     $this->config('helfi_api_base.api_accounts')
       ->set('accounts', [

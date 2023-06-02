@@ -360,18 +360,7 @@ class EnvironmentResolverTest extends UnitTestCase {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessageMatches('/No project with name/');
     $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'test');
-    $sut->populateActiveProjectSettings('nonexistent', EnvironmentEnum::Test->value);
-  }
-
-  /**
-   * @covers ::populateEnvironments
-   * @covers ::populateActiveProjectSettings
-   */
-  public function testPopulateActiveProjectSettingsEnvironmentNotFoundException() : void {
-    $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessageMatches('/No environment with name/');
-    $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'test');
-    $sut->populateActiveProjectSettings(Project::ASUMINEN, 'non-existent');
+    $sut->populateActiveProjectSettings('nonexistent', EnvironmentEnum::Test);
   }
 
 }

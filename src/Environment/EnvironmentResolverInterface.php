@@ -70,9 +70,9 @@ interface EnvironmentResolverInterface {
    *
    * @param string $project
    *   The project name.
-   * @param string $environment
-   *   The environment name.
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentEnum $environment
+   *   The environment.
    */
-  public function populateActiveProjectSettings(string $project, string $environment) : void;
+  public function populateActiveProjectSettings(string $project, EnvironmentEnum $environment) : void;
 
 }
