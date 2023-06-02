@@ -78,7 +78,6 @@ trait ApiTestTrait {
     return $request;
   }
 
-
   /**
    * Creates HTTP history middleware client stub.
    *
