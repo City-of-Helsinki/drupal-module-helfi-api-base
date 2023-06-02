@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\helfi_api_base\Environment;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\ImmutableConfig;
 
 /**
  * Environment resolver.
