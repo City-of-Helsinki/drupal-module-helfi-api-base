@@ -5,8 +5,11 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
 use Drupal\Core\Render\HtmlResponse;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\EventSubscriber\EnvironmentResponseSubscriber;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -18,6 +21,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  * @group helfi_api_base
  */
 class EnvironmentResponseSubscriberTest extends KernelTestBase {
+
+  use EnvironmentResolverTrait;
 
   /**
    * {@inheritdoc}
@@ -66,10 +71,7 @@ class EnvironmentResponseSubscriberTest extends KernelTestBase {
    * Asserts that response headers are set when project name is defined.
    */
   public function testHeadersExist() : void {
-    $this->config('helfi_api_base.environment_resolver.settings')
-      ->set('environment_name', 'test')
-      ->set('project_name', 'liikenne')
-      ->save();
+    $this->setActiveProject(Project::LIIKENNE, EnvironmentEnum::Test);
 
     $event = $this->getResponseEvent();
     $this->getSut()->onResponse($event);

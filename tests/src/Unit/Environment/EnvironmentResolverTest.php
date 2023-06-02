@@ -232,6 +232,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::getEnvironment
    * @covers ::getProject
    * @covers ::getActiveProject
+   * @covers ::getConfig
    * @covers ::configurationMissingExceptionMessage
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
@@ -255,6 +256,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::getEnvironment
    * @covers ::getProject
    * @covers ::getActiveProject
+   * @covers ::getConfig
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
@@ -281,6 +283,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::configurationMissingExceptionMessage
    * @covers ::getActiveEnvironment
    * @covers ::getActiveEnvironmentName
+   * @covers ::getConfig
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
@@ -303,6 +306,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::populateEnvironments
    * @covers ::__construct
    * @covers ::getActiveEnvironmentName
+   * @covers ::getConfig
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
@@ -324,6 +328,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::getEnvironment
    * @covers ::getProject
+   * @covers ::getConfig
    * @covers ::getActiveEnvironment
    * @covers ::getActiveEnvironmentName
    * @covers ::getActiveProject
