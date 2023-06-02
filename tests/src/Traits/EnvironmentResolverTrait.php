@@ -17,7 +17,7 @@ trait EnvironmentResolverTrait {
    *
    * @var null|\Drupal\helfi_api_base\Environment\EnvironmentResolverInterface
    */
-  protected ?EnvironmentResolverInterface $environmentResolver;
+  protected ?EnvironmentResolverInterface $environmentResolver = NULL;
 
   /**
    * Gets the environment resolver service.
@@ -26,7 +26,7 @@ trait EnvironmentResolverTrait {
    *   The environment resolver service.
    */
   public function environmentResolver() : EnvironmentResolverInterface {
-    if (!$this->environmentResolver) {
+    if ($this->environmentResolver === NULL) {
       $this->environmentResolver = $this->container->get('helfi_api_base.environment_resolver');
     }
     return $this->environmentResolver;
