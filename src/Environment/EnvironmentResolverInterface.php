@@ -65,4 +65,14 @@ interface EnvironmentResolverInterface {
    */
   public function getEnvironment(string $project, string $environment) : Environment;
 
+  /**
+   * Populates the active project settings.
+   *
+   * @param string $project
+   *   The project name.
+   * @param string $environment
+   *   The environment name.
+   */
+  public function populateActiveProjectSettings(string $project, string $environment) : void;
+
 }

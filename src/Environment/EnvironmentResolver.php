@@ -25,13 +25,6 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
   private array $projects;
 
   /**
-   * The configuration.
-   *
-   * @var \Drupal\Core\Config\ImmutableConfig
-   */
-  private ImmutableConfig $config;
-
-  /**
    * Constructs a new instance.
    *
    * @param string $pathOrJson
@@ -39,9 +32,11 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The configuration factory.
    */
-  public function __construct(string $pathOrJson, ConfigFactoryInterface $configFactory) {
+  public function __construct(
+    string $pathOrJson,
+    private readonly ConfigFactoryInterface $configFactory
+  ) {
     $this->populateEnvironments($pathOrJson);
-    $this->config = $configFactory->get('helfi_api_base.environment_resolver.settings');
   }
 
   /**
@@ -105,10 +100,47 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
   }
 
   /**
+   * Gets the configuration value for given key.
+   *
+   * @param string $key
+   *   The key.
+   *
+   * @return string|null
+   *   The configuration value or null.
+   */
+  private function getConfig(string $key) : ?string {
+    return $this->configFactory
+      ->get('helfi_api_base.environment_resolver.settings')
+      ->get($key);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function populateActiveProjectSettings(string $project, string $environment) : void {
+    if (!isset($this->projects[$project])) {
+      throw new \InvalidArgumentException(
+        sprintf('No project with name %s found', $project)
+      );
+    }
+    if (!EnvironmentEnum::tryFrom($environment)) {
+      throw new \InvalidArgumentException(
+        sprintf('No environment with name %s found.', $environment)
+      );
+    }
+
+    $this->configFactory
+      ->getEditable('helfi_api_base.environment_resolver.settings')
+      ->set(self::PROJECT_NAME_KEY, $project)
+      ->set(self::ENVIRONMENT_NAME_KEY, $environment)
+      ->save();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getActiveProject() : Project {
-    if (!$name = $this->config->get(self::PROJECT_NAME_KEY)) {
+    if (!$name = $this->getConfig(self::PROJECT_NAME_KEY)) {
       throw new \InvalidArgumentException(
         $this->configurationMissingExceptionMessage('No active project found', self::PROJECT_NAME_KEY)
       );
@@ -124,7 +156,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
    *   The active environment name.
    */
   public function getActiveEnvironmentName() : string {
-    if (!$env = $this->config->get(self::ENVIRONMENT_NAME_KEY)) {
+    if (!$env = $this->getConfig(self::ENVIRONMENT_NAME_KEY)) {
       // Fallback to APP_ENV env variable.
       $env = getenv('APP_ENV');
     }

@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_api_base\Environment\Environment;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Tests\UnitTestCase;
@@ -232,6 +233,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::getEnvironment
    * @covers ::getProject
    * @covers ::getActiveProject
+   * @covers ::getConfig
    * @covers ::configurationMissingExceptionMessage
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
@@ -255,6 +257,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::getEnvironment
    * @covers ::getProject
    * @covers ::getActiveProject
+   * @covers ::getConfig
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
@@ -281,6 +284,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::configurationMissingExceptionMessage
    * @covers ::getActiveEnvironment
    * @covers ::getActiveEnvironmentName
+   * @covers ::getConfig
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
@@ -303,6 +307,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::populateEnvironments
    * @covers ::__construct
    * @covers ::getActiveEnvironmentName
+   * @covers ::getConfig
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
@@ -324,6 +329,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::getEnvironment
    * @covers ::getProject
+   * @covers ::getConfig
    * @covers ::getActiveEnvironment
    * @covers ::getActiveEnvironmentName
    * @covers ::getActiveProject
@@ -344,6 +350,28 @@ class EnvironmentResolverTest extends UnitTestCase {
   public function testGetActiveEnvironment() : void {
     $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'test');
     $this->assertInstanceOf(Environment::class, $sut->getActiveEnvironment());
+  }
+
+  /**
+   * @covers ::populateEnvironments
+   * @covers ::__construct
+   */
+  public function testPopulateActiveProjectSettingsProjectNotFoundException() : void {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessageMatches('/No project with name/');
+    $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'test');
+    $sut->populateActiveProjectSettings('nonexistent', EnvironmentEnum::Test->value);
+  }
+
+  /**
+   * @covers ::populateEnvironments
+   * @covers ::populateActiveProjectSettings
+   */
+  public function testPopulateActiveProjectSettingsEnvironmentNotFoundException() : void {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessageMatches('/No environment with name/');
+    $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'test');
+    $sut->populateActiveProjectSettings(Project::ASUMINEN, 'non-existent');
   }
 
 }
