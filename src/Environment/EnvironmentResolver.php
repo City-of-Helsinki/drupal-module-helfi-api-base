@@ -116,23 +116,6 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
   /**
    * {@inheritdoc}
    */
-  public function setActiveProject(string $project, EnvironmentEnum $environment) : void {
-    if (!isset($this->projects[$project])) {
-      throw new \InvalidArgumentException(
-        sprintf('No project with name %s found', $project)
-      );
-    }
-
-    $this->configFactory
-      ->getEditable('helfi_api_base.environment_resolver.settings')
-      ->set(self::PROJECT_NAME_KEY, $project)
-      ->set(self::ENVIRONMENT_NAME_KEY, $environment->value)
-      ->save();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getActiveProject() : Project {
     if (!$name = $this->getConfig(self::PROJECT_NAME_KEY)) {
       throw new \InvalidArgumentException(

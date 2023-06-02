@@ -5,32 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_api_base\Traits;
 
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 
 /**
  * A helper trait for environment resolver tests.
  */
 trait EnvironmentResolverTrait {
-
-  /**
-   * The environment resolver.
-   *
-   * @var null|\Drupal\helfi_api_base\Environment\EnvironmentResolverInterface
-   */
-  protected ?EnvironmentResolverInterface $environmentResolver = NULL;
-
-  /**
-   * Gets the environment resolver service.
-   *
-   * @return \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface
-   *   The environment resolver service.
-   */
-  public function environmentResolver() : EnvironmentResolverInterface {
-    if ($this->environmentResolver === NULL) {
-      $this->environmentResolver = $this->container->get('helfi_api_base.environment_resolver');
-    }
-    return $this->environmentResolver;
-  }
 
   /**
    * Sets the active project.
@@ -41,7 +21,11 @@ trait EnvironmentResolverTrait {
    *   The environment.
    */
   public function setActiveProject(string $project, EnvironmentEnum $environment) : void {
-    $this->environmentResolver()->setActiveProject($project, $environment);
+    $this->container->get('config.factory')
+      ->getEditable('helfi_api_base.environment_resolver.settings')
+      ->set(EnvironmentResolver::PROJECT_NAME_KEY, $project)
+      ->set(EnvironmentResolver::ENVIRONMENT_NAME_KEY, $environment->value)
+      ->save();
   }
 
 }
