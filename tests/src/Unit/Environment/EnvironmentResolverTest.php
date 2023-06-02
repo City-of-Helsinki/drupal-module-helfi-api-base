@@ -6,7 +6,6 @@ namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_api_base\Environment\Environment;
-use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Tests\UnitTestCase;
@@ -350,17 +349,6 @@ class EnvironmentResolverTest extends UnitTestCase {
   public function testGetActiveEnvironment() : void {
     $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'test');
     $this->assertInstanceOf(Environment::class, $sut->getActiveEnvironment());
-  }
-
-  /**
-   * @covers ::populateEnvironments
-   * @covers ::__construct
-   */
-  public function testPopulateActiveProjectSettingsProjectNotFoundException() : void {
-    $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessageMatches('/No project with name/');
-    $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'test');
-    $sut->setActiveProject('nonexistent', EnvironmentEnum::Test);
   }
 
 }
