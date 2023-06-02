@@ -116,7 +116,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
   /**
    * {@inheritdoc}
    */
-  public function populateActiveProjectSettings(string $project, EnvironmentEnum $environment) : void {
+  public function setActiveProject(string $project, EnvironmentEnum $environment) : void {
     if (!isset($this->projects[$project])) {
       throw new \InvalidArgumentException(
         sprintf('No project with name %s found', $project)

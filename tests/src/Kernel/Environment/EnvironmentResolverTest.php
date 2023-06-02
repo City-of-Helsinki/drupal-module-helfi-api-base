@@ -25,13 +25,13 @@ class EnvironmentResolverTest extends KernelTestBase {
   ];
 
   /**
-   * @covers ::populateActiveProjectSettings
+   * @covers ::setActiveProject
    * @covers ::populateEnvironments
    * @covers ::__construct
    */
   public function testPopulateActiveProjectSettings() : void {
     $sut = new EnvironmentResolver('', $this->container->get('config.factory'));
-    $sut->populateActiveProjectSettings(Project::ASUMINEN, EnvironmentEnum::Test);
+    $sut->setActiveProject(Project::ASUMINEN, EnvironmentEnum::Test);
 
     $config = $this->config('helfi_api_base.environment_resolver.settings');
     $this->assertEquals(Project::ASUMINEN, $config->get(EnvironmentResolver::PROJECT_NAME_KEY));

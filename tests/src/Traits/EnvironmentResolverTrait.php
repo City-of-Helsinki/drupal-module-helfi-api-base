@@ -41,7 +41,7 @@ trait EnvironmentResolverTrait {
    *   The environment.
    */
   public function setActiveProject(string $project, EnvironmentEnum $environment) : void {
-    $this->environmentResolver()->populateActiveProjectSettings($project, $environment);
+    $this->environmentResolver()->setActiveProject($project, $environment);
   }
 
 }

@@ -360,7 +360,7 @@ class EnvironmentResolverTest extends UnitTestCase {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessageMatches('/No project with name/');
     $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'test');
-    $sut->populateActiveProjectSettings('nonexistent', EnvironmentEnum::Test);
+    $sut->setActiveProject('nonexistent', EnvironmentEnum::Test);
   }
 
 }
