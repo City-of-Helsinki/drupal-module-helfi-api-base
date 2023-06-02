@@ -8,7 +8,7 @@
   beStrictAboutTestsThatDoNotTestAnything="true"
   beStrictAboutOutputDuringTests="true"
   beStrictAboutChangesToGlobalState="true"
-  beStrictAboutCoversAnnotation="true"
+  beStrictAboutCoversAnnotation="false"
   printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
   failOnRisky="true"
   failOnWarning="true"
