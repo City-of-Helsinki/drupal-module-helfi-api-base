@@ -253,6 +253,9 @@ class EnvironmentResolverTest extends UnitTestCase {
   public function testGetActiveProjectException(mixed $value) : void {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessageMatches('/^No active project found./');
+
+    // Construct config mock manually because ::getConfigStub() will never
+    // return boolean.
     $config = $this->prophesize(ImmutableConfig::class);
     $config->get(Argument::any())->willReturn($value);
     $configFactory = $this->prophesize(ConfigFactoryInterface::class);
