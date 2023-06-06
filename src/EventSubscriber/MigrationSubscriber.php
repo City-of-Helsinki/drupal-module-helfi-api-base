@@ -112,7 +112,7 @@ final class MigrationSubscriber implements EventSubscriberInterface {
     $results = $storage
       ->getQuery()
       ->condition('sync_attempts', $entityClass::MAX_SYNC_ATTEMPTS, '>=')
-      ->accessCheck(TRUE)
+      ->accessCheck(FALSE)
       ->execute();
 
     foreach ($results as $id) {
