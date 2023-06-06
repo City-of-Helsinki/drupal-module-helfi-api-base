@@ -1,7 +1,6 @@
 name: HELfi locale test
 type: module
 package: Custom
-core: 8.x
 core_version_requirement: ^9 || ^10
 dependencies:
   - helfi_api_base
