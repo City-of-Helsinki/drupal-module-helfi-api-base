@@ -3,4 +3,4 @@ type: theme
 description: ''
 version: VERSION
 base theme: stark
-core_version_requirement: ^9
+core_version_requirement: ^9 || ^10
