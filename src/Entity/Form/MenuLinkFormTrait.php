@@ -58,6 +58,7 @@ trait MenuLinkFormTrait {
         ->condition('menu_name', array_values($this->getAvailableMenus()), 'IN')
         ->sort('id')
         ->range(0, 1)
+        ->accessCheck(TRUE)
         ->execute();
 
       $menuLink = empty($results) ? MenuLinkContent::create([]) : MenuLinkContent::load(reset($results));

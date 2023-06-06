@@ -13,6 +13,7 @@ use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
 use Drupal\migrate\Plugin\MigrationInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -176,7 +177,7 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
 
     try {
       $content = (string) $this->httpClient->request('GET', $url)->getBody();
-      $content = \GuzzleHttp\json_decode($content, TRUE);
+      $content = Utils::jsonDecode($content, TRUE);
       $this->setCache($url, $content);
 
       return $content ?? [];
