@@ -13,6 +13,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests Helfi package collector.
@@ -23,6 +24,7 @@ use GuzzleHttp\Psr7\Response;
 class HelfiPackageTest extends UnitTestCase {
 
   use ApiTestTrait;
+  use ProphecyTrait;
 
   /**
    * Tests applies().
