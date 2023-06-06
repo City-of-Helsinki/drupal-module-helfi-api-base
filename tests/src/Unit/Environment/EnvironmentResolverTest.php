@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Tests\UnitTestCase;
+use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests environment resolver value objects.
@@ -18,18 +21,20 @@ use Drupal\Tests\UnitTestCase;
  */
 class EnvironmentResolverTest extends UnitTestCase {
 
+  use ProphecyTrait;
+
   /**
    * Constructs a new config factory instance.
    *
-   * @param string|null $projectName
+   * @param mixed $projectName
    *   The project name.
-   * @param string|null $envName
+   * @param mixed $envName
    *   The environment name.
    *
    * @return \Drupal\Core\Config\ConfigFactoryInterface
    *   The config factory stub.
    */
-  private function getConfigStub(string $projectName = NULL, string $envName = NULL) :  ConfigFactoryInterface {
+  private function getConfigStub(mixed $projectName = NULL, mixed $envName = NULL) :  ConfigFactoryInterface {
     $config = [];
 
     if ($projectName) {
@@ -49,7 +54,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @return \Drupal\helfi_api_base\Environment\EnvironmentResolver
    *   The sut.
    */
-  private function getEnvironmentResolver(string $projectName = NULL, string $envName = NULL) : EnvironmentResolver {
+  private function getEnvironmentResolver(mixed $projectName = NULL, mixed $envName = NULL) : EnvironmentResolver {
     $configStub = $this->getConfigStub($projectName, $envName);
     return new EnvironmentResolver(__DIR__ . '/../../../fixtures/environments.json', $configStub);
   }
@@ -243,11 +248,35 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::createFromArray
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::createFromArray
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::__construct
+   * @dataProvider activeProjectExceptionData
    */
-  public function testGetActiveProjectException() : void {
+  public function testGetActiveProjectException(mixed $value) : void {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessageMatches('/^No active project found./');
-    $this->getEnvironmentResolver()->getActiveProject();
+
+    // Construct config mock manually because ::getConfigStub() will never
+    // return boolean.
+    $config = $this->prophesize(ImmutableConfig::class);
+    $config->get(Argument::any())->willReturn($value);
+    $configFactory = $this->prophesize(ConfigFactoryInterface::class);
+    $configFactory->get(Argument::any())
+      ->willReturn($config->reveal());
+    $sut = new EnvironmentResolver('', $configFactory->reveal());
+    $sut->getActiveProject();
+  }
+
+  /**
+   * Data provider for active project exception test.
+   *
+   * @return array
+   *   The data.
+   */
+  public function activeProjectExceptionData() : array {
+    return [
+      [NULL],
+      [FALSE],
+      [''],
+    ];
   }
 
   /**

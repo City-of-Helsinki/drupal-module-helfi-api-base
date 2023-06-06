@@ -110,7 +110,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
   private function getConfig(string $key) : ?string {
     return $this->configFactory
       ->get('helfi_api_base.environment_resolver.settings')
-      ->get($key);
+      ->get($key) ?: NULL;
   }
 
   /**
