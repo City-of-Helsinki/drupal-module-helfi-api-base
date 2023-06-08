@@ -10,6 +10,7 @@ use ComposerLockParser\PackagesCollection;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\helfi_api_base\Plugin\DebugDataItem\Composer;
 use Drupal\Tests\UnitTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests Composer plugin.
@@ -18,6 +19,8 @@ use Drupal\Tests\UnitTestCase;
  * @group helfi_api_base
  */
 class ComposerDataItemTest extends UnitTestCase {
+
+  use ProphecyTrait;
 
   /**
    * Creates a new container builder.

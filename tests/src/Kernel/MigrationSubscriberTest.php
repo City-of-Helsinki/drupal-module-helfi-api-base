@@ -10,6 +10,7 @@ use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\MigrateMessageInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\remote_entity_test\Entity\RemoteEntityTest;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the MigrationSubscriber.
@@ -20,6 +21,7 @@ use Drupal\remote_entity_test\Entity\RemoteEntityTest;
 class MigrationSubscriberTest extends ApiKernelTestBase {
 
   use MigrateTrait;
+  use ProphecyTrait;
 
   /**
    * {@inheritdoc}

@@ -14,6 +14,7 @@ use Drupal\helfi_api_base\DebugDataItemPluginManager;
 use Drupal\helfi_api_base\Plugin\rest\resource\DebugDataResource;
 use Drupal\rest\ResourceResponse;
 use Drupal\Tests\UnitTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -23,6 +24,8 @@ use Psr\Log\LoggerInterface;
  * @group helfi_api_base
  */
 class DebugDataResourceTest extends UnitTestCase {
+
+  use ProphecyTrait;
 
   /**
    * Constructs a fake data item plugin.
