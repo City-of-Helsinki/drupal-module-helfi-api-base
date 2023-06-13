@@ -4,11 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\Logger;
 
+use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\Logger\RfcLoggerTrait;
+use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Psr\Log\LoggerInterface;
-use Drupal\Core\Logger\RfcLogLevel;
-use Drupal\Core\Logger\LogMessageParserInterface;
+
 
 /**
  * This class allows logging to stdout and stderr.
