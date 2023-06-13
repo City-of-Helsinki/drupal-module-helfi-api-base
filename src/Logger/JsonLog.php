@@ -10,7 +10,6 @@ use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Psr\Log\LoggerInterface;
 
-
 /**
  * This class allows logging to stdout and stderr.
  */
