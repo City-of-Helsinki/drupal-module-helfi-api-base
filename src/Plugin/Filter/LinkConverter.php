@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "helfi_link_converter",
  *   title = @Translation("Hel.fi: Link converter"),
  *   description = @Translation("Runs embedded links through a template. NOTE: This filter must be run after 'Convert URLs into links' filter."),
- *   type = Drupal\filter\Plugin\FilterInterface::TYPE_MARKUP_LANGUAGE,
+ *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
  *   settings = {},
  *   weight = -10
  * )
