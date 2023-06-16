@@ -130,3 +130,11 @@ services:
       - '@cache_tags.invalidator'
     tags:
       - { name: event_subscriber }
+
+  helfi_api_base.module_disable_subscriber:
+    class: Drupal\helfi_api_base\EventSubscriber\ModuleDisableSubscriber
+    arguments:
+      - '@module_handler'
+      - '@module_installer'
+    tags:
+      - { name: event_subscriber }
