@@ -24,6 +24,20 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
   private array $projects;
 
   /**
+   * The environment name.
+   *
+   * @var string $activeEnvironmentName
+   */
+  protected string $activeEnvironmentName;
+
+  /**
+   * The project.
+   *
+   * @var \Drupal\helfi_api_base\Environment\Project
+   */
+  protected Project $activeProject;
+
+  /**
    * Constructs a new instance.
    *
    * @param string $pathOrJson
@@ -117,12 +131,15 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
    * {@inheritdoc}
    */
   public function getActiveProject() : Project {
+    if (!empty($this->activeProject)) {
+      return $this->activeProject;
+    }
     if (!$name = $this->getConfig(self::PROJECT_NAME_KEY)) {
       throw new \InvalidArgumentException(
         $this->configurationMissingExceptionMessage('No active project found', self::PROJECT_NAME_KEY)
       );
     }
-    return $this
+    return $this->activeProject = $this
       ->getProject($name);
   }
 
@@ -133,6 +150,9 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
    *   The active environment name.
    */
   public function getActiveEnvironmentName() : string {
+    if (!empty($this->activeEnvironmentName)) {
+      return $this->activeEnvironmentName;
+    }
     if (!$env = $this->getConfig(self::ENVIRONMENT_NAME_KEY)) {
       // Fallback to APP_ENV env variable.
       $env = getenv('APP_ENV');
@@ -142,7 +162,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         $this->configurationMissingExceptionMessage('No active environment found', self::ENVIRONMENT_NAME_KEY)
       );
     }
-    return $this->normalizeEnvironmentName($env);
+    return $this->activeEnvironmentName = $this->normalizeEnvironmentName($env);
   }
 
   /**
