@@ -34,6 +34,7 @@ final class ModuleDisableSubscriber extends DeployHookEventSubscriberBase {
    *   The event.
    */
   public function onPostDeploy(Event $event) : void {
+    // Enforce dblog to be disabled as it can cause performance issues.
     if ($this->moduleHandler->moduleExists('dblog')) {
       $this->moduleInstaller->uninstall(['dblog']);
     }
