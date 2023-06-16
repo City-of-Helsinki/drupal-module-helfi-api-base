@@ -26,7 +26,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
   /**
    * The environment name.
    *
-   * @var string $activeEnvironmentName
+   * @var string
    */
   protected string $activeEnvironmentName;
 
