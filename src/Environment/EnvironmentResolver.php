@@ -28,14 +28,14 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
    *
    * @var string
    */
-  protected string $activeEnvironmentName;
+  private string $activeEnvironmentName;
 
   /**
    * The project.
    *
    * @var \Drupal\helfi_api_base\Environment\Project
    */
-  protected Project $activeProject;
+  private Project $activeProject;
 
   /**
    * Constructs a new instance.
