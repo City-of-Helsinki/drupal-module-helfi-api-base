@@ -249,7 +249,7 @@ class MigrateHookCommandsTest extends UnitTestCase {
   public function testMigrationReset() : void {
     $input = $this->prophesize(InputInterface::class);
     $input->getArgument('migrationIds')
-      ->willReturn('tpr_unit');
+      ->willReturn('tpr_unit,tpr_service');
     $input->getOption('reset-threshold')->willReturn(10);
 
     $migration = $this->prophesize(MigrationInterface::class);
@@ -257,13 +257,18 @@ class MigrateHookCommandsTest extends UnitTestCase {
     $migration->getStatus()
       ->shouldBeCalled()
       ->willReturn(MigrationInterface::STATUS_IMPORTING);
+    $migration2 = $this->prophesize(MigrationInterface::class);
+    $migration2->id()->willReturn('tpr_service');
+    $migration2->getStatus()->willReturn(MigrationInterface::STATUS_IDLE);
     // Make sure migration is set back to idle.
     $migration->setStatus(MigrationInterface::STATUS_IDLE)->shouldBeCalled();
 
     $migrationManager = $this->prophesize(MigrationPluginManagerInterface::class);
-    $migrationManager->createInstances(['tpr_unit'])
+    $migrationManager->createInstances(['tpr_unit', 'tpr_service'])
+      ->shouldBeCalled()
       ->willReturn([
         $migration->reveal(),
+        $migration2->reveal(),
       ]);
 
     $output = $this->prophesize(OutputInterface::class);
@@ -289,6 +294,7 @@ class MigrateHookCommandsTest extends UnitTestCase {
     // and the current time is 115.
     $result = $sut->resetMigrationsHook($commandData);
     $this->assertInstanceOf(ResultData::class, $result);
+    $this->assertMatchesRegularExpression('/tpr_unit: Migration status was reset back to idle/', $result->getMessage());
   }
 
 }
