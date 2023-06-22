@@ -75,46 +75,6 @@ final class MigrateHookCommands extends DrushCommands {
   }
 
   /**
-   * Checks whether the migration status should be reset.
-   *
-   * @param \Drupal\migrate\Plugin\MigrationInterface $migration
-   *   The migration.
-   * @param int|null $seconds
-   *   The seconds.
-   *
-   * @return bool
-   *   TRUE if migration should be reset.
-   */
-  private function resetMigration(MigrationInterface $migration, ?int $seconds) : bool {
-    if (!$seconds || $migration->getStatus() === MigrationInterface::STATUS_IDLE) {
-      return FALSE;
-    }
-
-    if (!$this->migrationIntervalExceeded($migration, $seconds)) {
-      return FALSE;
-    }
-    return TRUE;
-  }
-
-  /**
-   * Checks if migration should be skipped or not.
-   *
-   * @param \Drupal\migrate\Plugin\MigrationInterface $migration
-   *   The migration.
-   * @param null|int $seconds
-   *   The interval.
-   *
-   * @return bool
-   *   TRUE if migration should be skipped.
-   */
-  private function skipMigration(MigrationInterface $migration, ?int $seconds) : bool {
-    if (!$seconds) {
-      return FALSE;
-    }
-    return !$this->migrationIntervalExceeded($migration, $seconds);
-  }
-
-  /**
    * Adds 'interval' and 'reset-threshold' options to migrate:import command.
    *
    * @param \Symfony\Component\Console\Command\Command $command
@@ -151,6 +111,26 @@ final class MigrateHookCommands extends DrushCommands {
   }
 
   /**
+   * Constructs a message for given migrations.
+   *
+   * @param array $migrationIds
+   *   The migration ids.
+   * @param string $message
+   *   The message.
+   *
+   * @return \Robo\ResultData
+   *   The result.
+   */
+  private function createResult(array $migrationIds, string $message) : ResultData {
+    $messages = [];
+
+    foreach ($migrationIds as $id) {
+      $messages[] = sprintf('<comment>[%s] %s: %s</comment>', self::class, $id, $message);
+    }
+    return new ResultData(message: implode(PHP_EOL, $messages));
+  }
+
+  /**
    * Checks if the migration status should be reset.
    *
    * Reset migration status to 'idle' if the migration has been running for
@@ -178,18 +158,31 @@ final class MigrateHookCommands extends DrushCommands {
       return NULL;
     }
 
+    $resetMigrations = [];
+
     foreach ($migrations as $migration) {
-      if ($this->resetMigration($migration, $threshold)) {
-        $commandData->output()
-          ->writeln(
-            sprintf('<comment>Resetting migrate status: %s</comment>', $migration->id())
-          );
+      if ($migration->getStatus() === MigrationInterface::STATUS_IDLE) {
+        continue;
+      }
+
+      if ($this->migrationIntervalExceeded($migration, $threshold)) {
+        $resetMigrations[] = $migration->id();
+
         // Reset migration status if it has been running for longer than the
         // configured maximum.
         $migration->setStatus(MigrationInterface::STATUS_IDLE);
       }
     }
-    return new ResultData(message: 'Migrations were reset.');
+
+    if (!$resetMigrations) {
+      return NULL;
+    }
+
+    $result = $this->createResult($resetMigrations, 'Migration status was reset back to idle.');
+    $commandData->output()
+      ->writeln($result->getMessage());
+
+    return $result;
   }
 
   /**
@@ -218,7 +211,7 @@ final class MigrateHookCommands extends DrushCommands {
     $skippedMigrations = [];
 
     foreach ($migrations as $migration) {
-      if ($this->skipMigration($migration, $interval)) {
+      if (!$this->migrationIntervalExceeded($migration, $interval)) {
         $skippedMigrations[] = $migration->id();
       }
     }
@@ -226,16 +219,10 @@ final class MigrateHookCommands extends DrushCommands {
     if (!$skippedMigrations) {
       return NULL;
     }
+    $result = $this->createResult($skippedMigrations, sprintf('Migration has been run in the past %d seconds. Skipping ...', $interval));
+    $commandData->output()->writeln($result->getMessage());
 
-    $messages = [];
-    foreach ($skippedMigrations as $id) {
-      $messages[] = sprintf('<comment>Migration "%s" has been run in the past %d seconds. Skipping...</comment>', $id, $interval);
-    }
-    $message = implode(PHP_EOL, $messages);
-
-    $commandData->output()->writeln($message);
-
-    return new ResultData(message: $message);
+    return $result;
   }
 
 }

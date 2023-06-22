@@ -30,6 +30,7 @@ class MigrateHookCommandsTest extends UnitTestCase {
   /**
    * @covers ::skipMigrationsHook
    * @covers ::resetMigrationsHook
+   * @cover ::__construct
    */
   public function testOptionsNotSet() : void {
     $input = $this->prophesize(InputInterface::class);
@@ -49,6 +50,7 @@ class MigrateHookCommandsTest extends UnitTestCase {
    * @covers ::skipMigrationsHook
    * @covers ::resetMigrationsHook
    * @covers ::getMigrations
+   * @cover ::__construct
    */
   public function testMigrationsNotFound() : void {
     $input = $this->prophesize(InputInterface::class);
@@ -69,7 +71,8 @@ class MigrateHookCommandsTest extends UnitTestCase {
 
   /**
    * @covers ::skipMigrationsHook
-   * @covers ::skipMigration
+   * @cover ::__construct
+   * @covers ::getMigrations
    */
   public function testNoSkippedMigrations() : void {
     $input = $this->prophesize(InputInterface::class);
@@ -97,9 +100,10 @@ class MigrateHookCommandsTest extends UnitTestCase {
 
   /**
    * @covers ::skipMigrationsHook
-   * @covers ::skipMigration
    * @covers ::migrationIntervalExceeded
    * @covers ::getLastImported
+   * @cover ::__construct
+   * @covers ::getMigrations
    */
   public function testSkipNoMigrationSkipped() : void {
     $input = $this->prophesize(InputInterface::class);
@@ -140,9 +144,11 @@ class MigrateHookCommandsTest extends UnitTestCase {
 
   /**
    * @covers ::skipMigrationsHook
-   * @covers ::skipMigration
    * @covers ::migrationIntervalExceeded
    * @covers ::getLastImported
+   * @covers ::__construct
+   * @covers ::createResult
+   * @covers ::getMigrations
    */
   public function testMigrationSkipped() : void {
     $input = $this->prophesize(InputInterface::class);
@@ -181,14 +187,64 @@ class MigrateHookCommandsTest extends UnitTestCase {
     // seconds, the migration was last run at 100, and the current time is 105.
     $result = $sut->skipMigrationsHook($commandData);
     $this->assertInstanceOf(ResultData::class, $result);
-    $this->assertMatchesRegularExpression('/Migration "tpr_unit" has been/', $result->getMessage());
+    $this->assertMatchesRegularExpression('/tpr_unit: Migration has been/', $result->getMessage());
   }
 
   /**
    * @covers ::resetMigrationsHook
-   * @covers ::resetMigration
    * @covers ::migrationIntervalExceeded
    * @covers ::getLastImported
+   * @covers ::getMigrations
+   * @cover ::__construct
+   */
+  public function testMigrationResetThresholdNotExceeded() : void {
+    $input = $this->prophesize(InputInterface::class);
+    $input->getArgument('migrationIds')
+      ->willReturn('tpr_unit');
+    $input->getOption('reset-threshold')->willReturn(10);
+
+    $migration = $this->prophesize(MigrationInterface::class);
+    $migration->id()->willReturn('tpr_unit');
+    $migration->getStatus()
+      ->shouldBeCalled()
+      ->willReturn(MigrationInterface::STATUS_IMPORTING);
+    $migration->setStatus(MigrationInterface::STATUS_IDLE)->shouldNotBeCalled();
+
+    $migrationManager = $this->prophesize(MigrationPluginManagerInterface::class);
+    $migrationManager->createInstances(['tpr_unit'])
+      ->willReturn([
+        $migration->reveal(),
+      ]);
+
+    $output = $this->prophesize(OutputInterface::class);
+    $commandData = new CommandData(new AnnotationData(), $input->reveal(), $output->reveal());
+
+    $keyValueStore = $this->prophesize(KeyValueStoreInterface::class);
+    // Migrate last imported returns time in microseconds.
+    $keyValueStore->get(Argument::any(), Argument::any())->willReturn(100 * 1000);
+
+    $keyValue = $this->prophesize(KeyValueFactoryInterface::class);
+    $keyValue->get('migrate_last_imported')->willReturn($keyValueStore->reveal());
+
+    $time = $this->prophesize(TimeInterface::class);
+    $time->getCurrentTime()->willReturn(105);
+
+    $sut = new MigrateHookCommands(
+      $migrationManager->reveal(),
+      $keyValue->reveal(),
+      $time->reveal(),
+    );
+    $result = $sut->resetMigrationsHook($commandData);
+    $this->assertNull($result);
+  }
+
+  /**
+   * @covers ::resetMigrationsHook
+   * @covers ::migrationIntervalExceeded
+   * @covers ::getLastImported
+   * @covers ::__construct
+   * @covers ::getMigrations
+   * @covers ::createResult
    */
   public function testMigrationReset() : void {
     $input = $this->prophesize(InputInterface::class);
