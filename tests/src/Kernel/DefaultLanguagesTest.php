@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\helfi_api_base\Traits\LanguageManagerTrait;
 use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\Tests\helfi_api_base\Traits\LanguageManagerTrait;
 
 /**
  * Tests language resolver functionality.

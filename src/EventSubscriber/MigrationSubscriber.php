@@ -69,7 +69,7 @@ final class MigrationSubscriber implements EventSubscriberInterface {
 
           return $this->implementsRemoteEntityBase($entityType) ? $entityType : NULL;
         }
-        catch (\Exception $e) {
+        catch (\Exception) {
         }
       }
     }
@@ -141,7 +141,7 @@ final class MigrationSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    // Increment sync counter only when we're not doing a partial migrate.
+    // Increment sync counter only when we're not doing a partial migration.
     // Partial migrates don't save any unchanged entities, leading post-migrate
     // event to delete all unchanged entities.
     if ($this->isPartialMigrate()) {
@@ -168,7 +168,7 @@ final class MigrationSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents() : array {
     return [
       'migrate.pre_import' => ['onPreImport'],
       'migrate.post_import' => ['onPostImport'],

@@ -1,4 +1,12 @@
 services:
+  helfi_api_base.migrate_hook_commands:
+    class: \Drupal\helfi_api_base\Commands\MigrateHookCommands
+    arguments:
+      - '@plugin.manager.migration'
+      - '@keyvalue'
+      - '@datetime.time'
+    tags:
+      - { name: drush.command }
   helfi_api_base.pubsub_commands:
     class: \Drupal\helfi_api_base\Commands\PubSubCommands
     arguments:
