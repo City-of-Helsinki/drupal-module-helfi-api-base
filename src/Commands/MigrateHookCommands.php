@@ -81,7 +81,7 @@ final class MigrateHookCommands extends DrushCommands {
    *   The command.
    */
   #[Hook(type: HookManager::OPTION_HOOK, target: 'migrate:import')]
-  public function addThresholdOption(Command $command) : void {
+  public function addMigrateHookOptions(Command $command) : void {
     $command->addOption(
       'interval',
       mode: InputOption::VALUE_OPTIONAL,

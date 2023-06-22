@@ -16,6 +16,7 @@ use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Robo\ResultData;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -26,6 +27,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MigrateHookCommandsTest extends UnitTestCase {
 
   use ProphecyTrait;
+
+  /**
+   * @covers ::__construct
+   * @covers ::addMigrateHookOptions
+   */
+  public function testAddMigrateHookOptions() : void {
+    $sut = new MigrateHookCommands(
+      $this->prophesize(MigrationPluginManagerInterface::class)->reveal(),
+      $this->prophesize(KeyValueFactoryInterface::class)->reveal(),
+      $this->prophesize(TimeInterface::class)->reveal(),
+    );
+    $command = new Command();
+    $sut->addMigrateHookOptions($command);
+    $this->assertTrue($command->getDefinition()->hasOption('interval'));
+    $this->assertTrue($command->getDefinition()->hasOption('reset-threshold'));
+  }
 
   /**
    * @covers ::skipMigrationsHook
