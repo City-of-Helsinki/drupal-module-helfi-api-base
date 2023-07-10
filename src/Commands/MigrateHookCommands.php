@@ -54,7 +54,7 @@ final class MigrateHookCommands extends DrushCommands {
   }
 
   /**
-   * Checks if a migration interval has been exceeded or not.
+   * Checks if the migration interval has been exceeded or not.
    *
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
    *   The migration.
