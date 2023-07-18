@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
+<?php
 
 declare(strict_types=1);
 
@@ -7,7 +7,6 @@ namespace Drupal\helfi_api_base\Plugin\DebugDataItem;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
-use Drupal\search_api\Tracker\TrackerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -19,8 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("SearchApi index")
  * )
  */
-class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface
-{
+class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface {
 
   /**
    * The entity type manager.
@@ -44,19 +42,19 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
   public function collect(): array {
     $data = ['indexes' => []];
 
-    // @todo: Check if search api is enabled.
+    // @todo Check if search api is enabled.
     try {
       $indexes = $this->entityTypeManager
         ->getStorage('search_api_index')
         ->loadMultiple();
     }
-    catch(\Exception $e) {
+    catch (\Exception $e) {
       return $data;
     }
 
     if ($indexes) {
       /** @var \Drupal\search_api\IndexInterface $index */
-      foreach($indexes as $index) {
+      foreach ($indexes as $index) {
         $tracker = $index->getTrackerInstance();
 
         $result = $this->resolveResult(
@@ -70,7 +68,6 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
 
     return $data;
   }
-
 
   /**
    * Resolve return value based on index status.
