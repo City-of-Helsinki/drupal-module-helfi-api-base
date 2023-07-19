@@ -29,7 +29,7 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
-   * The module handler.
+   * The module handler interface.
    *
    * @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
    */
