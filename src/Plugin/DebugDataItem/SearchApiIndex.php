@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Plugin\DebugDataItem;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -28,11 +29,19 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
+   * Module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
+   */
+  protected ModuleHandlerInterface $moduleHandler;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     $instance = new static($configuration, $plugin_id, $plugin_definition);
     $instance->entityTypeManager = $container->get('entity_type.manager');
+    $instance->moduleHandler = $container->get('module_handler');
     return $instance;
   }
 
@@ -42,11 +51,22 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
   public function collect(): array {
     $data = ['indexes' => []];
 
-    // @todo Check if search api is enabled.
+    if (
+      !$this->moduleHandler->moduleExists('search_api') ||
+      !$this->moduleHandler->moduleExists('elasticsearch_connector')
+    ) {
+      return $data;
+    }
+
     try {
       $indexes = $this->entityTypeManager
         ->getStorage('search_api_index')
         ->loadMultiple();
+
+      $clusterManager = \Drupal::service('elasticsearch_connector.cluster_manager');
+      $clientManager = \Drupal::service('elasticsearch_connector.client_manager');
+      $clusters = $clusterManager->loadAllClusters(FALSE);
+      $cluster = reset($clusters);
     }
     catch (\Exception $e) {
       return $data;
@@ -62,9 +82,16 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
           $tracker->getTotalItemsCount()
         );
 
-        $data['indexes'] = [$index->getServerId() => $result];
+        $client = $clientManager->getClientForCluster($cluster);
+        $cluster_status = $client->getClusterInfo()['health']['status'] ?? FALSE;
+
+        $data['indexes'][] = [
+          $index->getServerId() => $result,
+          'cluster_status' => $cluster_status,
+        ];
       }
     }
+
 
     return $data;
   }
