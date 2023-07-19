@@ -29,7 +29,7 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
-   * Module handler.
+   * The module handler.
    *
    * @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
    */
@@ -91,7 +91,6 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
         ];
       }
     }
-
 
     return $data;
   }
