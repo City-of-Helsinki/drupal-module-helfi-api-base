@@ -32,14 +32,14 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
    *
    * @var null
    */
-  protected $clusterManager = null;
+  protected $clusterManager = NULL;
 
   /**
    * The client manager.
    *
    * @var null
    */
-  protected $clientManager = null;
+  protected $clientManager = NULL;
 
   /**
    * {@inheritdoc}
