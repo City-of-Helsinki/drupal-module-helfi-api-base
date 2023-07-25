@@ -28,6 +28,20 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
+   * The cluster manager.
+   *
+   * @var null
+   */
+  protected $clusterManager = null;
+
+  /**
+   * The client manager.
+   *
+   * @var null
+   */
+  protected $clientManager = null;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
