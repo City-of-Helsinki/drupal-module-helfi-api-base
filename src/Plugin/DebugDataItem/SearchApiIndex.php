@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Plugin\DebugDataItem;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
 
 /**
  * Plugin implementation of the debug_data_item.
@@ -29,19 +29,18 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
-   * The module handler.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected ModuleHandlerInterface $moduleHandler;
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     $instance = new static($configuration, $plugin_id, $plugin_definition);
     $instance->entityTypeManager = $container->get('entity_type.manager');
-    $instance->moduleHandler = $container->get('module_handler');
+    if (
+      $container->has('elasticsearch_connector.cluster_manager') &&
+      $container->has('elasticsearch_connector.client_manager')
+    ) {
+      $instance->clusterManager = $container->get('elasticsearch_connector.cluster_manager');
+      $instance->clientManager = $container->get('elasticsearch_connector.client_manager');
+    }
     return $instance;
   }
 
@@ -52,8 +51,8 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
     $data = ['indexes' => []];
 
     if (
-      !$this->moduleHandler->moduleExists('search_api') ||
-      !$this->moduleHandler->moduleExists('elasticsearch_connector')
+      !property_exists($this, 'clusterManager') ||
+      !property_exists($this, 'clientManager')
     ) {
       return $data;
     }
@@ -63,9 +62,7 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
         ->getStorage('search_api_index')
         ->loadMultiple();
 
-      $clusterManager = \Drupal::service('elasticsearch_connector.cluster_manager');
-      $clientManager = \Drupal::service('elasticsearch_connector.client_manager');
-      $clusters = $clusterManager->loadAllClusters(FALSE);
+      $clusters = $this->clusterManager->loadAllClusters(FALSE);
       $cluster = reset($clusters);
     }
     catch (\Exception $e) {
@@ -82,11 +79,11 @@ class SearchApiIndex extends DebugDataItemPluginBase implements ContainerFactory
           $tracker->getTotalItemsCount()
         );
 
-        $client = $clientManager->getClientForCluster($cluster);
+        $client = $this->clientManager->getClientForCluster($cluster);
         $cluster_status = $client->getClusterInfo()['health']['status'] ?? FALSE;
 
         $data['indexes'][] = [
-          $index->getServerId() => $result,
+          $index->getOriginalId() => $result,
           'cluster_status' => $cluster_status,
         ];
       }
