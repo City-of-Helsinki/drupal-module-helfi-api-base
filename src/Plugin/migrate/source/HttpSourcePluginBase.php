@@ -7,6 +7,7 @@ namespace Drupal\helfi_api_base\Plugin\migrate\source;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_api_base\Event\MigrationConfigurationEvent;
 use Drupal\helfi_api_base\MigrateTrait;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
@@ -19,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a HTTP source plugin.
  */
-abstract class HttpSourcePluginBase extends SourcePluginBase implements CacheableDependencyInterface {
+abstract class HttpSourcePluginBase extends SourcePluginBase implements CacheableDependencyInterface, ContainerFactoryPluginInterface {
 
   use MigrateTrait;
 
