@@ -39,12 +39,6 @@ final class LinkProcessor extends Link {
         }
         $useTemplate = TRUE;
       }
-
-      $url_attributes = $url->getOption('attributes');
-      if (!empty($url_attributes['data-selected-icon'])
-        || !empty($element['#attributes']['data-selected-icon'])) {
-        $useTemplate = TRUE;
-      }
     }
 
     if ($useTemplate) {
