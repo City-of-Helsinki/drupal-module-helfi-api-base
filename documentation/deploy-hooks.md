@@ -8,8 +8,8 @@ Add a new event subscriber:
 
 ```yml
 # yourmodule/yourmodule.services.yml
-  helfi_api_base.your_deploy_hook_subscriber:
-    class: Drupal\helfi_api_base\EventSubscriber\YourDeployHookSubscriber
+  yourmodule.your_deploy_hook_subscriber:
+    class: Drupal\yourmodule\EventSubscriber\YourDeployHookSubscriber
     arguments: []
     tags:
       - { name: event_subscriber }
@@ -21,7 +21,7 @@ Add a new event subscriber:
 
 declare(strict_types = 1);
 
-namespace Drupal\helfi_api_base\EventSubscriber;
+namespace Drupal\yourmodule\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\EventDispatcher\Event;
