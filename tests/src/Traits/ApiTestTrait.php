@@ -37,7 +37,7 @@ trait ApiTestTrait {
   }
 
   /**
-   * Overrides the default http_client service with mocked client.
+   * Overrides the default 'http_client_factory' service with mock.
    *
    * @param \Psr\Http\Message\ResponseInterface[] $responses
    *   The expected responses.
