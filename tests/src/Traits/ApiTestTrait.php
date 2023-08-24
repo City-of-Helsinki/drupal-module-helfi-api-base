@@ -6,7 +6,9 @@ namespace Drupal\Tests\helfi_api_base\Traits;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Extension\ExtensionPathResolver;
+use Drupal\Core\Http\ClientFactory;
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -32,6 +34,40 @@ trait ApiTestTrait {
     $handlerStack = HandlerStack::create($mock);
 
     return new Client(['handler' => $handlerStack]);
+  }
+
+  /**
+   * Overrides the default http_client service with mocked client.
+   *
+   * @param \Psr\Http\Message\ResponseInterface[] $responses
+   *   The expected responses.
+   *
+   * @return \GuzzleHttp\Client
+   *   The client.
+   */
+  protected function setupMockHttpClient(array $responses) : Client {
+    $client = $this->createMockHttpClient($responses);
+
+    $this->container->set('http_client_factory', new class ($client) extends ClientFactory {
+
+      /**
+       * Constructs a new instance.
+       *
+       * @param \GuzzleHttp\ClientInterface $client
+       *   The http client.
+       */
+      public function __construct(private readonly ClientInterface $client) {
+      }
+
+      /**
+       * {@inheritdoc}
+       */
+      public function fromOptions(array $config = []) : ClientInterface {
+        return $this->client;
+      }
+
+    });
+    return $client;
   }
 
   /**
