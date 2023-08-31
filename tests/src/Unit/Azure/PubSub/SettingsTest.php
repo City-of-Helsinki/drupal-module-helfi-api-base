@@ -30,7 +30,7 @@ class SettingsTest extends UnitTestCase {
     $this->assertSame($settings->hub, $expectedValues['hub']);
     $this->assertSame($settings->group, $expectedValues['group']);
     $this->assertSame($settings->endpoint, $expectedValues['endpoint']);
-    $this->assertSame($settings->accessToken, $expectedValues['access_token']);
+    $this->assertSame($settings->accessKey, $expectedValues['access_key']);
   }
 
   /**
@@ -46,13 +46,13 @@ class SettingsTest extends UnitTestCase {
           'hub' => 'hub',
           'group' => 'group',
           'endpoint' => 'endpoint',
-          'access_token' => 'access_token',
+          'access_key' => 'access_key',
         ],
         [
           'hub' => 'hub',
           'group' => 'group',
           'endpoint' => 'endpoint',
-          'access_token' => 'access_token',
+          'access_key' => 'access_key',
         ],
       ],
     ];
@@ -63,13 +63,13 @@ class SettingsTest extends UnitTestCase {
           'hub' => $value,
           'group' => $value,
           'endpoint' => $value,
-          'access_token' => $value,
+          'access_key' => $value,
         ],
         [
           'hub' => '',
           'group' => '',
           'endpoint' => '',
-          'access_token' => '',
+          'access_key' => '',
         ],
       ];
     }
