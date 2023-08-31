@@ -35,7 +35,7 @@ final class PubSubClientFactory {
         'webpubsub.sendToGroup',
         'webpubsub.joinLeaveGroup',
       ],
-    ], $settings->accessToken, 'HS256');
+    ], $settings->accessKey, 'HS256');
 
     return new Client($url, [
       'headers' => [

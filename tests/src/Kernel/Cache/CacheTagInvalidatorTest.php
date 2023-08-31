@@ -39,7 +39,7 @@ class CacheTagInvalidatorTest extends KernelTestBase {
       ->set('endpoint', 'wss://localhost')
       ->set('hub', 'hub')
       ->set('group', 'group')
-      ->set('access_token', '123')
+      ->set('access_key', '123')
       ->save();
   }
 

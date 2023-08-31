@@ -18,14 +18,14 @@ final class Settings {
    *   The group.
    * @param string $endpoint
    *   The API endpoint.
-   * @param string $accessToken
+   * @param string $accessKey
    *   The API access token.
    */
   public function __construct(
     public readonly string $hub,
     public readonly string $group,
     public readonly string $endpoint,
-    public readonly string $accessToken,
+    public readonly string $accessKey,
   ) {
   }
 

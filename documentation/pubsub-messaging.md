@@ -7,7 +7,7 @@ Provides an integration to [Azure's Web PubSub service](https://azure.microsoft.
 You must define the following settings to use this feature:
 
 ```php
-$config['helfi_api_base.pubsub.settings']['access_token'] = '<access-token>';
+$config['helfi_api_base.pubsub.settings']['access_key'] = '<access-key>';
 // Url to Azure's wss endpoint, usually something like: yourservicename.webpubsub.azure.com
 $config['helfi_api_base.pubsub.settings']['endpoint'] = '<url to azure pubsub endpoint>';
 // Hub and group must be same in all instances that talk with each other.
@@ -82,7 +82,7 @@ See [CacheTagInvalidatorSubscriber](/src/EventSubscriber/CacheTagInvalidatorSubs
 
 ```php
 # public/sites/default/local.settings.php
-$config['helfi_api_base.pubsub.settings']['access_token'] = '<access-token>';
+$config['helfi_api_base.pubsub.settings']['access_key'] = '<access-key>';
 $config['helfi_api_base.pubsub.settings']['endpoint'] = '<url to azure pubsub endpoint>';
 $config['helfi_api_base.pubsub.settings']['hub'] = '<hub>';
 $config['helfi_api_base.pubsub.settings']['group'] = '<group>';

@@ -35,7 +35,7 @@ helfi_api_base.pubsub.settings:
   mapping:
     endpoint:
       type: string
-    access_token:
+    access_key:
       type: string
     hub:
       type: string
