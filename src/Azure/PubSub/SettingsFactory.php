@@ -35,7 +35,7 @@ final class SettingsFactory {
       $config->get('hub') ?: '',
       $config->get('group') ?: '',
       $config->get('endpoint') ?: '',
-      $config->get('access_token') ?: '',
+      $config->get('access_key') ?: '',
     );
   }
 
