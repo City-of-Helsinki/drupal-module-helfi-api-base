@@ -4,21 +4,21 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\Azure\PubSub;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\helfi_api_base\Vault\VaultManager;
 
 /**
- * A factory to initialize Settings object.
+ * A factory to initialize a Settings object.
  */
 final class SettingsFactory {
 
   /**
    * Constructs a new instance.
    *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The config factory service.
+   * @param \Drupal\helfi_api_base\Vault\VaultManager $vaultManager
+   *   The vault manager.
    */
   public function __construct(
-    private readonly ConfigFactoryInterface $configFactory
+    private readonly VaultManager $vaultManager,
   ) {
   }
 
@@ -29,13 +29,22 @@ final class SettingsFactory {
    *   The PubSub settings object.
    */
   public function create() : Settings {
-    $config = $this->configFactory->get('helfi_api_base.pubsub.settings');
+    $data = (object) [
+      'hub' => '',
+      'group' => '',
+      'endpoint' => '',
+      'access_key' => '',
+    ];
+
+    if ($value = $this->vaultManager->get('pubsub')) {
+      $data = json_decode($value->data());
+    }
 
     return new Settings(
-      $config->get('hub') ?: '',
-      $config->get('group') ?: '',
-      $config->get('endpoint') ?: '',
-      $config->get('access_key') ?: '',
+      $data->hub ?: '',
+      $data->group ?: '',
+      $data->endpoint ?: '',
+      $data->access_key ?: ''
     );
   }
 

@@ -15,7 +15,7 @@ use WebSocket\TimeoutException;
  * Usage:
  *
  * $ drush helfi:azure-pubsub-listen
- *    This will listen and process messages until the MAX_MESSAGES is
+ *    This will listen to and process messages until the MAX_MESSAGES is
  *    reached and then exits with code 0.
  */
 final class PubSubCommands extends DrushCommands {
