@@ -35,11 +35,19 @@ class CacheTagInvalidatorTest extends KernelTestBase {
   protected function setUp() : void {
     parent::setUp();
 
-    $this->config('helfi_api_base.pubsub.settings')
-      ->set('endpoint', 'wss://localhost')
-      ->set('hub', 'hub')
-      ->set('group', 'group')
-      ->set('access_key', '123')
+    $this->config('helfi_api_base.api_accounts')
+      ->set('vault', [
+        [
+          'id' => 'pubsub',
+          'plugin' => 'authorization_token',
+          'data' => json_encode([
+            'endpoint' => 'localhost',
+            'hub' => 'local',
+            'group' => 'invalidate_cache',
+            'access_key' => '123',
+          ]),
+        ],
+      ])
       ->save();
   }
 
