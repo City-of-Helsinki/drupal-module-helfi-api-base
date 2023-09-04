@@ -39,7 +39,7 @@ class CacheTagInvalidatorTest extends KernelTestBase {
       ->set('vault', [
         [
           'id' => 'pubsub',
-          'plugin' => 'authorization_token',
+          'plugin' => 'json',
           'data' => json_encode([
             'endpoint' => 'localhost',
             'hub' => 'local',
