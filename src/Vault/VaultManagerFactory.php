@@ -39,6 +39,7 @@ final class VaultManagerFactory {
 
       return match($item['plugin']) {
         AuthorizationToken::PLUGIN => new AuthorizationToken($item['id'], $item['data']),
+        Json::PLUGIN => new Json($item['id'], $item['data']),
       };
     }, $config);
 

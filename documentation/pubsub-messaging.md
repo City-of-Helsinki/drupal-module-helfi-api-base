@@ -4,7 +4,7 @@ Provides an integration to [Azure's Web PubSub service](https://azure.microsoft.
 
 ## Configuration
 
-You must define a [Vault item](/documentation/api-accounts.md#managing-external-api-credentials) to use this feature. The data field should be a JSON string containing `endpoint`, `hub`, `group` and `access_key`:
+You must define a [JSON Vault item](/documentation/api-accounts.md#managing-external-api-credentials) to use this feature. The data field should be a JSON string containing `endpoint`, `hub`, `group` and `access_key`:
 
 ```json
 {"endpoint": "<endpoint>", "hub": "<hub>", "group": "<group>", "access_key": "<access-key>"}
@@ -79,8 +79,8 @@ See [CacheTagInvalidatorSubscriber](/src/EventSubscriber/CacheTagInvalidatorSubs
 # public/sites/default/local.settings.php
 $pubsub_account = [
   'id' => 'pubsub',
-  'plugin' => 'authorization_token',
-  'data' => json_encode([
+  'plugin' => 'json',
+  'data' => json_encode(
     'endpoint' => '<endpoint-here>',
     'hub' => '<hub>',
     'group' => '<group>',

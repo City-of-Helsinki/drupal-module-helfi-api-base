@@ -6,7 +6,7 @@ namespace Drupal\Tests\helfi_api_base\Unit\Azure\PubSub;
 
 use Drupal\helfi_api_base\Azure\PubSub\Settings;
 use Drupal\helfi_api_base\Azure\PubSub\SettingsFactory;
-use Drupal\helfi_api_base\Vault\AuthorizationToken;
+use Drupal\helfi_api_base\Vault\Json;
 use Drupal\helfi_api_base\Vault\VaultManager;
 use Drupal\Tests\UnitTestCase;
 
@@ -22,21 +22,21 @@ class SettingsTest extends UnitTestCase {
    * @covers ::__construct
    * @covers \Drupal\helfi_api_base\Vault\VaultManager::__construct
    * @covers \Drupal\helfi_api_base\Vault\VaultManager::get
-   * @covers \Drupal\helfi_api_base\Vault\AuthorizationToken::__construct
-   * @covers \Drupal\helfi_api_base\Vault\AuthorizationToken::data
+   * @covers \Drupal\helfi_api_base\Vault\Json::__construct
+   * @covers \Drupal\helfi_api_base\Vault\Json::data
    * @dataProvider settingsData
    */
   public function testSettings(array $values, array $expectedValues) : void {
     $vaultManager = new VaultManager([
-      new AuthorizationToken('pubsub', json_encode($values)),
+      new Json('pubsub', json_encode($values)),
     ]);
     $sut = new SettingsFactory($vaultManager);
     $settings = $sut->create();
     $this->assertInstanceOf(Settings::class, $settings);
-    $this->assertSame($settings->hub, $expectedValues['hub']);
-    $this->assertSame($settings->group, $expectedValues['group']);
-    $this->assertSame($settings->endpoint, $expectedValues['endpoint']);
-    $this->assertSame($settings->accessKey, $expectedValues['access_key']);
+    $this->assertSame($expectedValues['hub'], $settings->hub);
+    $this->assertSame($expectedValues['group'], $settings->group);
+    $this->assertSame($expectedValues['endpoint'], $settings->endpoint);
+    $this->assertSame($expectedValues['access_key'], $settings->accessKey);
   }
 
   /**
@@ -51,10 +51,10 @@ class SettingsTest extends UnitTestCase {
     $sut = new SettingsFactory($vaultManager);
     $settings = $sut->create();
     $this->assertInstanceOf(Settings::class, $settings);
-    $this->assertSame($settings->hub, '');
-    $this->assertSame($settings->group, '');
-    $this->assertSame($settings->endpoint, '');
-    $this->assertSame($settings->accessKey, '');
+    $this->assertSame('', $settings->hub);
+    $this->assertSame('', $settings->group);
+    $this->assertSame('', $settings->endpoint);
+    $this->assertSame('', $settings->accessKey);
   }
 
   /**
@@ -71,6 +71,7 @@ class SettingsTest extends UnitTestCase {
           'group' => 'group',
           'endpoint' => 'endpoint',
           'access_key' => '123',
+          'random_key' => '321',
         ],
         [
           'hub' => 'hub',

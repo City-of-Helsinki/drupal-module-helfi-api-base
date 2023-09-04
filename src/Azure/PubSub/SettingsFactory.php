@@ -36,8 +36,13 @@ final class SettingsFactory {
       'access_key' => '',
     ];
 
-    if ($value = $this->vaultManager->get('pubsub')) {
-      $data = json_decode($value->data());
+    if ($settings = $this->vaultManager->get('pubsub')) {
+      foreach ($data as $key => $value) {
+        if (!isset($settings->data()->{$key})) {
+          continue;
+        }
+        $data->{$key} = $settings->data()->{$key};
+      }
     }
 
     return new Settings(
