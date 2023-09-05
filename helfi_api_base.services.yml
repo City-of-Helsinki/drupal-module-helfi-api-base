@@ -95,7 +95,7 @@ services:
   helfi_api_base.pubsub_settings_factory:
     class: Drupal\helfi_api_base\Azure\PubSub\SettingsFactory
     arguments:
-      - '@config.factory'
+      - '@helfi_api_base.vault_manager'
 
   helfi_api_base.pubsub_client_factory:
     class: Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactory

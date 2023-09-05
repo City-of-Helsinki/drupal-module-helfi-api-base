@@ -4,15 +4,10 @@ Provides an integration to [Azure's Web PubSub service](https://azure.microsoft.
 
 ## Configuration
 
-You must define the following settings to use this feature:
+You must define a [JSON Vault item](/documentation/api-accounts.md#managing-external-api-credentials) to use this feature. The data field should be a JSON string containing `endpoint`, `hub`, `group` and `access_key`:
 
-```php
-$config['helfi_api_base.pubsub.settings']['access_key'] = '<access-key>';
-// Url to Azure's wss endpoint, usually something like: yourservicename.webpubsub.azure.com
-$config['helfi_api_base.pubsub.settings']['endpoint'] = '<url to azure pubsub endpoint>';
-// Hub and group must be same in all instances that talk with each other.
-$config['helfi_api_base.pubsub.settings']['hub'] = '<hub>';
-$config['helfi_api_base.pubsub.settings']['group'] = '<group>';
+```json
+{"endpoint": "<endpoint>", "hub": "<hub>", "group": "<group>", "access_key": "<access-key>"}
 ```
 
 ## Usage
@@ -82,8 +77,15 @@ See [CacheTagInvalidatorSubscriber](/src/EventSubscriber/CacheTagInvalidatorSubs
 
 ```php
 # public/sites/default/local.settings.php
-$config['helfi_api_base.pubsub.settings']['access_key'] = '<access-key>';
-$config['helfi_api_base.pubsub.settings']['endpoint'] = '<url to azure pubsub endpoint>';
-$config['helfi_api_base.pubsub.settings']['hub'] = '<hub>';
-$config['helfi_api_base.pubsub.settings']['group'] = '<group>';
+$pubsub_account = [
+  'id' => 'pubsub',
+  'plugin' => 'json',
+  'data' => json_encode(
+    'endpoint' => '<endpoint-here>',
+    'hub' => '<hub>',
+    'group' => '<group>',
+    'access_key' => '<access-key>',
+  ]),
+];
+$config['helfi_api_base.api_accounts']['vault'][] = $pubsub_account;
 ```

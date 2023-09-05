@@ -30,18 +30,6 @@ helfi_api_base.api_accounts:
             sequence:
               type: string
 
-helfi_api_base.pubsub.settings:
-  type: config_object
-  mapping:
-    endpoint:
-      type: string
-    access_key:
-      type: string
-    hub:
-      type: string
-    group:
-      type: string
-
 helfi_api_base.environment_resolver.settings:
   type: config_entity
   mapping:

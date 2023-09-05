@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_api_base\Unit\Vault;
 
 use Drupal\helfi_api_base\Vault\AuthorizationToken;
+use Drupal\helfi_api_base\Vault\Json;
 use Drupal\helfi_api_base\Vault\VaultManager;
 use Drupal\helfi_api_base\Vault\VaultManagerFactory;
 use Drupal\Tests\UnitTestCase;
@@ -90,20 +91,54 @@ class VaultManagerTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Vault\VaultManagerFactory::__construct
    */
   public function testFactory() : void {
+    $accounts = [
+      [
+        'plugin' => AuthorizationToken::PLUGIN,
+        'id' => 'test_local',
+        'data' => 'token',
+      ],
+      [
+        'plugin' => Json::PLUGIN,
+        'id' => 'test_local2',
+        'data' => json_encode(['value' => '123']),
+      ],
+    ];
+
     $sut = new VaultManagerFactory($this->getConfigFactoryStub([
       'helfi_api_base.api_accounts' => [
-        'vault' => [
-          [
-            'plugin' => AuthorizationToken::PLUGIN,
-            'id' => 'test_local',
-            'data' => 'token',
-          ],
-        ],
+        'vault' => $accounts,
       ],
     ]));
     $instance = $sut->create();
     $this->assertInstanceOf(VaultManager::class, $instance);
-    $this->assertInstanceOf(AuthorizationToken::class, $instance->get('test_local'));
+
+    foreach ($accounts as $acccount) {
+      $this->assertSame($acccount['id'], $instance->get($acccount['id'])->id());
+      $this->assertSame($acccount['plugin'], $instance->get($acccount['id'])::PLUGIN);
+    }
+  }
+
+  /**
+   * @covers \Drupal\helfi_api_base\Vault\Json::__construct
+   */
+  public function testJsonException() : void {
+    $this->expectException(\JsonException::class);
+    new Json('test', '{');
+  }
+
+  /**
+   * @covers \Drupal\helfi_api_base\Vault\Json::__construct
+   * @covers \Drupal\helfi_api_base\Vault\Json::id
+   * @covers \Drupal\helfi_api_base\Vault\Json::data
+   */
+  public function testJson() : void {
+    $sut = new Json('test', json_encode([
+      'endpoint' => '123',
+      'access_key' => '321',
+    ]));
+    $this->assertSame('test', $sut->id());
+    $this->assertSame('123', $sut->data()->endpoint);
+    $this->assertSame('321', $sut->data()->access_key);
   }
 
   /**

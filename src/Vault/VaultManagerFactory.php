@@ -18,7 +18,7 @@ final class VaultManagerFactory {
    *   The config factory.
    */
   public function __construct(
-    private ConfigFactoryInterface $configFactory,
+    private readonly ConfigFactoryInterface $configFactory,
   ) {
   }
 
@@ -36,8 +36,10 @@ final class VaultManagerFactory {
       if (!isset($item['plugin'], $item['id'], $item['data'])) {
         throw new \InvalidArgumentException('Missing required "plugin", "id" or "data".');
       }
+
       return match($item['plugin']) {
         AuthorizationToken::PLUGIN => new AuthorizationToken($item['id'], $item['data']),
+        Json::PLUGIN => new Json($item['id'], $item['data']),
       };
     }, $config);
 
