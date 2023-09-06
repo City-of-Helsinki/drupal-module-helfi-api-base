@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Commands;
 
 use Drupal\Core\Password\PasswordGeneratorInterface;
-use Drush\Attributes\Argument;
 use Drush\Attributes\Command;
 use Drush\Attributes\Option;
 use Drush\Commands\DrushCommands;
