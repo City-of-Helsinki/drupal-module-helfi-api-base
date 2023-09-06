@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Commands;
 
 use Drupal\Core\Password\PasswordGeneratorInterface;
+use Drush\Attributes\Argument;
 use Drush\Attributes\Command;
+use Drush\Attributes\Option;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -45,17 +47,34 @@ final class ApiAccountCommands extends DrushCommands {
   /**
    * Updates the base64 and json encoded Azure secret.
    *
+   * @param array $options
+   *   The options.
+   *
    * @return int
    *   The exit code.
+   *
+   * @throws \JsonException
    */
   #[Command(name: 'helfi:update-api-secret')]
-  public function update() : int {
+  #[Option(name: 'filename', description: 'An optional filename to read the secret from.')]
+  public function update(array $options = ['filename' => NULL]) : int {
     $type = $this->askType();
 
-    if (!$value = $this->io()->ask('The base64 and JSON encoded secret value')) {
+    if ($options['filename']) {
+      $value = file_get_contents($options['filename']);
+    }
+    else {
+      $value = $this->io()->ask('The base64 and JSON encoded secret value');
+
+      if (strlen($value) >= 4095) {
+        throw new \InvalidArgumentException('The secret value is longer than 4096 bytes and will be truncated by your terminal. Use --file to pass a file to read the content from instead.');
+      }
+    }
+    if (!$value) {
       throw new \InvalidArgumentException('No value given.');
     }
-    $values = json_decode(base64_decode($value), TRUE, flags: JSON_THROW_ON_ERROR);
+
+    $values = json_decode(base64_decode(trim($value)), TRUE, flags: JSON_THROW_ON_ERROR);
 
     $this->io()
       ->note(sprintf('Current value: %s', json_encode($values, flags: JSON_PRETTY_PRINT)));
