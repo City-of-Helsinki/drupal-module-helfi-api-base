@@ -55,9 +55,11 @@ function helfi_api_base_theme_suggestions_debug_item(array $variables) : array {
  * Implements hook_mail_alter().
  */
 function helfi_api_base_mail_alter(&$message) : void {
-  $environmentResolver = \Drupal::service('helfi_api_base.environment_resolver');
+  // Prevent sending an email if current site/environment is unknown to the resolver.
+  // Only helfi-drupal sites are affected by this change.
   try {
-    $environmentResolver->getActiveEnvironment();
+    \Drupal::service('helfi_api_base.environment_resolver')
+      ->getActiveEnvironment();
     $message['send'] = FALSE;
   }
   catch (\InvalidArgumentException) {
