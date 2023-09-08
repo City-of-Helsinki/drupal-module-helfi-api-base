@@ -61,7 +61,7 @@ final class ApiAccountCommands extends DrushCommands {
   #[Option(name: 'plugin', description: 'The plugin')]
   #[Option(name: 'data', description: 'The data.')]
   public function update(array $options = [
-    'value' => NULL,
+    'file' => NULL,
     'type' => NULL,
     'id' => NULL,
     'plugin' => NULL,
@@ -69,8 +69,8 @@ final class ApiAccountCommands extends DrushCommands {
   ]) : int {
     $type = $this->askType($options['type']);
 
-    if ($options['filename']) {
-      $value = file_get_contents($options['filename']);
+    if ($options['file']) {
+      $value = file_get_contents($options['file']);
     }
     else {
       $value = $this->io()->ask('The base64 and JSON encoded secret value');
