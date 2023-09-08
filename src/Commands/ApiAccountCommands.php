@@ -56,16 +56,26 @@ final class ApiAccountCommands extends DrushCommands {
    */
   #[Command(name: 'helfi:update-api-secret')]
   #[Option(name: 'filename', description: 'An optional filename to read the secret from.')]
-  public function update(array $options = ['filename' => NULL]) : int {
-    $type = $this->askType();
+  #[Option(name: 'type', description: 'The type of given secret. [1 = DRUPAL_VAULT_ACCOUNTS or 2 = DRUPAL_API_ACCOUNTS')]
+  #[Option(name: 'id', description: 'An unique ID for given item.')]
+  #[Option(name: 'plugin', description: 'The plugin')]
+  #[Option(name: 'data', description: 'The data.')]
+  public function update(array $options = [
+    'file' => NULL,
+    'type' => NULL,
+    'id' => NULL,
+    'plugin' => NULL,
+    'data' => NULL,
+  ]) : int {
+    $type = $this->askType($options['type']);
 
-    if ($options['filename']) {
-      $value = file_get_contents($options['filename']);
+    if ($options['file']) {
+      $value = file_get_contents($options['file']);
     }
     else {
       $value = $this->io()->ask('The base64 and JSON encoded secret value');
 
-      if (strlen($value) >= 4095) {
+      if ($value && strlen($value) >= 4095) {
         throw new \InvalidArgumentException('The secret value is longer than 4096 bytes and will be truncated by your terminal. Use --file to pass a file to read the content from instead.');
       }
     }
@@ -78,7 +88,7 @@ final class ApiAccountCommands extends DrushCommands {
     $this->io()
       ->note(sprintf('Current value: %s', json_encode($values, flags: JSON_PRETTY_PRINT)));
 
-    $values = array_merge($values, [$this->processValues($type)]);
+    $values = array_merge($values, [$this->processValues($type, $options)]);
 
     $this->io()->note(sprintf('New value: %s', json_encode($values)));
     $this->io()
@@ -118,12 +128,17 @@ final class ApiAccountCommands extends DrushCommands {
   /**
    * Prompts the user for the secret type.
    *
+   * @param string|null $type
+   *   The type.
+   *
    * @return string
    *   The secret type.
    */
-  private function askType() : string {
-    $type = $this->io()
-      ->ask('The type of given secret [1 = DRUPAL_VAULT_ACCOUNTS or 2 = DRUPAL_API_ACCOUNTS]', '2');
+  private function askType(string $type = NULL) : string {
+    if (!$type) {
+      $type = $this->io()
+        ->ask('The type of given secret [1 = DRUPAL_VAULT_ACCOUNTS or 2 = DRUPAL_API_ACCOUNTS]', '2');
+    }
 
     return match($type) {
       '1' => 'DRUPAL_VAULT_ACCOUNTS',
@@ -137,19 +152,21 @@ final class ApiAccountCommands extends DrushCommands {
    *
    * @param string $type
    *   The secret type.
+   * @param array $options
+   *   The default options.
    *
    * @return array
    *   The processed field values.
    */
-  private function processValues(string $type) : array {
+  private function processValues(string $type, array $options = []) : array {
     $values = [];
 
-    foreach ($this->getFields($type) as $name => $options) {
+    foreach ($this->getFields($type) as $name => $option) {
       [
         'description' => $description,
         'default_value' => $defaultValue,
         'callback' => $callback,
-      ] = $options;
+      ] = $option;
 
       if (!$callback) {
         $callback = function ($value) {
@@ -157,9 +174,11 @@ final class ApiAccountCommands extends DrushCommands {
         };
       }
 
-      $value = $this->io()
-        ->ask(sprintf('Provide %s [%s]', $name, $description), $defaultValue);
-      $value = $callback($value);
+      if ((!isset($options[$name])) || is_null($options[$name])) {
+        $options[$name] = $this->io()
+          ->ask(sprintf('Provide %s [%s]', $name, $description), $defaultValue);
+      }
+      $value = $callback($options[$name]);
 
       if (!$value) {
         continue;
