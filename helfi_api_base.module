@@ -55,7 +55,7 @@ function helfi_api_base_theme_suggestions_debug_item(array $variables) : array {
  * Implements hook_mail_alter().
  */
 function helfi_api_base_mail_alter(&$message) : void {
-  // Prevent sending an email if current site/environment is unknown to the resolver.
+  // Prevent sending an email if current site/environment is known to the resolver.
   // Only helfi-drupal sites are affected by this change.
   try {
     \Drupal::service('helfi_api_base.environment_resolver')
