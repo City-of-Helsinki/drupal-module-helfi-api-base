@@ -6,7 +6,6 @@ parameters:
   helfi_api_base.internal_domains:
     - 'hel.fi'
     - 'www.hel.fi'
-    - 'avustukset.hel.fi'
     - '*.docker.so'
   helfi_api_base.default_languages:
     - 'en'
