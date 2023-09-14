@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helfi_api_base\ExistingSite;
+namespace Drupal\Tests\helfi_api_base\Functional;
 
 use Drupal\Tests\helfi_api_base\Traits\DefaultConfigurationTrait;
 use weitzman\DrupalTestTraits\ExistingSiteBase;

@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\helfi_api_base\ExistingSiteJavascript;
+namespace Drupal\Tests\helfi_api_base\FunctionalJavascript;
 
 use Drupal\Tests\helfi_api_base\Traits\DefaultConfigurationTrait;
-use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
+use weitzman\DrupalTestTraits\ExistingSiteSelenium2DriverTestBase;
 
 /**
  * Existing site test base.
  */
-abstract class ExistingSiteJavascriptTestBase extends ExistingSiteWebDriverTestBase {
+abstract class ExistingSiteJavascriptTestBase extends ExistingSiteSelenium2DriverTestBase {
 
   use DefaultConfigurationTrait;
 
