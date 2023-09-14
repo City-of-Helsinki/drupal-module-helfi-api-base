@@ -96,6 +96,7 @@ class MenuLinkFormTest extends BrowserTestBase {
       $this->submitForm([
         'menu[enabled]' => 1,
         'menu[title]' => 'Test title ' . $langcode,
+        'menu[weight]' => 9,
       ], 'Save');
 
       // Make sure menu link is show in edit form.
@@ -119,6 +120,7 @@ class MenuLinkFormTest extends BrowserTestBase {
         ->entity
         ->getTranslation($langcode);
 
+      $this->assertEquals(9, $menuLink->getWeight());
       $this->assertEquals('Test title ' . $langcode, $menuLink->getTitle());
     }
 

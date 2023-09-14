@@ -151,6 +151,13 @@ trait MenuLinkFormTrait {
       ->menuParentSelector
       ->parentSelectElement($default, $id, $this->getAvailableMenus());
 
+    $form['menu']['link']['weight'] = [
+      '#type' => 'number',
+      '#title' => t('Weight'),
+      '#default_value' => $menuLink->getWeight(),
+      '#description' => $this->t('Menu links with lower weights are displayed before links with higher weights.'),
+    ];
+
     $form['actions']['submit']['#submit'][] = '::attachMenuLinkFormSubmit';
 
     return $form;
@@ -199,6 +206,7 @@ trait MenuLinkFormTrait {
         ->set('menu_name', $menuName)
         ->set('parent', $parent)
         ->set('langcode', $entity->language()->getId())
+        ->set('weight', $values['weight'])
         ->save();
 
       $entity->set($this->menuLinkFieldName, $menuLink)->save();
