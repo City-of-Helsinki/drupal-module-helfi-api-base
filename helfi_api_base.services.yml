@@ -129,3 +129,10 @@ services:
       - '@cache_tags.invalidator'
     tags:
       - { name: event_subscriber }
+
+  helfi_api_base.revision_manager:
+    class: Drupal\helfi_api_base\Entity\Revision\RevisionManager
+    arguments:
+      - '@entity_type.manager'
+      - '@config.factory'
+      - '@database'

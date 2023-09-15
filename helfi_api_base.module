@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\helfi_api_base\Link\LinkProcessor;
 
 /**
@@ -63,5 +64,27 @@ function helfi_api_base_mail_alter(&$message) : void {
     $message['send'] = FALSE;
   }
   catch (\InvalidArgumentException) {
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function helfi_api_base_entity_update(EntityInterface $entity) : void {
+  /** @var \Drupal\helfi_api_base\Entity\Revision\RevisionManager $revisionManager */
+  $revisionManager = \Drupal::service('helfi_api_base.revision_manager');
+
+  if (!$revisionManager->entityTypeIsSupported($entity->getEntityTypeId())) {
+    return;
+  }
+  $revisions = $revisionManager->getRevisions($entity->getEntityTypeId(), $entity->id());
+
+  // Queue old revisions for deletion.
+  if ($revisions) {
+    $queue = \Drupal::queue('helfi_api_base_revision');
+    $queue->createItem([
+      'entity_id' => $entity->id(),
+      'entity_type' => $entity->getEntityTypeId(),
+    ]);
   }
 }

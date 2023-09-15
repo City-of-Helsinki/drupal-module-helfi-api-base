@@ -38,3 +38,11 @@ services:
     arguments: ['@language_manager', '@file_system', '@string_translation', '@extension.list.module']
     tags:
       - { name: drush.command }
+  helfi_api_base.revision_commands:
+    class: \Drupal\helfi_api_base\Commands\RevisionCommands
+    arguments:
+      - '@helfi_api_base.revision_manager'
+      - '@entity_type.manager'
+      - '@database'
+    tags:
+      - { name: drush.command }
