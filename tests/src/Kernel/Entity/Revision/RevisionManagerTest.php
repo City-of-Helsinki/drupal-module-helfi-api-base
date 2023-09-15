@@ -118,6 +118,8 @@ class RevisionManagerTest extends ApiKernelTestBase {
       ->addTranslation('sv', ['name' => 'test sv'])
       ->save();
 
+    $this->assertCount(0, $this->getSut()->getRevisions('remote_entity_test', $entity->id()));
+
     for ($i = 0; $i < 10; $i++) {
       $rmt = $storage->load($entity->id());
       $rmt->set('name', 'test en ' . $i);

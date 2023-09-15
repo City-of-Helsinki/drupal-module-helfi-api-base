@@ -79,7 +79,7 @@ function helfi_api_base_entity_update(EntityInterface $entity) : void {
   }
   $revisions = $revisionManager->getRevisions($entity->getEntityTypeId(), $entity->id());
 
-  // Queue old revisions for deletion.
+  // Queue entity revisions for deletion.
   if ($revisions) {
     $queue = \Drupal::queue('helfi_api_base_revision');
     $queue->createItem([
