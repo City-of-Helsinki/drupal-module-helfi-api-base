@@ -23,6 +23,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Tests revision commands.
  *
+ * @coversDefaultClass \Drupal\helfi_api_base\Commands\RevisionCommands
  * @group helfi_api_base
  */
 class RevisionCommandsTest extends UnitTestCase {
@@ -105,6 +106,9 @@ class RevisionCommandsTest extends UnitTestCase {
 
   /**
    * Test command with invalid entity type.
+   *
+   * @covers ::__construct
+   * @covers ::delete
    */
   public function testInvalidEntityType() : void {
     $io = $this->prophesize(SymfonyStyle::class);
@@ -121,6 +125,9 @@ class RevisionCommandsTest extends UnitTestCase {
 
   /**
    * Test delete without any entities.
+   *
+   * @covers ::__construct
+   * @covers ::delete
    */
   public function testNoEntities() : void {
     $io = $this->prophesize(SymfonyStyle::class);
@@ -138,6 +145,9 @@ class RevisionCommandsTest extends UnitTestCase {
 
   /**
    * Tests delete method with proper data.
+   *
+   * @covers ::__construct
+   * @covers ::delete
    */
   public function testDelete() : void {
     $io = $this->prophesize(SymfonyStyle::class);
