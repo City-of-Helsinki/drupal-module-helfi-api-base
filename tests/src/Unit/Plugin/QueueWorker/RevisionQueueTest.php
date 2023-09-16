@@ -14,6 +14,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 /**
  * Tests revision queue.
  *
+ * @coversDefaultClass \Drupal\helfi_api_base\Plugin\QueueWorker\RevisionQueue
  * @group helfi_api_base
  */
 class RevisionQueueTest extends UnitTestCase {
@@ -37,6 +38,9 @@ class RevisionQueueTest extends UnitTestCase {
 
   /**
    * Tests that nothing is done for invalid items.
+   *
+   * @covers ::create
+   * @covers ::processItem
    */
   public function testQueueInvalidItem() : void {
     $revisionManager = $this->prophesize(RevisionManager::class);
@@ -48,6 +52,9 @@ class RevisionQueueTest extends UnitTestCase {
 
   /**
    * Make sure nothing is done when an entity does not exist.
+   *
+   * @covers ::create
+   * @covers ::processItem
    */
   public function testNoRevisions() : void {
     $revisionManager = $this->prophesize(RevisionManager::class);
@@ -64,7 +71,10 @@ class RevisionQueueTest extends UnitTestCase {
   }
 
   /**
-   * Make sure revisions are be processed.
+   * Make sure revisions are processed.
+   *
+   * @covers ::create
+   * @covers ::processItem
    */
   public function testDelete() : void {
     $revisionManager = $this->prophesize(RevisionManager::class);
