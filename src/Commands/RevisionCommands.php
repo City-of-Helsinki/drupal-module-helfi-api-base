@@ -60,7 +60,7 @@ final class RevisionCommands extends DrushCommands {
       ->fetchCol();
 
     $totalEntities = $remainingEntities = count($entityIds);
-    $this->io()->writeln(new FormattableMarkup('Found @count @type entities', [
+    $this->io()->writeln((string) new FormattableMarkup('Found @count @type entities', [
       '@count' => $totalEntities,
       '@type' => $entityType,
     ]));
@@ -72,9 +72,9 @@ final class RevisionCommands extends DrushCommands {
       $message = sprintf('Entity has less than %s revisions. Skipping', $options['keep']);
 
       if ($revisionCount > 0) {
-        $message = new FormattableMarkup('Deleting @count revisions', ['@count' => $revisionCount]);
+        $message = (string) new FormattableMarkup('Deleting @count revisions', ['@count' => $revisionCount]);
       }
-      $this->io()->writeln(new FormattableMarkup('[@current/@entities] @message ...', [
+      $this->io()->writeln((string) new FormattableMarkup('[@current/@entities] @message ...', [
         '@current' => $remainingEntities--,
         '@entities' => $totalEntities,
         '@message' => $message,
