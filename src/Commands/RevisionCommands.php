@@ -19,6 +19,13 @@ final class RevisionCommands extends DrushCommands {
 
   /**
    * Constructs a new instance.
+   *
+   * @param \Drupal\helfi_api_base\Entity\Revision\RevisionManager $revisionManager
+   *   The revision manager service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager service.
+   * @param \Drupal\Core\Database\Connection $connection
+   *   The connection service.
    */
   public function __construct(
     private readonly RevisionManager $revisionManager,

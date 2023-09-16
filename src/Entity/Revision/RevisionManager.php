@@ -13,7 +13,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 /**
  * A class to manage revisions.
  */
-final class RevisionManager {
+class RevisionManager {
 
   public const KEEP_REVISIONS = 5;
 
@@ -93,16 +93,16 @@ final class RevisionManager {
    *
    * @param string $entityType
    *   The entity type.
-   * @param array $ids
+   * @param array $revisionIds
    *   The version ids.
    */
-  public function deleteRevisions(string $entityType, array $ids) : void {
+  public function deleteRevisions(string $entityType, array $revisionIds) : void {
     $this->assertEntityType($entityType);
 
     $storage = $this->entityTypeManager
       ->getStorage($entityType);
 
-    foreach ($ids as $id) {
+    foreach ($revisionIds as $id) {
       $storage->deleteRevision($id);
     }
   }
@@ -167,7 +167,7 @@ final class RevisionManager {
   }
 
   /**
-   * Gets revisions for given entity type and id.
+   * Gets revisions for the given entity type and id.
    *
    * @param string $entityType
    *   The entity type.

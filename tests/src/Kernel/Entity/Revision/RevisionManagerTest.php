@@ -21,7 +21,6 @@ class RevisionManagerTest extends ApiKernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'helfi_api_base',
     'helfi_language_negotiator_test',
     'language',
     'user',
@@ -35,7 +34,7 @@ class RevisionManagerTest extends ApiKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() : void {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->setupLanguages();
@@ -49,7 +48,7 @@ class RevisionManagerTest extends ApiKernelTestBase {
    * @param array $entityTypes
    *   The entity types.
    */
-  private function setEntityTypes(array $entityTypes) : void {
+  private function setEntityTypes(array $entityTypes): void {
     $this->config('helfi_api_base.delete_revisions')
       ->set('entity_types', $entityTypes)
       ->save();
@@ -104,6 +103,28 @@ class RevisionManagerTest extends ApiKernelTestBase {
   }
 
   /**
+   * Tests processing of non-existent entities.
+   */
+  public function testNonExistentEntity() : void {
+    $this->setEntityTypes(['remote_entity_test']);
+    $this->assertEmpty($this->getSut()->getRevisions('remote_entity_test', 1));
+    $this->getSut()->deleteRevisions('remote_entity_test', [1, 2, 3]);
+  }
+
+  /**
+   * Asserts number of items in a queue.
+   *
+   * @param int $expected
+   *   The expected number of items in queue.
+   */
+  private function assertQueueItems(int $expected) : void {
+    /** @var \Drupal\Core\Queue\QueueInterface $queue */
+    $queue = $this->container->get('queue')->get('helfi_api_base_revision');
+
+    $this->assertEquals($expected, $queue->numberOfItems());
+  }
+
+  /**
    * Tests revision deletion.
    */
   public function testRevision() : void {
@@ -119,6 +140,7 @@ class RevisionManagerTest extends ApiKernelTestBase {
       ->save();
 
     $this->assertCount(0, $this->getSut()->getRevisions('remote_entity_test', $entity->id()));
+    $this->assertQueueItems(0);
 
     for ($i = 0; $i < 10; $i++) {
       $rmt = $storage->load($entity->id());
@@ -135,6 +157,9 @@ class RevisionManagerTest extends ApiKernelTestBase {
 
       $storage->createRevision($rmt)->save();
     }
+    // Make sure items are queued on entity update.
+    $this->assertQueueItems(6);
+
     $revisions = $this->getSut()->getRevisionsPerLanguage('remote_entity_test', $entity->id());
 
     // We have $i + 1 revisions (11) in total, except sv, which has 10 because
