@@ -7,6 +7,7 @@ namespace Drupal\remote_entity_test\Entity;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Entity\RemoteEntityBase;
@@ -37,9 +38,17 @@ use Drupal\user\EntityOwnerTrait;
  *   data_table = "rmt_field_data",
  *   admin_permission = "administer remote entities",
  *   translatable = TRUE,
+ *   revision_table = "rmt_revision",
+ *   revision_data_table = "rmt_field_revision",
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+ *     "revision_log_message" = "revision_log"
+ *   },
  *   entity_keys = {
  *     "id" = "id",
  *     "langcode" = "langcode",
+ *     "revision" = "vid",
  *     "label" = "name",
  *     "uuid" = "uuid",
  *     "published" = "content_translation_status",
@@ -53,7 +62,7 @@ use Drupal\user\EntityOwnerTrait;
  *   },
  * )
  */
-final class RemoteEntityTest extends RemoteEntityBase implements EntityPublishedInterface, EntityOwnerInterface {
+final class RemoteEntityTest extends RemoteEntityBase implements EntityPublishedInterface, EntityOwnerInterface, RevisionableInterface {
 
   use EntityPublishedTrait;
   use EntityOwnerTrait;
@@ -74,6 +83,7 @@ final class RemoteEntityTest extends RemoteEntityBase implements EntityPublished
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Name'))
       ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
       ->setDefaultValue('')
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE)

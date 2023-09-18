@@ -12,6 +12,7 @@ A base module for [drupal-helfi-platform](https://github.com/City-of-Helsinki/dr
 
 - [API user manager](documentation/api-accounts.md): Allows API users to be created/managed from an environment variable.
 - [Automatic external cache invalidation](documentation/automatic-external-cache-invalidation.md): Invalidate caches from external projects using [PubSub messaging](documentation/pubsub-messaging.md) service.
+- [Automatic revision deletion](documentation/revisions.md): Clean up old entity revisions automatically.
 - [Debug collector](documentation/debug.md): A plugin to collect and show various debug information in one place.
 - [Deploy hooks](documentation/deploy-hooks.md): Allows custom tasks to be run before or after deployment.
 - [Environment resolver](documentation/environment-resolver.md): A service to fetch metadata for given project.

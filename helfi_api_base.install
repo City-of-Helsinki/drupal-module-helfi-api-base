@@ -171,3 +171,26 @@ function helfi_api_base_update_9009() : void {
 function helfi_api_base_update_9013() : void {
   helfi_api_base_install();
 }
+
+/**
+ * Enable 'delete old revisions' feature.
+ */
+function helfi_api_base_update_9014() : void {
+  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $service */
+  $service = \Drupal::service('helfi_api_base.environment_resolver');
+  try {
+    $service->getActiveProject();
+
+    \Drupal::configFactory()->getEditable('helfi_api_base.delete_revisions')
+      ->set('entity_types', [
+        'node',
+        'paragraph',
+        'tpr_unit',
+        'tpr_service',
+        'tpr_errand_service',
+      ])->save();
+  }
+  catch (\InvalidArgumentException) {
+  }
+
+}

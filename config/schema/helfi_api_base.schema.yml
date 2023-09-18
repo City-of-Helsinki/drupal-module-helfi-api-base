@@ -39,3 +39,11 @@ helfi_api_base.environment_resolver.settings:
     project_name:
       type: string
       label: 'The currently active project name'
+
+helfi_api_base.delete_revisions:
+  type: config_entity
+  mapping:
+    entity_types:
+      type: sequence
+      sequence:
+        type: string
