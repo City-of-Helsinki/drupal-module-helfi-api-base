@@ -28,5 +28,3 @@ A base module for [drupal-helfi-platform](https://github.com/City-of-Helsinki/dr
 ## Contact
 
 Slack: #helfi-drupal (http://helsinkicity.slack.com/)
-
-Mail: `drupal@hel.fi`
