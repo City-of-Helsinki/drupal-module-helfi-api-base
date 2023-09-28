@@ -61,7 +61,7 @@ final class PubSubManager implements PubSubManagerInterface {
 
     try {
       // Wait until we've actually joined the group.
-      $message = $this->decodeMessage($this->client->receive());
+      $message = $this->decodeMessage((string) $this->client->receive());
 
       if (isset($message['event']) && $message['event'] === 'connected') {
         $this->joinedGroup = TRUE;
@@ -157,8 +157,8 @@ final class PubSubManager implements PubSubManagerInterface {
   public function receive() : string {
     $this->assertSettings()
       ->joinGroup();
-    $message = $this->client->receive();
-    $json = json_decode($message, TRUE, flags: JSON_THROW_ON_ERROR);
+    $message = (string) $this->client->receive();
+    $json = $this->decodeMessage($message);
 
     $this->eventDispatcher
       ->dispatch(new PubSubMessage($json));
