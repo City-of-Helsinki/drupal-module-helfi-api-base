@@ -67,7 +67,6 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::getProjects
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
-   * @covers \Drupal\helfi_api_base\Environment\Environment::getDomain
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
    * @covers \Drupal\helfi_api_base\Environment\Project::hasEnvironment
@@ -144,11 +143,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::getProjectForRepository
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
-   * @covers \Drupal\helfi_api_base\Environment\Environment::getDomain
-   * @covers \Drupal\helfi_api_base\Environment\Environment::getProtocol
-   * @covers \Drupal\helfi_api_base\Environment\Environment::getBaseUrl
    * @covers \Drupal\helfi_api_base\Environment\Environment::getUrl
-   * @covers \Drupal\helfi_api_base\Environment\Environment::doGetUrl
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
    * @covers \Drupal\helfi_api_base\Environment\Project::hasEnvironment
@@ -194,11 +189,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @covers ::getProject
    * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
    * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
-   * @covers \Drupal\helfi_api_base\Environment\Environment::getDomain
-   * @covers \Drupal\helfi_api_base\Environment\Environment::getProtocol
-   * @covers \Drupal\helfi_api_base\Environment\Environment::getBaseUrl
    * @covers \Drupal\helfi_api_base\Environment\Environment::getUrl
-   * @covers \Drupal\helfi_api_base\Environment\Environment::doGetUrl
    * @covers \Drupal\helfi_api_base\Environment\Environment::getEnvironmentName
    * @covers \Drupal\helfi_api_base\Environment\Project::__construct
    * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment

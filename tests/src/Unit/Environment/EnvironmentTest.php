@@ -21,8 +21,6 @@ class EnvironmentTest extends UnitTestCase {
   /**
    * @covers ::__construct
    * @covers ::getId
-   * @covers ::getProtocol
-   * @covers ::getDomain
    * @covers ::getEnvironment
    * @covers ::getEnvironmentName
    * @covers ::getBaseUrl
@@ -42,18 +40,15 @@ class EnvironmentTest extends UnitTestCase {
     $this->assertEquals(EnvironmentEnum::Test, $sut->getEnvironment());
     $this->assertEquals(EnvironmentEnum::Test->value, $sut->getEnvironmentName());
     $this->assertEquals('https://www.hel.fi', $sut->getBaseUrl());
+    $this->assertEquals('http://internal-address.local:8080', $sut->getInternalBaseUrl());
     $this->assertEquals('https://localhost', $sut->getMetadata()->getOpenshiftConsoleLink());
   }
 
   /**
    * @covers ::__construct
    * @covers ::getUrl
-   * @covers ::doGetUrl
    * @covers ::getPath
    * @covers ::getInternalAddress
-   * @covers ::getBaseUrl
-   * @covers ::getDomain
-   * @covers ::getProtocol
    */
   public function testGetUrl() : void {
     $sut = new Environment(

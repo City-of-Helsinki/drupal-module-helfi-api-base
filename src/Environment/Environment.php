@@ -82,6 +82,16 @@ final class Environment {
   }
 
   /**
+   * Gets the internal base url.
+   *
+   * @return string
+   *   The base url.
+   */
+  public function getInternalBaseUrl() : string {
+    return $this->internalAddress->getAddress();
+  }
+
+  /**
    * Gets the path.
    *
    * @param string $language
