@@ -6,6 +6,7 @@ namespace Drupal\helfi_api_base\EventSubscriber;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -18,10 +19,37 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cacheTagsInvalidator
    *   The cache tag invalidator subscriber.
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
+   *   The environment resolver.
    */
   public function __construct(
     private readonly CacheTagsInvalidatorInterface $cacheTagsInvalidator,
+    private readonly EnvironmentResolverInterface $environmentResolver,
   ) {
+  }
+
+  /**
+   * Checks if the given instance is valid.
+   *
+   * @param array $instances
+   *   The instances.
+   *
+   * @return bool
+   *   TRUE if valid instance.
+   */
+  private function isValidInstance(array $instances = []) : bool {
+    if (!$instances) {
+      return TRUE;
+    }
+
+    try {
+      $project = $this->environmentResolver->getActiveProject();
+
+      return in_array($project->getName(), $instances);
+    }
+    catch (\InvalidArgumentException) {
+    }
+    return TRUE;
   }
 
   /**
@@ -32,6 +60,11 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
    */
   public function onReceive(PubSubMessage $message) : void {
     if (!isset($message->data['data']['tags'])) {
+      return;
+    }
+    $instances = $message->data['data']['instances'] ?? [];
+
+    if (!$this->isValidInstance($instances)) {
       return;
     }
     $this->cacheTagsInvalidator->invalidateTags($message->data['data']['tags']);

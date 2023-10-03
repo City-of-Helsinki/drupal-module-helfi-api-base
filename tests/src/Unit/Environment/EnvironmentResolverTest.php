@@ -9,6 +9,7 @@ use Drupal\Core\Config\ImmutableConfig;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -22,42 +23,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 class EnvironmentResolverTest extends UnitTestCase {
 
   use ProphecyTrait;
-
-  /**
-   * Constructs a new config factory instance.
-   *
-   * @param mixed $projectName
-   *   The project name.
-   * @param mixed $envName
-   *   The environment name.
-   *
-   * @return \Drupal\Core\Config\ConfigFactoryInterface
-   *   The config factory stub.
-   */
-  private function getConfigStub(mixed $projectName = NULL, mixed $envName = NULL) :  ConfigFactoryInterface {
-    $config = [];
-
-    if ($projectName) {
-      $config[EnvironmentResolver::PROJECT_NAME_KEY] = $projectName;
-    }
-    if ($envName) {
-      $config[EnvironmentResolver::ENVIRONMENT_NAME_KEY] = $envName;
-    }
-    return $this->getConfigFactoryStub([
-      'helfi_api_base.environment_resolver.settings' => $config,
-    ]);
-  }
-
-  /**
-   * Gets the environment resolver.
-   *
-   * @return \Drupal\helfi_api_base\Environment\EnvironmentResolver
-   *   The sut.
-   */
-  private function getEnvironmentResolver(mixed $projectName = NULL, mixed $envName = NULL) : EnvironmentResolver {
-    $configStub = $this->getConfigStub($projectName, $envName);
-    return new EnvironmentResolver(__DIR__ . '/../../../fixtures/environments.json', $configStub);
-  }
+  use EnvironmentResolverTrait;
 
   /**
    * @covers ::populateEnvironments
