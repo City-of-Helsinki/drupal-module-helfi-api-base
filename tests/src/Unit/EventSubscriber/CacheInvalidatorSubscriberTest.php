@@ -60,7 +60,12 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
     $mock = $this->mockCacheInvalidator();
     $environmentResolver = $this->getEnvironmentResolver('invalid_project');
     $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);
-    $sut->onReceive(new PubSubMessage(['data' => ['tags' => ['node:123']]]));
+    $sut->onReceive(new PubSubMessage([
+      'data' => [
+        'tags' => ['node:123'],
+        'instances' => [Project::ASUMINEN],
+      ],
+    ]));
     $this->assertArrayHasKey('node:123', $mock->tags);
     $this->assertEquals(1, $mock->checkSumResets);
   }
