@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_api_base\Environment\Address;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
@@ -45,7 +46,14 @@ class ProjectTest extends UnitTestCase {
    */
   public function testGetters() : void {
     $sut = new Project(Project::ASUMINEN, new ProjectMetadata('', ''), [
-      new Environment('www.hel.fi', [], 'https', Project::ASUMINEN, EnvironmentEnum::Local, NULL),
+      new Environment(
+        new Address('www.hel.fi'),
+        new Address('www.hel.fi'),
+        [],
+        Project::ASUMINEN,
+        EnvironmentEnum::Local,
+        NULL
+      ),
     ]);
     $this->assertEquals(Project::ASUMINEN, $sut->getName());
     $this->assertInstanceOf(ProjectMetadata::class, $sut->getMetadata());

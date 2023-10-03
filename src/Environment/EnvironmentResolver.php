@@ -89,13 +89,14 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
       $project = new Project($id, ProjectMetadata::createFromArray($meta));
 
       foreach ($environments as $environment => $settings) {
-        if (!isset($settings['domain'], $settings['path'])) {
-          throw new \InvalidArgumentException('Project missing domain or paths setting.');
+        if (!isset($settings['address'], $settings['internal_address'], $settings['path'])) {
+          throw new \InvalidArgumentException('Project missing "address", "internal_address" or "paths" setting.');
         }
+
         $project->addEnvironment($environment, new Environment(
-          $settings['domain'],
+          new Address(...$settings['address']),
+          new Address(...$settings['internal_address']),
           $settings['path'],
-          $settings['protocol'] ?? 'https',
           $id,
           EnvironmentEnum::tryFrom($environment),
           EnvironmentMetadata::createFromArray($settings['meta'] ?? [])

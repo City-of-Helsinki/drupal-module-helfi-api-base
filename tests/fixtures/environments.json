@@ -11,8 +11,15 @@
           "sv": "/sv/boende",
           "en": "/en/housing"
         },
-        "protocol": "http",
-        "domain": "helfi-asuminen.docker.so:8080"
+        "address": {
+          "protocol": "https",
+          "domain": "helfi-asuminen.docker.so"
+        },
+        "internal_address": {
+          "protocol": "http",
+          "domain": "helfi-asuminen.docker.so",
+          "port": 8080
+        }
       },
       "prod": {
         "path": {
@@ -20,7 +27,14 @@
           "sv": "/sv/boende",
           "en": "/en/housing"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-asuminen-prod.apps.platta.hel.fi"
+        },
         "meta": {}
       },
       "stage": {
@@ -29,7 +43,14 @@
           "sv": "/sv/staging-boende",
           "en": "/en/staging-housing"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-asuminen-staging.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://example.com"
         }
@@ -40,7 +61,14 @@
           "sv": "/sv/test-boende",
           "en": "/en/test-housing"
         },
-        "domain": "helfi-asuminen-test.docker.so",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-asuminen-test.apps.arodevtest.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://example.com"
         }

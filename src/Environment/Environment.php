@@ -12,12 +12,12 @@ final class Environment {
   /**
    * Constructs a new instance.
    *
-   * @param string $domain
-   *   The domain.
+   * @param \Drupal\helfi_api_base\Environment\Address $address
+   *   The address.
+   * @param \Drupal\helfi_api_base\Environment\Address $internalAddress
+   *   The internal address.
    * @param array $paths
    *   The paths.
-   * @param string $protocol
-   *   The protocol.
    * @param string $id
    *   Environment resolver identifier for the project.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentEnum $environment
@@ -26,9 +26,9 @@ final class Environment {
    *   The environment specific metadata.
    */
   public function __construct(
-    private readonly string $domain,
+    private readonly Address $address,
+    private readonly Address $internalAddress,
     private readonly array $paths,
-    private readonly string $protocol,
     private readonly string $id,
     private readonly EnvironmentEnum $environment,
     private readonly ?EnvironmentMetadata $metadata,
@@ -46,42 +46,6 @@ final class Environment {
   }
 
   /**
-   * Gets the domain.
-   *
-   * @return string
-   *   The domain.
-   */
-  public function getDomain() : string {
-    return $this->domain;
-  }
-
-  /**
-   * Gets the protocol.
-   *
-   * @return string
-   *   The protocol.
-   */
-  public function getProtocol() : string {
-    return $this->protocol;
-  }
-
-  /**
-   * Gets the original URL for given language.
-   *
-   * @param string $language
-   *   The language.
-   *
-   * @return string
-   *   The URL.
-   */
-  private function doGetUrl(string $language) : string {
-    return vsprintf('%s/%s', [
-      $this->getBaseUrl(),
-      ltrim($this->getPath($language), '/'),
-    ]);
-  }
-
-  /**
    * Gets the full URL for given language.
    *
    * @param string $language
@@ -91,11 +55,7 @@ final class Environment {
    *   The URL.
    */
   public function getUrl(string $language) : string {
-    $url = $this->doGetUrl($language);
-    // Local uses an internal address by default to allow containers to
-    // communicate via API requests. Convert URL back to a proper link that
-    // works with browsers.
-    return str_replace(['http://', ':8080'], ['https://', ''], $url);
+    return sprintf('%s/%s', $this->address->getAddress(), ltrim($this->getPath($language), '/'));
   }
 
   /**
@@ -108,7 +68,7 @@ final class Environment {
    *   The canonical URL.
    */
   public function getInternalAddress(string $language) : string {
-    return $this->doGetUrl($language);
+    return sprintf('%s/%s', $this->internalAddress->getAddress(), ltrim($this->getPath($language), '/'));
   }
 
   /**
@@ -118,10 +78,7 @@ final class Environment {
    *   The base url.
    */
   public function getBaseUrl() : string {
-    return vsprintf('%s://%s', [
-      $this->getProtocol(),
-      $this->getDomain(),
-    ]);
+    return $this->address->getAddress();
   }
 
   /**

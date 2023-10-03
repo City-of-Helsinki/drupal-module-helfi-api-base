@@ -125,7 +125,7 @@ class EnvironmentResolverTest extends UnitTestCase {
             ],
           ],
         ]),
-        'Project missing domain or paths setting.',
+        'Project missing "address", "internal_address" or "paths" setting.',
       ],
       [
         json_encode([

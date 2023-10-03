@@ -11,8 +11,15 @@
           "sv": "/sv/boende",
           "en": "/en/housing"
         },
-        "protocol": "http",
-        "domain": "helfi-asuminen.docker.so:8080",
+        "address": {
+          "protocol": "https",
+          "domain": "helfi-asuminen.docker.so"
+        },
+        "internal_address": {
+          "protocol": "http",
+          "domain": "helfi-asuminen.docker.so",
+          "port": 8080
+        },
         "meta": {}
       },
       "test": {
@@ -21,7 +28,14 @@
           "sv": "/sv/test-boende",
           "en": "/en/test-housing"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-asuminen-test.apps.arodevtest.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-asuminen-test"
         }
@@ -32,7 +46,14 @@
           "sv": "/sv/staging-boende",
           "en": "/en/staging-housing"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-asuminen-staging.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-asuminen-staging"
         }
@@ -43,7 +64,14 @@
           "sv": "/sv/boende",
           "en": "/en/housing"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-asuminen-prod.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-asuminen-prod"
         }
@@ -62,8 +90,15 @@
           "sv": "/sv",
           "en": "/en"
         },
-        "protocol": "http",
-        "domain": "helfi-etusivu.docker.so:8080",
+        "address": {
+          "protocol": "https",
+          "domain": "helfi-etusivu.docker.so"
+        },
+        "internal_address": {
+          "protocol": "http",
+          "domain": "helfi-etusivu.docker.so",
+          "port": 8080
+        },
         "meta": {}
       },
       "test": {
@@ -72,7 +107,14 @@
           "sv": "/sv/test-huvudsida",
           "en": "/en/test-frontpage"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-etusivu-test.apps.arodevtest.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-helfi-etusivu-test"
         }
@@ -83,7 +125,14 @@
           "sv": "/sv/staging-huvudsida",
           "en": "/en/staging-frontpage"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-etusivu-staging.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-helfi-etusivu-staging"
         }
@@ -94,7 +143,14 @@
           "sv": "/sv",
           "en": "/en"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-etusivu-prod.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-helfi-etusivu-prod"
         }
@@ -113,8 +169,15 @@
           "sv": "/sv/fostran-och-utbildning",
           "en": "/en/childhood-and-education"
         },
-        "protocol": "http",
-        "domain": "helfi-kasko.docker.so:8080",
+        "address": {
+          "protocol": "https",
+          "domain": "helfi-kasko.docker.so"
+        },
+        "internal_address": {
+          "protocol": "http",
+          "domain": "helfi-kasko.docker.so",
+          "port": 8080
+        },
         "meta": {}
       },
       "test": {
@@ -123,7 +186,14 @@
           "sv": "/sv/test-fostran-och-utbildning",
           "en": "/en/test-childhood-and-education"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-kasvatus-koulutus-test.apps.arodevtest.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kasko-kasvatus-koulutus-test"
         }
@@ -134,7 +204,14 @@
           "sv": "/sv/staging-fostran-och-utbildning",
           "en": "/en/staging-childhood-and-education"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-kasvatus-koulutus-staging.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kasko-kasvatus-koulutus-staging"
         }
@@ -145,7 +222,14 @@
           "sv": "/sv/fostran-och-utbildning",
           "en": "/en/childhood-and-education"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-kasvatus-koulutus-prod.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kasko-kasvatus-koulutus-prod"
         }
@@ -164,8 +248,15 @@
           "sv": "/sv/kultur-och-fritid",
           "en": "/en/culture-and-leisure"
         },
-        "protocol": "http",
-        "domain": "helfi-kuva.docker.so:8080",
+        "address": {
+          "protocol": "https",
+          "domain": "helfi-kuva.docker.so"
+        },
+        "internal_address": {
+          "protocol": "http",
+          "domain": "helfi-kuva.docker.so",
+          "port": 8080
+        },
         "meta": {}
       },
       "test": {
@@ -174,7 +265,14 @@
           "sv": "/sv/test-kultur-och-fritid",
           "en": "/en/test-culture-and-leisure"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-kuva-test.apps.arodevtest.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kuva-helfi-kuva-test"
         }
@@ -185,7 +283,14 @@
           "sv": "/sv/staging-kultur-och-fritid",
           "en": "/en/staging-culture-and-leisure"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-kuva-staging.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kuva-helfi-kuva-staging"
         }
@@ -196,7 +301,14 @@
           "sv": "/sv/kultur-och-fritid",
           "en": "/en/culture-and-leisure"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-kuva-prod.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kuva-helfi-kuva-prod"
         }
@@ -215,8 +327,15 @@
           "sv": "/sv/stadsmiljo-och-trafik",
           "en": "/en/urban-environment-and-traffic"
         },
-        "protocol": "http",
-        "domain": "helfi-kymp.docker.so:8080",
+        "address": {
+          "protocol": "http",
+          "domain": "helfi-kymp.docker.so"
+        },
+        "internal_address": {
+          "protocol": "http",
+          "domain": "helfi-kymp.docker.so",
+          "port": 8080
+        },
         "meta": {}
       },
       "test": {
@@ -225,7 +344,14 @@
           "sv": "/sv/test-stadsmiljo-och-trafik",
           "en": "/en/test-urban-environment-and-traffic"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-liikenne-test.apps.arodevtest.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-liikenne-test"
         }
@@ -236,7 +362,14 @@
           "sv": "/sv/staging-stadsmiljo-och-trafik",
           "en": "/en/staging-urban-environment-and-traffic"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-liikenne-staging.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-liikenne-staging"
         }
@@ -247,7 +380,14 @@
           "sv": "/sv/stadsmiljo-och-trafik",
           "en": "/en/urban-environment-and-traffic"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-liikenne-prod.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-liikenne-prod"
         }
@@ -266,8 +406,15 @@
           "sv": "/sv/lediga-jobb",
           "en": "/en/open-jobs"
         },
-        "protocol": "http",
-        "domain": "helfi-rekry.docker.so:8080",
+        "address": {
+          "protocol": "https",
+          "domain": "helfi-rekry.docker.so"
+        },
+        "internal_address": {
+          "protocol": "http",
+          "domain": "helfi-rekry.docker.so",
+          "port": 8080
+        },
         "meta": {}
       },
       "test": {
@@ -276,7 +423,14 @@
           "sv": "/sv/test-lediga-jobb",
           "en": "/en/test-open-jobs"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-rekry-test.apps.arodevtest.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-helfi-rekry-test"
         }
@@ -287,7 +441,14 @@
           "sv": "/sv/staging-lediga-jobb",
           "en": "/en/staging-open-jobs"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-rekry-staging.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-helfi-rekry-staging"
         }
@@ -298,7 +459,14 @@
           "sv": "/sv/lediga-jobb",
           "en": "/en/open-jobs"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-rekry-prod.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-helfi-rekry-prod"
         }
@@ -317,8 +485,15 @@
           "sv": "/sv/beslutsfattande-och-forvaltning",
           "en": "/en/decision-making"
         },
-        "protocol": "http",
-        "domain": "strategia.docker.so:8080",
+        "address": {
+          "protocol": "https",
+          "domain": "strategia.docker.so"
+        },
+        "internal_address": {
+          "protocol": "http",
+          "domain": "strategia.docker.so",
+          "port": 8080
+        },
         "meta": {}
       },
       "test": {
@@ -327,7 +502,14 @@
           "sv": "/sv/test-beslutsfattande-och-forvaltning",
           "en": "/en/test-decision-making"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-strategia-talous-test.apps.arodevtest.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-strategia-talous-test"
         }
@@ -338,7 +520,14 @@
           "sv": "/sv/staging-beslutsfattande-och-forvaltning",
           "en": "/en/staging-decision-making"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-strategia-talous-staging.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-strategia-talous-staging"
         }
@@ -349,7 +538,14 @@
           "sv": "/sv/beslutsfattande-och-forvaltning",
           "en": "/en/decision-making"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-strategia-talous-prod.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-strategia-talous-prod"
         }
@@ -368,8 +564,15 @@
           "sv": "/sv/social-och-halsovardstjanster",
           "en": "/en/health-and-social-services"
         },
-        "protocol": "http",
-        "domain": "helfi-sote.docker.so:8080",
+        "address": {
+          "protocol": "https",
+          "domain": "helfi-sote.docker.so"
+        },
+        "internal_address": {
+          "protocol": "http",
+          "domain": "helfi-sote.docker.so",
+          "port": 8080
+        },
         "meta": {}
       },
       "test": {
@@ -378,7 +581,14 @@
           "sv": "/sv/test-social-och-halsovardstjanster",
           "en": "/en/test-health-and-social-services"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-terveys-test.apps.arodevtest.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-terveys-test"
         }
@@ -389,7 +599,14 @@
           "sv": "/sv/staging-social-och-halsovardstjanster",
           "en": "/en/staging-health-and-social-services"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-terveys-staging.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-terveys-staging"
         }
@@ -400,7 +617,14 @@
           "sv": "/sv/social-och-halsovardstjanster",
           "en": "/en/health-and-social-services"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-terveys-prod.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-terveys-prod"
         }
@@ -419,8 +643,15 @@
           "sv": "/sv/foretag-och-arbete",
           "en": "/en/business-and-work"
         },
-        "protocol": "http",
-        "domain": "helfi-elo.docker.so:8080",
+        "address": {
+          "protocol": "https",
+          "domain": "helfi-elo.docker.so"
+        },
+        "internal_address": {
+          "protocol": "http",
+          "domain": "helfi-elo.docker.so",
+          "port": 8080
+        },
         "meta": {}
       },
       "test": {
@@ -429,7 +660,14 @@
           "sv": "/sv/test-foretag-och-arbete",
           "en": "/en/test-business-and-work"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-tyo-yrittaminen-test.apps.arodevtest.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-tyo-yrittaminen-test"
         }
@@ -440,7 +678,14 @@
           "sv": "/sv/staging-foretag-och-arbete",
           "en": "/en/staging-business-and-work"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-tyo-yrittaminen-staging.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-tyo-yrittaminen-staging"
         }
@@ -451,7 +696,14 @@
           "sv": "/sv/foretag-och-arbete",
           "en": "/en/business-and-work"
         },
-        "domain": "www.hel.fi",
+        "address": {
+          "protocol": "https",
+          "domain": "www.hel.fi"
+        },
+        "internal_address": {
+          "protocol": "https",
+          "domain": "nginx-tyo-yrittaminen-prod.apps.platta.hel.fi"
+        },
         "meta": {
           "openshift_console_link": "https://console-openshift-console.apps.platta.hel.fi/k8s/cluster/projects/hki-kanslia-tyo-yrittaminen-prod"
         }
