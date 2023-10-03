@@ -23,7 +23,9 @@ class EnvironmentTest extends UnitTestCase {
    * @covers ::getId
    * @covers ::getEnvironment
    * @covers ::getEnvironmentName
+   * @covers ::getInternalBaseUrl
    * @covers ::getBaseUrl
+   * @cove
    * @covers ::getMetadata
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::__construct
    * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::getOpenshiftConsoleLink
