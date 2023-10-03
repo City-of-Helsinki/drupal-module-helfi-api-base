@@ -54,6 +54,23 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
    * @covers ::isValidInstance
    * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
    */
+  public function testInvalidProject() : void {
+    // Make sure a project is considered valid if environment resolver
+    // fails to find an active project.
+    $mock = $this->mockCacheInvalidator();
+    $environmentResolver = $this->getEnvironmentResolver('invalid_project');
+    $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);
+    $sut->onReceive(new PubSubMessage(['data' => ['tags' => ['node:123']]]));
+    $this->assertArrayHasKey('node:123', $mock->tags);
+    $this->assertEquals(1, $mock->checkSumResets);
+  }
+
+  /**
+   * @covers ::__construct
+   * @covers ::onReceive
+   * @covers ::isValidInstance
+   * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
+   */
   public function testInvalidCacheTags() : void {
     $mock = $this->mockCacheInvalidator();
     $environmentResolver = $this->getEnvironmentResolver();
