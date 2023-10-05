@@ -6,8 +6,11 @@ namespace Drupal\Tests\helfi_api_base\Unit\EventSubscriber;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber;
 use Drupal\Tests\helfi_api_base\Traits\CacheTagInvalidatorTrait;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -19,6 +22,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
 
   use ProphecyTrait;
   use CacheTagInvalidatorTrait;
+  use EnvironmentResolverTrait;
 
   /**
    * @covers ::getSubscribedEvents
@@ -30,6 +34,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
   /**
    * @covers ::__construct
    * @covers ::onReceive
+   * @covers ::isValidInstance
    * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
    */
   public function testInvalidServiceException() : void {
@@ -38,18 +43,43 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
     $this->expectException(\LogicException::class);
     $invalidator = $this->prophesize(CacheTagsInvalidatorInterface::class);
     $invalidator->invalidateTags(['node:123'])->shouldBeCalled();
-    $sut = new CacheTagInvalidatorSubscriber($invalidator->reveal());
+    $environmentResolver = $this->getEnvironmentResolver();
+    $sut = new CacheTagInvalidatorSubscriber($invalidator->reveal(), $environmentResolver);
     $sut->onReceive(new PubSubMessage(['data' => ['tags' => ['node:123']]]));
   }
 
   /**
    * @covers ::__construct
    * @covers ::onReceive
+   * @covers ::isValidInstance
+   * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
+   */
+  public function testInvalidProject() : void {
+    // Make sure a project is considered valid if environment resolver
+    // fails to find an active project.
+    $mock = $this->mockCacheInvalidator();
+    $environmentResolver = $this->getEnvironmentResolver('invalid_project');
+    $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);
+    $sut->onReceive(new PubSubMessage([
+      'data' => [
+        'tags' => ['node:123'],
+        'instances' => [Project::ASUMINEN],
+      ],
+    ]));
+    $this->assertArrayHasKey('node:123', $mock->tags);
+    $this->assertEquals(1, $mock->checkSumResets);
+  }
+
+  /**
+   * @covers ::__construct
+   * @covers ::onReceive
+   * @covers ::isValidInstance
    * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
    */
   public function testInvalidCacheTags() : void {
     $mock = $this->mockCacheInvalidator();
-    $sut = new CacheTagInvalidatorSubscriber($mock);
+    $environmentResolver = $this->getEnvironmentResolver();
+    $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);
     $sut->onReceive(new PubSubMessage([]));
     $this->assertEmpty($mock->tags);
   }
@@ -57,15 +87,56 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
   /**
    * @covers ::__construct
    * @covers ::onReceive
+   * @covers ::isValidInstance
    * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
    */
   public function testValidCacheTags() : void {
     $mock = $this->mockCacheInvalidator();
-    $sut = new CacheTagInvalidatorSubscriber($mock);
+    $environmentResolver = $this->getEnvironmentResolver();
+    $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);
     $sut->onReceive(new PubSubMessage(['data' => ['tags' => ['node:123']]]));
 
     $this->assertArrayHasKey('node:123', $mock->tags);
     $this->assertEquals(1, $mock->checkSumResets);
+  }
+
+  /**
+   * @covers ::__construct
+   * @covers ::onReceive
+   * @covers ::isValidInstance
+   * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
+   */
+  public function testValidInstances() : void {
+    $mock = $this->mockCacheInvalidator();
+    $environmentResolver = $this->getEnvironmentResolver(Project::ASUMINEN, EnvironmentEnum::Local);
+
+    $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);
+    $sut->onReceive(new PubSubMessage([
+      'data' => [
+        'tags' => ['node:123'],
+        'instances' => [],
+      ],
+    ]));
+    $this->assertArrayHasKey('node:123', $mock->tags);
+    $this->assertEquals(1, $mock->checkSumResets);
+
+    $sut->onReceive(new PubSubMessage([
+      'data' => [
+        'tags' => ['node:123'],
+        'instances' => [Project::ASUMINEN],
+      ],
+    ]));
+    $this->assertArrayHasKey('node:123', $mock->tags);
+    $this->assertEquals(2, $mock->checkSumResets);
+
+    // Make sure the message is ignored if projects do not match.
+    $sut->onReceive(new PubSubMessage([
+      'data' => [
+        'tags' => ['node:123'],
+        'instances' => [Project::ETUSIVU],
+      ],
+    ]));
+    $this->assertEquals(2, $mock->checkSumResets);
   }
 
 }

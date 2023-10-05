@@ -28,14 +28,17 @@ final class CacheTagInvalidator {
    *
    * @param array $tags
    *   An array of cache tags.
+   * @param array $instances
+   *   The instances to flush caches from.
    *
    * @return $this
    *   The self.
    */
-  public function invalidateTags(array $tags) : self {
+  public function invalidateTags(array $tags, array $instances = []) : self {
     try {
       $this->pubSubManager->sendMessage([
         'tags' => $tags,
+        'instances' => $instances,
       ]);
     }
     catch (ConnectionException) {
