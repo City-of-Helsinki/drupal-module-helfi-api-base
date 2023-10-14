@@ -8,6 +8,7 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\helfi_api_base\Logger\JsonLog;
 use Drupal\KernelTests\KernelTestBase;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Tests json logger.
@@ -45,6 +46,7 @@ class JsonLoggerTest extends KernelTestBase {
   private function getSut(bool $status) :  LoggerInterface {
     return new JsonLog(
       $this->container->get('logger.log_message_parser'),
+      new Filesystem(),
       $this->container->getParameter('helfi_api_base.json_logger_path'),
       $status
     );
