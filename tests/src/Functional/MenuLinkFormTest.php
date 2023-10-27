@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_api_base\Functional;
 
 use Drupal\Core\Url;
+use Drupal\remote_entity_test\Entity\RemoteEntityTest;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 
 /**
@@ -84,8 +85,9 @@ class MenuLinkFormTest extends BrowserTestBase {
     ]);
     $this->drupalLogin($account);
 
-    $entity = $storage->create(['id' => 1, 'name' => 'Test en'])
-      ->addTranslation('fi', ['name' => 'Test fi']);
+    $entity = $storage->create(['id' => 1, 'name' => 'Test en']);
+    $this->assertInstanceOf(RemoteEntityTest::class, $entity);
+    $entity->addTranslation('fi', ['name' => 'Test fi']);
     $entity->save();
 
     foreach (['en', 'fi'] as $langcode) {
@@ -114,12 +116,13 @@ class MenuLinkFormTest extends BrowserTestBase {
 
       $storage->resetCache([$entity->id()]);
       // Make sure menu link is referenced in entity.
-      $menuLink = $storage->load($entity->id())
-        ->getTranslation($langcode)
+      $entity = $storage->load($entity->id());
+      $this->assertInstanceOf(RemoteEntityTest::class, $entity);
+      /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menuLink */
+      $menuLink = $entity->getTranslation($langcode)
         ->get('menu_link')
-        ->entity
-        ->getTranslation($langcode);
-
+        ->entity;
+      $menuLink = $menuLink->getTranslation($langcode);
       $this->assertEquals(9, $menuLink->getWeight());
       $this->assertEquals('Test title ' . $langcode, $menuLink->getTitle());
     }
@@ -136,10 +139,13 @@ class MenuLinkFormTest extends BrowserTestBase {
 
     // Make sure english menu link still exists.
     $storage->resetCache([$entity->id()]);
-    $menuLink = $storage->load($entity->id())
-      ->getTranslation('en')
+    $entity = $storage->load($entity->id());
+    $this->assertInstanceOf(RemoteEntityTest::class, $entity);
+    /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menuLink */
+    $menuLink = $entity->getTranslation($langcode)
       ->get('menu_link')
       ->entity;
+    $menuLink = $menuLink->getTranslation('en');
     $this->assertEquals('Test title en', $menuLink->getTitle());
 
     // Re-add finnish menu link and remove the default translation.

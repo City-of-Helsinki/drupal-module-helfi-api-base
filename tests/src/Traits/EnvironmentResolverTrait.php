@@ -15,6 +15,13 @@ use Drupal\Tests\UnitTestCase;
 trait EnvironmentResolverTrait {
 
   /**
+   * The container.
+   *
+   * @var \Drupal\Component\DependencyInjection\ContainerInterface
+   */
+  protected $container;
+
+  /**
    * Sets the active project.
    *
    * @param string $project
@@ -55,9 +62,11 @@ trait EnvironmentResolverTrait {
     }
 
     if ($this instanceof UnitTestCase) {
-      return $this->getConfigFactoryStub([
+      /** @var \Drupal\Core\Config\ConfigFactoryInterface $configFactory */
+      $configFactory = $this->getConfigFactoryStub([
         'helfi_api_base.environment_resolver.settings' => $config,
       ]);
+      return $configFactory;
     }
     $this->setActiveProject($projectName, $envName);
 

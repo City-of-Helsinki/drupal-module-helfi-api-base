@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   deriver = "Drupal\helfi_api_base\Plugin\Derivative\MigrationUpdateActionDerivative",
  * )
  */
-class MigrationUpdateAction extends ActionBase implements ContainerFactoryPluginInterface {
+final class MigrationUpdateAction extends ActionBase implements ContainerFactoryPluginInterface {
 
   use MigrateTrait;
 
@@ -51,8 +51,8 @@ class MigrationUpdateAction extends ActionBase implements ContainerFactoryPlugin
     array $configuration,
     $plugin_id,
     $plugin_definition
-  ) {
-    $instance = new static($configuration, $plugin_definition, $plugin_definition);
+  ) : self {
+    $instance = new self($configuration, $plugin_definition, $plugin_definition);
     $instance->migrationPluginManager = $container->get('plugin.manager.migration');
     $instance->entityTypeManager = $container->get('entity_type.manager');
 

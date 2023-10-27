@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\Entity\Form;
 
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuParentFormSelectorInterface;
 use Drupal\Core\Site\Settings;
@@ -13,8 +14,8 @@ use Drupal\menu_link_content\MenuLinkContentInterface;
 /**
  * A trait to allow entity forms to provide a menu link form.
  *
- * To use this, call the ::attachMenuLinkForm() method in your
- * ::buildForm() method, like:
+ * To use this, call the '::attachMenuLinkForm()' method in your
+ * '::buildForm()' method, like:
  *
  * @code
  * $form = $this->attachMenuLinkForm($form, $form_state);
@@ -48,6 +49,7 @@ trait MenuLinkFormTrait {
    */
   protected function getDefaultMenuLink() : MenuLinkContentInterface {
     $entity = $this->getEntity();
+    assert($entity instanceof FieldableEntityInterface);
 
     if (!$menuLink = $entity->get($this->menuLinkFieldName)->entity) {
       $storage = $this->entityTypeManager
@@ -64,7 +66,10 @@ trait MenuLinkFormTrait {
       $menuLink = empty($results) ? MenuLinkContent::create([]) : MenuLinkContent::load(reset($results));
     }
 
-    return $this->entityRepository->getTranslationFromContext($menuLink);
+    $entity = $this->entityRepository->getTranslationFromContext($menuLink);
+    assert($entity instanceof MenuLinkContentInterface);
+
+    return $entity;
   }
 
   /**
@@ -173,6 +178,7 @@ trait MenuLinkFormTrait {
    */
   public function attachMenuLinkFormSubmit(array $form, FormStateInterface $formState) : void {
     $entity = $this->getEntity();
+    assert($entity instanceof FieldableEntityInterface);
     /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menuLink */
     $menuLink = $formState->get('menu_link');
 

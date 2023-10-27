@@ -13,12 +13,15 @@ use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_api_base\Link\LinkProcessor;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \Drupal\helfi_api_base\Link\LinkProcessor
  * @group helfi_api_base
  */
 class LinkProcessorTest extends UnitTestCase {
+
+  use ProphecyTrait;
 
   /**
    * @covers ::preRenderLink

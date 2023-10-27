@@ -14,7 +14,7 @@ final class Json implements VaultItemInterface {
   /**
    * The json decoded data.
    *
-   * @var object|mixed
+   * @var object
    */
   private readonly object $data;
 

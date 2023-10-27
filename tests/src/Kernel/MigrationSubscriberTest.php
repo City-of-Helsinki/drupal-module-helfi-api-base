@@ -37,9 +37,9 @@ class MigrationSubscriberTest extends ApiKernelTestBase {
   /**
    * The migration subscriber.
    *
-   * @var null|\Drupal\helfi_api_base\EventSubscriber\MigrationSubscriber
+   * @var \Drupal\helfi_api_base\EventSubscriber\MigrationSubscriber
    */
-  protected ?MigrationSubscriber $migrationSubscriber;
+  protected MigrationSubscriber $migrationSubscriber;
 
   /**
    * {@inheritdoc}
@@ -101,6 +101,7 @@ class MigrationSubscriberTest extends ApiKernelTestBase {
     $this->migrationSubscriber->onPreImport($event);
 
     $entity = $this->reloadEntity($entity);
+    $this->assertInstanceOf(RemoteEntityTest::class, $entity);
     $this->assertEquals($entity->getSyncAttempts(), 1);
   }
 

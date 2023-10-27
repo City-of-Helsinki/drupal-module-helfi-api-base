@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("Composer")
  * )
  */
-class Composer extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface {
+final class Composer extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface {
 
   /**
    * The composer info.
@@ -38,8 +38,8 @@ class Composer extends DebugDataItemPluginBase implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    $instance = new static($configuration, $plugin_id, $plugin_definition);
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
+    $instance = new self($configuration, $plugin_id, $plugin_definition);
     $instance->composerInfo = $container->get('helfi_api_base.composer_info');
     return $instance;
   }

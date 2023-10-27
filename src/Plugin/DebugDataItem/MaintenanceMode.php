@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("Maintenance mode")
  * )
  */
-class MaintenanceMode extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface {
+final class MaintenanceMode extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface {
 
   /**
    * The state service.
@@ -30,8 +30,8 @@ class MaintenanceMode extends DebugDataItemPluginBase implements ContainerFactor
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    $instance = new static($configuration, $plugin_id, $plugin_definition);
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
+    $instance = new self($configuration, $plugin_id, $plugin_definition);
     $instance->state = $container->get('state');
     return $instance;
   }

@@ -112,9 +112,9 @@ class VaultManagerTest extends UnitTestCase {
     $instance = $sut->create();
     $this->assertInstanceOf(VaultManager::class, $instance);
 
-    foreach ($accounts as $acccount) {
-      $this->assertSame($acccount['id'], $instance->get($acccount['id'])->id());
-      $this->assertSame($acccount['plugin'], $instance->get($acccount['id'])::PLUGIN);
+    foreach ($accounts as $account) {
+      $this->assertSame($account['id'], $instance->get($account['id'])->id());
+      $this->assertSame($account['plugin'], $instance->get($account['id'])::PLUGIN);
     }
   }
 

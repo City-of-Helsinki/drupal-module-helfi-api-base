@@ -61,7 +61,7 @@ final class JsonLog implements LoggerInterface {
     }
     // Populate the message placeholders and then replace them in the message.
     $variables = $this->parser->parseMessagePlaceholders($message, $context);
-    $message = empty($variables) ? $message : strtr($message, $variables);
+    $message = empty($variables) ? $message : strtr((string) $message, $variables);
 
     $this->output([
       'base_url'    => $base_url,

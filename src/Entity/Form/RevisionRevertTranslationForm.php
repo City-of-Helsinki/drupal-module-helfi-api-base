@@ -5,8 +5,11 @@ declare(strict_types = 1);
 namespace Drupal\helfi_api_base\Entity\Form;
 
 use Drupal\Core\Entity\RevisionableInterface;
+use Drupal\Core\Entity\RevisionLogInterface;
+use Drupal\Core\Entity\TranslatableRevisionableInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\Form\RevisionRevertForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +36,7 @@ final class RevisionRevertTranslationForm extends RevisionRevertForm {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container) : self {
     $instance = parent::create($container);
     $instance->languageManager = $container->get('language_manager');
     return $instance;
@@ -42,14 +45,15 @@ final class RevisionRevertTranslationForm extends RevisionRevertForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId() : string {
     return 'revision_revert_translation_confirm';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getQuestion() {
+  public function getQuestion() : TranslatableMarkup {
+    assert($this->revision instanceof RevisionLogInterface);
     return $this->t('Are you sure you want to revert @language translation to the revision from %revision-date?', [
       '@language' => $this->languageManager->getLanguageName($this->langcode),
       '%revision-date' => $this->dateFormatter->format($this->revision->getRevisionCreationTime()),
@@ -59,14 +63,14 @@ final class RevisionRevertTranslationForm extends RevisionRevertForm {
   /**
    * {@inheritdoc}
    */
-  public function getDescription() {
-    return '';
+  public function getDescription() : TranslatableMarkup {
+    return $this->t('This action cannot be undone.');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $_entity_revision = NULL, Request $request = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $_entity_revision = NULL, Request $request = NULL) : array {
     $this->langcode = $request->attributes->get('langcode');
 
     return parent::buildForm($form, $form_state, $_entity_revision);
@@ -75,7 +79,8 @@ final class RevisionRevertTranslationForm extends RevisionRevertForm {
   /**
    * {@inheritdoc}
    */
-  protected function prepareRevision(RevisionableInterface $revision) {
+  protected function prepareRevision(RevisionableInterface $revision) : RevisionableInterface {
+    assert($revision instanceof TranslatableRevisionableInterface);
     $translation = $revision->getTranslation($this->langcode);
     return parent::prepareRevision($translation);
   }

@@ -10,7 +10,7 @@ use Drupal\helfi_api_base\Entity\RevisionController;
 use Symfony\Component\Routing\Route;
 
 /**
- * Providers extended revision routes for content entikties.
+ * Providers extended revision routes for content entities.
  */
 final class RevisionRouteProvider extends EntityRevisionRouteProvider {
 
@@ -31,11 +31,12 @@ final class RevisionRouteProvider extends EntityRevisionRouteProvider {
   /**
    * {@inheritdoc}
    */
-  protected function getRevisionHistoryRoute(EntityTypeInterface $entity_type) {
+  protected function getRevisionHistoryRoute(EntityTypeInterface $entity_type): ?Route {
     if ($route = parent::getRevisionHistoryRoute($entity_type)) {
       $route->setDefault('_controller', RevisionController::class . '::revisionOverviewController');
       return $route;
     }
+    return NULL;
   }
 
   /**

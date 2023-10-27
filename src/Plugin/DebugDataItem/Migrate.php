@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("Migrate data")
  * )
  */
-class Migrate extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface, CacheableDependencyInterface {
+final class Migrate extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface, CacheableDependencyInterface {
 
   /**
    * The migration plugin manager.
@@ -41,8 +41,8 @@ class Migrate extends DebugDataItemPluginBase implements ContainerFactoryPluginI
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    $instance = new static($configuration, $plugin_id, $plugin_definition);
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) : self {
+    $instance = new self($configuration, $plugin_id, $plugin_definition);
     $instance->migrationPluginManager = $container->get('plugin.manager.migration');
     $instance->keyValue = $container->get('keyvalue')
       ->get('migrate_last_imported');

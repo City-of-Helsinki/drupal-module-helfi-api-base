@@ -9,6 +9,7 @@ use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\TranslatableInterface;
 
 /**
  * A class to manage revisions.
@@ -149,10 +150,11 @@ class RevisionManager {
     krsort($revision_ids);
 
     foreach ($revision_ids as $vid) {
-      /** @var \Drupal\Core\Entity\RevisionableInterface $revision */
+      /** @var \Drupal\Core\Entity\TranslatableRevisionableInterface $revision */
       $revision = $storage->loadRevision($vid);
 
       foreach ($revision->getTranslationLanguages() as $langcode => $language) {
+        assert($revision instanceof TranslatableInterface);
         if ($revision->hasTranslation($langcode) && $revision->getTranslation($langcode)->isRevisionTranslationAffected()) {
           $revisions[$langcode][] = $revision->getLoadedRevisionId();
         }

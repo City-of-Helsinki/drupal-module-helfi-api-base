@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Traits;
 
 use Drupal\helfi_api_base\Logger\RfcTestLogger;
-use Psr\Log\LoggerInterface;
 
 /**
  * Provides a test logger trait to catch log messages.
@@ -15,9 +14,9 @@ trait TestLoggerTrait {
   /**
    * The test logger.
    *
-   * @var null|\Psr\Log\LoggerInterface
+   * @var \Drupal\helfi_api_base\Logger\RfcTestLogger|null
    */
-  protected ?LoggerInterface $testLogger = NULL;
+  protected ?RfcTestLogger $testLogger = NULL;
 
   /**
    * The expected log messages.

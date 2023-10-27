@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\helfi_api_base\Kernel\Entity\Revision;
 
 use Drupal\helfi_api_base\Entity\Revision\RevisionManager;
+use Drupal\remote_entity_test\Entity\RemoteEntityTest;
 use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\LanguageManagerTrait;
 
@@ -144,6 +145,7 @@ class RevisionManagerTest extends ApiKernelTestBase {
 
     for ($i = 0; $i < 10; $i++) {
       $rmt = $storage->load($entity->id());
+      $this->assertInstanceOf(RemoteEntityTest::class, $rmt);
       $rmt->set('name', 'test en ' . $i);
 
       $rmt->getTranslation('fi')
