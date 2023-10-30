@@ -11,7 +11,8 @@
         "firebase/php-jwt": "^6.5",
         "php": "^8.1",
         "t4web/composer-lock-parser": "^1.0",
-        "textalk/websocket": "^1.6"
+        "textalk/websocket": "^1.6",
+        "webmozart/assert": "^1.0"
     },
     "conflict": {
         "drupal/helfi_debug": "*"
