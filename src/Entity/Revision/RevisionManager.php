@@ -9,7 +9,7 @@ use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\TranslatableInterface;
+use Drupal\Core\Entity\TranslatableRevisionableInterface;
 
 /**
  * A class to manage revisions.
@@ -60,7 +60,7 @@ class RevisionManager {
     try {
       $definition = $this->entityTypeManager->getDefinition($entityType);
 
-      if (!$definition->isRevisionable()) {
+      if (!$definition->isRevisionable() || !$definition->entityClassImplements(TranslatableRevisionableInterface::class)) {
         throw new \InvalidArgumentException('Entity type does not support revisions.');
       }
     }
@@ -154,10 +154,10 @@ class RevisionManager {
       $revision = $storage->loadRevision($vid);
 
       foreach ($revision->getTranslationLanguages() as $langcode => $language) {
-        assert($revision instanceof TranslatableInterface);
-        if ($revision->hasTranslation($langcode) && $revision->getTranslation($langcode)->isRevisionTranslationAffected()) {
-          $revisions[$langcode][] = $revision->getLoadedRevisionId();
+        if (!$this->isValidRevision($langcode, $revision)) {
+          continue;
         }
+        $revisions[$langcode][] = $revision->getLoadedRevisionId();
       }
     }
 
@@ -166,6 +166,31 @@ class RevisionManager {
     }
 
     return $revisions;
+  }
+
+  /**
+   * Check if given revision is valid for deletion.
+   *
+   * @param string $langcode
+   *   The langcode.
+   * @param \Drupal\Core\Entity\TranslatableRevisionableInterface $revision
+   *   The revision to test.
+   *
+   * @return bool
+   *   TRUE if given revision is valid for deletion.
+   */
+  private function isValidRevision(string $langcode, TranslatableRevisionableInterface $revision) : bool {
+    // Skip default revisions and revision without translation for given
+    // language.
+    if (!$revision->hasTranslation($langcode) || $revision->isDefaultRevision()) {
+      return FALSE;
+    }
+    $revision = $revision->getTranslation($langcode);
+
+    if (!$revision->isRevisionTranslationAffected() || $revision->isLatestTranslationAffectedRevision()) {
+      return FALSE;
+    }
+    return TRUE;
   }
 
   /**

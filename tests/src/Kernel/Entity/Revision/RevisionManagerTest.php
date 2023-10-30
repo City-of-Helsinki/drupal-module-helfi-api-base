@@ -160,16 +160,16 @@ class RevisionManagerTest extends ApiKernelTestBase {
       $storage->createRevision($rmt)->save();
     }
     // Make sure items are queued on entity update.
-    $this->assertQueueItems(6);
+    $this->assertQueueItems(5);
 
     $revisions = $this->getSut()->getRevisionsPerLanguage('remote_entity_test', $entity->id());
 
     // We have $i + 1 revisions (11) in total, except sv, which has 10 because
     // we skipped one revision on purpose.
-    foreach (['en' => 6, 'fi' => 6, 'sv' => 5] as $langcode => $expected) {
+    foreach (['en' => 5, 'fi' => 5, 'sv' => 4] as $langcode => $expected) {
       $this->assertCount($expected, $revisions[$langcode]);
     }
-    $this->assertCount(6, $this->getSut()->getRevisions('remote_entity_test', $entity->id()));
+    $this->assertCount(5, $this->getSut()->getRevisions('remote_entity_test', $entity->id()));
 
     // Make sure no revisions are returned when $keep exceeds the number of
     // total revisions.
