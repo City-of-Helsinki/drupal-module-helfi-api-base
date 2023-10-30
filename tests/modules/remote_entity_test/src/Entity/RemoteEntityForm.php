@@ -45,10 +45,8 @@ class RemoteEntityForm extends CoreContentEntityForm {
   /**
    * {@inheritdoc}
    */
-  public function save(array $form, FormStateInterface $form_state) {
+  public function save(array $form, FormStateInterface $form_state) : int {
     $entityTypeId = $this->entity->getEntityTypeId();
-
-    parent::save($form, $form_state);
 
     $this->messenger()
       ->addStatus($this->t('%title saved.', [
@@ -58,6 +56,7 @@ class RemoteEntityForm extends CoreContentEntityForm {
     $form_state->setRedirect('entity.' . $entityTypeId . '.canonical', [
       $entityTypeId => $this->entity->id(),
     ]);
+    return parent::save($form, $form_state);
   }
 
 }

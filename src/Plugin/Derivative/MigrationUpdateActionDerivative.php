@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides an action to update singular migration.
  */
-class MigrationUpdateActionDerivative extends DeriverBase implements ContainerDeriverInterface {
+final class MigrationUpdateActionDerivative extends DeriverBase implements ContainerDeriverInterface {
 
   use StringTranslationTrait;
 
@@ -30,7 +30,7 @@ class MigrationUpdateActionDerivative extends DeriverBase implements ContainerDe
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, $base_plugin_id) {
-    $instance = new static();
+    $instance = new self();
     $instance->entityTypeManager = $container->get('entity_type.manager');
 
     return $instance;

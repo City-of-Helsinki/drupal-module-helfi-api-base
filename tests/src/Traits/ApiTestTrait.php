@@ -8,7 +8,6 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\Http\ClientFactory;
 use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -19,6 +18,13 @@ use Symfony\Component\HttpFoundation\Response;
  * Provides shared functionality for api tests.
  */
 trait ApiTestTrait {
+
+  /**
+   * The container.
+   *
+   * @var \Drupal\Component\DependencyInjection\ContainerInterface
+   */
+  protected $container;
 
   /**
    * Creates HTTP client stub.
@@ -53,16 +59,16 @@ trait ApiTestTrait {
       /**
        * Constructs a new instance.
        *
-       * @param \GuzzleHttp\ClientInterface $client
+       * @param \GuzzleHttp\Client $client
        *   The http client.
        */
-      public function __construct(private readonly ClientInterface $client) {
+      public function __construct(private readonly Client $client) {
       }
 
       /**
        * {@inheritdoc}
        */
-      public function fromOptions(array $config = []) : ClientInterface {
+      public function fromOptions(array $config = []) : Client {
         return $this->client;
       }
 

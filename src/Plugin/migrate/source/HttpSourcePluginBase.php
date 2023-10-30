@@ -32,13 +32,13 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
   protected bool $useRequestCache = TRUE;
 
   /*
-   * The number of ignored rows until we stop the migrate.
+   * The number of ignored rows until we stop the migration.
    *
    * This assumes that your API can be sorted in a way that the newest
    * changes are listed first.
    *
    * For this to have any effect 'track_changes' source setting must be set to
-   * true, and you must run the migrate with PARTIAL_MIGRATE=1 setting.
+   * true, and you must run the migration with PARTIAL_MIGRATE=1 setting.
    *
    * @var int
    */
@@ -221,11 +221,11 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
   /**
    * {@inheritdoc}
    */
-  public function next() {
+  public function next() : void {
     parent::next();
 
     // Check if the current row has changes and increment ignoredRows variable
-    // to allow us to stop migrate early if we have no changes.
+    // to allow us to stop migration early if we have no changes.
     if ($this->isPartialMigrate() && $this->currentRow && !$this->currentRow->changed()) {
       $this->ignoredRows++;
     }

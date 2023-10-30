@@ -6,6 +6,7 @@ namespace Drupal\helfi_api_base\Plugin\migrate\destination;
 
 use Drupal\Core\Entity\ContentEntityStorageInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\helfi_api_base\Entity\RemoteEntityBase;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\migrate\destination\EntityContentBase;
@@ -29,6 +30,7 @@ class TranslatableEntity extends EntityContentBase {
    *   The storage.
    */
   public function getStorage() : ContentEntityStorageInterface {
+    assert($this->storage instanceof ContentEntityStorageInterface);
     return $this->storage;
   }
 
@@ -60,6 +62,7 @@ class TranslatableEntity extends EntityContentBase {
       $entity = $this->storage->create($row->getDestination());
       $entity->enforceIsNew();
     }
+    assert($entity instanceof TranslatableInterface);
 
     if ($entity->hasTranslation($langcode)) {
       // Update existing translation.

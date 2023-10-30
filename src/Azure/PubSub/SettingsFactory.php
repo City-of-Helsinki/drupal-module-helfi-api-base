@@ -29,7 +29,7 @@ final class SettingsFactory {
    *   The PubSub settings object.
    */
   public function create() : Settings {
-    $data = (object) [
+    $data = [
       'hub' => '',
       'group' => '',
       'endpoint' => '',
@@ -41,9 +41,10 @@ final class SettingsFactory {
         if (!isset($settings->data()->{$key})) {
           continue;
         }
-        $data->{$key} = $settings->data()->{$key};
+        $data[$key] = $settings->data()->{$key};
       }
     }
+    $data = (object) $data;
 
     return new Settings(
       $data->hub ?: '',

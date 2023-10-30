@@ -78,7 +78,9 @@ class InstallTest extends CoreBrowserTestBase {
     }
     $moduleInstaller->install(['helfi_api_base']);
 
-    $this->assertTrue(Role::load('debug_api')->hasPermission('restful get helfi_debug_data'));
+    /** @var \Drupal\user\Entity\Role $role */
+    $role = Role::load('debug_api');
+    $this->assertTrue($role->hasPermission('restful get helfi_debug_data'));
   }
 
 }

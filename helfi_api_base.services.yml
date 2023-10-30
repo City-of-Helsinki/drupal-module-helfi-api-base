@@ -73,10 +73,15 @@ services:
     tags:
       - { name: event_subscriber }
 
+  helfi_api_base.logger_filesystem:
+    class: Symfony\Component\Filesystem\Filesystem
+    public: false
+
   helfi_api_base.logger_json:
     class: Drupal\helfi_api_base\Logger\JsonLog
     arguments:
       - '@logger.log_message_parser'
+      - '@helfi_api_base.logger_filesystem'
       - '%helfi_api_base.json_logger_path%'
       - '%helfi_api_base.logger_enabled%'
     tags:

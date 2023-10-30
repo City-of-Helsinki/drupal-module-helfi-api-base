@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Traits;
 
+use Drupal\helfi_language_negotiator_test\LanguageNegotiator;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\language\Entity\ConfigurableLanguage;
 
@@ -15,9 +16,9 @@ trait LanguageManagerTrait {
   /**
    * The language manager.
    *
-   * @var \Drupal\language\ConfigurableLanguageManagerInterface|null
+   * @var \Drupal\language\ConfigurableLanguageManagerInterface
    */
-  protected ?ConfigurableLanguageManagerInterface $languageManager = NULL;
+  protected ConfigurableLanguageManagerInterface $languageManager;
 
   /**
    * Setup languages.
@@ -48,9 +49,10 @@ trait LanguageManagerTrait {
    *   The language manager.
    */
   protected function languageManager() : ConfigurableLanguageManagerInterface {
-    if (!$this->languageManager) {
-      /** @var \Drupal\language\ConfigurableLanguageManagerInterface $languageManager */
-      $this->languageManager = $this->container->get('language_manager');
+    if (!isset($this->languageManager)) {
+      $languageManager = $this->container->get('language_manager');
+      assert($languageManager instanceof ConfigurableLanguageManagerInterface);
+      $this->languageManager = $languageManager;
       /** @var \Drupal\helfi_language_negotiator_test\LanguageNegotiator $customLanguageManager */
       $customLanguageManager = $this->container->get('helfi_language_negotiator_test.language_negotiator');
       $this->languageManager->setNegotiator($customLanguageManager);
@@ -66,7 +68,9 @@ trait LanguageManagerTrait {
    */
   protected function setOverrideLanguageCode(string $langcode) : void {
     $this->languageManager()->reset();
-    $this->languageManager()->getNegotiator()->setLanguageCode($langcode);
+    $negotiator = $this->languageManager()->getNegotiator();
+    assert($negotiator instanceof LanguageNegotiator);
+    $negotiator->setLanguageCode($langcode);
   }
 
 }

@@ -65,8 +65,11 @@ jobs:
 
       - name: Run PHPCS
         working-directory: ${{ env.DRUPAL_ROOT }}
-        run: |
-          vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal --extensions=php,module,inc,install,test,info
+        run: vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal,DrupalPractice --extensions=php,module,install
+
+      - name: Run phpstan
+        working-directory: ${{ env.DRUPAL_ROOT }}
+        run: vendor/bin/phpstan analyze -c $MODULE_FOLDER/phpstan.neon $MODULE_FOLDER
 
       - name: Start services
         working-directory: ${{ env.DRUPAL_ROOT }}
@@ -90,6 +93,6 @@ jobs:
         with:
           name: results
           path: |
-            ${{ env.DRUPAL_ROOT }}/sites/simpletest/browser_output/
+            ${{ env.DRUPAL_ROOT }}/public/sites/simpletest/browser_output/
             ${{ env.DRUPAL_ROOT }}/coverage.xml
           retention-days: 1

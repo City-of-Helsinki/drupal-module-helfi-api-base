@@ -9,6 +9,8 @@ namespace Drupal\helfi_api_base\Vault;
  */
 interface VaultItemInterface {
 
+  public const PLUGIN = '';
+
   /**
    * Gets the id.
    *

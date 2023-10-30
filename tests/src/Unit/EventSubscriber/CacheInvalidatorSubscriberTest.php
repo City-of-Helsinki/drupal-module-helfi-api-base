@@ -9,7 +9,7 @@ use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber;
-use Drupal\Tests\helfi_api_base\Traits\CacheTagInvalidatorTrait;
+use Drupal\Tests\helfi_api_base\Traits\CacheTagInvalidator;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -21,7 +21,6 @@ use Prophecy\PhpUnit\ProphecyTrait;
 class CacheInvalidatorSubscriberTest extends UnitTestCase {
 
   use ProphecyTrait;
-  use CacheTagInvalidatorTrait;
   use EnvironmentResolverTrait;
 
   /**
@@ -57,7 +56,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
   public function testInvalidProject() : void {
     // Make sure a project is considered valid if environment resolver
     // fails to find an active project.
-    $mock = $this->mockCacheInvalidator();
+    $mock = new CacheTagInvalidator();
     $environmentResolver = $this->getEnvironmentResolver('invalid_project');
     $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);
     $sut->onReceive(new PubSubMessage([
@@ -77,7 +76,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
    */
   public function testInvalidCacheTags() : void {
-    $mock = $this->mockCacheInvalidator();
+    $mock = new CacheTagInvalidator();
     $environmentResolver = $this->getEnvironmentResolver();
     $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);
     $sut->onReceive(new PubSubMessage([]));
@@ -91,7 +90,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
    */
   public function testValidCacheTags() : void {
-    $mock = $this->mockCacheInvalidator();
+    $mock = new CacheTagInvalidator();
     $environmentResolver = $this->getEnvironmentResolver();
     $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);
     $sut->onReceive(new PubSubMessage(['data' => ['tags' => ['node:123']]]));
@@ -107,7 +106,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage::__construct
    */
   public function testValidInstances() : void {
-    $mock = $this->mockCacheInvalidator();
+    $mock = new CacheTagInvalidator();
     $environmentResolver = $this->getEnvironmentResolver(Project::ASUMINEN, EnvironmentEnum::Local);
 
     $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);

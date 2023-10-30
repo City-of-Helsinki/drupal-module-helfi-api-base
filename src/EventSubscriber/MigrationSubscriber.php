@@ -116,7 +116,9 @@ final class MigrationSubscriber implements EventSubscriberInterface {
       ->execute();
 
     foreach ($results as $id) {
-      $storage->load($id)->delete(TRUE);
+      $entity = $storage->load($id);
+      assert($entity instanceof RemoteEntityBase);
+      $entity->delete(TRUE);
     }
   }
 

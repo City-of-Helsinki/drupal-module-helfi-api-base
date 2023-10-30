@@ -138,7 +138,7 @@ class EnvironmentResolverTest extends UnitTestCase {
   /**
    * Data provider.
    *
-   * @return \string[][]
+   * @return array
    *   The data.
    */
   public function resolveEnvironmentExceptionData() : array {
@@ -177,7 +177,7 @@ class EnvironmentResolverTest extends UnitTestCase {
   /**
    * Data provider for testEnvironmentMap().
    *
-   * @return \string[][]
+   * @return array
    *   The data.
    */
   public function environmentMapData() : array {
