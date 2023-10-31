@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\EventSubscriber;
 
+use Drupal\helfi_api_base\Event\PostDeployEvent;
+use Drupal\helfi_api_base\Event\PreDeployEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -35,8 +37,8 @@ abstract class DeployHookEventSubscriberBase implements EventSubscriberInterface
    */
   public static function getSubscribedEvents() : array {
     return [
-      'helfi_api_base.post_deploy' => ['onPostDeploy'],
-      'helfi_api_base.pre_deploy' => ['onPreDeploy'],
+      PostDeployEvent::class => ['onPostDeploy'],
+      PreDeployEvent::class => ['onPreDeploy'],
     ];
   }
 
