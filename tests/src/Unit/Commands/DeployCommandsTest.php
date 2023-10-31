@@ -10,7 +10,6 @@ use Drupal\helfi_api_base\Event\PreDeployEvent;
 use Drupal\Tests\UnitTestCase;
 use Drush\Commands\DrushCommands;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
