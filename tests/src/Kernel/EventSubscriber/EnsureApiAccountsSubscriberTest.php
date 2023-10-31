@@ -6,12 +6,12 @@ namespace Drupal\Tests\helfi_api_base\Kernel\EventSubscriber;
 
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Event\PostDeployEvent;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\user\Entity\Role;
 use Drupal\user\UserInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Tests EnsureApiAccountSubscriber.
@@ -76,9 +76,9 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
 
     $this->assertFalse(user_load_by_name('helfi-admin'));
     // Make sure account is created if one does not exist yet.
-    /** @var \Drupal\helfi_api_base\EventSubscriber\EnsureApiAccountsSubscriber $service */
-    $service = $this->container->get('helfi_api_base.ensure_api_accounts_subscriber');
-    $service->onPostDeploy(new Event());
+    /** @var \Symfony\Component\EventDispatcher\EventSubscriberInterface $service */
+    $service = $this->container->get('event_dispatcher');
+    $service->dispatch(new PostDeployEvent());
     $account = user_load_by_name('helfi-admin');
     $this->assertInstanceOf(UserInterface::class, $account);
     $this->assertTrue($account->hasRole('debug_api'));
@@ -96,7 +96,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
         ],
       ])
       ->save();
-    $service->onPostDeploy(new Event());
+    $service->dispatch(new PostDeployEvent());
     $account = user_load_by_name('helfi-admin');
     $this->assertInstanceOf(UserInterface::class, $account);
     $this->assertEquals('drupal+helfi-admin@hel.fi', $account->getEmail());
