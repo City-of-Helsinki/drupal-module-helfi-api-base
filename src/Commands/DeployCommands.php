@@ -4,9 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\Commands;
 
+use Drupal\helfi_api_base\Event\PostDeployEvent;
+use Drupal\helfi_api_base\Event\PreDeployEvent;
 use Drush\Attributes\Command;
 use Drush\Commands\DrushCommands;
-use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -36,7 +37,7 @@ final class DeployCommands extends DrushCommands {
    */
   #[Command(name: 'helfi:post-deploy')]
   public function postDeploy() : int {
-    $this->eventDispatcher->dispatch(new Event(), 'helfi_api_base.post_deploy');
+    $this->eventDispatcher->dispatch(new PostDeployEvent());
     return DrushCommands::EXIT_SUCCESS;
   }
 
@@ -50,7 +51,7 @@ final class DeployCommands extends DrushCommands {
    */
   #[Command(name: 'helfi:pre-deploy')]
   public function preDeploy() : int {
-    $this->eventDispatcher->dispatch(new Event(), 'helfi_api_base.pre_deploy');
+    $this->eventDispatcher->dispatch(new PreDeployEvent());
     return DrushCommands::EXIT_SUCCESS;
   }
 

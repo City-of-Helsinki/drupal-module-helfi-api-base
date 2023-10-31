@@ -38,6 +38,9 @@
   <listener class="\Drupal\Tests\Listeners\DrupalListener">
   </listener>
 </listeners>
+<extensions>
+  <extension class="\Drupal\helfi_api_base\BypassFinalHook"/>
+</extensions>
 <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true">
   <include>
     <directory suffix=".php">./src</directory>

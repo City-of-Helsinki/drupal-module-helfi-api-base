@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
+use Drupal\Core\Utility\Error;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\TestLoggerTrait;
 
@@ -49,7 +50,7 @@ class TestLoggerTraitTest extends KernelTestBase {
    */
   public function testWatchdogException() : void {
     $this->expectLogMessage('Test message', \InvalidArgumentException::class);
-    watchdog_exception('helfi_api_base', new \InvalidArgumentException('Test message'));
+    Error::logException($this->testLogger, new \InvalidArgumentException('Test message'));
   }
 
 }

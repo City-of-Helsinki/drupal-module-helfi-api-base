@@ -12,9 +12,5 @@ parameters:
   treatPhpDocTypesAsCertain: false
   ignoreErrors:
     -
-      message: '#^Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required.#'
-      path: src/Commands/DeployCommands.php
-      count: 2
-    -
       message: '#^Unsafe usage of new static#'
       path: src/Plugin/migrate/source/HttpSourcePluginBase.php

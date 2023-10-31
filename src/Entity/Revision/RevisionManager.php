@@ -9,6 +9,7 @@ use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\RevisionableStorageInterface;
 use Drupal\Core\Entity\TranslatableRevisionableInterface;
 
 /**
@@ -102,6 +103,7 @@ class RevisionManager {
 
     $storage = $this->entityTypeManager
       ->getStorage($entityType);
+    assert($storage instanceof RevisionableStorageInterface);
 
     foreach ($revisionIds as $id) {
       $storage->deleteRevision($id);
@@ -131,6 +133,8 @@ class RevisionManager {
     $this->assertEntityType($entityType);
 
     $storage = $this->entityTypeManager->getStorage($entityType);
+    assert($storage instanceof RevisionableStorageInterface);
+
     $definition = $this->entityTypeManager->getDefinition($entityType);
 
     $revision_ids = $this->connection->query(
