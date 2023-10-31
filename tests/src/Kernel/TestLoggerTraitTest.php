@@ -50,7 +50,7 @@ class TestLoggerTraitTest extends KernelTestBase {
    */
   public function testWatchdogException() : void {
     $this->expectLogMessage('Test message', \InvalidArgumentException::class);
-    Error::logException(new \InvalidArgumentException('Test message'));
+    Error::logException($this->testLogger, new \InvalidArgumentException('Test message'));
   }
 
 }
