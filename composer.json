@@ -19,6 +19,7 @@
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+        "dg/bypass-finals": "^1.0",
         "drupal/coder": "^8.3",
         "donatj/mock-webserver": "dev-master"
     }
