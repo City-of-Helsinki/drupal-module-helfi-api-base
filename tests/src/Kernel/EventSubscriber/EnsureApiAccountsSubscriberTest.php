@@ -76,7 +76,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
 
     $this->assertFalse(user_load_by_name('helfi-admin'));
     // Make sure account is created if one does not exist yet.
-    /** @var \Symfony\Component\EventDispatcher\EventSubscriberInterface $service */
+    /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $service */
     $service = $this->container->get('event_dispatcher');
     $service->dispatch(new PostDeployEvent());
     $account = user_load_by_name('helfi-admin');
