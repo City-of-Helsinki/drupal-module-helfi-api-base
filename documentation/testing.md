@@ -1,5 +1,17 @@
 # Testing
 
+## Mock final classes
+
+Install https://github.com/dg/bypass-finals package: `composer require dg/bypass-finals --dev`.
+
+Add this phpunit hook to your `phpunit.xml` file:
+
+```xml
+<extensions>
+  <extension class="\Drupal\helfi_api_base\BypassFinalHook"/>
+</extensions>
+```
+
 ## Fixture commands
 
 Provides a way of defining migration fixtures in code that can either be used in tests or imported using Drush.
