@@ -65,7 +65,7 @@ trait WebServerTestTrait {
   /**
    * {@inheritdoc}
    */
-  public function tearDown() {
+  public function tearDown(): void {
     parent::tearDown();
     $this->stopWebServer();
   }
