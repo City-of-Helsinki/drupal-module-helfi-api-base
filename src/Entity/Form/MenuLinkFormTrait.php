@@ -146,6 +146,11 @@ trait MenuLinkFormTrait {
     $form['menu']['link']['title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Menu link title'),
+      '#states' => [
+        'required' => [
+          'input[name="menu[enabled]"]' => ['checked' => TRUE],
+        ],
+      ],
       '#default_value' => $menuLink->label(),
     ];
 
