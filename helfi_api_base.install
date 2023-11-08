@@ -45,14 +45,35 @@ function helfi_api_base_install() : void {
       ]);
     }
 
+    // Install the debug rest config.
+    helfi_api_base_install_debug_rest_config();
+
+    // Create debug_api role.
     if (!$role = Role::load('debug_api')) {
       $role = Role::create(['label' => 'Debug API', 'id' => 'debug_api']);
     }
+
+    // Grant the restful get helfi_debug_data permission.
     $role->grantPermission('restful get helfi_debug_data')
       ->save();
   }
   catch (\InvalidArgumentException) {
   }
+}
+
+/**
+ * Install the debug rest config.
+ */
+function helfi_api_base_install_debug_rest_config() : void {
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $extensionPathResolver */
+  $extensionPathResolver = Drupal::service('extension.path.resolver');
+  $config_path = $extensionPathResolver->getPath('module', 'helfi_api_base') . '/config/optional';
+  $source = new FileStorage($config_path);
+  $config_storage = Drupal::service('config.storage');
+
+  // Install rest resource config.
+  $config_name = 'rest.resource.helfi_debug_data';
+  $config_storage->write($config_name, $source->read($config_name));
 }
 
 /**
@@ -69,15 +90,7 @@ function helfi_api_base_update_9002() : void {
   if (!Drupal::moduleHandler()->moduleExists('rest')) {
     return;
   }
-  /** @var \Drupal\Core\Extension\ExtensionPathResolver $extensionPathResolver */
-  $extensionPathResolver = Drupal::service('extension.path.resolver');
-  $config_path = $extensionPathResolver->getPath('module', 'helfi_api_base') . '/config/optional';
-  $source = new FileStorage($config_path);
-  $config_storage = Drupal::service('config.storage');
-
-  // Install rest resource config.
-  $config_name = 'rest.resource.helfi_debug_data';
-  $config_storage->write($config_name, $source->read($config_name));
+  helfi_api_base_install_debug_rest_config();
 }
 
 /**
