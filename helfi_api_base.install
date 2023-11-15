@@ -92,7 +92,7 @@ function helfi_api_base_update_9003() : void {
     return;
   }
   $config_path = Drupal::service('extension.list.module')
-      ->getPath('helfi_api_base') . '/config/optional';
+    ->getPath('helfi_api_base') . '/config/optional';
   $source = new FileStorage($config_path);
   $config_storage = Drupal::service('config.storage');
 
