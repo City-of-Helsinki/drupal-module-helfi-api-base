@@ -14,7 +14,7 @@ use Drupal\user\Entity\Role;
 /**
  * Implements hook_install().
  */
-function helfi_api_base_install(bool $is_syncing) : void {
+function helfi_api_base_install(bool $is_syncing = false) : void {
   if ($is_syncing) {
     return;
   }
