@@ -8,7 +8,7 @@ The filter parses all links from markup fields and runs them through `#type => l
 
 ## Link preprocessor
 
-We override the default link `#preprocess` callback to run all our links through a template to figure out whether the link is external or not. See:
+We override the default link `#preprocess` callback in [helfi_api_base_element_info_alter()](/helfi_api_base.module) hook to run all our links through a template to figure out whether the link is external or not. See:
 - [src/Link/LinkProcessor.php](/src/Link/LinkProcessor.php)
 - [src/Helper/ExternalUri.php](/src/Helper/ExternalUri.php)
 - [tests/themes/link_template_test_theme/templates/helfi-link.html.twig](/tests/themes/link_template_test_theme/templates/helfi-link.html.twig) (this is overridden in `hdbt` theme as well).
