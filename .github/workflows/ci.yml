@@ -73,9 +73,7 @@ jobs:
 
       - name: Start services
         working-directory: ${{ env.DRUPAL_ROOT }}
-        run: |
-          vendor/bin/drush runserver $SIMPLETEST_BASE_URL --dns > /dev/null 2>&1 &
-          chromedriver --port=4444 > /dev/null 2>&1 &
+        run: vendor/bin/drush runserver $SIMPLETEST_BASE_URL --dns > /dev/null 2>&1 &
 
       - name: Run PHPUnit tests
         working-directory: ${{ env.DRUPAL_ROOT }}
