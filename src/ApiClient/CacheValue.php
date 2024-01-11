@@ -7,7 +7,7 @@ namespace Drupal\helfi_api_base\ApiClient;
 /**
  * A value object to store cache data.
  */
-final readonly class CacheValue {
+final class CacheValue {
 
   /**
    * Constructs a new instance.
@@ -20,9 +20,9 @@ final readonly class CacheValue {
    *   The cache tags.
    */
   public function __construct(
-    public ApiResponse $response,
-    public int $expires,
-    public array $tags,
+    public readonly ApiResponse $response,
+    public readonly int $expires,
+    public readonly array $tags,
   ) {
   }
 

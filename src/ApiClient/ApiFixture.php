@@ -8,7 +8,7 @@ use GuzzleHttp\Utils;
 /**
  * Helper class for mocking api responses.
  */
-final readonly class ApiFixture {
+final class ApiFixture {
 
   /**
    * Get response from fixture file.

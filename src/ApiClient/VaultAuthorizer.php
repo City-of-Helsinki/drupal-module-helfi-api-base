@@ -10,7 +10,7 @@ use Drupal\helfi_api_base\Vault\VaultManager;
 /**
  * HTTP basic authentication using credentials from VaultManager.
  */
-final readonly class VaultAuthorizer implements ApiAuthorizerInterface {
+final class VaultAuthorizer implements ApiAuthorizerInterface {
 
   /**
    * Constructs a new instance.
@@ -25,10 +25,10 @@ final readonly class VaultAuthorizer implements ApiAuthorizerInterface {
    *   BC: fetch authorization token from given config.
    */
   public function __construct(
-    private ConfigFactoryInterface $configFactory,
-    private VaultManager $vaultManager,
-    private string $vaultKey,
-    private ?string $fallback = NULL,
+    private readonly ConfigFactoryInterface $configFactory,
+    private readonly VaultManager $vaultManager,
+    private readonly string $vaultKey,
+    private readonly ?string $fallback = NULL,
   ) {
   }
 

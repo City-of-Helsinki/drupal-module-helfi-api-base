@@ -7,7 +7,7 @@ namespace Drupal\helfi_api_base\ApiClient;
 /**
  * A value object to store API responses.
  */
-final readonly class ApiResponse {
+final class ApiResponse {
 
   /**
    * Constructs a new instance.
@@ -16,7 +16,7 @@ final readonly class ApiResponse {
    *   The response.
    */
   public function __construct(
-    public array|object $data
+    public readonly array|object $data
   ) {
   }
 
