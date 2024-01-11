@@ -11,6 +11,7 @@ A base module for [drupal-helfi-platform](https://github.com/City-of-Helsinki/dr
 ## Features
 
 - [API user manager](documentation/api-accounts.md): Allows API users to be created/managed from an environment variable.
+- [API client](documentation/api-client.md): Services for caching and mocking http responses.
 - [Automatic external cache invalidation](documentation/automatic-external-cache-invalidation.md): Invalidate caches from external projects using [PubSub messaging](documentation/pubsub-messaging.md) service.
 - [Automatic revision deletion](documentation/revisions.md): Clean up old entity revisions automatically.
 - [Debug collector](documentation/debug.md): A plugin to collect and show various debug information in one place.
