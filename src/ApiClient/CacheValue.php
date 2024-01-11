@@ -12,7 +12,7 @@ final readonly class CacheValue {
   /**
    * Constructs a new instance.
    *
-   * @param mixed $response
+   * @param \Drupal\helfi_api_base\ApiClient\ApiResponse $response
    *   The cache data.
    * @param int $expires
    *   The expiration date.

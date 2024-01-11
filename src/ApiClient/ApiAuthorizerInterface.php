@@ -13,7 +13,7 @@ interface ApiAuthorizerInterface {
    * Gets the authorization header value.
    *
    * @return string|null
-   *    The authorization header value.
+   *   The authorization header value.
    */
   public function getAuthorization(): ?string;
 

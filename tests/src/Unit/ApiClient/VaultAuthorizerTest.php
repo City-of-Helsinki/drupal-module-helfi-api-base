@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\helfi_api_base\Unit;
 
+use Drupal\helfi_api_base\ApiClient\VaultAuthorizer;
 use Drupal\helfi_api_base\Vault\AuthorizationToken;
 use Drupal\helfi_api_base\Vault\VaultManager;
-use Drupal\helfi_api_base\ApiClient\VaultAuthorizer;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 

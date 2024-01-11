@@ -8,7 +8,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_api_base\Vault\VaultManager;
 
 /**
- Performs HTTP basic authentication using credentials from VaultManager.
+ * HTTP basic authentication using credentials from VaultManager.
  */
 final readonly class VaultAuthorizer implements ApiAuthorizerInterface {
 
@@ -36,7 +36,7 @@ final readonly class VaultAuthorizer implements ApiAuthorizerInterface {
    * Gets the authorization value.
    *
    * @return string|null
-   *    The authorization value.
+   *   The authorization value.
    */
   public function getAuthorization(): ?string {
     if ($token = $this->getToken()) {

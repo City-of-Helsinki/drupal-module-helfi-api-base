@@ -11,7 +11,7 @@ use Drupal\Tests\UnitTestCase;
  * @coversDefaultClass \Drupal\helfi_api_base\ApiClient\ApiFixture
  * @group helfi_api_base
  * */
-class ApiFixtureTest extends UnitTestCase  {
+class ApiFixtureTest extends UnitTestCase {
 
   /**
    * Test fixture loading.
@@ -34,7 +34,7 @@ class ApiFixtureTest extends UnitTestCase  {
    */
   public function testException() {
     $this->expectException(FileNotExistsException::class);
-    $response = ApiFixture::requestFromFile(vsprintf('%s/should-not-exists', [
+    ApiFixture::requestFromFile(vsprintf('%s/should-not-exists', [
       __DIR__,
     ]));
   }

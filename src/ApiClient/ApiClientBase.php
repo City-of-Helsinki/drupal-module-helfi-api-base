@@ -43,11 +43,11 @@ abstract class ApiClientBase {
    * Construct an instance.
    *
    * @param \GuzzleHttp\ClientInterface $httpClient
-   *    The HTTP client.
+   *   The HTTP client.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
    *   The cache service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
-   *    The time service.
+   *   The time service.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
    *   The environment resolver.
    * @param \Psr\Log\LoggerInterface $logger
@@ -94,7 +94,7 @@ abstract class ApiClientBase {
    * Gets the default request options.
    *
    * @param string $environmentName
-   *    Environment name.
+   *   Environment name.
    * @param array $options
    *   The optional options.
    *
@@ -130,6 +130,8 @@ abstract class ApiClientBase {
    *   The endpoint in the instance.
    * @param array $options
    *   Body for requests.
+   * @param string|null $fixture
+   *   Replace failed response from this file in local environment.
    *
    * @return \Drupal\helfi_api_base\ApiClient\ApiResponse
    *   The JSON object.
@@ -140,7 +142,7 @@ abstract class ApiClientBase {
     string $method,
     string $url,
     array $options = [],
-    ?callable $mockCallback = NULL,
+    string $fixture = NULL,
   ): ApiResponse {
     $activeEnvironmentName = $this->environmentResolver
       ->getActiveEnvironment()
@@ -164,7 +166,7 @@ abstract class ApiClientBase {
 
       // Serve mock data in local environments if requests fail.
       if (
-        $mockCallback &&
+        $fixture &&
         ($e instanceof ClientException || $e instanceof ConnectException) &&
         $activeEnvironmentName === 'local'
       ) {
@@ -172,7 +174,7 @@ abstract class ApiClientBase {
           sprintf('Request failed: %s. Mock data is used instead.', $e->getMessage())
         );
 
-        return $mockCallback();
+        return ApiFixture::requestFromFile($fixture);
       }
 
       $this->logger->error('Request failed with error: ' . $e->getMessage());

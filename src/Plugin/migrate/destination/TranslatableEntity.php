@@ -98,7 +98,7 @@ class TranslatableEntity extends EntityContentBase {
     // Set default values for entity when we're creating the entity
     // for the first time. These are not supposed to be overridden by
     // migrate.
-    foreach ($defaultValues ?? [] as $key => $value) {
+    foreach ($defaultValues as $key => $value) {
       $row->setDestinationProperty($key, $value);
     }
   }

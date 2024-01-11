@@ -7,24 +7,25 @@ namespace Drupal\helfi_api_client_test;
 use Drupal\helfi_api_base\ApiClient\ApiClientBase;
 use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_api_base\ApiClient\CacheValue;
-use GuzzleHttp\Exception\GuzzleException;
 
 /**
- * Class responsible for performing language negotiation.
+ * Api client for testing.
  */
 class ApiClient extends ApiClientBase {
 
   /**
    * Expose protected method for testing.
    *
-   * @throws GuzzleException
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function exposedMakeRequest(string $method, string $url, array $options = [], ?callable $mockCallback = NULL): ApiResponse {
-    return $this->makeRequest($method, $url, $options, $mockCallback);
+  public function exposedMakeRequest(string $method, string $url, array $options = [], ?string $fixture = NULL): ApiResponse {
+    return $this->makeRequest($method, $url, $options, $fixture);
   }
 
   /**
-   * Expose protected method for testing
+   * Expose protected method for testing.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function exposedCache(string $key, callable $callback): CacheValue {
     return $this->cache($key, $callback);

@@ -93,10 +93,12 @@ class ApiClientBaseTest extends UnitTestCase {
    *   The time prophecy.
    * @param \Psr\Log\LoggerInterface|null $logger
    *   The logger.
-   * @param string|null $apiKey
-   *   The api key.
+   * @param \Drupal\helfi_api_base\ApiClient\ApiAuthorizerInterface|null $authorizer
+   *   The api authorizer.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface|null $environmentResolver
    *   The environment resolver.
+   * @param array $requestOptions
+   *   The default request options.
    *
    * @return \Drupal\helfi_api_client_test\ApiClient
    *   The api client instance.
@@ -125,22 +127,6 @@ class ApiClientBaseTest extends UnitTestCase {
         'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
       ]));
     }
-
-    /*
-    return new class (
-      $client,
-      $this->cache,
-      $time,
-      $environmentResolver,
-      $logger,
-      $authorizer,
-      $requestOptions,
-    ) extends ApiClientBase {
-      public function publicCache(string $key, callable $callback) {
-        $this->cache($key, $callback);
-      }
-    };
-    */
 
     return new ApiClient(
       $client,
@@ -180,17 +166,44 @@ class ApiClientBaseTest extends UnitTestCase {
         ]),
         'vault_key',
       ),
+      requestOptions: [
+        'headers' => ['X-Custom-Header' => '1'],
+      ],
     );
 
-    $response = $sut->exposedMakeRequest('GET', '/foo');
+    $sut->exposedMakeRequest('GET', '/foo');
 
     $this->assertCount(1, $requests);
-    $this->assertInstanceOf(ApiResponse::class, $response);
-    $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
     // Make sure SSL verification is disabled on local.
     $this->assertFalse($requests[0]['options']['verify']);
-    // Make sure Authorization header was set.
+    // Make sure headers are set.
     $this->assertEquals('Basic 123', $requests[0]['request']->getHeader('Authorization')[0]);
+    $this->assertEquals('1', $requests[0]['request']->getHeader('X-Custom-Header')[0]);
+  }
+
+  /**
+   * Test makeRequest().
+   *
+   * @covers ::__construct
+   * @covers ::makeRequest
+   * @covers ::getRequestOptions
+   * @covers ::hasAuthorization
+   * @covers \Drupal\helfi_api_base\ApiClient\ApiResponse::__construct
+   */
+  public function testMakeRequest() {
+    $requests = [];
+    $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
+      new Response(200, body: json_encode([])),
+      new Response(200, body: json_encode(['key' => 'value'])),
+    ]);
+    $sut = $this->getSut($client);
+
+    // Test empty and non-empty response.
+    for ($i = 0; $i < 2; $i++) {
+      $response = $sut->exposedMakeRequest('GET', '/foo');
+      $this->assertInstanceOf(ApiResponse::class, $response);
+      $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
+    }
   }
 
   /**
@@ -292,18 +305,9 @@ class ApiClientBaseTest extends UnitTestCase {
    * @covers ::makeRequest
    * @covers ::__construct
    * @covers ::getRequestOptions
+   * @covers \Drupal\helfi_api_base\ApiClient\ApiFixture::requestFromFile
    */
   public function testMockFallbackException() : void {
-    // Create a mock for the callback
-    $callbackMock = $this->getMockBuilder(\stdClass::class)
-      ->addMethods(['__invoke']) // Assuming it's a callable class
-      ->getMock();
-
-    // Expect the callback to be called once
-    $callbackMock->expects($this->once())
-      ->method('__invoke')
-      ->willThrowException(new FileNotExistsException('Test'));
-
     $this->expectException(FileNotExistsException::class);
     $response = $this->prophesize(ResponseInterface::class);
     $response->getStatusCode()->willReturn(403);
@@ -316,7 +320,9 @@ class ApiClientBaseTest extends UnitTestCase {
     ]);
     $sut = $this->getSut($client);
     // Test with non-existent menu to make sure no mock file exist.
-    $sut->exposedMakeRequest('GET', '/foo', mockCallback: [$callbackMock, '__invoke']);
+    $sut->exposedMakeRequest('GET', '/foo', fixture: sprintf('%d/should-not-exists.txt',
+      __DIR__
+    ));
   }
 
   /**
@@ -326,6 +332,7 @@ class ApiClientBaseTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::getRequestOptions
    * @covers \Drupal\helfi_api_base\ApiClient\ApiResponse::__construct
+   * @covers \Drupal\helfi_api_base\ApiClient\ApiFixture::requestFromFile
    */
   public function testMockFallback() : void {
     // Use logger to verify that mock file is actually used.
@@ -345,7 +352,7 @@ class ApiClientBaseTest extends UnitTestCase {
     $response = $sut->exposedMakeRequest(
       'GET',
       '/foo',
-      mockCallback: static fn () => new ApiResponse(['value' => 1])
+      fixture: sprintf('%s/../../../fixtures/environments.json', __DIR__),
     );
     $this->assertInstanceOf(ApiResponse::class, $response);
   }
