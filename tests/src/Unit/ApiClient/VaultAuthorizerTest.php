@@ -23,6 +23,7 @@ class VaultAuthorizerTest extends UnitTestCase {
   /**
    * @covers ::__construct
    * @covers ::getAuthorization
+   * @covers ::getToken
    */
   public function testVaultAuthorization() : void {
     $vaultManager = new VaultManager([
@@ -39,6 +40,7 @@ class VaultAuthorizerTest extends UnitTestCase {
   /**
    * @covers ::__construct
    * @covers ::getAuthorization
+   * @covers ::getToken
    */
   public function testEmptyAuthorization() : void {
     $sut = new VaultAuthorizer(
@@ -52,6 +54,7 @@ class VaultAuthorizerTest extends UnitTestCase {
   /**
    * @covers ::__construct
    * @covers ::getAuthorization
+   * @covers ::getToken
    */
   public function testFallbackConfigAuthorization() : void {
     $sut = new VaultAuthorizer(
