@@ -8,15 +8,11 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Cache\MemoryBackend;
 use Drupal\Core\File\Exception\FileNotExistsException;
-use Drupal\helfi_api_base\ApiClient\ApiAuthorizerInterface;
 use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_api_base\ApiClient\CacheValue;
-use Drupal\helfi_api_base\ApiClient\VaultAuthorizer;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_api_base\Vault\AuthorizationToken;
-use Drupal\helfi_api_base\Vault\VaultManager;
 use Drupal\helfi_api_client_test\ApiClient;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\UnitTestCase;
@@ -93,8 +89,6 @@ class ApiClientBaseTest extends UnitTestCase {
    *   The time prophecy.
    * @param \Psr\Log\LoggerInterface|null $logger
    *   The logger.
-   * @param \Drupal\helfi_api_base\ApiClient\ApiAuthorizerInterface|null $authorizer
-   *   The api authorizer.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface|null $environmentResolver
    *   The environment resolver.
    * @param array $requestOptions
@@ -107,7 +101,6 @@ class ApiClientBaseTest extends UnitTestCase {
     ClientInterface $client = NULL,
     TimeInterface $time = NULL,
     LoggerInterface $logger = NULL,
-    ApiAuthorizerInterface $authorizer = NULL,
     EnvironmentResolverInterface $environmentResolver = NULL,
     array $requestOptions = [],
   ) : ApiClient {
@@ -134,51 +127,8 @@ class ApiClientBaseTest extends UnitTestCase {
       $time,
       $environmentResolver,
       $logger,
-      $authorizer,
       $requestOptions,
     );
-  }
-
-  /**
-   * Tests authorization.
-   *
-   * @covers ::__construct
-   * @covers ::makeRequest
-   * @covers ::getRequestOptions
-   * @covers ::hasAuthorization
-   * @covers \Drupal\helfi_api_base\ApiClient\ApiResponse::__construct
-   * @covers \Drupal\helfi_api_base\ApiClient\VaultAuthorizer::__construct
-   * @covers \Drupal\helfi_api_base\ApiClient\VaultAuthorizer::getAuthorization
-   * @covers \Drupal\helfi_api_base\ApiClient\VaultAuthorizer::getToken
-   */
-  public function testAuthorization() : void {
-    $requests = [];
-    $client = $this->createMockHistoryMiddlewareHttpClient($requests, [
-      new Response(200, body: json_encode(['key' => 'value'])),
-    ]);
-
-    $sut = $this->getSut(
-      $client,
-      authorizer: new VaultAuthorizer(
-        $this->getConfigFactoryStub([]),
-        new VaultManager([
-          new AuthorizationToken('vault_key', '123'),
-        ]),
-        'vault_key',
-      ),
-      requestOptions: [
-        'headers' => ['X-Custom-Header' => '1'],
-      ],
-    );
-
-    $sut->exposedMakeRequest('GET', '/foo');
-
-    $this->assertCount(1, $requests);
-    // Make sure SSL verification is disabled on local.
-    $this->assertFalse($requests[0]['options']['verify']);
-    // Make sure headers are set.
-    $this->assertEquals('Basic 123', $requests[0]['request']->getHeader('Authorization')[0]);
-    $this->assertEquals('1', $requests[0]['request']->getHeader('X-Custom-Header')[0]);
   }
 
   /**

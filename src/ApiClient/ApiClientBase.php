@@ -52,8 +52,6 @@ abstract class ApiClientBase {
    *   The environment resolver.
    * @param \Psr\Log\LoggerInterface $logger
    *   Logger channel.
-   * @param \Drupal\helfi_api_base\ApiClient\ApiAuthorizerInterface|null $authorizer
-   *   The authorization plugin.
    * @param array $defaultOptions
    *   Default request options.
    */
@@ -63,7 +61,6 @@ abstract class ApiClientBase {
     protected readonly TimeInterface $time,
     protected readonly EnvironmentResolverInterface $environmentResolver,
     protected readonly LoggerInterface $logger,
-    protected readonly ?ApiAuthorizerInterface $authorizer = NULL,
     private readonly array $defaultOptions = [],
   ) {
   }
@@ -78,16 +75,6 @@ abstract class ApiClientBase {
     $instance = clone $this;
     $instance->bypassCache = TRUE;
     return $instance;
-  }
-
-  /**
-   * Is the authorizer configured.
-   *
-   * @return bool
-   *   True if the requests contain authorization header.
-   */
-  public function hasAuthorization(): bool {
-    return (bool) $this->authorizer?->getAuthorization();
   }
 
   /**
@@ -108,10 +95,6 @@ abstract class ApiClientBase {
     $default = $this->defaultOptions + [
       'curl' => [CURLOPT_TCP_KEEPALIVE => TRUE],
     ];
-
-    if ($this->hasAuthorization()) {
-      $default['headers']['Authorization'] = $this->authorizer?->getAuthorization();
-    }
 
     if ($environmentName === 'local') {
       // Disable SSL verification in local environment.
