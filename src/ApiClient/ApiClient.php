@@ -6,7 +6,6 @@ namespace Drupal\helfi_api_base\ApiClient;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\helfi_api_base\Cache\CacheKeyTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
@@ -17,13 +16,11 @@ use GuzzleHttp\Utils;
 use Psr\Log\LoggerInterface;
 
 /**
- * Base class for services that fetch data from HTTP API.
+ * Fetch data from HTTP API.
  *
- * Provides caching and fixtures (for local environment).
+ * Provides simple caching and fixtures (for local environment).
  */
-abstract class ApiClientBase {
-
-  use CacheKeyTrait;
+class ApiClient {
 
   /**
    * Whether to bypass cache or not.
@@ -119,7 +116,7 @@ abstract class ApiClientBase {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  protected function makeRequest(
+  public function makeRequest(
     string $method,
     string $url,
     array $options = [],
@@ -129,7 +126,6 @@ abstract class ApiClientBase {
 
   /**
    * Makes HTTP request with fixture.
-   *
    *
    * @param string $fixture
    *   File for mock data if requests fail in local environment.
@@ -145,7 +141,7 @@ abstract class ApiClientBase {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  protected function makeRequestWithFixture(
+  public function makeRequestWithFixture(
     string $fixture,
     string $method,
     string $url,
@@ -154,29 +150,29 @@ abstract class ApiClientBase {
     return $this->makeRequestInternal($fixture, $method, $url, $options);
   }
 
-    /**
-     * Makes the HTTP request.
-     *
-     * @param string|NULL $fixture
-     *   Fixture file or NULL if disabled.
-     * @param string $method
-     *   Request method.
-     * @param string $url
-     *   The endpoint in the instance.
-     * @param array $options
-     *   Body for requests.
-     *
-     * @return \Drupal\helfi_api_base\ApiClient\ApiResponse
-     *   The JSON object.
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    private function makeRequestInternal(
-      string|NULL $fixture,
-      string $method,
-      string $url,
-      array $options,
-    ): ApiResponse {
+  /**
+   * Makes the HTTP request.
+   *
+   * @param string|null $fixture
+   *   Fixture file or NULL if disabled.
+   * @param string $method
+   *   Request method.
+   * @param string $url
+   *   The endpoint in the instance.
+   * @param array $options
+   *   Body for requests.
+   *
+   * @return \Drupal\helfi_api_base\ApiClient\ApiResponse
+   *   The JSON object.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
+  private function makeRequestInternal(
+    ?string $fixture,
+    string $method,
+    string $url,
+    array $options,
+  ): ApiResponse {
 
     $activeEnvironmentName = $this->environmentResolver
       ->getActiveEnvironment()
@@ -232,7 +228,7 @@ abstract class ApiClientBase {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  protected function cache(string $key, callable $callback) : ?CacheValue {
+  public function cache(string $key, callable $callback) : ?CacheValue {
     $exception = new TransferException();
     $value = ($cache = $this->cache->get($key)) ? $cache->data : NULL;
 
@@ -264,6 +260,19 @@ abstract class ApiClientBase {
     // 2. API request fails, and we cannot re-populate the cache (caught the
     // exception).
     throw $exception;
+  }
+
+  /**
+   * Helper method for calculating cache max age.
+   *
+   * @param int $ttl
+   *   Time to live in seconds.
+   *
+   * @return int
+   *   Expires timestamp.
+   */
+  public function cacheMaxAge(int $ttl): int {
+    return $this->time->getRequestTime() + $ttl;
   }
 
 }

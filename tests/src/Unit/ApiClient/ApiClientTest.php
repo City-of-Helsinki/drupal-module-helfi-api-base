@@ -8,12 +8,12 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Cache\MemoryBackend;
 use Drupal\Core\File\Exception\FileNotExistsException;
+use Drupal\helfi_api_base\ApiClient\ApiClient;
 use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_api_base\ApiClient\CacheValue;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_api_client_test\ApiClient;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
@@ -30,10 +30,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * @coversDefaultClass \Drupal\helfi_api_base\ApiClient\ApiClientBase
+ * @coversDefaultClass \Drupal\helfi_api_base\ApiClient\ApiClient
  * @group helfi_api_base
  */
-class ApiClientBaseTest extends UnitTestCase {
+class ApiClientTest extends UnitTestCase {
 
   use ApiTestTrait;
   use ProphecyTrait;
@@ -94,7 +94,7 @@ class ApiClientBaseTest extends UnitTestCase {
    * @param array $requestOptions
    *   The default request options.
    *
-   * @return \Drupal\helfi_api_client_test\ApiClient
+   * @return \Drupal\helfi_api_base\ApiClient\ApiClient
    *   The api client instance.
    */
   private function getSut(
@@ -150,7 +150,7 @@ class ApiClientBaseTest extends UnitTestCase {
 
     // Test empty and non-empty response.
     for ($i = 0; $i < 2; $i++) {
-      $response = $sut->exposedMakeRequest('GET', '/foo');
+      $response = $sut->makeRequest('GET', '/foo');
       $this->assertInstanceOf(ApiResponse::class, $response);
       $this->assertInstanceOf(RequestInterface::class, $requests[0]['request']);
     }
@@ -165,7 +165,7 @@ class ApiClientBaseTest extends UnitTestCase {
   public function testCacheExceptionOnFailure() : void {
     $this->expectException(GuzzleException::class);
 
-    $this->getSut()->exposedCache(
+    $this->getSut()->cache(
       'nonexistent:fi',
       fn () => throw new RequestException(
         'Test',
@@ -195,7 +195,7 @@ class ApiClientBaseTest extends UnitTestCase {
     $sut = $this->getSut(
       time: $this->getTimeMock($time)->reveal(),
     );
-    $response = $sut->exposedCache(
+    $response = $sut->cache(
       'external_menu:main:fi',
       fn () => throw new RequestException(
         'Test',
@@ -210,6 +210,7 @@ class ApiClientBaseTest extends UnitTestCase {
    *
    * @covers ::__construct
    * @covers ::cache
+   * @covers ::cacheMaxAge
    * @covers \Drupal\helfi_api_base\ApiClient\CacheValue::hasExpired
    * @covers \Drupal\helfi_api_base\ApiClient\CacheValue::__construct
    * @covers \Drupal\helfi_api_base\ApiClient\ApiResponse::__construct
@@ -229,19 +230,20 @@ class ApiClientBaseTest extends UnitTestCase {
     $sut = $this->getSut(
       time: $this->getTimeMock($time)->reveal(),
     );
-    $value = $sut->exposedCache('external_menu:main:en', static fn () => new CacheValue(
+    $value = $sut->cache('external_menu:main:en', static fn () => new CacheValue(
       new ApiResponse((object) ['value' => 'value']),
-      $time + 10,
+      $sut->cacheMaxAge(10),
       [],
     ));
     $this->assertInstanceOf(CacheValue::class, $value);
     $this->assertInstanceOf(ApiResponse::class, $value->response);
     // Make sure cache was updated.
     $this->assertInstanceOf(\stdClass::class, $value->response->data);
+    $this->assertEquals($time + 10, $value->expires);
     $this->assertEquals('value', $value->response->data->value);
     // Re-fetch the data to make sure we still get updated data and make sure
     // no further requests are made.
-    $value = $sut->exposedCache('external_menu:main:en', fn() => $this->fail('Data should be cached'));
+    $value = $sut->cache('external_menu:main:en', fn() => $this->fail('Data should be cached'));
     $this->assertInstanceOf(\stdClass::class, $value->response->data);
     $this->assertEquals('value', $value->response->data->value);
   }
@@ -265,7 +267,7 @@ class ApiClientBaseTest extends UnitTestCase {
       ->shouldBeCalled();
 
     $sut = $this->getSut($client, logger: $logger->reveal());
-    $sut->exposedMakeRequest('GET', '/foo');
+    $sut->makeRequest('GET', '/foo');
   }
 
   /**
@@ -290,7 +292,7 @@ class ApiClientBaseTest extends UnitTestCase {
     ]);
     $sut = $this->getSut($client);
     // Test with non-existent menu to make sure no mock file exist.
-    $sut->exposedMakeRequestWithFixture(
+    $sut->makeRequestWithFixture(
       sprintf('%d/should-not-exists.txt', __DIR__),
       'GET',
       '/foo'
@@ -322,7 +324,7 @@ class ApiClientBaseTest extends UnitTestCase {
       $client,
       logger: $logger->reveal(),
     );
-    $response = $sut->exposedMakeRequestWithFixture(
+    $response = $sut->makeRequestWithFixture(
       sprintf('%s/../../../fixtures/environments.json', __DIR__),
       'GET',
       '/foo',
@@ -353,7 +355,7 @@ class ApiClientBaseTest extends UnitTestCase {
     // if more than one request is sent.
     for ($i = 0; $i < 50; $i++) {
       try {
-        $sut->exposedMakeRequest('GET', '/foo');
+        $sut->makeRequest('GET', '/foo');
       }
       catch (ConnectException) {
         $attempts++;
@@ -388,8 +390,8 @@ class ApiClientBaseTest extends UnitTestCase {
     );
     // Make sure cache is used for all requests.
     for ($i = 0; $i < 3; $i++) {
-      $response = $sut->exposedCache('cache_key', fn () => new CacheValue(
-        $sut->exposedMakeRequest('GET', '/foo'),
+      $response = $sut->cache('cache_key', fn () => new CacheValue(
+        $sut->makeRequest('GET', '/foo'),
         $time + 100,
         [],
       ))->response;
@@ -398,8 +400,8 @@ class ApiClientBaseTest extends UnitTestCase {
     }
     // Make sure cache is bypassed when configured so and the cached content
     // is updated.
-    $response = $sut->withBypassCache()->exposedCache('cache_key', fn () => new CacheValue(
-      $sut->exposedMakeRequest('GET', '/foo'),
+    $response = $sut->withBypassCache()->cache('cache_key', fn () => new CacheValue(
+      $sut->makeRequest('GET', '/foo'),
       $time + 100,
       []
     ))->response;
@@ -411,8 +413,8 @@ class ApiClientBaseTest extends UnitTestCase {
     // We defined only two responses, so this should fail to OutOfBoundException
     // if cache was bypassed here.
     for ($i = 0; $i < 3; $i++) {
-      $response = $sut->exposedCache('cache_key', fn () => new CacheValue(
-        $sut->exposedMakeRequest('GET', '/foo'),
+      $response = $sut->cache('cache_key', fn () => new CacheValue(
+        $sut->makeRequest('GET', '/foo'),
         $time + 100,
         [],
       ))->response;
