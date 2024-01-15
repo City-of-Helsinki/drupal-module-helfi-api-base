@@ -121,7 +121,15 @@ class ApiClient {
     string $url,
     array $options = [],
   ): ApiResponse {
-    return $this->makeRequestInternal(NULL, $method, $url, $options);
+    $activeEnvironmentName = $this->environmentResolver
+      ->getActiveEnvironment()
+      ->getEnvironmentName();
+
+    $options = $this->getRequestOptions($activeEnvironmentName, $options);
+
+    $response = $this->httpClient->request($method, $url, $options);
+
+    return new ApiResponse(Utils::jsonDecode($response->getBody()->getContents()));
   }
 
   /**
@@ -147,39 +155,6 @@ class ApiClient {
     string $url,
     array $options = [],
   ): ApiResponse {
-    return $this->makeRequestInternal($fixture, $method, $url, $options);
-  }
-
-  /**
-   * Makes the HTTP request.
-   *
-   * @param string|null $fixture
-   *   Fixture file or NULL if disabled.
-   * @param string $method
-   *   Request method.
-   * @param string $url
-   *   The endpoint in the instance.
-   * @param array $options
-   *   Body for requests.
-   *
-   * @return \Drupal\helfi_api_base\ApiClient\ApiResponse
-   *   The JSON object.
-   *
-   * @throws \GuzzleHttp\Exception\GuzzleException
-   */
-  private function makeRequestInternal(
-    ?string $fixture,
-    string $method,
-    string $url,
-    array $options,
-  ): ApiResponse {
-
-    $activeEnvironmentName = $this->environmentResolver
-      ->getActiveEnvironment()
-      ->getEnvironmentName();
-
-    $options = $this->getRequestOptions($activeEnvironmentName, $options);
-
     try {
       if ($this->previousException instanceof \Exception) {
         // Fail any further request instantly after one failed request, so we
@@ -187,16 +162,19 @@ class ApiClient {
         throw $this->previousException;
       }
 
-      $response = $this->httpClient->request($method, $url, $options);
+      return $this->makeRequest($method, $url, $options);
     }
     catch (\Exception $e) {
       if ($e instanceof GuzzleException) {
         $this->previousException = $e;
       }
 
+      $activeEnvironmentName = $this->environmentResolver
+        ->getActiveEnvironment()
+        ->getEnvironmentName();
+
       // Serve mock data in local environments if requests fail.
       if (
-        $fixture !== NULL &&
         ($e instanceof ClientException || $e instanceof ConnectException) &&
         $activeEnvironmentName === 'local'
       ) {
@@ -207,12 +185,8 @@ class ApiClient {
         return ApiFixture::requestFromFile($fixture);
       }
 
-      $this->logger->error('Request failed with error: ' . $e->getMessage());
-
       throw $e;
     }
-
-    return new ApiResponse(Utils::jsonDecode($response->getBody()->getContents()));
   }
 
   /**

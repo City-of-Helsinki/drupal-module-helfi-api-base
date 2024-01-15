@@ -53,11 +53,19 @@ class ApiClientTest extends UnitTestCase {
   private array $environmentResolverConfiguration = [];
 
   /**
+   * Response fixture JSON file.
+   *
+   * @var string
+   */
+  private string $fixture;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() : void {
     parent::setUp();
 
+    $this->fixture = sprintf('%s/../../../fixtures/response.json', __DIR__);
     $this->cache = new MemoryBackend();
     $this->environmentResolverConfiguration = [
       EnvironmentResolver::PROJECT_NAME_KEY => Project::ASUMINEN,
@@ -136,7 +144,6 @@ class ApiClientTest extends UnitTestCase {
    *
    * @covers ::__construct
    * @covers ::makeRequest
-   * @covers ::makeRequestInternal
    * @covers ::getRequestOptions
    * @covers \Drupal\helfi_api_base\ApiClient\ApiResponse::__construct
    */
@@ -252,7 +259,6 @@ class ApiClientTest extends UnitTestCase {
    * Make sure we log the exception and then re-throw the same exception.
    *
    * @covers ::makeRequest
-   * @covers ::makeRequestInternal
    * @covers ::__construct
    * @covers ::getRequestOptions
    */
@@ -263,8 +269,6 @@ class ApiClientTest extends UnitTestCase {
       new RequestException('Test', $this->prophesize(RequestInterface::class)->reveal()),
     ]);
     $logger = $this->prophesize(LoggerInterface::class);
-    $logger->error(Argument::any())
-      ->shouldBeCalled();
 
     $sut = $this->getSut($client, logger: $logger->reveal());
     $sut->makeRequest('GET', '/foo');
@@ -273,8 +277,7 @@ class ApiClientTest extends UnitTestCase {
   /**
    * Tests that file not found exception is thrown when no mock file exists.
    *
-   * @covers ::makeRequest
-   * @covers ::makeRequestInternal
+   * @covers ::makeRequestWithFixture
    * @covers ::__construct
    * @covers ::getRequestOptions
    * @covers \Drupal\helfi_api_base\ApiClient\ApiFixture::requestFromFile
@@ -303,7 +306,6 @@ class ApiClientTest extends UnitTestCase {
    * Tests that mock is used on local environment when GET request fails.
    *
    * @covers ::makeRequestWithFixture
-   * @covers ::makeRequestInternal
    * @covers ::__construct
    * @covers ::getRequestOptions
    * @covers \Drupal\helfi_api_base\ApiClient\ApiResponse::__construct
@@ -325,7 +327,7 @@ class ApiClientTest extends UnitTestCase {
       logger: $logger->reveal(),
     );
     $response = $sut->makeRequestWithFixture(
-      sprintf('%s/../../../fixtures/environments.json', __DIR__),
+      $this->fixture,
       'GET',
       '/foo',
     );
@@ -335,12 +337,14 @@ class ApiClientTest extends UnitTestCase {
   /**
    * Make sure subsequent requests are failed after one failed request.
    *
-   * @covers ::makeRequest
-   * @covers ::makeRequestInternal
+   * @covers ::makeRequestWithFixture
    * @covers ::__construct
    * @covers ::getRequestOptions
    */
   public function testFastRequestFailure() : void {
+    // Override environment name so we don't fallback to mock responses.
+    $this->environmentResolverConfiguration[EnvironmentResolver::ENVIRONMENT_NAME_KEY] = 'test';
+
     $client = $this->createMockHttpClient([
       new ConnectException(
         'Test',
@@ -355,7 +359,7 @@ class ApiClientTest extends UnitTestCase {
     // if more than one request is sent.
     for ($i = 0; $i < 50; $i++) {
       try {
-        $sut->makeRequest('GET', '/foo');
+        $sut->makeRequestWithFixture($this->fixture, 'GET', '/foo');
       }
       catch (ConnectException) {
         $attempts++;
@@ -368,7 +372,6 @@ class ApiClientTest extends UnitTestCase {
    * Make sure cache can be bypassed when configured so.
    *
    * @covers ::makeRequest
-   * @covers ::makeRequestInternal
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getRequestOptions

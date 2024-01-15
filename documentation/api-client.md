@@ -5,7 +5,6 @@ Service for HTTP JSON APIs.
 Features:
  - Simple caching.
  - Optional response mocking for local environment.
- - Fail any further request instantly after one failed request.
 
 ## Usage
 
@@ -20,8 +19,6 @@ my_module.my_api:
     # Optional:
     - { timeout: 30 }
 ```
-
-*Warning*: The client fail any further requests instantly after one failed requests. This is to prevent blocking the rendering process and cause the site to time-out. You should not share the client for different purposes that need fault tolerance.
 
 Actual requests are usually made in the callback of `cache()` method. The callback must return `CacheValue`.
 
@@ -48,3 +45,5 @@ In local environment, the `makeRequestWithFixture` method returns response from 
 ```php
 $client->makeRequestWithFixture('path-to-fixture.json', 'GET', 'https://example.com/fails-in-local'),
 ```
+
+*Warning*: The client fail any further requests to `makeRequestWithFixture` instantly after one failed requests. This is to prevent blocking the rendering process and cause the site to time-out. You should not share the client for different purposes that need fault tolerance.
