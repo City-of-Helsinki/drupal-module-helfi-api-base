@@ -136,8 +136,8 @@ class ApiClientBaseTest extends UnitTestCase {
    *
    * @covers ::__construct
    * @covers ::makeRequest
+   * @covers ::makeRequestInternal
    * @covers ::getRequestOptions
-   * @covers ::hasAuthorization
    * @covers \Drupal\helfi_api_base\ApiClient\ApiResponse::__construct
    */
   public function testMakeRequest() {
@@ -157,14 +157,32 @@ class ApiClientBaseTest extends UnitTestCase {
   }
 
   /**
-   * Tests that stale cache will be returned in case request fails.
+   * Tests exception when cache callback fails.
+   *
+   * @covers ::__construct
+   * @covers ::cache
+   */
+  public function testCacheExceptionOnFailure() : void {
+    $this->expectException(GuzzleException::class);
+
+    $this->getSut()->exposedCache(
+      'nonexistent:fi',
+      fn () => throw new RequestException(
+        'Test',
+        $this->prophesize(RequestInterface::class)->reveal()
+      )
+    );
+  }
+
+  /**
+   * Tests that stale cache will be returned in case callback fails.
    *
    * @covers ::__construct
    * @covers ::cache
    * @covers \Drupal\helfi_api_base\ApiClient\CacheValue::hasExpired
    * @covers \Drupal\helfi_api_base\ApiClient\CacheValue::__construct
    */
-  public function testStaleCacheOnCallbackFailure() : void {
+  public function testStaleCacheOnFailure() : void {
     $time = time();
     // Expired cache object.
     $cacheValue = new CacheValue(
@@ -232,6 +250,7 @@ class ApiClientBaseTest extends UnitTestCase {
    * Make sure we log the exception and then re-throw the same exception.
    *
    * @covers ::makeRequest
+   * @covers ::makeRequestInternal
    * @covers ::__construct
    * @covers ::getRequestOptions
    */
@@ -253,6 +272,7 @@ class ApiClientBaseTest extends UnitTestCase {
    * Tests that file not found exception is thrown when no mock file exists.
    *
    * @covers ::makeRequest
+   * @covers ::makeRequestInternal
    * @covers ::__construct
    * @covers ::getRequestOptions
    * @covers \Drupal\helfi_api_base\ApiClient\ApiFixture::requestFromFile
@@ -270,15 +290,18 @@ class ApiClientBaseTest extends UnitTestCase {
     ]);
     $sut = $this->getSut($client);
     // Test with non-existent menu to make sure no mock file exist.
-    $sut->exposedMakeRequest('GET', '/foo', fixture: sprintf('%d/should-not-exists.txt',
-      __DIR__
-    ));
+    $sut->exposedMakeRequestWithFixture(
+      sprintf('%d/should-not-exists.txt', __DIR__),
+      'GET',
+      '/foo'
+    );
   }
 
   /**
    * Tests that mock is used on local environment when GET request fails.
    *
-   * @covers ::makeRequest
+   * @covers ::makeRequestWithFixture
+   * @covers ::makeRequestInternal
    * @covers ::__construct
    * @covers ::getRequestOptions
    * @covers \Drupal\helfi_api_base\ApiClient\ApiResponse::__construct
@@ -299,10 +322,10 @@ class ApiClientBaseTest extends UnitTestCase {
       $client,
       logger: $logger->reveal(),
     );
-    $response = $sut->exposedMakeRequest(
+    $response = $sut->exposedMakeRequestWithFixture(
+      sprintf('%s/../../../fixtures/environments.json', __DIR__),
       'GET',
       '/foo',
-      fixture: sprintf('%s/../../../fixtures/environments.json', __DIR__),
     );
     $this->assertInstanceOf(ApiResponse::class, $response);
   }
@@ -311,13 +334,11 @@ class ApiClientBaseTest extends UnitTestCase {
    * Make sure subsequent requests are failed after one failed request.
    *
    * @covers ::makeRequest
+   * @covers ::makeRequestInternal
    * @covers ::__construct
    * @covers ::getRequestOptions
    */
   public function testFastRequestFailure() : void {
-    // Override environment name so we don't fallback to mock responses.
-    $this->environmentResolverConfiguration[EnvironmentResolver::ENVIRONMENT_NAME_KEY] = 'test';
-
     $client = $this->createMockHttpClient([
       new ConnectException(
         'Test',
@@ -345,6 +366,7 @@ class ApiClientBaseTest extends UnitTestCase {
    * Make sure cache can be bypassed when configured so.
    *
    * @covers ::makeRequest
+   * @covers ::makeRequestInternal
    * @covers ::__construct
    * @covers ::cache
    * @covers ::getRequestOptions

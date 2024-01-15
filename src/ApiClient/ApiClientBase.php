@@ -19,7 +19,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Base class for services that fetch data from HTTP API.
  *
- * Provided functionality include caching and fixtures for local usage.
+ * Provides caching and fixtures (for local environment).
  */
 abstract class ApiClientBase {
 
@@ -105,7 +105,7 @@ abstract class ApiClientBase {
   }
 
   /**
-   * Makes the HTTP request internally.
+   * Makes HTTP request.
    *
    * @param string $method
    *   Request method.
@@ -113,8 +113,6 @@ abstract class ApiClientBase {
    *   The endpoint in the instance.
    * @param array $options
    *   Body for requests.
-   * @param string|null $fixture
-   *   Replace failed response from this file in local environment.
    *
    * @return \Drupal\helfi_api_base\ApiClient\ApiResponse
    *   The JSON object.
@@ -125,8 +123,61 @@ abstract class ApiClientBase {
     string $method,
     string $url,
     array $options = [],
-    string $fixture = NULL,
   ): ApiResponse {
+    return $this->makeRequestInternal(NULL, $method, $url, $options);
+  }
+
+  /**
+   * Makes HTTP request with fixture.
+   *
+   *
+   * @param string $fixture
+   *   File for mock data if requests fail in local environment.
+   * @param string $method
+   *   Request method.
+   * @param string $url
+   *   The endpoint in the instance.
+   * @param array $options
+   *   Body for requests.
+   *
+   * @return \Drupal\helfi_api_base\ApiClient\ApiResponse
+   *   The JSON object.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
+  protected function makeRequestWithFixture(
+    string $fixture,
+    string $method,
+    string $url,
+    array $options = [],
+  ): ApiResponse {
+    return $this->makeRequestInternal($fixture, $method, $url, $options);
+  }
+
+    /**
+     * Makes the HTTP request.
+     *
+     * @param string|NULL $fixture
+     *   Fixture file or NULL if disabled.
+     * @param string $method
+     *   Request method.
+     * @param string $url
+     *   The endpoint in the instance.
+     * @param array $options
+     *   Body for requests.
+     *
+     * @return \Drupal\helfi_api_base\ApiClient\ApiResponse
+     *   The JSON object.
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    private function makeRequestInternal(
+      string|NULL $fixture,
+      string $method,
+      string $url,
+      array $options,
+    ): ApiResponse {
+
     $activeEnvironmentName = $this->environmentResolver
       ->getActiveEnvironment()
       ->getEnvironmentName();
@@ -149,7 +200,7 @@ abstract class ApiClientBase {
 
       // Serve mock data in local environments if requests fail.
       if (
-        $fixture &&
+        $fixture !== NULL &&
         ($e instanceof ClientException || $e instanceof ConnectException) &&
         $activeEnvironmentName === 'local'
       ) {

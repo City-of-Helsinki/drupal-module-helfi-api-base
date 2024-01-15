@@ -18,8 +18,17 @@ class ApiClient extends ApiClientBase {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function exposedMakeRequest(string $method, string $url, array $options = [], ?string $fixture = NULL): ApiResponse {
-    return $this->makeRequest($method, $url, $options, $fixture);
+  public function exposedMakeRequest(string $method, string $url, array $options = []): ApiResponse {
+    return $this->makeRequest($method, $url, $options);
+  }
+
+  /**
+   * Expose protected method for testing.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
+  public function exposedMakeRequestWithFixture(string $fixture, string $method, string $url, array $options = []): ApiResponse {
+    return $this->makeRequestWithFixture($fixture, $method, $url, $options);
   }
 
   /**
