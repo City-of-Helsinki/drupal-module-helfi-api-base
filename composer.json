@@ -12,7 +12,8 @@
         "php": "^8.1",
         "t4web/composer-lock-parser": "^1.0",
         "textalk/websocket": "^1.6",
-        "webmozart/assert": "^1.0"
+        "webmozart/assert": "^1.0",
+        "ext-curl": "*"
     },
     "conflict": {
         "drupal/helfi_debug": "*"

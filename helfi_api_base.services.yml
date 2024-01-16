@@ -142,3 +142,12 @@ services:
       - '@entity_type.manager'
       - '@config.factory'
       - '@database'
+
+  helfi_api_base.api_client_base:
+    class: Drupal\helfi_api_base\ApiClient\ApiClient
+    abstract: true
+    arguments:
+      - '@http_client'
+      - '@cache.default'
+      - '@datetime.time'
+      - '@helfi_api_base.environment_resolver'
