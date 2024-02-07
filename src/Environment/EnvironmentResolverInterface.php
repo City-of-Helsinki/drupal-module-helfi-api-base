@@ -22,6 +22,8 @@ interface EnvironmentResolverInterface {
    *
    * @return \Drupal\helfi_api_base\Environment\Project
    *   The currently active project.
+   *
+   * @throws \Drupal\helfi_api_base\Exception\EnvironmentException
    */
   public function getActiveProject() : Project;
 
@@ -30,6 +32,8 @@ interface EnvironmentResolverInterface {
    *
    * @return \Drupal\helfi_api_base\Environment\Environment
    *   The currently active environment.
+   *
+   * @throws \Drupal\helfi_api_base\Exception\EnvironmentException
    */
   public function getActiveEnvironment() : Environment;
 
@@ -38,6 +42,8 @@ interface EnvironmentResolverInterface {
    *
    * @return string
    *   The active environment name.
+   *
+   * @throws \Drupal\helfi_api_base\Exception\EnvironmentException
    */
   public function getActiveEnvironmentName() : string;
 
@@ -49,6 +55,8 @@ interface EnvironmentResolverInterface {
    *
    * @return \Drupal\helfi_api_base\Environment\Project
    *   The project.
+   *
+   * @throws \Drupal\helfi_api_base\Exception\EnvironmentException
    */
   public function getProject(string $project) : Project;
 
@@ -62,6 +70,8 @@ interface EnvironmentResolverInterface {
    *
    * @return \Drupal\helfi_api_base\Environment\Environment
    *   The environment.
+   *
+   * @throws \Drupal\helfi_api_base\Exception\EnvironmentException
    */
   public function getEnvironment(string $project, string $environment) : Environment;
 

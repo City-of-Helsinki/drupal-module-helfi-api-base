@@ -9,6 +9,7 @@ use Drupal\Core\Config\ImmutableConfig;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Exception\EnvironmentException;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
@@ -63,7 +64,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @dataProvider populateEnvironmentsExceptionsData
    */
   public function testPopulateEnvironmentsExceptions(string $data, string $message) : void {
-    $this->expectException(\InvalidArgumentException::class);
+    $this->expectException(EnvironmentException::class);
     $this->expectExceptionMessage($message);
     new EnvironmentResolver($data, $this->getConfigStub());
   }
@@ -129,7 +130,7 @@ class EnvironmentResolverTest extends UnitTestCase {
     string $environment,
     string $message
   ) : void {
-    $this->expectException(\InvalidArgumentException::class);
+    $this->expectException(EnvironmentException::class);
     $this->expectExceptionMessage($message);
     $this->getEnvironmentResolver()
       ->getEnvironment($project, $environment);
@@ -208,7 +209,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @dataProvider activeProjectExceptionData
    */
   public function testGetActiveProjectException(mixed $value) : void {
-    $this->expectException(\InvalidArgumentException::class);
+    $this->expectException(EnvironmentException::class);
     $this->expectExceptionMessageMatches('/^No active project found./');
 
     // Construct config mock manually because ::getConfigStub() will never
@@ -283,7 +284,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    */
   public function testGetActiveEnvironmentException() : void {
     putenv('APP_ENV=');
-    $this->expectException(\InvalidArgumentException::class);
+    $this->expectException(EnvironmentException::class);
     $this->expectExceptionMessageMatches('/^No active environment found./');
     $this->getEnvironmentResolver(Project::ASUMINEN)->getActiveEnvironment();
   }

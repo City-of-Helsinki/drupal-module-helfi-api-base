@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\helfi_api_base\Environment\EnvironmentMetadata;
+use Drupal\helfi_api_base\Exception\EnvironmentException;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -23,7 +24,7 @@ class EnvironmentMetadataTest extends UnitTestCase {
     try {
       EnvironmentMetadata::createFromArray(['nonexistent' => 'dsa']);
     }
-    catch (\InvalidArgumentException $e) {
+    catch (EnvironmentException $e) {
       $this->assertMatchesRegularExpression('/Missing required/', $e->getMessage());
       $caught = TRUE;
     }

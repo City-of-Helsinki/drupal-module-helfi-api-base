@@ -8,6 +8,7 @@ use Drupal\helfi_api_base\Environment\Address;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentMetadata;
+use Drupal\helfi_api_base\Exception\EnvironmentException;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -67,7 +68,7 @@ class EnvironmentTest extends UnitTestCase {
     try {
       $sut->getUrl('en');
     }
-    catch (\InvalidArgumentException $e) {
+    catch (EnvironmentException $e) {
       $this->assertEquals('Path not found for "en" language.', $e->getMessage());
       $caught = TRUE;
     }

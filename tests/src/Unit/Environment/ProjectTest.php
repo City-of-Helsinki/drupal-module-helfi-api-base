@@ -10,6 +10,7 @@ use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectMetadata;
+use Drupal\helfi_api_base\Exception\EnvironmentException;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -30,7 +31,7 @@ class ProjectTest extends UnitTestCase {
       // Make sure $environments parameter must be an Environment object.
       new Project(Project::ASUMINEN, new ProjectMetadata('', ''), ['invalid env']);
     }
-    catch (\InvalidArgumentException $e) {
+    catch (\InvalidArgumentException) {
       $caught = TRUE;
     }
     $this->assertTrue($caught);
@@ -73,7 +74,7 @@ class ProjectTest extends UnitTestCase {
     try {
       $sut->getEnvironment('local');
     }
-    catch (\InvalidArgumentException $e) {
+    catch (EnvironmentException $e) {
       $this->assertEquals('Environment "local" not found.', $e->getMessage());
       $caught = TRUE;
     }

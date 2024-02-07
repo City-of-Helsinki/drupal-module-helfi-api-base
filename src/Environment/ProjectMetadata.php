@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\Environment;
 
+use Drupal\helfi_api_base\Exception\EnvironmentException;
+
 /**
  * A value object to store project metadata.
  */
@@ -40,7 +42,7 @@ final class ProjectMetadata {
 
     foreach ($required as $key) {
       if (!isset($data[$key])) {
-        throw new \InvalidArgumentException(sprintf('Missing required "%s".', $key));
+        throw new EnvironmentException(sprintf('Missing required "%s".', $key));
       }
     }
 

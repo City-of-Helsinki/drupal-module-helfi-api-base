@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\helfi_api_base\Environment;
 
+use Drupal\helfi_api_base\Exception\EnvironmentException;
+
 /**
  * A value object to store environment data.
  */
@@ -102,7 +104,7 @@ final class Environment {
    */
   public function getPath(string $language) : string {
     if (!isset($this->paths[$language])) {
-      throw new \InvalidArgumentException(
+      throw new EnvironmentException(
         sprintf('Path not found for "%s" language.', $language)
       );
     }
