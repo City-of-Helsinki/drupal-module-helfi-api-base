@@ -23,6 +23,7 @@ trait EnvironmentTrait {
     // 'staging' and 'testing' instead of 'local', 'test,' 'stage' and 'prod'.
     // Map all known environment name variations to match environment resolver.
     $environments = [
+      'development' => 'dev',
       'testing' => 'test',
       'staging' => 'stage',
       'production' => 'prod',
