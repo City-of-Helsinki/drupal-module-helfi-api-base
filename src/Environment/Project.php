@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\helfi_api_base\Environment;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_api_base\Exception\EnvironmentException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -145,7 +144,7 @@ final class Project {
     $environment = $this->normalizeEnvironmentName($environment);
 
     if (!$this->hasEnvironment($environment)) {
-      throw new EnvironmentException(sprintf('Environment "%s" not found.', $environment));
+      throw new \InvalidArgumentException(sprintf('Environment "%s" not found.', $environment));
     }
     return $this->environments[$environment];
   }

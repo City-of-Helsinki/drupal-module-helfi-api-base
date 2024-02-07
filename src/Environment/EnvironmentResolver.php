@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\helfi_api_base\Environment;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\helfi_api_base\Exception\EnvironmentException;
 
 /**
  * Environment resolver.
@@ -58,8 +57,6 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
    *
    * @param string $pathOrJson
    *   The path to config.json file.
-   *
-   * @throws \Drupal\helfi_api_base\Exception\EnvironmentException
    */
   private function populateEnvironments(string $pathOrJson) : void {
     // Fallback to default environments.json file.
@@ -72,7 +69,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         $projects = json_decode($pathOrJson, TRUE, flags: JSON_THROW_ON_ERROR);
       }
       catch (\JsonException) {
-        throw new EnvironmentException('Environment file not found or is not a valid JSON.');
+        throw new \InvalidArgumentException('Environment file not found or is not a valid JSON.');
       }
     }
     else {
@@ -80,12 +77,12 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
     }
 
     if (empty($projects)) {
-      throw new EnvironmentException('Failed to parse projects.');
+      throw new \InvalidArgumentException('Failed to parse projects.');
     }
 
     foreach ($projects as $id => $item) {
       if (!isset($item['meta'], $item['environments'])) {
-        throw new EnvironmentException('Project missing meta or environments.');
+        throw new \InvalidArgumentException('Project missing meta or environments.');
       }
       ['meta' => $meta, 'environments' => $environments] = $item;
 
@@ -93,7 +90,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
 
       foreach ($environments as $environment => $settings) {
         if (!isset($settings['address'], $settings['internal_address'], $settings['path'])) {
-          throw new EnvironmentException('Project missing "address", "internal_address" or "paths" setting.');
+          throw new \InvalidArgumentException('Project missing "address", "internal_address" or "paths" setting.');
         }
 
         $project->addEnvironment($environment, new Environment(
@@ -139,7 +136,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
       return $this->activeProject;
     }
     if (!$name = $this->getConfig(self::PROJECT_NAME_KEY)) {
-      throw new EnvironmentException(
+      throw new \InvalidArgumentException(
         $this->configurationMissingExceptionMessage('No active project found', self::PROJECT_NAME_KEY)
       );
     }
@@ -152,8 +149,6 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
    *
    * @return string
    *   The active environment name.
-   *
-   * @throws \Drupal\helfi_api_base\Exception\EnvironmentException
    */
   public function getActiveEnvironmentName() : string {
     if (!empty($this->activeEnvironmentName)) {
@@ -164,7 +159,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
       $env = getenv('APP_ENV');
     }
     if (!$env) {
-      throw new EnvironmentException(
+      throw new \InvalidArgumentException(
         $this->configurationMissingExceptionMessage('No active environment found', self::ENVIRONMENT_NAME_KEY)
       );
     }
@@ -204,8 +199,6 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
    *
    * @return \Drupal\helfi_api_base\Environment\Project
    *   The project.
-   *
-   * @throws \Drupal\helfi_api_base\Exception\EnvironmentException
    */
   private function getProjectForRepository(string $repository) : Project {
     $projects = array_filter(
@@ -216,7 +209,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
     if ($project = reset($projects)) {
       return $project;
     }
-    throw new EnvironmentException(
+    throw new \InvalidArgumentException(
       sprintf('Project "%s" not found.', $repository)
     );
   }
