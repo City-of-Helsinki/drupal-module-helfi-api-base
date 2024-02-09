@@ -20,7 +20,7 @@ use WebSocket\TimeoutException;
  */
 final class PubSubCommands extends DrushCommands {
 
-  public const MAX_MESSAGES = 500;
+  public const MAX_MESSAGES = 100;
   public const CLIENT_TIMEOUT = 120;
 
   /**
