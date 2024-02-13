@@ -24,13 +24,13 @@
       },
       "test": {
         "path": {
-          "fi": "/fi/test-asuminen",
-          "sv": "/sv/test-boende",
-          "en": "/en/test-housing"
+          "fi": "/fi/asuminen",
+          "sv": "/sv/boende",
+          "en": "/en/housing"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.test.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -42,13 +42,13 @@
       },
       "stage": {
         "path": {
-          "fi": "/fi/staging-asuminen",
-          "sv": "/sv/staging-boende",
-          "en": "/en/staging-housing"
+          "fi": "/fi/asuminen",
+          "sv": "/sv/boende",
+          "en": "/en/housing"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.stage.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -103,13 +103,13 @@
       },
       "test": {
         "path": {
-          "fi": "/fi/test-etusivu",
-          "sv": "/sv/test-huvudsida",
-          "en": "/en/test-frontpage"
+          "fi": "/fi/etusivu",
+          "sv": "/sv/huvudsida",
+          "en": "/en/frontpage"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.test.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -121,13 +121,13 @@
       },
       "stage": {
         "path": {
-          "fi": "/fi/staging-etusivu",
-          "sv": "/sv/staging-huvudsida",
-          "en": "/en/staging-frontpage"
+          "fi": "/fi/etusivu",
+          "sv": "/sv/huvudsida",
+          "en": "/en/frontpage"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.stage.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -182,13 +182,13 @@
       },
       "test": {
         "path": {
-          "fi": "/fi/test-kasvatus-ja-koulutus",
-          "sv": "/sv/test-fostran-och-utbildning",
-          "en": "/en/test-childhood-and-education"
+          "fi": "/fi/kasvatus-ja-koulutus",
+          "sv": "/sv/fostran-och-utbildning",
+          "en": "/en/childhood-and-education"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.test.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -200,13 +200,13 @@
       },
       "stage": {
         "path": {
-          "fi": "/fi/staging-kasvatus-ja-koulutus",
-          "sv": "/sv/staging-fostran-och-utbildning",
-          "en": "/en/staging-childhood-and-education"
+          "fi": "/fi/kasvatus-ja-koulutus",
+          "sv": "/sv/fostran-och-utbildning",
+          "en": "/en/childhood-and-education"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.stage.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -261,13 +261,13 @@
       },
       "test": {
         "path": {
-          "fi": "/fi/test-kulttuuri-ja-vapaa-aika",
-          "sv": "/sv/test-kultur-och-fritid",
-          "en": "/en/test-culture-and-leisure"
+          "fi": "/fi/kulttuuri-ja-vapaa-aika",
+          "sv": "/sv/kultur-och-fritid",
+          "en": "/en/culture-and-leisure"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.test.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -279,13 +279,13 @@
       },
       "stage": {
         "path": {
-          "fi": "/fi/staging-kulttuuri-ja-vapaa-aika",
-          "sv": "/sv/staging-kultur-och-fritid",
-          "en": "/en/staging-culture-and-leisure"
+          "fi": "/fi/kulttuuri-ja-vapaa-aika",
+          "sv": "/sv/kultur-och-fritid",
+          "en": "/en/culture-and-leisure"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.stage.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -340,13 +340,13 @@
       },
       "test": {
         "path": {
-          "fi": "/fi/test-kaupunkiymparisto-ja-liikenne",
-          "sv": "/sv/test-stadsmiljo-och-trafik",
-          "en": "/en/test-urban-environment-and-traffic"
+          "fi": "/fi/kaupunkiymparisto-ja-liikenne",
+          "sv": "/sv/stadsmiljo-och-trafik",
+          "en": "/en/urban-environment-and-traffic"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.test.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -358,13 +358,13 @@
       },
       "stage": {
         "path": {
-          "fi": "/fi/staging-kaupunkiymparisto-ja-liikenne",
-          "sv": "/sv/staging-stadsmiljo-och-trafik",
-          "en": "/en/staging-urban-environment-and-traffic"
+          "fi": "/fi/kaupunkiymparisto-ja-liikenne",
+          "sv": "/sv/stadsmiljo-och-trafik",
+          "en": "/en/urban-environment-and-traffic"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.stage.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -419,13 +419,13 @@
       },
       "test": {
         "path": {
-          "fi": "/fi/test-avoimet-tyopaikat",
-          "sv": "/sv/test-lediga-jobb",
-          "en": "/en/test-open-jobs"
+          "fi": "/fi/avoimet-tyopaikat",
+          "sv": "/sv/lediga-jobb",
+          "en": "/en/open-jobs"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.test.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -437,13 +437,13 @@
       },
       "stage": {
         "path": {
-          "fi": "/fi/staging-avoimet-tyopaikat",
-          "sv": "/sv/staging-lediga-jobb",
-          "en": "/en/staging-open-jobs"
+          "fi": "/fi/avoimet-tyopaikat",
+          "sv": "/sv/lediga-jobb",
+          "en": "/en/open-jobs"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.stage.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -498,13 +498,13 @@
       },
       "test": {
         "path": {
-          "fi": "/fi/test-paatoksenteko-ja-hallinto",
-          "sv": "/sv/test-beslutsfattande-och-forvaltning",
-          "en": "/en/test-decision-making"
+          "fi": "/fi/paatoksenteko-ja-hallinto",
+          "sv": "/sv/beslutsfattande-och-forvaltning",
+          "en": "/en/decision-making"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.test.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -516,13 +516,13 @@
       },
       "stage": {
         "path": {
-          "fi": "/fi/staging-paatoksenteko-ja-hallinto",
-          "sv": "/sv/staging-beslutsfattande-och-forvaltning",
-          "en": "/en/staging-decision-making"
+          "fi": "/fi/paatoksenteko-ja-hallinto",
+          "sv": "/sv/beslutsfattande-och-forvaltning",
+          "en": "/en/decision-making"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.stage.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -577,13 +577,13 @@
       },
       "test": {
         "path": {
-          "fi": "/fi/test-sosiaali-ja-terveyspalvelut",
-          "sv": "/sv/test-social-och-halsovardstjanster",
-          "en": "/en/test-health-and-social-services"
+          "fi": "/fi/sosiaali-ja-terveyspalvelut",
+          "sv": "/sv/social-och-halsovardstjanster",
+          "en": "/en/health-and-social-services"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.test.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -595,13 +595,13 @@
       },
       "stage": {
         "path": {
-          "fi": "/fi/staging-sosiaali-ja-terveyspalvelut",
-          "sv": "/sv/staging-social-och-halsovardstjanster",
-          "en": "/en/staging-health-and-social-services"
+          "fi": "/fi/sosiaali-ja-terveyspalvelut",
+          "sv": "/sv/social-och-halsovardstjanster",
+          "en": "/en/health-and-social-services"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.stage.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -656,13 +656,13 @@
       },
       "test": {
         "path": {
-          "fi": "/fi/test-yritykset-ja-tyo",
-          "sv": "/sv/test-foretag-och-arbete",
-          "en": "/en/test-business-and-work"
+          "fi": "/fi/yritykset-ja-tyo",
+          "sv": "/sv/foretag-och-arbete",
+          "en": "/en/business-and-work"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.test.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
@@ -674,13 +674,13 @@
       },
       "stage": {
         "path": {
-          "fi": "/fi/staging-yritykset-ja-tyo",
-          "sv": "/sv/staging-foretag-och-arbete",
-          "en": "/en/staging-business-and-work"
+          "fi": "/fi/yritykset-ja-tyo",
+          "sv": "/sv/foretag-och-arbete",
+          "en": "/en/business-and-work"
         },
         "address": {
           "protocol": "https",
-          "domain": "www.hel.fi"
+          "domain": "www.stage.hel.ninja"
         },
         "internal_address": {
           "protocol": "https",
