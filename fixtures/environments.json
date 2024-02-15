@@ -103,9 +103,9 @@
       },
       "test": {
         "path": {
-          "fi": "/fi/etusivu",
-          "sv": "/sv/huvudsida",
-          "en": "/en/frontpage"
+          "fi": "/fi",
+          "sv": "/sv",
+          "en": "/en"
         },
         "address": {
           "protocol": "https",
@@ -121,9 +121,9 @@
       },
       "stage": {
         "path": {
-          "fi": "/fi/etusivu",
-          "sv": "/sv/huvudsida",
-          "en": "/en/frontpage"
+          "fi": "/fi",
+          "sv": "/sv",
+          "en": "/en"
         },
         "address": {
           "protocol": "https",
