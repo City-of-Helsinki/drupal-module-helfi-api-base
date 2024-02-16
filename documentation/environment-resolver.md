@@ -52,6 +52,7 @@ $resolver = \Drupal::service('helfi_api_base.environment_resolver');
 // Fetches the currently active project and environment. For example liikenne dev.
 $environment = $service->getActiveEnvironment();
 // Fetches the currently active project. For example liikenne.
+// Failure will throw an InvalidArgumentException.
 $project = $service->getActiveProject();
 ```
 
