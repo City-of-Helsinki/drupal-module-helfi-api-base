@@ -5,7 +5,7 @@
  * Contains API base module.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\helfi_api_base\Link\LinkProcessor;
