@@ -18,6 +18,11 @@
     "conflict": {
         "drupal/helfi_debug": "*"
     },
+    "autoload": {
+        "psr-4": {
+            "Drupal\\helfi_api_base\\": "src"
+        }
+    },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "dg/bypass-finals": "^1.0",
