@@ -6,6 +6,8 @@ parameters:
   helfi_api_base.internal_domains:
     - 'hel.fi'
     - 'www.hel.fi'
+    - 'www.test.hel.ninja'
+    - 'www.stage.hel.ninja'
     - '*.docker.so'
   helfi_api_base.default_languages:
     - 'en'
