@@ -136,7 +136,11 @@ class LocaleCommands extends DrushCommands {
       $process = $this->processManager()->process([
         'drush',
         'locale:import',
-        '--type=customized',
+        // Include only not-customized strings. Meaning, do not override
+        // config translations, but override localize.drupal.org translations.
+        '--type=not-customized',
+        // Override existing translations as customized translations.
+        '--override=customized',
         $language->getId(),
         $file->uri,
       ]);
