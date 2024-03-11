@@ -153,3 +153,8 @@ services:
       - '@cache.default'
       - '@datetime.time'
       - '@helfi_api_base.environment_resolver'
+
+  helfi_api_base.token_manager:
+    class: Drupal\helfi_api_base\Token\TokenManager
+    arguments:
+      - '@event_dispatcher'

@@ -19,7 +19,7 @@ Add a new event subscriber:
 # yourmodule/src/EventSubscriber/YourDeployHookSubscriber.php
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\yourmodule\EventSubscriber;
 
