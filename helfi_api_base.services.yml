@@ -154,7 +154,7 @@ services:
       - '@datetime.time'
       - '@helfi_api_base.environment_resolver'
 
-  helfi_api_base.token_manager:
-    class: Drupal\helfi_api_base\Token\TokenManager
-    arguments:
-      - '@event_dispatcher'
+  helfi_api_base.og_image_manager:
+    class: Drupal\helfi_api_base\Token\OGImageManager
+    tags:
+      - { name: service_collector, call: add, tag: helfi_api_base.og_image_builder }
