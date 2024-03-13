@@ -106,41 +106,14 @@ class LocaleCommands extends DrushCommands {
         continue;
       }
 
-      // Expose source strings (to make them translatable).
-      $reader = $this->createStreamReader($language->getId(), $file);
-
-      while ($item = $reader->readItem()) {
-        $options = [
-          'langcode' => $language->getId(),
-        ];
-
-        if ($context = $item->getContext()) {
-          $options['context'] = $context;
-        }
-        $sources = $item->getSource();
-
-        // We don't want to expose strings with plural form.
-        if ($item->isPlural()) {
-          continue;
-        }
-
-        if (!is_array($sources)) {
-          $sources = [$sources];
-        }
-        foreach ($sources as $source) {
-          $this->translationManager
-            // @codingStandardsIgnoreLine
-            ->translateString(new TranslatableMarkup($source, [], $options));
-        }
-      }
       $process = $this->processManager()->process([
         'drush',
         'locale:import',
-        // Include only not-customized strings. Meaning, do not override
-        // config translations, but override localize.drupal.org translations.
+        // Import translations as not-customized translations.
+        // Let users override translations from UI translate interface.
         '--type=not-customized',
-        // Override existing translations as customized translations.
-        '--override=customized',
+        // Override only not customized translations.
+        '--override=not-customized',
         $language->getId(),
         $file->uri,
       ]);
