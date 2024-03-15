@@ -92,7 +92,7 @@
         },
         "address": {
           "protocol": "https",
-          "domain": "helfi-etusivu"
+          "domain": "helfi-etusivu.docker.so"
         },
         "internal_address": {
           "protocol": "http",
