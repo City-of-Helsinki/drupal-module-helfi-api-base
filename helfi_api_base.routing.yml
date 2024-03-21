@@ -7,10 +7,10 @@ helfi_api_base.integrations:
     _permission: 'access remote entities overview'
 
 helfi_api_base.entity_settings:
-  path: '/admin/structure/helfi-integrations'
+  path: '/admin/structure/helfi-entities'
   defaults:
     _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
-    _title: 'HELfi: Integrations'
+    _title: 'HELfi: Entity settings'
   requirements:
     _permission: 'access remote entities overview'
 
