@@ -4,6 +4,12 @@ helfi_api_base.integrations:
   route_name: helfi_api_base.integrations
   parent: system.admin_content
 
+helfi_api_base.entity_settings:
+  title: 'HELfi: Entity settings'
+  description: List of HELfi entity settings
+  route_name: helfi_api_base.entity_settings
+  parent: system.admin_structure
+
 helfi_api_base.debug_settings:
   title: Debug
   description: Shows gathered debug data
