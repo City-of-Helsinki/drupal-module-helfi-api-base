@@ -9,12 +9,11 @@ use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\StringTranslation\TranslationManager;
 use Drush\Commands\DrushCommands;
 
 /**
- * A Drush commandfile.
+ * A Drush command file.
  */
 class LocaleCommands extends DrushCommands {
 
@@ -65,25 +64,6 @@ class LocaleCommands extends DrushCommands {
       return $file?->uri ? $file : NULL;
     }
     return NULL;
-  }
-
-  /**
-   * Creates a PO stream reader instance.
-   *
-   * @param string $langcode
-   *   The langcode.
-   * @param object $file
-   *   The file.
-   *
-   * @return \Drupal\Component\Gettext\PoStreamReader
-   *   The stream reader.
-   */
-  private function createStreamReader(string $langcode, object $file) : PoStreamReader {
-    $reader = new PoStreamReader();
-    $reader->setLangcode($langcode);
-    $reader->setURI($file->uri);
-    $reader->open();
-    return $reader;
   }
 
   /**
