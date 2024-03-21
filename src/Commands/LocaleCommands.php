@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Commands;
 
-use Drupal\Component\Gettext\PoStreamReader;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
