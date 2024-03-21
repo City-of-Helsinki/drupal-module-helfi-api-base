@@ -17,7 +17,7 @@
         },
         "internal_address": {
           "protocol": "http",
-          "domain": "helfi-asuminen.docker.so",
+          "domain": "helfi-asuminen",
           "port": 8080
         },
         "meta": {}
@@ -96,7 +96,7 @@
         },
         "internal_address": {
           "protocol": "http",
-          "domain": "helfi-etusivu.docker.so",
+          "domain": "helfi-etusivu",
           "port": 8080
         },
         "meta": {}
@@ -175,7 +175,7 @@
         },
         "internal_address": {
           "protocol": "http",
-          "domain": "helfi-kasko.docker.so",
+          "domain": "helfi-kasko",
           "port": 8080
         },
         "meta": {}
@@ -254,7 +254,7 @@
         },
         "internal_address": {
           "protocol": "http",
-          "domain": "helfi-kuva.docker.so",
+          "domain": "helfi-kuva",
           "port": 8080
         },
         "meta": {}
@@ -328,12 +328,12 @@
           "en": "/en/urban-environment-and-traffic"
         },
         "address": {
-          "protocol": "http",
+          "protocol": "https",
           "domain": "helfi-kymp.docker.so"
         },
         "internal_address": {
           "protocol": "http",
-          "domain": "helfi-kymp.docker.so",
+          "domain": "helfi-kymp",
           "port": 8080
         },
         "meta": {}
@@ -412,7 +412,7 @@
         },
         "internal_address": {
           "protocol": "http",
-          "domain": "helfi-rekry.docker.so",
+          "domain": "helfi-rekry",
           "port": 8080
         },
         "meta": {}
@@ -491,7 +491,7 @@
         },
         "internal_address": {
           "protocol": "http",
-          "domain": "strategia.docker.so",
+          "domain": "strategia",
           "port": 8080
         },
         "meta": {}
@@ -570,7 +570,7 @@
         },
         "internal_address": {
           "protocol": "http",
-          "domain": "helfi-sote.docker.so",
+          "domain": "helfi-sote",
           "port": 8080
         },
         "meta": {}
@@ -649,7 +649,7 @@
         },
         "internal_address": {
           "protocol": "http",
-          "domain": "helfi-elo.docker.so",
+          "domain": "helfi-elo",
           "port": 8080
         },
         "meta": {}
