@@ -8,6 +8,8 @@ use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\RevisionableInterface;
+use Drupal\Core\Entity\RevisionLogEntityTrait;
+use Drupal\Core\Entity\RevisionLogInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Entity\RemoteEntityBase;
@@ -62,10 +64,11 @@ use Drupal\user\EntityOwnerTrait;
  *   },
  * )
  */
-final class RemoteEntityTest extends RemoteEntityBase implements EntityPublishedInterface, EntityOwnerInterface, RevisionableInterface {
+final class RemoteEntityTest extends RemoteEntityBase implements EntityPublishedInterface, EntityOwnerInterface, RevisionableInterface, RevisionLogInterface {
 
   use EntityPublishedTrait;
   use EntityOwnerTrait;
+  use RevisionLogEntityTrait;
 
   /**
    * {@inheritdoc}
@@ -79,6 +82,7 @@ final class RemoteEntityTest extends RemoteEntityBase implements EntityPublished
     $fields = parent::baseFieldDefinitions($entity_type);
     $fields += static::ownerBaseFieldDefinitions($entity_type);
     $fields += static::publishedBaseFieldDefinitions($entity_type);
+    $fields += static::revisionLogBaseFieldDefinitions($entity_type);
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Name'))

@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\Entity\Form;
 
+use Drupal\helfi_api_base\Entity\Form\ContentEntitySettingsForm;
 use Drupal\remote_entity_test\Entity\RemoteEntityTest;
 use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 
 /**
- * Tests menu link form.
- *
- * @todo Improve these tests.
+ * Tests Content entity settings form.
  *
  * @group helfi_api_base
  */
-class MenuLinkFormTest extends ApiKernelTestBase {
+class ContentEntitySettingsFormTest extends ApiKernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -41,7 +40,6 @@ class MenuLinkFormTest extends ApiKernelTestBase {
 
     $this->installEntitySchema('remote_entity_test');
     $this->installEntitySchema('menu_link_content');
-    $this->installEntitySchema('user');
     $this->rmt = RemoteEntityTest::create([
       'id' => 1,
       'name' => 'Test 1',
@@ -52,18 +50,11 @@ class MenuLinkFormTest extends ApiKernelTestBase {
   /**
    * Tests menu form access.
    */
-  public function testMenuLinkFormAccess() : void {
-    /** @var \Drupal\Core\Entity\EntityFormBuilderInterface $formBuilder */
-    $formBuilder = $this->container->get('entity.form_builder');
-    $form = $formBuilder->getForm($this->rmt, 'default');
-
-    // Make sure a user without permission has no access.
-    $this->assertFalse($form['menu']['#access']);
-
-    $this->drupalSetUpCurrentUser(permissions: ['administer menu']);
-    $form = $formBuilder->getForm($this->rmt, 'default');
-    // Make sure a user with permission has access.
-    $this->assertTrue($form['menu']['#access']);
+  public function testContentEntitySettingsForm() : void {
+    /** @var \Drupal\Core\Form\FormBuilderInterface $formBuilder */
+    $formBuilder = $this->container->get('form_builder');
+    $form = $formBuilder->getForm(ContentEntitySettingsForm::class);
+    $this->assertArrayHasKey('settings', $form);
   }
 
 }

@@ -6,6 +6,7 @@ namespace Drupal\helfi_api_base\Entity\Routing;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\entity\Routing\RevisionRouteProvider as EntityRevisionRouteProvider;
+use Drupal\helfi_api_base\Entity\Form\RevisionRevertTranslationForm;
 use Drupal\helfi_api_base\Entity\RevisionController;
 use Symfony\Component\Routing\Route;
 
@@ -55,7 +56,7 @@ final class RevisionRouteProvider extends EntityRevisionRouteProvider {
     $entity_type_id = $entity_type->id();
     $route = new Route($entity_type->getLinkTemplate('revision-revert-language-form'));
     $route->addDefaults([
-      '_form' => '\Drupal\helfi_api_base\Entity\Form\RevisionRevertTranslationForm',
+      '_form' => RevisionRevertTranslationForm::class,
       'title' => 'Revert to earlier revision',
     ]);
     $route->addRequirements([

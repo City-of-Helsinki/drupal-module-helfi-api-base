@@ -44,7 +44,7 @@ class RemoteEntityAccessTest extends ApiKernelTestBase {
 
     $this->rmt = RemoteEntityTest::create([
       'id' => 1,
-      'title' => 'Test 1',
+      'name' => 'Test 1',
     ]);
     $this->rmt->save();
   }
