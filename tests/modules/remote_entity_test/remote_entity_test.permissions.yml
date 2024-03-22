@@ -1,0 +1,6 @@
+'revert all rmert_test revisions':
+  title: 'Revert all rmert_test revisions'
+  'restrict access': TRUE
+'view all rmert_test revisions':
+  title: 'View all rmert_test revisions'
+  'restrict access': TRUE
