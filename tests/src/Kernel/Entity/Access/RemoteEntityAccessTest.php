@@ -78,6 +78,7 @@ class RemoteEntityAccessTest extends ApiKernelTestBase {
     ];
 
     foreach ($actions as $action => $message) {
+      /** @var \Drupal\Core\Access\AccessResultNeutral $access */
       $access = $this->rmt->access($action, return_as_object: TRUE);
       $this->assertFalse($access->isAllowed());
       $this->assertEquals($message, $access->getReason());
