@@ -43,12 +43,15 @@ class FixtureCommandsTest extends ApiKernelTestBase {
     $this->assertNull(RemoteEntityTest::load(1));
     $sut = new FixtureCommands($this->container);
     $sut->migrateFixtures('dummy_migrate');
+
     $entity = RemoteEntityTest::load(1);
     $this->assertInstanceOf(RemoteEntityTest::class, $entity);
     $this->assertFalse($entity->isPublished());
 
     $sut->migrateFixtures('dummy_migrate', ['publish' => TRUE]);
+
     $entity = RemoteEntityTest::load(1);
+    $this->assertInstanceOf(RemoteEntityTest::class, $entity);
     $this->assertTrue($entity->isPublished());
   }
 
