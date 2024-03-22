@@ -3,4 +3,3 @@ coverage:
     project:
       tests:
         target: 80%
-        paths: "tests/"
