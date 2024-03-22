@@ -1,2 +1,8 @@
 fixes:
   - "/github/home/drupal::"
+coverage:
+  status:
+    project:
+      tests:
+        target: 80%
+        paths: "tests/"
