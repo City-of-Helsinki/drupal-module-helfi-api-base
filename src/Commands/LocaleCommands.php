@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Commands;
 
-use Drupal\Component\Gettext\PoStreamReader;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\StringTranslation\TranslationManager;
 use Drush\Commands\DrushCommands;
 
 /**
- * A Drush commandfile.
+ * A Drush command file.
  */
 class LocaleCommands extends DrushCommands {
 
@@ -68,25 +66,6 @@ class LocaleCommands extends DrushCommands {
   }
 
   /**
-   * Creates a PO stream reader instance.
-   *
-   * @param string $langcode
-   *   The langcode.
-   * @param object $file
-   *   The file.
-   *
-   * @return \Drupal\Component\Gettext\PoStreamReader
-   *   The stream reader.
-   */
-  private function createStreamReader(string $langcode, object $file) : PoStreamReader {
-    $reader = new PoStreamReader();
-    $reader->setLangcode($langcode);
-    $reader->setURI($file->uri);
-    $reader->open();
-    return $reader;
-  }
-
-  /**
    * Pre-command hook to import english source strings.
    *
    * @param string $module
@@ -106,37 +85,14 @@ class LocaleCommands extends DrushCommands {
         continue;
       }
 
-      // Expose source strings (to make them translatable).
-      $reader = $this->createStreamReader($language->getId(), $file);
-
-      while ($item = $reader->readItem()) {
-        $options = [
-          'langcode' => $language->getId(),
-        ];
-
-        if ($context = $item->getContext()) {
-          $options['context'] = $context;
-        }
-        $sources = $item->getSource();
-
-        // We don't want to expose strings with plural form.
-        if ($item->isPlural()) {
-          continue;
-        }
-
-        if (!is_array($sources)) {
-          $sources = [$sources];
-        }
-        foreach ($sources as $source) {
-          $this->translationManager
-            // @codingStandardsIgnoreLine
-            ->translateString(new TranslatableMarkup($source, [], $options));
-        }
-      }
       $process = $this->processManager()->process([
         'drush',
         'locale:import',
-        '--type=customized',
+        // Import translations as not-customized translations.
+        // Let users override translations from UI translate interface.
+        '--type=not-customized',
+        // Override only not customized translations.
+        '--override=not-customized',
         $language->getId(),
         $file->uri,
       ]);
