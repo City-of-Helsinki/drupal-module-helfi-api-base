@@ -1,0 +1,3 @@
+services:
+  migration_fixture.dummy_migrate:
+    class: Drupal\remote_entity_test\Fixture\DummyMigrate

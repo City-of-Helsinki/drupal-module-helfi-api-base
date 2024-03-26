@@ -71,6 +71,9 @@ final class RevisionRevertTranslationForm extends RevisionRevertForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $_entity_revision = NULL, Request $request = NULL) : array {
+    if (!$request->attributes->has('langcode')) {
+      throw new \LogicException('The revision revert form is missing "langcode" request attribute.');
+    }
     $this->langcode = $request->attributes->get('langcode');
 
     return parent::buildForm($form, $form_state, $_entity_revision);
@@ -81,8 +84,11 @@ final class RevisionRevertTranslationForm extends RevisionRevertForm {
    */
   protected function prepareRevision(RevisionableInterface $revision) : RevisionableInterface {
     assert($revision instanceof TranslatableRevisionableInterface);
-    $translation = $revision->getTranslation($this->langcode);
-    return parent::prepareRevision($translation);
+
+    if ($revision->hasTranslation($this->langcode)) {
+      $revision = $revision->getTranslation($this->langcode);
+    }
+    return parent::prepareRevision($revision);
   }
 
 }
