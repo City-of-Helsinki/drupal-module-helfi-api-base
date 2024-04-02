@@ -1,0 +1,42 @@
+# [UHF-0000](https://helsinkisolutionoffice.atlassian.net/browse/UHF-0000)
+<!-- What problem does this solve? -->
+
+## What was done
+<!-- Describe what was done -->
+
+* This thing was fixed
+
+## How to install
+
+* Make sure your instance is up and running on correct branch.
+  * `git checkout UHF-0000_insert_correct_branch`
+  * `make fresh`
+* Run `make drush-cr`
+
+## How to test
+<!-- Describe steps how to test the features, add as many steps as you want to be tested -->
+
+* [ ] Check that this feature works
+* [ ] Check that code follows our standards
+
+## Continuous documentation
+<!-- One of the checkboxes below needs to be checked like this: `[x]` (or click when not in edit mode) -->
+
+* [ ] This feature has been documented/the documentation has been updated
+* [ ] This change doesn't require updates to the documentation
+
+## Translations
+<!-- The checkbox below needs to be checked like this: `[x]` (or click when not in edit mode). Not needed if the translations were not affected. -->
+
+* [ ] Translations have been added to .po -files and included in this PR
+
+## Automatic- / Regression tests
+<!-- One of the checkboxes below needs to be checked like this: `[x]` (or click when not in edit mode) -->
+
+* [ ] This PR makes no changes that effects any tests. (This will be caught in automatic testing later on, but please, please run regression tests always on PR before asking for a review)
+* [ ] This PR passes regression tests. (`make test-pw`)
+
+## Other PRs
+<!-- For example an related PR in another repository -->
+
+* Link to other PR
