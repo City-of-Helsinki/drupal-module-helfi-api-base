@@ -23,7 +23,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Tests revision commands.
  *
- * @coversDefaultClass \Drupal\helfi_api_base\Commands\RevisionCommands
  * @group helfi_api_base
  */
 class RevisionCommandsTest extends UnitTestCase {
@@ -80,11 +79,13 @@ class RevisionCommandsTest extends UnitTestCase {
    *
    * @param array $expected
    *   The expected return value.
+   * @param int|null $id
+   *   The entity id.
    *
    * @return \Drupal\Core\Database\Connection
    *   The connection mock.
    */
-  private function getConnectionMock(array $expected) : Connection {
+  private function getConnectionMock(array $expected, ?int $id = NULL) : Connection {
     $statement = $this->prophesize(StatementInterface::class);
 
     $statement->fetchCol(Argument::any())
@@ -93,6 +94,11 @@ class RevisionCommandsTest extends UnitTestCase {
     $select = $this->prophesize(Select::class);
     $select->fields('t', Argument::any())
       ->willReturn($select->reveal());
+
+    if ($id) {
+      $select->condition(Argument::any(), $id)
+        ->shouldBeCalled();
+    }
 
     $select->execute()
       ->willReturn($statement);
@@ -106,9 +112,6 @@ class RevisionCommandsTest extends UnitTestCase {
 
   /**
    * Test command with invalid entity type.
-   *
-   * @covers ::__construct
-   * @covers ::delete
    */
   public function testInvalidEntityType() : void {
     $io = $this->prophesize(SymfonyStyle::class);
@@ -120,20 +123,18 @@ class RevisionCommandsTest extends UnitTestCase {
 
     $sut = $this->getSut($revisionManager->reveal(), io: $io);
 
-    $this->assertEquals(DrushCommands::EXIT_SUCCESS, $sut->delete('node'));
+    $this->assertEquals(DrushCommands::EXIT_FAILURE, $sut->delete('node'));
   }
 
   /**
    * Test delete without any entities.
-   *
-   * @covers ::__construct
-   * @covers ::delete
    */
   public function testNoEntities() : void {
     $io = $this->prophesize(SymfonyStyle::class);
-    $io->writeln(Argument::containingString('Found 0 node entities'))
-      ->shouldBeCalled();
-
+    $io->isDecorated()
+      ->willReturn(TRUE);
+    $io->getVerbosity()
+      ->willReturn(OutputInterface::VERBOSITY_QUIET);
     $revisionManager = $this->prophesize(RevisionManager::class);
     $revisionManager->entityTypeIsSupported('node')->willReturn(TRUE);
     $database = $this->getConnectionMock([]);
@@ -145,19 +146,13 @@ class RevisionCommandsTest extends UnitTestCase {
 
   /**
    * Tests delete method with proper data.
-   *
-   * @covers ::__construct
-   * @covers ::delete
    */
   public function testDelete() : void {
     $io = $this->prophesize(SymfonyStyle::class);
-    $io->writeln(Argument::containingString('Found 2 node entities'))
-      ->shouldBeCalled();
-    $io->writeln(Argument::containingString('[2/2] Entity has less than 5 revisions. Skipping ...'))
-      ->shouldBeCalled();
-    $io->writeln(Argument::containingString('[1/2] Deleting 6 revisions ...'))
-      ->shouldBeCalled();
-
+    $io->isDecorated()
+      ->willReturn(TRUE);
+    $io->getVerbosity()
+      ->willReturn(OutputInterface::VERBOSITY_QUIET);
     $revisionManager = $this->prophesize(RevisionManager::class);
     $revisionManager->entityTypeIsSupported('node')->willReturn(TRUE);
     $revisionManager->getRevisions('node', Argument::any(), Argument::any())
@@ -169,6 +164,28 @@ class RevisionCommandsTest extends UnitTestCase {
     $sut = $this->getSut($revisionManager->reveal(), connection: $database, io: $io);
 
     $this->assertEquals(DrushCommands::EXIT_SUCCESS, $sut->delete('node'));
+  }
+
+  /**
+   * Tests delete method with optional ID.
+   */
+  public function testDeleteWithId() : void {
+    $io = $this->prophesize(SymfonyStyle::class);
+    $io->isDecorated()
+      ->willReturn(TRUE);
+    $io->getVerbosity()
+      ->willReturn(OutputInterface::VERBOSITY_QUIET);
+    $revisionManager = $this->prophesize(RevisionManager::class);
+    $revisionManager->entityTypeIsSupported('node')->willReturn(TRUE);
+    $revisionManager->getRevisions('node', Argument::any(), Argument::any())
+      ->willReturn([], [1]);
+    $revisionManager->deleteRevisions('node', Argument::any())
+      ->shouldBeCalledTimes(1);
+    $database = $this->getConnectionMock([1], 1);
+
+    $sut = $this->getSut($revisionManager->reveal(), connection: $database, io: $io);
+
+    $this->assertEquals(DrushCommands::EXIT_SUCCESS, $sut->delete('node', 1));
   }
 
 }

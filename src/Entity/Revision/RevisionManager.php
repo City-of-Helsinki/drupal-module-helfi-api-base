@@ -49,6 +49,20 @@ class RevisionManager {
   }
 
   /**
+   * The number of revisions to keep.
+   *
+   * @return int
+   *   The number of revisions to keep.
+   */
+  public function getKeepRevisions() : int {
+    $keep = (int) $this->configFactory
+      ->get('helfi_api_base.delete_revisions')
+      ->get('keep');
+
+    return $keep > 0 ? $keep : self::KEEP_REVISIONS;
+  }
+
+  /**
    * Asserts that entity type is supported.
    *
    * @param string $entityType
@@ -119,7 +133,7 @@ class RevisionManager {
    *   The entity type.
    * @param string|int $id
    *   The entity id.
-   * @param int $keep
+   * @param int|null $keep
    *   The number of revisions to keep.
    *
    * @return array
@@ -128,13 +142,16 @@ class RevisionManager {
   public function getRevisionsPerLanguage(
     string $entityType,
     string|int $id,
-    int $keep = self::KEEP_REVISIONS
+    ?int $keep = NULL
   ) : array {
     $this->assertEntityType($entityType);
 
     $storage = $this->entityTypeManager->getStorage($entityType);
     assert($storage instanceof RevisionableStorageInterface);
 
+    if ($keep === NULL) {
+      $keep = $this->getKeepRevisions();
+    }
     $definition = $this->entityTypeManager->getDefinition($entityType);
 
     $revision_ids = $this->connection->query(
@@ -204,13 +221,16 @@ class RevisionManager {
    *   The entity type.
    * @param string|int $id
    *   The entity ID.
-   * @param int $keep
+   * @param int|null $keep
    *   The number of revisions to keep.
    *
    * @return array
    *   An array of revision ids.
    */
-  public function getRevisions(string $entityType, string|int $id, int $keep = self::KEEP_REVISIONS) : array {
+  public function getRevisions(string $entityType, string|int $id, ?int $keep = NULL) : array {
+    if ($keep === NULL) {
+      $keep = $this->getKeepRevisions();
+    }
     $revisions = $this->getRevisionsPerLanguage($entityType, $id, $keep);
 
     return array_unique(array_merge(...array_values($revisions)));

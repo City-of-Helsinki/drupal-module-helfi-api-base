@@ -129,6 +129,9 @@ class RevisionManagerTest extends ApiKernelTestBase {
    * Tests revision deletion.
    */
   public function testRevision() : void {
+    $this->config('helfi_api_base.delete_revisions')
+      ->set('keep', 5)
+      ->save();
     $this->setEntityTypes(['remote_entity_test']);
     /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
     $storage = $this->entityTypeManager->getStorage('remote_entity_test');
@@ -186,6 +189,24 @@ class RevisionManagerTest extends ApiKernelTestBase {
       $this->assertCount($expected, $revisions[$langcode]);
     }
     $this->assertCount(5, $this->getSut()->getRevisions('remote_entity_test', $entity->id(), 0));
+  }
+
+  /**
+   * Tests 'keep revisions' configuration.
+   */
+  public function testGetKeepRevisions() : void {
+    $this->assertEquals(RevisionManager::KEEP_REVISIONS, $this->getSut()->getKeepRevisions());
+
+    foreach (['', 0, NULL] as $value) {
+      $this->config('helfi_api_base.delete_revisions')
+        ->set('keep', $value)
+        ->save();
+      $this->assertEquals(RevisionManager::KEEP_REVISIONS, $this->getSut()->getKeepRevisions());
+    }
+    $this->config('helfi_api_base.delete_revisions')
+      ->set('keep', 15)
+      ->save();
+    $this->assertEquals(15, $this->getSut()->getKeepRevisions());
   }
 
 }
