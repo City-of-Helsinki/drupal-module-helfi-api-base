@@ -3,7 +3,6 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
          colors="true"
          cacheResultFile=".phpunit.cache/test-results"
-         bootstrap="./../sut/core/tests/bootstrap.php"
          executionOrder="depends,defects"
          forceCoversAnnotation="false"
          beStrictAboutTestsThatDoNotTestAnything="true"

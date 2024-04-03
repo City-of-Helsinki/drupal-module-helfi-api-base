@@ -25,50 +25,6 @@
         "drupal/coder": "^8.3",
         "drush/drush": "^11 || ^12 || ^13",
         "donatj/mock-webserver": "dev-master",
-        "composer/installers": "^2",
-        "drupal/core-composer-scaffold": "^10.2",
-        "drupal/core-recommended": "^10.2",
-        "drupal/core-dev": "^10.2",
-        "phpspec/prophecy-phpunit": "^2",
-        "phpstan/phpstan": "^1.10",
-        "phpstan/phpstan-deprecation-rules": "^1.1",
-        "phpstan/extension-installer": "^1.3",
-        "jangregor/phpstan-prophecy": "^1.0",
-        "phpunit/phpunit": "^9.6",
         "weitzman/drupal-test-traits": "^2.0"
-    },
-    "repositories": {
-        "platform": {
-            "type": "composer",
-            "url": "https://repository.drupal.hel.ninja"
-        },
-        "drupal_org": {
-            "type": "composer",
-            "url": "https://packages.drupal.org/8"
-        }
-    },
-    "config": {
-        "allow-plugins": {
-            "composer/installers": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "phpstan/extension-installer": true,
-            "php-http/discovery": false,
-            "drupal/core-composer-scaffold": true
-        }
-    },
-    "extra": {
-        "drupal-scaffold": {
-            "locations": {
-                "web-root": "sut/"
-            }
-        },
-        "installer-paths": {
-            "sut/core": ["type:drupal-core"],
-            "sut/libraries/{$name}": ["type:drupal-library"],
-            "sut/modules/contrib/{$name}": ["type:drupal-module"],
-            "sut/profiles/contrib/{$name}": ["type:drupal-profile"],
-            "sut/themes/contrib/{$name}": ["type:drupal-theme"],
-            "sut/drush/contrib/{$name}": ["type:drupal-drush"]
-        }
     }
 }

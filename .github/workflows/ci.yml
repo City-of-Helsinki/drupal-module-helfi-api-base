@@ -6,13 +6,12 @@ on:
 name: CI
 env:
   SYMFONY_DEPRECATIONS_HELPER: disabled
-  COMPOSER_MIRROR_PATH_REPOS: ''
 jobs:
   tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.2']
+        php-versions: ['8.1', '8.2']
     container:
       image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
 
@@ -35,15 +34,29 @@ jobs:
       - name: Parse $MODULE_NAME from composer.json
         run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
 
-      - name: Set browsertest output directory
-        run: echo "BROWSERTEST_OUTPUT_DIRECTORY=sut/sites/simpletest" >> $GITHUB_ENV
+      - name: Set Drupal root
+        run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
+
+      - name: Set module folder
+        run: |
+          echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
+          echo "BROWSERTEST_OUTPUT_DIRECTORY=$DRUPAL_ROOT/public/sites/simpletest" >> $GITHUB_ENV
+
+      - name: Clone platform
+        run: |
+          git clone --depth=1 https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
+          rm -rf $DRUPAL_ROOT/.git
 
       - name: Install required composer dependencies
         working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
-          composer install
-          wget https://git.drupalcode.org/project/gitlab_templates/-/raw/1.0.x/scripts/symlink_project.php
-          _WEB_ROOT=sut php symlink_project.php $MODULE_NAME
+          composer config repositories.5 path $GITHUB_WORKSPACE
+          composer require drupal/$MODULE_NAME -W
+          # We use COMPOSER_MIRROR_PATH_REPOS=1 to mirror local repository
+          # instead of symlinking it to prevent code coverage issues with
+          # phpunit. Copy .git folder manually so codecov can generate line by
+          # line coverage.
+          cp -r $GITHUB_WORKSPACE/.git $MODULE_FOLDER/
 
       - name: Install Drupal
         working-directory: ${{ env.DRUPAL_ROOT }}
@@ -53,23 +66,27 @@ jobs:
 
       - name: Run PHPCS
         working-directory: ${{ env.DRUPAL_ROOT }}
-        run: vendor/bin/phpcs --ignore=*/vendor/*,*/sut/* --standard=Drupal,DrupalPractice --extensions=php,module,install .
+        run: vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal,DrupalPractice --extensions=php,module,install
 
       - name: Run phpstan
         working-directory: ${{ env.DRUPAL_ROOT }}
-        run: vendor/bin/phpstan analyze -c phpstan.neon .
+        run: vendor/bin/phpstan analyze -c $MODULE_FOLDER/phpstan.neon $MODULE_FOLDER
 
       - name: Start services
+        working-directory: ${{ env.DRUPAL_ROOT }}
         run: vendor/bin/drush runserver $SIMPLETEST_BASE_URL --dns &
 
       - name: Run PHPUnit tests
+        working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
           vendor/bin/phpunit \
-            -c $GITHUB_WORKSPACE/tests/phpunit.xml \
-            --coverage-clover=coverage.xml \
-            tests/
+            --bootstrap $DRUPAL_ROOT/public/core/tests/bootstrap.php \
+            -c $MODULE_FOLDER/phpunit.xml \
+            --coverage-clover=$MODULE_FOLDER/coverage.xml \
+            $MODULE_FOLDER
 
       - name: Run codecov
+        working-directory: ${{ env.MODULE_FOLDER }}
         run: codecov
 
       - name: Create an artifact from test report
@@ -77,5 +94,5 @@ jobs:
         if: always()
         with:
           name: results-${{ matrix.php-versions }}
-          path: sut/sites/simpletest/browser_output/
+          path: ${{ env.BROWSERTEST_OUTPUT_DIRECTORY }}
           retention-days: 1
