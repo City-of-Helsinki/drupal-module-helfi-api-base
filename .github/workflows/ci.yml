@@ -60,8 +60,7 @@ jobs:
         run: vendor/bin/phpstan analyze -c phpstan.neon .
 
       - name: Start services
-        working-directory: sut
-        run: vendor/bin/drush runserver $SIMPLETEST_BASE_URL --dns > /dev/null 2>&1 &
+        run: vendor/bin/drush runserver $SIMPLETEST_BASE_URL --dns &
 
       - name: Run PHPUnit tests
         run: |

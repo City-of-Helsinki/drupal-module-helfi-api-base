@@ -1,75 +1,31 @@
-<img alt="Drupal Logo" src="https://www.drupal.org/files/Wordmark_blue_RGB.png" height="60px">
+# Drupal base
 
-Drupal is an open source content management platform supporting a variety of
-websites ranging from personal weblogs to large community-driven websites. For
-more information, visit the Drupal website, [Drupal.org][Drupal.org], and join
-the [Drupal community][Drupal community].
+![CI](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/workflows/CI/badge.svg) [![codecov](https://codecov.io/gh/City-of-Helsinki/drupal-module-helfi-api-base/branch/main/graph/badge.svg?token=P6CG4IIAO9)](https://codecov.io/gh/City-of-Helsinki/drupal-module-helfi-api-base)
 
-## Contributing
+A base module for [drupal-helfi-platform](https://github.com/City-of-Helsinki/drupal-helfi-platform) ecosystem. Contains various features used in other custom modules.
 
-Drupal is developed on [Drupal.org][Drupal.org], the home of the international
-Drupal community since 2001!
+## Requirements
 
-[Drupal.org][Drupal.org] hosts Drupal's [GitLab repository][GitLab repository],
-its [issue queue][issue queue], and its [documentation][documentation]. Before
-you start working on code, be sure to search the [issue queue][issue queue] and
-create an issue if your aren't able to find an existing issue.
+- PHP 8.1 or higher
 
-Every issue on Drupal.org automatically creates a new community-accessible fork
-that you can contribute to. Learn more about the code contribution process on
-the [Issue forks & merge requests page][issue forks].
+## Features
 
-## Usage
+- [API user manager](documentation/api-accounts.md): Allows API users to be created/managed from an environment variable.
+- [API client](documentation/api-client.md): Services for caching and mocking http responses.
+- [Automatic external cache invalidation](documentation/automatic-external-cache-invalidation.md): Invalidate caches from external projects using [PubSub messaging](documentation/pubsub-messaging.md) service.
+- [Automatic revision deletion](documentation/revisions.md): Clean up old entity revisions automatically.
+- [Debug collector](documentation/debug.md): A plugin to collect and show various debug information in one place.
+- [Deploy hooks](documentation/deploy-hooks.md): Allows custom tasks to be run before or after deployment.
+- [Environment resolver](documentation/environment-resolver.md): A service to fetch metadata for given project.
+- [Default language resolver](documentation/default-languages.md): A service to handle default primary languages and language fallbacks.
+- [Logging](documentation/logging.md): Log to Docker container stdout.
+- [Link text filter](documentation/link.md): A custom `filter` plugin to scan and parse external links
+- [Migrate](documentation/migrate.md): Various features to help with migrations.
+- [PO Importer](documentation/po-importer.md): Allows modules to define translations that can be imported using Drush.
+- [PubSub messaging](documentation/pubsub-messaging.md): A PubSub message service to send/receive messages.
+- [Remote Entity](documentation/remote-entity.md): A base entity to be used with migrations.
+- [Testing](documentation/testing.md): Various features to help with automated testing.
 
-For a brief introduction, see [USAGE.txt](/core/USAGE.txt). You can also find
-guides, API references, and more by visiting Drupal's [documentation
-page][documentation].
+## Contact
 
-You can quickly extend Drupal's core feature set by installing any of its
-[thousands of free and open source modules][modules]. With Drupal and its
-module ecosystem, you can often build most or all of what your project needs
-before writing a single line of code.
-
-## Changelog
-
-Drupal keeps detailed [change records][changelog]. You can search Drupal's
-changes for a record of every notable breaking change and new feature since
-2011.
-
-## Security
-
-For a list of security announcements, see the [Security advisories
-page][Security advisories] (available as [an RSS feed][security RSS]). This
-page also describes how to subscribe to these announcements via email.
-
-For information about the Drupal security process, or to find out how to report
-a potential security issue to the Drupal security team, see the [Security team
-page][security team].
-
-## Need a helping hand?
-
-Visit the [Support page][support] or browse [over a thousand Drupal
-providers][service providers] offering design, strategy, development, and
-hosting services.
-
-## Legal matters
-
-Know your rights when using Drupal by reading Drupal core's
-[license](/core/LICENSE.txt).
-
-Learn about the [Drupal trademark and logo policy here][trademark].
-
-[Drupal.org]: https://www.drupal.org
-[Drupal community]: https://www.drupal.org/community
-[GitLab repository]: https://git.drupalcode.org/project/drupal
-[issue queue]: https://www.drupal.org/project/issues/drupal
-[issue forks]: https://www.drupal.org/drupalorg/docs/gitlab-integration/issue-forks-merge-requests
-[documentation]: https://www.drupal.org/documentation
-[changelog]: https://www.drupal.org/list-changes/drupal
-[modules]: https://www.drupal.org/project/project_module
-[security advisories]: https://www.drupal.org/security
-[security RSS]: https://www.drupal.org/security/rss.xml
-[security team]: https://www.drupal.org/drupal-security-team
-[service providers]: https://www.drupal.org/drupal-services
-[support]: https://www.drupal.org/support
-[trademark]: https://www.drupal.com/trademark
+Slack: #helfi-drupal (http://helsinkicity.slack.com/)
