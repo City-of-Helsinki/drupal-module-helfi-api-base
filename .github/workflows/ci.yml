@@ -48,11 +48,9 @@ jobs:
           vendor/bin/drush en $MODULE_NAME -y
 
       - name: Run PHPCS
-        working-directory: ${{ env.DRUPAL_ROOT }}
         run: vendor/bin/phpcs --ignore=*/vendor/*,*/sut/* . --standard=Drupal,DrupalPractice --extensions=php,module,install .
 
       - name: Run phpstan
-        working-directory: ${{ env.DRUPAL_ROOT }}
         run: vendor/bin/phpstan analyze -c phpstan.neon .
 
       - name: Start services
@@ -60,7 +58,6 @@ jobs:
         run: vendor/bin/drush runserver $SIMPLETEST_BASE_URL --dns > /dev/null 2>&1 &
 
       - name: Run PHPUnit tests
-        working-directory: ${{ env.DRUPAL_ROOT }}
         run: |
           vendor/bin/phpunit -c tests/phpunit.xml tests/
           codecov
