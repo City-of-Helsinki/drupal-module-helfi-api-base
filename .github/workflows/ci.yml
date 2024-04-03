@@ -6,7 +6,6 @@ on:
 name: CI
 env:
   SYMFONY_DEPRECATIONS_HELPER: disabled
-  BROWSERTEST_OUTPUT_DIRECTORY: 'public/sites/simpletest'
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -29,6 +28,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Parse $MODULE_NAME from composer.json
         run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
@@ -37,7 +38,9 @@ jobs:
         run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
 
       - name: Set module folder
-        run: echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
+        run: |
+          echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
+          echo "BROWSERTEST_OUTPUT_DIRECTORY=$DRUPAL_ROOT/public/sites/simpletest" >> $GITHUB_ENV
 
       - name: Clone platform
         run: |
@@ -85,7 +88,5 @@ jobs:
         if: always()
         with:
           name: results
-          path: |
-            ${{ env.DRUPAL_ROOT }}/public/sites/simpletest/browser_output/
-            ${{ env.DRUPAL_ROOT }}/coverage.xml
+          path: ${{ env.DRUPAL_ROOT }}/public/sites/simpletest/browser_output/
           retention-days: 1
