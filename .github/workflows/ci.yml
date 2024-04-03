@@ -90,6 +90,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           root_dir: ${{ env.MODULE_FOLDER }}
           directory: ${{ env.MODULE_FOLDER }}
+          working-directory: ${{ env.MODULE_FOLDER }}
           verbose: true
 
       - name: Create an artifact from test report
