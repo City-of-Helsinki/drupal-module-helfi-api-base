@@ -22,16 +22,16 @@
   </php>
   <testsuites>
     <testsuite name="unit">
-      <directory>./src/Unit</directory>
+      <directory>./tests/src/Unit</directory>
     </testsuite>
     <testsuite name="kernel">
-      <directory>./src/Kernel</directory>
+      <directory>./tests/src/Kernel</directory>
     </testsuite>
     <testsuite name="functional">
-      <directory>./src/Functional</directory>
+      <directory>./tests/src/Functional</directory>
     </testsuite>
     <testsuite name="functional-javascript">
-      <directory>./src/FunctionalJavascript</directory>
+      <directory>./tests/src/FunctionalJavascript</directory>
     </testsuite>
   </testsuites>
   <listeners>
@@ -43,11 +43,11 @@
   </extensions>
   <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true">
     <include>
-      <directory suffix=".php">../src</directory>
-      <file>../*.module</file>
+      <directory suffix=".php">./src</directory>
+      <file>./*.module</file>
     </include>
     <exclude>
-      <directory suffix=".php">../src/Fixture</directory>
+      <directory suffix=".php">./src/Fixture</directory>
     </exclude>
   </coverage>
 </phpunit>
