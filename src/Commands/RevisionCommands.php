@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Commands;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_api_base\Entity\Revision\RevisionManager;
 use Drush\Attributes\Command;
 use Drush\Attributes\Option;
 use Drush\Commands\DrushCommands;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 /**
  * A drush command file to manage revisions.
@@ -39,6 +39,8 @@ final class RevisionCommands extends DrushCommands {
    *
    * @param string $entityType
    *   The entity type.
+   * @param int|null $entityId
+   *   The entity ID.
    * @param array $options
    *   The options.
    *
@@ -46,41 +48,40 @@ final class RevisionCommands extends DrushCommands {
    *   The exit code.
    */
   #[Command(name: 'helfi:revision:delete')]
+  #[Option(name: 'id', description: 'The entity ID')]
   #[Option(name: 'keep', description: 'Number of revisions to keep')]
-  public function delete(string $entityType, array $options = ['keep' => RevisionManager::KEEP_REVISIONS]) : int {
+  public function delete(string $entityType, ?int $entityId = NULL, array $options = [
+    'keep' => NULL,
+  ]) : int {
     if (!$this->revisionManager->entityTypeIsSupported($entityType)) {
       $this->io()->writeln('Given entity type is not supported.');
-      return DrushCommands::EXIT_SUCCESS;
+
+      return DrushCommands::EXIT_FAILURE;
     }
 
     $definition = $this->entityTypeManager->getDefinition($entityType);
-    $entityIds = $this->connection->select($definition->getBaseTable(), 't')
-      ->fields('t', [$definition->getKey('id')])
+    $query = $this->connection->select($definition->getBaseTable(), 't')
+      ->fields('t', [$definition->getKey('id')]);
+
+    if ($entityId) {
+      $query->condition($definition->getKey('id'), $entityId);
+    }
+    $entityIds = $query
       ->execute()
       ->fetchCol();
 
-    $totalEntities = $remainingEntities = count($entityIds);
-    $this->io()->writeln((string) new FormattableMarkup('Found @count @type entities', [
-      '@count' => $totalEntities,
-      '@type' => $entityType,
-    ]));
+    $progressBar = new ProgressBar($this->io(), count($entityIds));
+    $progressBar->start();
 
     foreach ($entityIds as $id) {
-      $revisions = $this->revisionManager->getRevisions($entityType, $id, $options['keep']);
-      $revisionCount = count($revisions);
+      $revisions = $this
+        ->revisionManager
+        ->getRevisions($entityType, $id, $options['keep']);
 
-      $message = sprintf('Entity has less than %s revisions. Skipping', $options['keep']);
-
-      if ($revisionCount > 0) {
-        $message = (string) new FormattableMarkup('Deleting @count revisions', ['@count' => $revisionCount]);
-      }
-      $this->io()->writeln((string) new FormattableMarkup('[@current/@entities] @message ...', [
-        '@current' => $remainingEntities--,
-        '@entities' => $totalEntities,
-        '@message' => $message,
-      ]));
       $this->revisionManager->deleteRevisions($entityType, $revisions);
+      $progressBar->advance();
     }
+    $progressBar->finish();
 
     return DrushCommands::EXIT_SUCCESS;
   }

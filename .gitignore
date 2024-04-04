@@ -1,1 +1,3 @@
 .phpunit.*
+sut
+vendor

@@ -4,6 +4,7 @@
     "description": "Helfi - API Base",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "drupal/entity": "^1.0",
         "drupal/filelog": "^2.1",
