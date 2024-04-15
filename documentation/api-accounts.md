@@ -70,19 +70,22 @@ This is used to store external API credentials.
 Define an array of `id`, `plugin`, and `data` pairs:
 
 ```php
-$config['helfi_api_base.api_accounts']['vault'][] = [
-  'id' => 'pubsub',
-  'plugin' => 'json',
-  'data' => '{"endpoint": "xxx.docker.so", "hub": "local", "group": "invalidate_cache", "access_key": "<access-key>"}',
+$vault_accounts = [
+  [
+    'id' => 'pubsub',
+    'plugin' => 'json',
+    'data' => '{"endpoint": "xxx.docker.so", "hub": "local", "group": "invalidate_cache", "access_key": "<access-key>"}',
+  ],
+  [
+    'id' => 'global_navigation',
+    'plugin' => 'authorization_token',
+    'data' => 'aGVsZmktYWRtaW46MTIz',
+  ],
 ];
-$config['helfi_api_base.api_accounts']['vault'][] = [
-  'id' => 'global_navigation',
-  'plugin' => 'authorization_token',
-  'data' => 'aGVsZmktYWRtaW46MTIz',
-];
+$config['helfi_api_base.api_accounts']['vault'] = $vault_accounts;
 ```
 
-The value of `data` field depends on `plugin` value:
+The value of `data` field depends on used `plugin`:
 
 - Authorization token (`authorization_token`): A simple string. For example `aGVsZmktYWRtaW46MTIz`.
 - JSON (`json`): A JSON string. For example `{"endpoint": "xxxx.docker.so", "key": "value"}`.

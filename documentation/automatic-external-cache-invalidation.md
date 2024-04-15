@@ -9,6 +9,26 @@ For example, this can be used to invalidate:
 - [Global navigation menu blocks](https://github.com/City-of-Helsinki/drupal-module-helfi-navigation/) when navigation is modified
 - [Global announcement blocks](https://github.com/City-of-Helsinki/drupal-helfi-platform-config) when Etusivu modifies announcement content
 
+## Configuration
+
+### OpenShift
+
+Add or modify `DRUPAL-VAULT-ACCOUNTS` KeyVault variable value.
+- See
+[Managing external API credentials](/documentation/api-accounts.md#managing-external-api-credentials) for documentation.
+- Credentials can be found on Confluence: [PubSub Staging/Prod access key](https://helsinkisolutionoffice.atlassian.net/wiki/spaces/HEL/pages/8354005224/Tunnusten+salasanojen+ja+muiden+avainten+jakaminen).
+
+### Testing locally
+```php
+# local.settings.php
+$config['helfi_api_base.api_accounts']['vault'][] = [
+  'id' => 'pubsub',
+  'plugin' => 'json',
+  'data' => '{"endpoint": "<see credentials for endpoint>", "hub": "local", "group": "invalidate_cache", "access_key": "<access-key>"}',
+];
+```
+See [PubSub local access key](https://helsinkisolutionoffice.atlassian.net/wiki/spaces/HEL/pages/8354005224/Tunnusten+salasanojen+ja+muiden+avainten+jakaminen) for credentials.
+
 ## Usage
 
 Use `helfi_api_base.cache_tag_invalidator` to invalidate arbitrary cache tags in all instances.
