@@ -51,9 +51,8 @@ services:
   ComposerLockParser\ComposerInfo: '@helfi_api_base.composer_info'
   helfi_api_base.composer_info:
     class: ComposerLockParser\ComposerInfo
-    public: false
     arguments:
-      - $pathToLockFile: '%helfi_api_base.default_composer_lock%'
+      - '%helfi_api_base.default_composer_lock%'
 
   Drupal\helfi_api_base\DebugDataItemPluginManager: '@plugin.manager.debug_data_item'
   plugin.manager.debug_data_item:
