@@ -66,7 +66,7 @@ final class FeatureManager {
 
     $features = [];
     foreach ($constants as $value) {
-      $features[$value] = $config->get($value);
+      $features[$value] = (bool) $config->get($value);
     }
     return $features;
   }
