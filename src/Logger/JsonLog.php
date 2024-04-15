@@ -9,6 +9,7 @@ use Drupal\Core\Logger\RfcLoggerTrait;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -33,8 +34,8 @@ final class JsonLog implements LoggerInterface {
   public function __construct(
     private readonly LogMessageParserInterface $parser,
     private readonly Filesystem $filesystem,
-    private readonly string $stream,
-    private readonly bool $loggerEnabled = TRUE
+    #[Autowire('%helfi_api_base.json_logger_path%')] private readonly string $stream,
+    #[Autowire('%helfi_api_base.logger_enabled%')] private readonly bool $loggerEnabled = TRUE
   ) {
   }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Language;
 
 use Drupal\Core\Language\LanguageManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Resolves default languages and fallbacks.
@@ -22,8 +23,8 @@ final class DefaultLanguageResolver {
    *   Language manager.
    */
   public function __construct(
-    private readonly array $defaultLanguages,
-    private readonly string $fallbackLanguage,
+    #[Autowire('%helfi_api_base.default_languages%')] private readonly array $defaultLanguages,
+    #[Autowire('%helfi_api_base.fallback_language%')] private readonly string $fallbackLanguage,
     private readonly LanguageManagerInterface $languageManager
   ) {
   }
