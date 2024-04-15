@@ -5,13 +5,13 @@ Provides a service to conditionally check if the given feature is enabled.
 ## Usage
 
 ```php
-$service = \Drupal::service(\Drupal\helfi_api_base\Features\FeatureManagerInterface::class);
+$service = \Drupal::service(\Drupal\helfi_api_base\Features\FeatureManager::class);
 
-$service->isEnabled(\Drupal\helfi_api_base\Features\FeatureManagerInterface::LOGGER); // Returns true if the logger feature is enabled.
+$service->isEnabled(\Drupal\helfi_api_base\Features\FeatureManager::LOGGER); // Returns true if the logger feature is enabled.
 // Disables the logger feature.
-$service->disableFeature(\Drupal\helfi_api_base\Features\FeatureManagerInterface::LOGGER)
+$service->disableFeature(\Drupal\helfi_api_base\Features\FeatureManager::LOGGER)
 // Disables the logger feature.
-$service->enableFeature(\Drupal\helfi_api_base\Features\FeatureManagerInterface::LOGGER);
+$service->enableFeature(\Drupal\helfi_api_base\Features\FeatureManager::LOGGER);
 ```
 
 ## Development

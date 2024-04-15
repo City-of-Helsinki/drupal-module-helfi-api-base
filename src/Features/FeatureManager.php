@@ -9,7 +9,10 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 /**
  * Provides a service to manage different features.
  */
-final class FeatureManager implements FeatureManagerInterface {
+final class FeatureManager {
+
+  public const LOGGER = 'logger';
+  public const ROTATE_UID1_PASSWORD = 'rotate_uid1_password';
 
   /**
    * Constructs a new instance.
@@ -58,7 +61,7 @@ final class FeatureManager implements FeatureManagerInterface {
    */
   public function getFeatures() : array {
     $config = $this->configFactory->get('helfi_api_base.features');
-    $constants = (new \ReflectionClass(FeatureManagerInterface::class))
+    $constants = (new \ReflectionClass(__CLASS__))
       ->getConstants();
 
     $features = [];

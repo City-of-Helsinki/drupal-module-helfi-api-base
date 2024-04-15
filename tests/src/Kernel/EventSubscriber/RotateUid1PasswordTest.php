@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Kernel\EventSubscriber;
 
 use Drupal\helfi_api_base\Event\PostDeployEvent;
-use Drupal\helfi_api_base\Features\FeatureManagerInterface;
+use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\user\Entity\User;
@@ -54,8 +54,8 @@ class RotateUid1PasswordTest extends KernelTestBase {
    */
   public function testFeatureIsEnabledByDefault() : void {
     /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
-    $service = $this->container->get(FeatureManagerInterface::class);
-    $this->assertTrue($service->isEnabled(FeatureManagerInterface::ROTATE_UID1_PASSWORD));
+    $service = $this->container->get(FeatureManager::class);
+    $this->assertTrue($service->isEnabled(FeatureManager::ROTATE_UID1_PASSWORD));
   }
 
   /**
@@ -63,9 +63,9 @@ class RotateUid1PasswordTest extends KernelTestBase {
    */
   public function testWithFeatureDisabled(): void {
     /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
-    $service = $this->container->get(FeatureManagerInterface::class);
-    $service->disableFeature(FeatureManagerInterface::ROTATE_UID1_PASSWORD);
-    $this->assertFalse($service->isEnabled(FeatureManagerInterface::ROTATE_UID1_PASSWORD));
+    $service = $this->container->get(FeatureManager::class);
+    $service->disableFeature(FeatureManager::ROTATE_UID1_PASSWORD);
+    $this->assertFalse($service->isEnabled(FeatureManager::ROTATE_UID1_PASSWORD));
 
     $this->createUser([]);
     $currentPass = User::load(1)->getPassword();
@@ -79,8 +79,8 @@ class RotateUid1PasswordTest extends KernelTestBase {
    */
   public function testAccountNotFound() : void {
     /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
-    $service = $this->container->get(FeatureManagerInterface::class);
-    $this->assertTrue($service->isEnabled(FeatureManagerInterface::ROTATE_UID1_PASSWORD));
+    $service = $this->container->get(FeatureManager::class);
+    $this->assertTrue($service->isEnabled(FeatureManager::ROTATE_UID1_PASSWORD));
     $this->assertEmpty(User::load(1));
     $this->triggerEvent();
   }
@@ -90,8 +90,8 @@ class RotateUid1PasswordTest extends KernelTestBase {
    */
   public function testChangePassword() : void {
     /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
-    $service = $this->container->get(FeatureManagerInterface::class);
-    $service->enableFeature(FeatureManagerInterface::ROTATE_UID1_PASSWORD);
+    $service = $this->container->get(FeatureManager::class);
+    $service->enableFeature(FeatureManager::ROTATE_UID1_PASSWORD);
 
     $this->createUser([]);
     $currentPass = User::load(1)->getPassword();

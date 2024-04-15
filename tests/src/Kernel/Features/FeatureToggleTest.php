@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Kernel\Features;
 
 use Drupal\helfi_api_base\Features\FeatureManager;
-use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use Drupal\KernelTests\KernelTestBase;
 
 /**
@@ -43,7 +42,7 @@ class FeatureToggleTest extends KernelTestBase {
    *   The sut.
    */
   public function getSut() : FeatureManager {
-    return $this->container->get(FeatureManagerInterface::class);
+    return $this->container->get(FeatureManager::class);
   }
 
   /**
@@ -80,8 +79,8 @@ class FeatureToggleTest extends KernelTestBase {
     $features = $this->getSut()->getFeatures();
 
     $this->assertEquals([
-      FeatureManagerInterface::ROTATE_UID1_PASSWORD => TRUE,
-      FeatureManagerInterface::LOGGER => TRUE,
+      FeatureManager::ROTATE_UID1_PASSWORD => TRUE,
+      FeatureManager::LOGGER => TRUE,
     ], $features);
   }
 

@@ -8,7 +8,7 @@ use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\Logger\RfcLoggerTrait;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_api_base\Features\FeatureManagerInterface;
+use Drupal\helfi_api_base\Features\FeatureManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
@@ -25,7 +25,7 @@ final class JsonLog implements LoggerInterface {
    *
    * @var bool
    */
-  private readonly bool $loggerEnabled;
+  private ?bool $loggerEnabled = NULL;
 
   /**
    * Constructs a new instance.
@@ -34,7 +34,7 @@ final class JsonLog implements LoggerInterface {
    *   The parser to use when extracting message variables.
    * @param \Symfony\Component\Filesystem\Filesystem $filesystem
    *   The file system.
-   * @param \Drupal\helfi_api_base\Features\FeatureManagerInterface $featureManager
+   * @param \Drupal\helfi_api_base\Features\FeatureManager $featureManager
    *   The feature manager.
    * @param string $stream
    *   The output path.
@@ -42,10 +42,9 @@ final class JsonLog implements LoggerInterface {
   public function __construct(
     private readonly LogMessageParserInterface $parser,
     private readonly Filesystem $filesystem,
-    FeatureManagerInterface $featureManager,
+    private readonly FeatureManager $featureManager,
     #[Autowire('%helfi_api_base.json_logger_path%')] private readonly string $stream,
   ) {
-    $this->loggerEnabled = $featureManager->isEnabled(FeatureManagerInterface::LOGGER);
   }
 
   /**
@@ -57,10 +56,23 @@ final class JsonLog implements LoggerInterface {
   }
 
   /**
+   * Checks if the logger is enabled or not.
+   *
+   * @return bool
+   *   TRUE if logger is enabled.
+   */
+  private function isLoggerEnabled() : bool {
+    if ($this->loggerEnabled === NULL) {
+      $this->loggerEnabled = $this->featureManager->isEnabled(FeatureManager::LOGGER);
+    }
+    return $this->loggerEnabled;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function log($level, $message, array $context = []) : void {
-    if (!$this->loggerEnabled) {
+    if (!$this->isLoggerEnabled()) {
       return;
     }
     global $base_url;

@@ -23,10 +23,7 @@ services:
     arguments: [ 'helfi_api_base' ]
 
   Drupal\helfi_api_base\EventSubscriber\RotateUid1PasswordSubscriber: ~
-
-  Drupal\helfi_api_base\Features\FeatureManagerInterface: '@helfi_api_base.feature_manager'
-  helfi_api_base.feature_manager:
-    class: Drupal\helfi_api_base\Features\FeatureManager
+  Drupal\helfi_api_base\Features\FeatureManager: ~
 
   Drupal\helfi_api_base\Environment\EnvironmentResolver: '@helfi_api_base.environment_resolver'
   helfi_api_base.environment_resolver:
