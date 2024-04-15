@@ -1,6 +1,5 @@
 parameters:
   helfi_api_base.json_logger_path: '/tmp/drupal.log'
-  helfi_api_base.logger_enabled: true
   helfi_api_base.environment_file: ''
   helfi_api_base.default_composer_lock: '%app.root%/../composer.lock'
   helfi_api_base.internal_domains:
@@ -15,9 +14,19 @@ parameters:
     - 'sv'
   helfi_api_base.fallback_language: 'en'
 services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
   logger.channel.helfi_api_base:
     parent: logger.channel_base
     arguments: [ 'helfi_api_base' ]
+
+  Drupal\helfi_api_base\EventSubscriber\RotateUid1PasswordSubscriber: ~
+
+  Drupal\helfi_api_base\Features\FeatureManagerInterface: '@helfi_api_base.feature_manager'
+  helfi_api_base.feature_manager:
+    class: Drupal\helfi_api_base\Features\FeatureManager
 
   Drupal\helfi_api_base\Environment\EnvironmentResolver: '@helfi_api_base.environment_resolver'
   helfi_api_base.environment_resolver:
@@ -91,14 +100,10 @@ services:
     class: Symfony\Component\Filesystem\Filesystem
     public: false
 
-  Drupal\helfi_api_base\Logger\JsonLog: '@helfi_api_base.logger_json'
-  helfi_api_base.logger_json:
-    class: Drupal\helfi_api_base\Logger\JsonLog
-    arguments:
-      - '@logger.log_message_parser'
-      - '@helfi_api_base.logger_filesystem'
-      - '%helfi_api_base.json_logger_path%'
-      - '%helfi_api_base.logger_enabled%'
+  Symfony\Component\Filesystem\Filesystem:
+    class: Symfony\Component\Filesystem\Filesystem
+    public: false
+  Drupal\helfi_api_base\Logger\JsonLog:
     tags:
       - { name: logger }
 

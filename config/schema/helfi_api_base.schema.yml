@@ -33,7 +33,9 @@ helfi_api_base.api_accounts:
 helfi_api_base.features:
   type: config_entity
   mapping:
-    change_uid1_pass_on_deploy:
+    logger:
+      type: boolean
+    rotate_uid1_password:
       type: boolean
 
 helfi_api_base.environment_resolver.settings:
