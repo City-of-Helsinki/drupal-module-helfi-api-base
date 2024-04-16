@@ -30,6 +30,14 @@ helfi_api_base.api_accounts:
             sequence:
               type: string
 
+helfi_api_base.features:
+  type: config_entity
+  mapping:
+    logger:
+      type: boolean
+    disable_user_password:
+      type: boolean
+
 helfi_api_base.environment_resolver.settings:
   type: config_entity
   mapping:

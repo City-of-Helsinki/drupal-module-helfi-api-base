@@ -6,11 +6,10 @@ JSON parsing needs to be enabled manually in order for this to work. See https:/
 
 ## How to disable logging
 
-Set `helfi_api_base.logger_enabled` service parameter to `false`:
+Call:
+```php
+$service = \Drupal::service(\Drupal\helfi_api_base\Features\FeatureManager::class);
+$service->disableFeature(\Drupal\helfi_api_base\Features\FeatureManager::LOGGER);
+```
 
-```
-# public/sites/default/services.yml
-# public/sites/default/{env}.services.yml
-parameters:
-  helfi_api_base.logger_enabled: false
-```
+and export the changed configuration.

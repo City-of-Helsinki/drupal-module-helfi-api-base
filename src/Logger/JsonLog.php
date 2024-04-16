@@ -8,7 +8,9 @@ use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\Logger\RfcLoggerTrait;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_api_base\Features\FeatureManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -19,22 +21,29 @@ final class JsonLog implements LoggerInterface {
   use RfcLoggerTrait;
 
   /**
+   * Whether the logger should be enabled or not.
+   *
+   * @var bool
+   */
+  private ?bool $loggerEnabled = NULL;
+
+  /**
    * Constructs a new instance.
    *
    * @param \Drupal\Core\Logger\LogMessageParserInterface $parser
    *   The parser to use when extracting message variables.
    * @param \Symfony\Component\Filesystem\Filesystem $filesystem
    *   The file system.
+   * @param \Drupal\helfi_api_base\Features\FeatureManager $featureManager
+   *   The feature manager.
    * @param string $stream
    *   The output path.
-   * @param bool $loggerEnabled
-   *   Whether logger is enabled or not.
    */
   public function __construct(
     private readonly LogMessageParserInterface $parser,
     private readonly Filesystem $filesystem,
-    private readonly string $stream,
-    private readonly bool $loggerEnabled = TRUE
+    private readonly FeatureManager $featureManager,
+    #[Autowire('%helfi_api_base.json_logger_path%')] private readonly string $stream,
   ) {
   }
 
@@ -47,10 +56,23 @@ final class JsonLog implements LoggerInterface {
   }
 
   /**
+   * Checks if the logger is enabled or not.
+   *
+   * @return bool
+   *   TRUE if logger is enabled.
+   */
+  private function isLoggerEnabled() : bool {
+    if ($this->loggerEnabled === NULL) {
+      $this->loggerEnabled = $this->featureManager->isEnabled(FeatureManager::LOGGER);
+    }
+    return $this->loggerEnabled;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function log($level, $message, array $context = []) : void {
-    if (!$this->loggerEnabled) {
+    if (!$this->isLoggerEnabled()) {
       return;
     }
     global $base_url;

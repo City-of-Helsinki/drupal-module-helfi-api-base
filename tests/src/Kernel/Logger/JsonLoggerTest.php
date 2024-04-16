@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\helfi_api_base\Logger\JsonLog;
 use Drupal\KernelTests\KernelTestBase;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Tests json logger.
  *
- * @coversDefaultClass \Drupal\helfi_api_base\Logger\JsonLog
  * @group helfi_api_base
  */
 class JsonLoggerTest extends KernelTestBase {
@@ -35,24 +33,6 @@ class JsonLoggerTest extends KernelTestBase {
   }
 
   /**
-   * Gets the logger.
-   *
-   * @param bool $status
-   *   Whether logging is enabled or not.
-   *
-   * @return \Psr\Log\LoggerInterface
-   *   The logger.
-   */
-  private function getSut(bool $status) :  LoggerInterface {
-    return new JsonLog(
-      $this->container->get('logger.log_message_parser'),
-      new Filesystem(),
-      $this->container->getParameter('helfi_api_base.json_logger_path'),
-      $status
-    );
-  }
-
-  /**
    * Perform assertions against log entries.
    *
    * @param string $message
@@ -67,31 +47,32 @@ class JsonLoggerTest extends KernelTestBase {
   }
 
   /**
-   * Tests that logging is enabled by default.
-   *
-   * @covers ::log
-   * @covers ::output
-   * @covers ::__construct
+   * Make sure nothing is logged when logger is disabled.
    */
-  public function testLog() : void {
-    \Drupal::logger('helfi_api_base')->warning('Test');
-    $this->assertLogMessage('Test', 'helfi_api_base');
+  public function testLoggingDisabled() : void {
+    $features = $this->container->get(FeatureManager::class);
+    $features->disableFeature(FeatureManager::LOGGER);
+    /** @var \Drupal\helfi_api_base\Logger\JsonLog $sut */
+    $sut = $this->container->get(JsonLog::class);
+    $sut->warning('Test');
+    $this->assertFalse(file_exists('public://drupal.log'));
   }
 
   /**
-   * Make sure nothing is logged when logger is disabled.
-   *
-   * @covers ::log
-   * @covers ::__construct
-   * @covers ::output
+   * Make sure messages are logged when the logger is enabled.
    */
-  public function testLoggingStatus() : void {
-    $this->getSut(FALSE)->warning('Test');
-    $this->assertFalse(file_exists('public://drupal.log'));
-    $this->getSut(TRUE)->warning('Test', [
+  public function testLoggingEnabled() : void {
+    $features = $this->container->get(FeatureManager::class);
+    $features->enableFeature(FeatureManager::LOGGER);
+
+    /** @var \Drupal\helfi_api_base\Logger\JsonLog $sut */
+    $sut = $this->container->get(JsonLog::class);
+    $sut->warning('Test', [
       'timestamp' => time(),
       'channel' => 'helfi_api_base',
     ]);
+    $this->assertLogMessage('Test', 'helfi_api_base');
+    $this->assertTrue(file_exists('public://drupal.log'));
     $this->assertLogMessage('Test', 'helfi_api_base');
   }
 

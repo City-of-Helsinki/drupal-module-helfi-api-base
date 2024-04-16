@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Link;
 
 use Drupal\Core\Url;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Resolves internal domains.
@@ -17,7 +18,9 @@ final class InternalDomainResolver {
    * @param array $domains
    *   The domains.
    */
-  public function __construct(private array $domains = []) {
+  public function __construct(
+    #[Autowire('%helfi_api_base.internal_domains%')] private array $domains = []
+  ) {
   }
 
   /**

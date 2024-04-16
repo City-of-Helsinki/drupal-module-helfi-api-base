@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Environment;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Environment resolver.
@@ -46,7 +47,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
    *   The configuration factory.
    */
   public function __construct(
-    string $pathOrJson,
+    #[Autowire('%helfi_api_base.environment_file%')] string $pathOrJson,
     private readonly ConfigFactoryInterface $configFactory
   ) {
     $this->populateEnvironments($pathOrJson);

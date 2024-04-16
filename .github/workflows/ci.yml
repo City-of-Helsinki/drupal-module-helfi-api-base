@@ -87,7 +87,7 @@ jobs:
 
       - name: Run codecov
         working-directory: ${{ env.MODULE_FOLDER }}
-        run: codecov
+        run: codecov -t ${{ secrets.CODECOV_TOKEN }}
 
       - name: Create an artifact from test report
         uses: actions/upload-artifact@v4
