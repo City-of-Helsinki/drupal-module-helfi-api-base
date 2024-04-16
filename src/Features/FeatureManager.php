@@ -12,7 +12,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 final class FeatureManager {
 
   public const LOGGER = 'logger';
-  public const ROTATE_UID1_PASSWORD = 'rotate_uid1_password';
+  public const DISABLE_USER_PASSWORD = 'disable_user_password';
 
   /**
    * Constructs a new instance.

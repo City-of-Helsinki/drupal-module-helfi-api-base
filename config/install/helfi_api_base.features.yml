@@ -1,2 +1,2 @@
 logger: true
-rotate_uid1_password: true
+disable_user_password: true

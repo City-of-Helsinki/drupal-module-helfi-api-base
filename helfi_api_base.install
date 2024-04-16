@@ -213,7 +213,7 @@ function helfi_api_base_update_9015() : void {
   $environmentResolver = \Drupal::service('helfi_api_base.environment_resolver');
   try {
     $environmentResolver->getActiveProject();
-    $service->enableFeature(FeatureManager::ROTATE_UID1_PASSWORD);
+    $service->enableFeature(FeatureManager::DISABLE_USER_PASSWORD);
   }
   catch (\InvalidArgumentException) {
   }

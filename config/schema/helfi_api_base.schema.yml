@@ -35,7 +35,7 @@ helfi_api_base.features:
   mapping:
     logger:
       type: boolean
-    rotate_uid1_password:
+    disable_user_password:
       type: boolean
 
 helfi_api_base.environment_resolver.settings:

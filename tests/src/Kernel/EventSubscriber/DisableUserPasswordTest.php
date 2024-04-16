@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\EventSubscriber;
 
+use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\helfi_api_base\Event\PostDeployEvent;
 use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\KernelTests\KernelTestBase;
@@ -15,7 +16,7 @@ use Drupal\user\Entity\User;
  *
  * @group helfi_api_base
  */
-class RotateUid1PasswordTest extends KernelTestBase {
+class DisableUserPasswordTest extends KernelTestBase {
 
   use UserCreationTrait;
 
@@ -40,6 +41,16 @@ class RotateUid1PasswordTest extends KernelTestBase {
     $this->installConfig('helfi_api_base');
   }
 
+  public function register(ContainerBuilder $container) : void {
+    parent::register($container);
+
+    $container->setParameter('helfi_api_base.disable_password_users', [
+      'helfi-admin',
+      1,
+      'test@example.com',
+    ]);
+  }
+
   /**
    * Triggers the post deploy event.
    */
@@ -55,7 +66,7 @@ class RotateUid1PasswordTest extends KernelTestBase {
   public function testFeatureIsEnabledByDefault() : void {
     /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
     $service = $this->container->get(FeatureManager::class);
-    $this->assertTrue($service->isEnabled(FeatureManager::ROTATE_UID1_PASSWORD));
+    $this->assertTrue($service->isEnabled(FeatureManager::DISABLE_USER_PASSWORD));
   }
 
   /**
@@ -64,8 +75,8 @@ class RotateUid1PasswordTest extends KernelTestBase {
   public function testWithFeatureDisabled(): void {
     /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
     $service = $this->container->get(FeatureManager::class);
-    $service->disableFeature(FeatureManager::ROTATE_UID1_PASSWORD);
-    $this->assertFalse($service->isEnabled(FeatureManager::ROTATE_UID1_PASSWORD));
+    $service->disableFeature(FeatureManager::DISABLE_USER_PASSWORD);
+    $this->assertFalse($service->isEnabled(FeatureManager::DISABLE_USER_PASSWORD));
 
     $this->createUser([]);
     $currentPass = User::load(1)->getPassword();
@@ -75,29 +86,38 @@ class RotateUid1PasswordTest extends KernelTestBase {
   }
 
   /**
-   * Test missing account.
-   */
-  public function testAccountNotFound() : void {
-    /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
-    $service = $this->container->get(FeatureManager::class);
-    $this->assertTrue($service->isEnabled(FeatureManager::ROTATE_UID1_PASSWORD));
-    $this->assertEmpty(User::load(1));
-    $this->triggerEvent();
-  }
-
-  /**
-   * Make sure the password is changed.
+   * Make sure the password is set to null.
    */
   public function testChangePassword() : void {
     /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
     $service = $this->container->get(FeatureManager::class);
-    $service->enableFeature(FeatureManager::ROTATE_UID1_PASSWORD);
+    $service->enableFeature(FeatureManager::DISABLE_USER_PASSWORD);
 
+    // Tests uid condition.
     $this->createUser([]);
-    $currentPass = User::load(1)->getPassword();
-    $this->assertNotEmpty($currentPass);
+    // Tests username condition.
+    $account2 = $this->createUser(name: 'helfi-admin');
+    // Tests mail condition.
+    $account3 = $this->createUser(values: ['mail' => 'test@example.com']);
+    $account4 = $this->createUser();
+
+    $expectedUsers = [1, $account2->id(), $account3->id()];
+
+    // Make sure the user has a password set.
+    foreach ($expectedUsers as $uid) {
+      $currentPass = User::load($uid)->getPassword();
+      $this->assertNotEmpty($currentPass);
+    }
+    // Trigger the event and make sure all blacklisted users' password
+    // is set to null.
     $this->triggerEvent();
-    $this->assertNotEquals($currentPass, User::load(1)->getPassword());
+
+    foreach ($expectedUsers as $uid) {
+      $this->assertNull(User::load($uid)->getPassword());
+    }
+    $this->assertNull(User::load($uid)->getPassword());
+    // Make sure only blacklisted users are affected.
+    $this->assertNotNull(User::load($account4->id())->getPassword());
   }
 
 }

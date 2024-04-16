@@ -79,7 +79,7 @@ class FeatureToggleTest extends KernelTestBase {
     $features = $this->getSut()->getFeatures();
 
     $this->assertEquals([
-      FeatureManager::ROTATE_UID1_PASSWORD => TRUE,
+      FeatureManager::DISABLE_USER_PASSWORD => TRUE,
       FeatureManager::LOGGER => TRUE,
     ], $features);
   }

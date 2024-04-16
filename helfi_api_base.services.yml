@@ -13,6 +13,9 @@ parameters:
     - 'fi'
     - 'sv'
   helfi_api_base.fallback_language: 'en'
+  helfi_api_base.disable_password_users:
+    - helfi-admin
+    - 1
 services:
   _defaults:
     autowire: true
@@ -22,7 +25,7 @@ services:
     parent: logger.channel_base
     arguments: [ 'helfi_api_base' ]
 
-  Drupal\helfi_api_base\EventSubscriber\RotateUid1PasswordSubscriber: ~
+  Drupal\helfi_api_base\EventSubscriber\DisableUserPasswordSubscriber: ~
   Drupal\helfi_api_base\Features\FeatureManager: ~
 
   Drupal\helfi_api_base\Environment\EnvironmentResolver: '@helfi_api_base.environment_resolver'
