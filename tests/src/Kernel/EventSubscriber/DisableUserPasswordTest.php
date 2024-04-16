@@ -41,6 +41,9 @@ class DisableUserPasswordTest extends KernelTestBase {
     $this->installConfig('helfi_api_base');
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function register(ContainerBuilder $container) : void {
     parent::register($container);
 

@@ -23,6 +23,8 @@ final class DisableUserPasswordSubscriber extends DeployHookEventSubscriberBase 
    *   The feature manager.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
+   * @param array $users
+   *   The users array.
    */
   public function __construct(
     private readonly FeatureManager $featureManager,
@@ -42,17 +44,18 @@ final class DisableUserPasswordSubscriber extends DeployHookEventSubscriberBase 
     $storage = $this->entityTypeManager->getStorage('user');
     $query = $storage
       ->getQuery();
-    $query->accessCheck(FALSE)
+    $query
       ->condition('pass', NULL, 'IS NOT NULL');
 
-    // Support loading users by uid, name and email.
+    // Support loading users by uid, name or email.
     $userCondition = $query->orConditionGroup()
       ->condition('mail', $this->users, 'IN')
       ->condition('name', $this->users, 'IN')
       ->condition('uid', $this->users, 'IN');
     $query->condition($userCondition);
 
-    $ids = $query->execute();
+    $ids = $query->accessCheck(FALSE)
+      ->execute();
 
     foreach ($ids as $id) {
       /** @var \Drupal\user\UserInterface $account */
