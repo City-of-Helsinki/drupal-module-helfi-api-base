@@ -10,7 +10,7 @@ $service = \Drupal::service(\Drupal\helfi_api_base\Features\FeatureManager::clas
 $service->isEnabled(\Drupal\helfi_api_base\Features\FeatureManager::LOGGER); // Returns true if the logger feature is enabled.
 // Disables the logger feature.
 $service->disableFeature(\Drupal\helfi_api_base\Features\FeatureManager::LOGGER)
-// Disables the logger feature.
+// Enables the logger feature.
 $service->enableFeature(\Drupal\helfi_api_base\Features\FeatureManager::LOGGER);
 ```
 
