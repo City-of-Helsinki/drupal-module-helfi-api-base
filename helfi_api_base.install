@@ -218,3 +218,19 @@ function helfi_api_base_update_9015() : void {
   catch (\InvalidArgumentException) {
   }
 }
+
+/**
+ * Install raven module.
+ */
+function helfi_api_base_update_9016() : void {
+  Drupal::service('module_installer')->install([
+    'raven',
+  ]);
+  Drupal::configFactory()->getEditable('raven.settings')
+    ->set('drush_error_handler', TRUE)
+    ->set('request_tracing', TRUE)
+    ->set('traces_sample_rate', 0.2)
+    ->set('database_tracing', TRUE)
+    ->set('twig_tracing', TRUE)
+    ->save();
+}
