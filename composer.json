@@ -7,8 +7,8 @@
     "prefer-stable": true,
     "require": {
         "drupal/entity": "^1.0",
-        "drupal/filelog": "^2.1",
         "drupal/health_check": "^3.0",
+        "drupal/raven": "^4.0 || ^5.0",
         "firebase/php-jwt": "^6.5",
         "php": "^8.1",
         "t4web/composer-lock-parser": "^1.0",
