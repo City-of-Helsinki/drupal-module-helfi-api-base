@@ -10,7 +10,7 @@ use WebSocket\ConnectionException;
 /**
  * A service to invalidate cache tags on all instances.
  */
-final class CacheTagInvalidator {
+final class CacheTagInvalidator implements CacheTagInvalidatorInterface {
 
   /**
    * Constructs a new instance.
@@ -24,17 +24,9 @@ final class CacheTagInvalidator {
   }
 
   /**
-   * Invalidates given cache tags.
-   *
-   * @param array $tags
-   *   An array of cache tags.
-   * @param array $instances
-   *   The instances to flush caches from.
-   *
-   * @return $this
-   *   The self.
+   * {@inheritdoc}
    */
-  public function invalidateTags(array $tags, array $instances = []) : self {
+  public function invalidateTags(array $tags, array $instances = []) : void {
     try {
       $this->pubSubManager->sendMessage([
         'tags' => $tags,
@@ -43,7 +35,6 @@ final class CacheTagInvalidator {
     }
     catch (ConnectionException) {
     }
-    return $this;
   }
 
 }
