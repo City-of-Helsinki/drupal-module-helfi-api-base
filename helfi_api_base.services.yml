@@ -150,6 +150,7 @@ services:
       - '@datetime.time'
       - '@helfi_api_base.pubsub_settings'
 
+  Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface: '@helfi_api_base.cache_tag_invalidator'
   Drupal\helfi_api_base\Cache\CacheTagInvalidator: '@helfi_api_base.cache_tag_invalidator'
   helfi_api_base.cache_tag_invalidator:
     class: Drupal\helfi_api_base\Cache\CacheTagInvalidator
