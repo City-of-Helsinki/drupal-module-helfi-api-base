@@ -86,7 +86,12 @@ trait ApiTestTrait {
    *   The response.
    */
   protected function processRequest(Request $request): Response {
-    return $this->container->get('http_kernel')->handle($request);
+    /** @var \Drupal\Core\StackMiddleware\StackedHttpKernel $kernel */
+    $kernel = $this->container->get('http_kernel');
+    $response = $kernel->handle($request);
+    $kernel->terminate($request, $response);
+
+    return $response;
   }
 
   /**

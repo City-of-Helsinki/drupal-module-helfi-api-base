@@ -13,6 +13,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class SentryTracesSamplerSubscriber implements EventSubscriberInterface {
 
+  public const DEFAULT_SAMPLE_RATE = 0.2;
+
   /**
    * Checks if the trace url should be ignored.
    *
@@ -38,19 +40,22 @@ final class SentryTracesSamplerSubscriber implements EventSubscriberInterface {
    *   The options alter event.
    */
   public function setTracesSampler(OptionsAlter $event) : void {
-    $event->options['traces_sampler'] = function (SamplingContext $context) : float {
+    $event->options['traces_sampler'] = function (SamplingContext $context) use ($event): float {
       if ($context->getParentSampled()) {
         // If the parent transaction (for example, a JavaScript front-end)
         // is sampled, also sample the current transaction.
         return 1.0;
       }
 
-      $data = $context->getTransactionContext()->getData();
+      $data = $context->getTransactionContext()?->getData();
 
-      if ($this->ignoreTracerUrl($data)) {
+      if ($data && $this->ignoreTracerUrl($data)) {
         return 0;
       }
-      return 0.2;
+
+      // Sample ~20% of transactions by default.
+      // @see https://docs.sentry.io/platforms/php/configuration/sampling/
+      return $event->options['traces_sample_rate'] ?? self::DEFAULT_SAMPLE_RATE;
     };
   }
 
