@@ -9,7 +9,7 @@ use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Sentry\SentrySdk;
 
 /**
- * Tests Rotate uid1 password.
+ * Tests our custom Sentry 'traces_sampler' event subscriber.
  *
  * @group helfi_api_base
  */
