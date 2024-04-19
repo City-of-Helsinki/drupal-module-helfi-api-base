@@ -25,6 +25,7 @@ services:
     parent: logger.channel_base
     arguments: [ 'helfi_api_base' ]
 
+  Drupal\helfi_api_base\EventSubscriber\SentryTracesSamplerSubscriber: ~
   Drupal\helfi_api_base\EventSubscriber\DisableUserPasswordSubscriber: ~
   Drupal\helfi_api_base\Features\FeatureManager: ~
 
