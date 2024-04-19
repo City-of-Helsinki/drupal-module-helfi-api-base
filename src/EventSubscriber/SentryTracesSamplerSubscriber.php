@@ -38,9 +38,13 @@ final class SentryTracesSamplerSubscriber implements EventSubscriberInterface {
    *   The options alter event.
    */
   public function setTracesSampler(OptionsAlter $event) : void {
-    unset($event->options['traces_sample_rate']);
-
     $event->options['traces_sampler'] = function (SamplingContext $context) : float {
+      if ($context->getParentSampled()) {
+        // If the parent transaction (for example, a JavaScript front-end)
+        // is sampled, also sample the current transaction.
+        return 1.0;
+      }
+
       $data = $context->getTransactionContext()->getData();
 
       if ($this->ignoreTracerUrl($data)) {
