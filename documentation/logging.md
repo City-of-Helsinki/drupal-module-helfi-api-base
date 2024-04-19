@@ -8,8 +8,8 @@ Make sure your `settings.php` includes:
 
 ```php
 if (file_exists('modules/contrib/helfi_api_base/monolog.services.yml')) {
-  $GLOBALS['conf']['container_service_providers'][] = '\Drush\Drupal\DrushLoggerServiceProvider';
-  $GLOBALS['conf']['container_service_providers'][] = '\Drupal\monolog\MonologServiceProvider';
+  $conf['container_service_providers'][] = '\Drush\Drupal\DrushLoggerServiceProvider';
+  $conf['container_service_providers'][] = '\Drupal\monolog\MonologServiceProvider';
   $settings['container_yamls'][] = 'modules/contrib/monolog/monolog.services.yml';
   $settings['container_yamls'][] = 'modules/contrib/helfi_api_base/monolog.services.yml';
 }
