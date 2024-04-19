@@ -37,7 +37,6 @@ final class EnvironmentResponseSubscriber implements EventSubscriberInterface {
   public function onResponse(ResponseEvent $event) : void {
     $response = $event->getResponse();
 
-    \Drupal::logger('test')->error('dadjsadsadsaa');
     try {
       $environment = $this->environmentResolver
         ->getActiveEnvironment();
