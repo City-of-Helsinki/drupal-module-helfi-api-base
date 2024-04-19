@@ -66,7 +66,7 @@ class SentryTracesSamplerSubscriberTest extends UnitTestCase {
    */
   public function testTracerNoUrl() : void {
     $transaction = new TransactionContext();
-    $transaction->setData([]);
+    $transaction->setData(['something' => 'else']);
     $context = SamplingContext::getDefault($transaction);
     $rate = $this->callSampler([], $context);
     $this->assertEquals(SentryTracesSamplerSubscriber::DEFAULT_SAMPLE_RATE, $rate);
