@@ -9,6 +9,7 @@ use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Drupal\monolog\Logger\Formatter\ConditionalFormatter;
 use Drupal\monolog\Logger\Handler\ConditionalHandler;
 use Drupal\monolog\Logger\Handler\DrupalHandler;
+use Drush\Log\DrushLog;
 use Monolog\Handler\StreamHandler;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -36,6 +37,12 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
           ],
         ],
       ]);
+
+      if (!$container->has('logger.drupaltodrush')) {
+        $container->register('logger.drupaltodrush', DrushLog::class)
+          ->addArgument(new Reference('logger.log_message_parser'))
+          ->addTag('logger');
+      }
       if (!$container->has('monolog.handler.drupal.drupaltodrush')) {
         $container->register('monolog.handler.drupal.drupaltodrush', DrupalHandler::class)
           ->addArgument(new Reference('logger.drupaltodrush'))
