@@ -1,4 +1,9 @@
 parameters:
+  monolog.channel_handlers:
+    default:
+      handlers:
+        - name: default_conditional_handler
+          formatter: drush_or_json
   helfi_api_base.environment_file: ''
   helfi_api_base.default_composer_lock: '%app.root%/../composer.lock'
   helfi_api_base.internal_domains:
@@ -19,6 +24,22 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
+
+  monolog.formatter.drush_or_json:
+    class: Drupal\monolog\Logger\Formatter\ConditionalFormatter
+    arguments: [ '@monolog.formatter.drush', '@monolog.formatter.json', '@monolog.condition_resolver.cli' ]
+    shared: false
+
+  monolog.handler.default_conditional_handler:
+    class: Drupal\monolog\Logger\Handler\ConditionalHandler
+    arguments:
+      - '@monolog.handler.drupal.drupaltodrush'
+      - '@monolog.handler.website'
+      - '@monolog.condition_resolver.cli'
+
+  monolog.handler.website:
+    class: Monolog\Handler\StreamHandler
+    arguments: ['php://stdout']
 
   logger.channel.helfi_api_base:
     parent: logger.channel_base
