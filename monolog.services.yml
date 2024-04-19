@@ -1,0 +1,23 @@
+parameters:
+  monolog.channel_handlers:
+    default:
+      handlers:
+        - name: default_conditional_handler
+          formatter: drush_or_json
+
+services:
+  monolog.formatter.drush_or_json:
+    class: Drupal\monolog\Logger\Formatter\ConditionalFormatter
+    arguments: [ '@monolog.formatter.drush', '@monolog.formatter.json', '@monolog.condition_resolver.cli' ]
+    shared: false
+
+  monolog.handler.default_conditional_handler:
+    class: Drupal\monolog\Logger\Handler\ConditionalHandler
+    arguments:
+      - '@monolog.handler.drupal.drupaltodrush'
+      - '@monolog.handler.website'
+      - '@monolog.condition_resolver.cli'
+
+  monolog.handler.website:
+    class: Monolog\Handler\StreamHandler
+    arguments: ['php://stdout']

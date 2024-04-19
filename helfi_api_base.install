@@ -244,3 +244,12 @@ function helfi_api_base_update_9016() : void {
     ->set('twig_tracing', TRUE)
     ->save();
 }
+
+/**
+ * Enable 'monolog' module.
+ */
+function helfi_api_base_update_9017(): void {
+  Drupal::service('module_installer')->install([
+    'monolog',
+  ]);
+}
