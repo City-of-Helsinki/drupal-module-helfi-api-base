@@ -142,7 +142,7 @@ class RevisionManager {
   public function getRevisionsPerLanguage(
     string $entityType,
     string|int $id,
-    ?int $keep = NULL
+    ?int $keep = NULL,
   ) : array {
     $this->assertEntityType($entityType);
 

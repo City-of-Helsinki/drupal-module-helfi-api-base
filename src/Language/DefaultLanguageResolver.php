@@ -25,7 +25,7 @@ final class DefaultLanguageResolver {
   public function __construct(
     #[Autowire('%helfi_api_base.default_languages%')] private readonly array $defaultLanguages,
     #[Autowire('%helfi_api_base.fallback_language%')] private readonly string $fallbackLanguage,
-    private readonly LanguageManagerInterface $languageManager
+    private readonly LanguageManagerInterface $languageManager,
   ) {
   }
 

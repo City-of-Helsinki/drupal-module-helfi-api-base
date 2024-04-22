@@ -125,7 +125,8 @@ class LinkConverterTest extends KernelTestBase {
     string $langcode = LanguageInterface::LANGCODE_NOT_SPECIFIED,
     array $filter_ids = [
       'helfi_link_converter',
-    ]) : FilterProcessResult {
+    ],
+  ) : FilterProcessResult {
     $manager = $this->container->get('plugin.manager.filter');
     $bag = new FilterPluginCollection($manager);
     $filters = [];

@@ -22,7 +22,7 @@ final class MigrationConfigurationEvent extends Event {
    */
   public function __construct(
     public array &$configuration,
-    public ?MigrationInterface $migration = NULL
+    public ?MigrationInterface $migration = NULL,
   ) {
   }
 

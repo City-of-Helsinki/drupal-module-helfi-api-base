@@ -146,7 +146,7 @@ class HelfiPackageTest extends UnitTestCase {
     array $packageVersions,
     string $packageVersion,
     string $expectedLatestVersion,
-    bool $isLatest
+    bool $isLatest,
   ) : void {
     $client = $this->createMockHttpClient([
       new Response(body: json_encode([
