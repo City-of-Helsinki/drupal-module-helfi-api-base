@@ -61,7 +61,7 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition
+    $plugin_definition,
   ) : self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
     $instance->renderer = $container->get('renderer');

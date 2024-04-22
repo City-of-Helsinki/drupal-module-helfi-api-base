@@ -127,7 +127,7 @@ class EnvironmentResolverTest extends UnitTestCase {
     string $project,
     string $language,
     string $environment,
-    string $message
+    string $message,
   ) : void {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage($message);

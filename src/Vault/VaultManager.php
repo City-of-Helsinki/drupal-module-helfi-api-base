@@ -25,7 +25,7 @@ final class VaultManager {
    *   The vault items.
    */
   public function __construct(
-    array $vaultItems
+    array $vaultItems,
   ) {
     Assert::allIsInstanceOf($vaultItems, VaultItemInterface::class);
 

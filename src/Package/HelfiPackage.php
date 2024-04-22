@@ -22,7 +22,7 @@ final class HelfiPackage implements VersionCheckerInterface {
    *   The HTTP client.
    */
   public function __construct(
-    private ClientInterface $client
+    private ClientInterface $client,
   ) {
   }
 

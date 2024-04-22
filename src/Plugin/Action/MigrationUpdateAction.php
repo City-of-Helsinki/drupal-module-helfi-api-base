@@ -50,7 +50,7 @@ final class MigrationUpdateAction extends ActionBase implements ContainerFactory
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition
+    $plugin_definition,
   ) : self {
     $instance = new self($configuration, $plugin_definition, $plugin_definition);
     $instance->migrationPluginManager = $container->get('plugin.manager.migration');
@@ -133,7 +133,7 @@ final class MigrationUpdateAction extends ActionBase implements ContainerFactory
   public function access(
     $object,
     AccountInterface $account = NULL,
-    $return_as_object = FALSE
+    $return_as_object = FALSE,
   ) {
     /** @var \Drupal\helfi_api_base\Entity\RemoteEntityBase $object */
     $access = $object->access('update', NULL, TRUE);

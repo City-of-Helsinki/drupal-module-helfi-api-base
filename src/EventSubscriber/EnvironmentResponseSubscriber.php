@@ -24,7 +24,7 @@ final class EnvironmentResponseSubscriber implements EventSubscriberInterface {
    *   The environment resolver.
    */
   public function __construct(
-    private EnvironmentResolver $environmentResolver
+    private EnvironmentResolver $environmentResolver,
   ) {
   }
 

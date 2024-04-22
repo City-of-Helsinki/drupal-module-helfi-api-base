@@ -50,9 +50,13 @@ final class RevisionCommands extends DrushCommands {
   #[Command(name: 'helfi:revision:delete')]
   #[Option(name: 'id', description: 'The entity ID')]
   #[Option(name: 'keep', description: 'Number of revisions to keep')]
-  public function delete(string $entityType, ?int $entityId = NULL, array $options = [
-    'keep' => NULL,
-  ]) : int {
+  public function delete(
+    string $entityType,
+    ?int $entityId = NULL,
+    array $options = [
+      'keep' => NULL,
+    ],
+  ) : int {
     if (!$this->revisionManager->entityTypeIsSupported($entityType)) {
       $this->io()->writeln('Given entity type is not supported.');
 
