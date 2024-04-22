@@ -27,6 +27,7 @@ A base module for [drupal-helfi-platform](https://github.com/City-of-Helsinki/dr
 - [PubSub messaging](documentation/pubsub-messaging.md): A PubSub message service to send/receive messages.
 - [Remote Entity](documentation/remote-entity.md): A base entity to be used with migrations.
 - [Testing](documentation/testing.md): Various features to help with automated testing.
+- [User sanitation](documentation/user-sanitation.md): A service to handle user sanitation.
 
 ## Contact
 
