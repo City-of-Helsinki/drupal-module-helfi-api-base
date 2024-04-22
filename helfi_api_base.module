@@ -8,7 +8,10 @@
 declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\helfi_api_base\Link\LinkProcessor;
+use Drupal\user\UserInterface;
 
 /**
  * Implements hook_element_info_alter().
@@ -86,5 +89,99 @@ function helfi_api_base_entity_update(EntityInterface $entity) : void {
       'entity_id' => $entity->id(),
       'entity_type' => $entity->getEntityTypeId(),
     ]);
+  }
+}
+
+/**
+ * Implements hook_user_cancel_methods_alter().
+ */
+function helfi_api_base_user_cancel_methods_alter(array &$methods): void {
+  /** @var \Drupal\Core\Session\AccountInterface $account */
+  $account = \Drupal::currentUser();
+
+  // Only allow user to disable user accounts if the user doesn't have
+  // a permission to delete user accounts.
+  $white_listed_methods = [
+    'user_cancel_block',
+    'user_cancel_block_unpublish',
+  ];
+
+  // Deny access to all non-whitelisted methods if user doesn't have
+  // the 'delete user accounts' permission.
+  if (!$account->hasPermission('delete user accounts')) {
+    foreach ($methods as $name => &$method) {
+      if (!in_array($name, $white_listed_methods)) {
+        $method['access'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function helfi_api_base_entity_operation(EntityInterface $entity): array {
+  // Add sanitize user account -operation to user action list.
+  $operations = [];
+
+  /** @var \Drupal\user\UserInterface $current_user */
+  $current_user = \Drupal::currentUser();
+  if (
+    $entity instanceof UserInterface &&
+    $current_user->hasPermission('sanitize user accounts') &&
+    $entity->isBlocked()
+  ) {
+    $operations['sanitize_user_entity'] = [
+      'title' => t('Sanitize user account'),
+      'url' => Url::fromRoute('helfi_api_base.user_sanitize', ['user' => $entity->id()]),
+      'weight' => 50,
+    ];
+  }
+  return $operations;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function helfi_api_base_form_user_form_alter(array &$form, FormStateInterface &$form_state, $form_id): void {
+  if ($form_id !== 'user_form') {
+    return;
+  }
+
+  /** @var \Drupal\user\UserInterface $current_user */
+  $current_user = \Drupal::currentUser();
+
+  /** @var \Drupal\user\UserInterface $entity */
+  $entity = \Drupal::routeMatch()->getParameter('user');
+
+  // Add sanitize user account -operation to user actions if the current user
+  // has the 'sanitize user accounts' permission and the user is blocked.
+  if (
+    $entity instanceof UserInterface &&
+    $current_user->hasPermission('sanitize user accounts') &&
+    $entity->isBlocked()
+  ) {
+    $destination = Url::fromRoute(
+      'entity.user.canonical',
+      ['user' => $entity->id()]
+    )->toString();
+
+    $form['actions']['sanitize'] = [
+      '#attributes' => [
+        'class' => [
+          'button',
+          'button--danger',
+        ],
+      ],
+      '#button_type' => 'danger',
+      '#title' => t('Sanitize account'),
+      '#type' => 'link',
+      '#url' => Url::fromRoute(
+        'helfi_api_base.user_sanitize',
+        ['user' => $entity->id()],
+        ['query' => ['destination' => $destination]],
+      ),
+      '#weight' => 11,
+    ];
   }
 }
