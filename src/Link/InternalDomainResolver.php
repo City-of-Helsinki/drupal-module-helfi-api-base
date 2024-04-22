@@ -19,7 +19,7 @@ final class InternalDomainResolver {
    *   The domains.
    */
   public function __construct(
-    #[Autowire('%helfi_api_base.internal_domains%')] private array $domains = []
+    #[Autowire('%helfi_api_base.internal_domains%')] private array $domains = [],
   ) {
   }
 

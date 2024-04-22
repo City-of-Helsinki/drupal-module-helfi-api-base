@@ -273,7 +273,7 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    MigrationInterface $migration = NULL
+    MigrationInterface $migration = NULL,
   ) {
     /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
     $eventDispatcher = $container->get('event_dispatcher');

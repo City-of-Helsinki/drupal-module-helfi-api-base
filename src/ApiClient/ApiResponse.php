@@ -16,7 +16,7 @@ final class ApiResponse {
    *   The response.
    */
   public function __construct(
-    public readonly array|object $data
+    public readonly array|object $data,
   ) {
   }
 

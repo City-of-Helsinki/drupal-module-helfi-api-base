@@ -60,13 +60,15 @@ final class ApiAccountCommands extends DrushCommands {
   #[Option(name: 'id', description: 'An unique ID for given item.')]
   #[Option(name: 'plugin', description: 'The plugin')]
   #[Option(name: 'data', description: 'The data.')]
-  public function update(array $options = [
-    'file' => NULL,
-    'type' => NULL,
-    'id' => NULL,
-    'plugin' => NULL,
-    'data' => NULL,
-  ]) : int {
+  public function update(
+    array $options = [
+      'file' => NULL,
+      'type' => NULL,
+      'id' => NULL,
+      'plugin' => NULL,
+      'data' => NULL,
+    ],
+  ) : int {
     $type = $this->askType($options['type']);
 
     if ($options['file']) {

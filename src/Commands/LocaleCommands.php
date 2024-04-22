@@ -34,7 +34,7 @@ class LocaleCommands extends DrushCommands {
     protected LanguageManagerInterface $languageManager,
     protected FileSystemInterface $fileSystem,
     protected TranslationManager $translationManager,
-    protected ModuleExtensionList $moduleExtensionList
+    protected ModuleExtensionList $moduleExtensionList,
   ) {
   }
 

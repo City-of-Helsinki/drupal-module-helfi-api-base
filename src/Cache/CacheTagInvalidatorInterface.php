@@ -19,7 +19,7 @@ interface CacheTagInvalidatorInterface {
    */
   public function invalidateTags(
     array $tags,
-    array $instances = []
+    array $instances = [],
   ): void;
 
 }
