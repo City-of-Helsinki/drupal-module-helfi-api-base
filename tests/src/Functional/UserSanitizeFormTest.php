@@ -11,6 +11,7 @@ use Drupal\user\Entity\User;
  * Tests user sanitation form.
  *
  * @group helfi_api_base
+ * @coversDefaultClass \Drupal\helfi_api_base\Entity\Form\UserEntitySanitizeForm
  */
 class UserSanitizeFormTest extends CoreBrowserTestBase {
 
