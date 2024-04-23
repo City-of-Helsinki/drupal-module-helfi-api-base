@@ -22,7 +22,7 @@ final class DeployCommands extends DrushCommands {
    *   The event dispatcher.
    */
   public function __construct(
-    private readonly EventDispatcherInterface $eventDispatcher
+    private readonly EventDispatcherInterface $eventDispatcher,
   ) {
     parent::__construct();
   }

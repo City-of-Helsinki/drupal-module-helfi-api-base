@@ -113,7 +113,7 @@ trait ApiTestTrait {
     string $uri,
     string $method = 'GET',
     array $parameters = [],
-    array $document = []
+    array $document = [],
   ): Request {
     $document = $document ? Json::encode($document) : NULL;
 

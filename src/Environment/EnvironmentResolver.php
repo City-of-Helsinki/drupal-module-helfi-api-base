@@ -48,7 +48,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
    */
   public function __construct(
     #[Autowire('%helfi_api_base.environment_file%')] string $pathOrJson,
-    private readonly ConfigFactoryInterface $configFactory
+    private readonly ConfigFactoryInterface $configFactory,
   ) {
     $this->populateEnvironments($pathOrJson);
   }
