@@ -190,4 +190,4 @@ services:
   helfi_api_base.user_entity_sanitizer:
     class: Drupal\helfi_api_base\Entity\Utility\UserEntitySanitizer
     arguments:
-      - '@entity_type.repository'
+      - '@entity_type.manager'

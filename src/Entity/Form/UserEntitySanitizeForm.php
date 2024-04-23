@@ -6,12 +6,13 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_api_base\Entity\Utility\UserEntitySanitizer;
+use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides the form for sanitizing chosen user entity.
  */
-class UserEntitySanitizeForm extends FormBase {
+final class UserEntitySanitizeForm extends FormBase {
 
   /**
    * UserEntitySanitizeForm constructor.
@@ -28,7 +29,7 @@ class UserEntitySanitizeForm extends FormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static(
+    return new self(
       $container->get('helfi_api_base.user_entity_sanitizer')
     );
   }
@@ -45,7 +46,7 @@ class UserEntitySanitizeForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, AccountInterface $user = NULL): array {
 
-    if (!$user) {
+    if (!$user instanceof UserInterface) {
       return ['#markup' => $this->t('User account not found.')];
     }
 

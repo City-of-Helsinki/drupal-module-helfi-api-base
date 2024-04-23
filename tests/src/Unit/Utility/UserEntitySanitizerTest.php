@@ -85,6 +85,11 @@ class UserEntitySanitizerTest extends ApiKernelTestBase {
     $this->assertEquals($this->testUser->getEmail() === $this->defaultValues['email'], TRUE);
     $password_service = $this->container->get('password');
     $this->assertEquals($password_service->check($this->defaultValues['password'], $this->testUser->getPassword()), TRUE);
+
+    // Test user sanitation with user id.
+    $operation = $this->sanitizer->sanitizeUserEntity((int) $this->testUser->id(), []);
+    // Test that the operation returns 0 as nothing should happen.
+    $this->assertEquals($operation, 0);
   }
 
   /**

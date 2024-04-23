@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Entity\Utility;
 
 use Drupal\Component\Utility\Random;
-use Drupal\Core\Entity\EntityTypeRepository;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\user\UserInterface;
 
 /**
  * A class to sanitize user entity values.
  */
-class UserEntitySanitizer {
+final class UserEntitySanitizer {
 
   /**
    * Constructs a new instance.
    *
-   * @param \Drupal\Core\Entity\EntityTypeRepository $entityTypeRepository
-   *   The entity type repository.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    */
   public function __construct(
-    private readonly EntityTypeRepository $entityTypeRepository,
+    protected readonly EntityTypeManagerInterface $entityTypeManager,
   ) {
   }
 
@@ -34,12 +34,10 @@ class UserEntitySanitizer {
    *
    * @return int
    *   Returns int depending on the operation performed.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function sanitizeUserEntity(UserInterface|int $user, array $values): int {
     if (!$user instanceof UserInterface) {
-      $user = $this->entityTypeRepository->getStorage('user')->load($user);
+      $user = $this->entityTypeManager->getStorage('user')->load($user);
     }
 
     // Only handle blocked user accounts.
