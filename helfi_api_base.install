@@ -216,8 +216,6 @@ function helfi_api_base_update_9014() : void {
 function helfi_api_base_update_9015() : void {
   /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
   $service = \Drupal::service(FeatureManager::class);
-  $service->enableFeature(FeatureManager::LOGGER);
-
   /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver */
 
   $environmentResolver = \Drupal::service('helfi_api_base.environment_resolver');
@@ -243,4 +241,13 @@ function helfi_api_base_update_9016() : void {
     ->set('database_tracing', TRUE)
     ->set('twig_tracing', TRUE)
     ->save();
+}
+
+/**
+ * Enable 'monolog' module.
+ */
+function helfi_api_base_update_9017(): void {
+  Drupal::service('module_installer')->install([
+    'monolog',
+  ]);
 }
