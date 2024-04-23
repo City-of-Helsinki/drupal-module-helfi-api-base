@@ -7,10 +7,10 @@ Provides a service to conditionally check if the given feature is enabled.
 ```php
 $service = \Drupal::service(\Drupal\helfi_api_base\Features\FeatureManager::class);
 
-$service->isEnabled(\Drupal\helfi_api_base\Features\FeatureManager::DISABLE_USER_PASSWORD); // Returns true if the logger feature is enabled.
-// Disables the logger feature.
+$service->isEnabled(\Drupal\helfi_api_base\Features\FeatureManager::DISABLE_USER_PASSWORD);
+// Disables the feature.
 $service->disableFeature(\Drupal\helfi_api_base\Features\FeatureManager::DISABLE_USER_PASSWORD)
-// Enables the logger feature.
+// Enables the feature.
 $service->enableFeature(\Drupal\helfi_api_base\Features\FeatureManager::DISABLE_USER_PASSWORD);
 ```
 
