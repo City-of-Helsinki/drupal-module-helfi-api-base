@@ -38,11 +38,8 @@ final class UserExpireManager {
     $storage = $this->entityTypeManager->getStorage('user');
 
     foreach ($this->getExpiredUserIds() as $uid) {
-      /** @var \Drupal\user\UserInterface $user */
-      if (!$user = $storage->load($uid)) {
-        continue;
-      }
-      $user->block()
+      $storage->load($uid)
+        ->block()
         ->save();
     }
   }
