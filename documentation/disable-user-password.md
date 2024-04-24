@@ -1,6 +1,6 @@
 # Disable user password
 
-Provides a [Deployment hook](/documentation/deploy-hooks.md) that sets listed users' password to NULL.
+Provides a [Deployment hook](/documentation/deploy-hooks.md) that sets configured users' password to NULL.
 
 ## Usage
 
