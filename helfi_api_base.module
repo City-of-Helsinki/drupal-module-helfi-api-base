@@ -8,7 +8,9 @@
 declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\helfi_api_base\Link\LinkProcessor;
+use Drupal\helfi_api_base\UserExpire\UserExpireManager;
 
 /**
  * Implements hook_element_info_alter().
@@ -58,12 +60,11 @@ function helfi_api_base_theme_suggestions_debug_item(array $variables) : array {
 function helfi_api_base_mail_alter(&$message) : void {
   // Prevent sending email if current site/environment is known to the resolver.
   // Only helfi-drupal sites are affected by this change.
-  try {
-    \Drupal::service('helfi_api_base.environment_resolver')
-      ->getActiveEnvironment();
+  /** @var \Drupal\helfi_api_base\Features\FeatureManager $featureManager */
+  $featureManager = \Drupal::service(FeatureManager::class);
+
+  if ($featureManager->isEnabled(FeatureManager::DISABLE_EMAIL_SENDING)) {
     $message['send'] = FALSE;
-  }
-  catch (\InvalidArgumentException) {
   }
 }
 
@@ -93,4 +94,12 @@ function helfi_api_base_entity_update(EntityInterface $entity) : void {
  * Implements hook_cron().
  */
 function helfi_api_base_cron() : void {
+  /** @var \Drupal\helfi_api_base\Features\FeatureManager $featureManager */
+  $featureManager = \Drupal::service(FeatureManager::class);
+
+  if ($featureManager->isEnabled(FeatureManager::USER_EXPIRE)) {
+    /** @var \Drupal\helfi_api_base\UserExpire\UserExpireManager $userExpireManager */
+    $userExpireManager = \Drupal::service(UserExpireManager::class);
+    $userExpireManager->cancelExpiredUsers();
+  }
 }

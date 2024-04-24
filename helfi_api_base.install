@@ -164,12 +164,13 @@ function helfi_api_base_update_9017(): void {
 }
 
 /**
- * Enable user expire feature.
+ * Enable new features.
  */
 function helfi_api_base_update_9018(): void {
   /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
   $service = \Drupal::service(FeatureManager::class);
   $service->enableFeature(FeatureManager::USER_EXPIRE);
+  $service->enableFeature(FeatureManager::DISABLE_EMAIL_SENDING);
 }
 
 /**

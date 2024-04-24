@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\UserExpire;
 
+use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\helfi_api_base\UserExpire\UserExpireManager;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
@@ -14,7 +15,7 @@ use Drupal\user\Entity\User;
  *
  * @group helfi_api_base
  */
-class UserExpireTest extends KernelTestBase {
+class UserExpireManagerTest extends KernelTestBase {
 
   use UserCreationTrait;
 
@@ -44,6 +45,38 @@ class UserExpireTest extends KernelTestBase {
    */
   public function getSut() : UserExpireManager {
     return $this->container->get(UserExpireManager::class);
+  }
+
+  /**
+   * Tests cron user removal.
+   */
+  public function testCron() : void {
+    $user = $this->createUser();
+    $this->assertFalse($user->isBlocked());
+    $user->setLastAccessTime(strtotime('-7 months'))
+      ->save();
+
+    // Make sure the user is canceled when the cron is run.
+    helfi_api_base_cron();
+    $this->assertTrue(User::load($user->id())->isBlocked());
+  }
+
+  /**
+   * Make sure the user is not blocked when the feature is disabled.
+   */
+  public function testCronFeatureDisabled(): void {
+    /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
+    $service = $this->container->get(FeatureManager::class);
+    $service->disableFeature(FeatureManager::USER_EXPIRE);
+
+    $user = $this->createUser();
+    $this->assertFalse($user->isBlocked());
+    $user->setLastAccessTime(strtotime('-7 months'))
+      ->save();
+
+    // Make sure the user is canceled when the cron is run.
+    helfi_api_base_cron();
+    $this->assertFalse(User::load($user->id())->isBlocked());
   }
 
   /**

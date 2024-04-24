@@ -33,6 +33,8 @@ helfi_api_base.api_accounts:
 helfi_api_base.features:
   type: config_entity
   mapping:
+    disable_email_sending:
+      type: boolean
     disable_user_password:
       type: boolean
     user_expire:
