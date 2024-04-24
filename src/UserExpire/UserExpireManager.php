@@ -58,6 +58,7 @@ final class UserExpireManager {
 
     $query = $this->entityTypeManager->getStorage('user')
       ->getQuery();
+    $query->accessCheck(FALSE);
     // Load users that have logged in at some point (access > 0), but
     // the access time is less than (current time - expire time).
     $accessCondition = $query->andConditionGroup()
@@ -75,7 +76,6 @@ final class UserExpireManager {
     $query
       ->condition($expireCondition)
       ->condition('status', 1)
-      ->accessCheck(FALSE)
       // Make sure we have an upper bound.
       ->range(0, 50);
 
