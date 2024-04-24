@@ -33,9 +33,9 @@ helfi_api_base.api_accounts:
 helfi_api_base.features:
   type: config_entity
   mapping:
-    logger:
-      type: boolean
     disable_user_password:
+      type: boolean
+    user_expire:
       type: boolean
 
 helfi_api_base.environment_resolver.settings:

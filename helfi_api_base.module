@@ -88,3 +88,9 @@ function helfi_api_base_entity_update(EntityInterface $entity) : void {
     ]);
   }
 }
+
+/**
+ * Implements hook_cron().
+ */
+function helfi_api_base_cron() : void {
+}

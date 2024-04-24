@@ -11,6 +11,7 @@ use Drupal\Core\Config\FileStorage;
 use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\rest\Entity\RestResourceConfig;
 use Drupal\user\Entity\Role;
+use Drupal\user\Entity\User;
 
 /**
  * Implements hook_install().
@@ -34,31 +35,6 @@ function helfi_api_base_install(bool $is_syncing = FALSE) : void {
     }
   }
 
-  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $envResolver */
-  $envResolver = \Drupal::service('helfi_api_base.environment_resolver');
-
-  try {
-    // Only create the role if we have a valid project. This should
-    // only be run for projects defined in environments.json
-    // file.
-    $envResolver->getActiveProject();
-
-    // Make sure 'rest' module is enabled.
-    if (!Drupal::moduleHandler()->moduleExists('rest')) {
-      Drupal::service('module_installer')->install([
-        'rest',
-      ]);
-    }
-
-    if (!$role = Role::load('debug_api')) {
-      $role = Role::create(['label' => 'Debug API', 'id' => 'debug_api']);
-    }
-    $role->grantPermission('restful get helfi_debug_data')
-      ->save();
-  }
-  catch (\InvalidArgumentException) {
-  }
-
   if (Drupal::moduleHandler()->moduleExists('raven')) {
     Drupal::configFactory()->getEditable('raven.settings')
       ->set('drush_error_handler', TRUE)
@@ -75,24 +51,6 @@ function helfi_api_base_install(bool $is_syncing = FALSE) : void {
  */
 function helfi_api_base_update_9001() : void {
   helfi_api_base_install();
-}
-
-/**
- * Install the debug rest config.
- */
-function helfi_api_base_update_9002() : void {
-  if (!Drupal::moduleHandler()->moduleExists('rest')) {
-    return;
-  }
-  /** @var \Drupal\Core\Extension\ExtensionPathResolver $extensionPathResolver */
-  $extensionPathResolver = Drupal::service('extension.path.resolver');
-  $config_path = $extensionPathResolver->getPath('module', 'helfi_api_base') . '/config/optional';
-  $source = new FileStorage($config_path);
-  $config_storage = Drupal::service('config.storage');
-
-  // Install rest resource config.
-  $config_name = 'rest.resource.helfi_debug_data';
-  $config_storage->write($config_name, $source->read($config_name));
 }
 
 /**
@@ -117,34 +75,6 @@ function helfi_api_base_update_9003() : void {
 }
 
 /**
- * Disable syslog module and enable filelog.
- */
-function helfi_api_base_update_9004() : void {
-  Drupal::service('module_installer')->uninstall([
-    'syslog',
-  ]);
-  Drupal::service('module_installer')->install([
-    'filelog',
-  ]);
-}
-
-/**
- * Disable filelog module, enable log_stdout module.
- */
-function helfi_api_base_update_9005() : void {
-  Drupal::service('module_installer')->uninstall([
-    'filelog',
-  ]);
-}
-
-/**
- * Re-run 9005 update.
- */
-function helfi_api_base_9006() : void {
-  helfi_api_base_update_9005();
-}
-
-/**
  * Enable health check.
  */
 function helfi_api_base_update_9007() : void {
@@ -165,7 +95,6 @@ function helfi_api_base_update_9009() : void {
     ]);
 
     $endpoints = RestResourceConfig::loadMultiple([
-      'helfi_debug_data',
       'helfi_debug_package_version',
     ]);
     foreach ($endpoints as $endpoint) {
@@ -191,23 +120,14 @@ function helfi_api_base_update_9013() : void {
  * Enable 'delete old revisions' feature.
  */
 function helfi_api_base_update_9014() : void {
-  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $service */
-  $service = \Drupal::service('helfi_api_base.environment_resolver');
-  try {
-    $service->getActiveProject();
-
-    \Drupal::configFactory()->getEditable('helfi_api_base.delete_revisions')
-      ->set('entity_types', [
-        'node',
-        'paragraph',
-        'tpr_unit',
-        'tpr_service',
-        'tpr_errand_service',
-      ])->save();
-  }
-  catch (\InvalidArgumentException) {
-  }
-
+  \Drupal::configFactory()->getEditable('helfi_api_base.delete_revisions')
+    ->set('entity_types', [
+      'node',
+      'paragraph',
+      'tpr_unit',
+      'tpr_service',
+      'tpr_errand_service',
+    ])->save();
 }
 
 /**
@@ -216,15 +136,7 @@ function helfi_api_base_update_9014() : void {
 function helfi_api_base_update_9015() : void {
   /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
   $service = \Drupal::service(FeatureManager::class);
-  /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver */
-
-  $environmentResolver = \Drupal::service('helfi_api_base.environment_resolver');
-  try {
-    $environmentResolver->getActiveProject();
-    $service->enableFeature(FeatureManager::DISABLE_USER_PASSWORD);
-  }
-  catch (\InvalidArgumentException) {
-  }
+  $service->enableFeature(FeatureManager::DISABLE_USER_PASSWORD);
 }
 
 /**
@@ -250,4 +162,29 @@ function helfi_api_base_update_9017(): void {
   Drupal::service('module_installer')->install([
     'monolog',
   ]);
+}
+
+/**
+ * Enable user expire feature.
+ */
+function helfi_api_base_update_9018(): void {
+  /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
+  $service = \Drupal::service(FeatureManager::class);
+  $service->enableFeature(FeatureManager::USER_EXPIRE);
+}
+
+/**
+ * Remove debug_api role and debug api functionality.
+ */
+function helfi_api_base_update_9019(): void {
+  if ($account = user_load_by_name('helfi-debug-data')) {
+    $account->delete();
+  }
+
+  if ($role = Role::load('debug_api')) {
+    $role->delete();
+  }
+  // Delete rest endpoint configuration.
+  \Drupal::configFactory()->getEditable('rest.resource.helfi_debug_data')
+    ->delete();
 }
