@@ -80,6 +80,7 @@ class FeatureToggleTest extends KernelTestBase {
 
     $this->assertEquals([
       FeatureManager::DISABLE_USER_PASSWORD => TRUE,
+      FeatureManager::USER_EXPIRE => TRUE,
     ], $features);
   }
 
