@@ -10,7 +10,7 @@ use Drupal\rest\ResourceResponse;
 /**
  * Represents Debug records as resources.
  *
- * @todo Remove this once we have removed it from everything else.
+ * @todo Remove this once the REST configuration is removed from all projects.
  *
  * @RestResource (
  *   id = "helfi_debug_data",
