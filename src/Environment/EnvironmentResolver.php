@@ -94,15 +94,13 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
           throw new \InvalidArgumentException('Project missing "address", "internal_address" or "paths" setting.');
         }
 
-        $environmentMeta = !empty($settings['meta']) ? EnvironmentMetadata::createFromArray($settings['meta']) : NULL;
-
         $project->addEnvironment($environment, new Environment(
           new Address(...$settings['address']),
           new Address(...$settings['internal_address']),
           $settings['path'],
           $id,
           EnvironmentEnum::tryFrom($environment),
-          $environmentMeta,
+          Services::createFromArray($services['services'] ?? []),
         ));
       }
       $this->projects[$id] = $project;

@@ -6,6 +6,7 @@
 ## Usage
 
 ### Environment resolver
+
 ```php
 // See \Drupal\helfi_api_base\Environment\Project for all available project constants.
 $projectName = \Drupal\helfi_api_base\Environment\Project::ASUMINEN;
@@ -27,7 +28,7 @@ $internalUrl = $environment->getInternalAddress('fi'); // 'https://helfi-asumine
 $path = $environment->getPath('fi'); // '/fi/dev-asuminen'.
 $domain = $environment->getDomain(); // 'nginx-asuminen-dev.agw.arodevtest.hel.fi'.
 $baseUrl = $environment->getBaseUrl(); // 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi'
-/** @var \Drupal\helfi_api_base\Environment\EnvironmentMetadata $environmentMetadata */
+/** @var \Drupal\helfi_api_base\Environment\Services $environmentMetadata */
 $environmentMetadata = $environment->getMetadata();
 ```
 

@@ -7,7 +7,7 @@ namespace Drupal\helfi_api_base\Environment;
 /**
  * A value object to store environment metadata.
  */
-final class EnvironmentMetadata {
+final class Services {
 
   /**
    * Constructs a new instance.
@@ -23,7 +23,7 @@ final class EnvironmentMetadata {
    * @param array $data
    *   The data.
    *
-   * @return \Drupal\helfi_api_base\Environment\EnvironmentMetadata|null
+   * @return \Drupal\helfi_api_base\Environment\Services|null
    *   The self or null.
    */
   public static function createFromArray(array $data) : ? self {
