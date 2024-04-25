@@ -38,8 +38,9 @@ final class UserExpireManager {
     $storage = $this->entityTypeManager->getStorage('user');
 
     foreach ($this->getExpiredUserIds() as $uid) {
-      $storage->load($uid)
-        ->block()
+      $account = $storage->load($uid);
+
+      $account->block()
         ->save();
     }
   }
@@ -73,6 +74,7 @@ final class UserExpireManager {
     $query
       ->condition($expireCondition)
       ->condition('status', 1)
+      ->addTag('expired_users')
       // Make sure we have an upper bound.
       ->range(0, 50);
 
