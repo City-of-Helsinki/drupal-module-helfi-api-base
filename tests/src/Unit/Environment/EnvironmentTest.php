@@ -7,7 +7,6 @@ namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 use Drupal\helfi_api_base\Environment\Address;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
-use Drupal\helfi_api_base\Environment\EnvironmentMetadata;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -27,8 +26,6 @@ class EnvironmentTest extends UnitTestCase {
    * @covers ::getBaseUrl
    * @cove
    * @covers ::getMetadata
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::__construct
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::getOpenshiftConsoleLink
    */
   public function testSimpleGetters() : void {
     $sut = new Environment(
@@ -37,13 +34,12 @@ class EnvironmentTest extends UnitTestCase {
       [],
       'test',
       EnvironmentEnum::Test,
-      new EnvironmentMetadata('https://localhost'));
+    );
     $this->assertEquals('test', $sut->getId());
     $this->assertEquals(EnvironmentEnum::Test, $sut->getEnvironment());
     $this->assertEquals(EnvironmentEnum::Test->value, $sut->getEnvironmentName());
     $this->assertEquals('https://www.hel.fi', $sut->getBaseUrl());
     $this->assertEquals('http://internal-address.local:8080', $sut->getInternalBaseUrl());
-    $this->assertEquals('https://localhost', $sut->getMetadata()->getOpenshiftConsoleLink());
   }
 
   /**
@@ -59,7 +55,7 @@ class EnvironmentTest extends UnitTestCase {
       ['fi' => 'test-path'],
       'test',
       EnvironmentEnum::Local,
-      NULL);
+    );
     $this->assertEquals('https://www.hel.fi/test-path', $sut->getUrl('fi'));
     $this->assertEquals('http://www.hel.fi/test-path', $sut->getInternalAddress('fi'));
 
@@ -79,7 +75,7 @@ class EnvironmentTest extends UnitTestCase {
       ['fi' => 'test-path'],
       'test',
       EnvironmentEnum::Local,
-      NULL);
+    );
     $this->assertEquals('https://www.hel.fi/test-path', $sut->getUrl('fi'));
     $this->assertEquals('https://www.hel.fi:8080/test-path', $sut->getInternalAddress('fi'));
   }

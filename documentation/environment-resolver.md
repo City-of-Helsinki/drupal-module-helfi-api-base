@@ -15,8 +15,6 @@ $resolver = \Drupal::service('helfi_api_base.environment_resolver');
 $project = $resolver->getProject($projectName);
 /** @var \Drupal\helfi_api_base\Environment\ProjectMetadata $projectMetadata */
 $projectMetadata = $project->getMetadata();
-// A link to the Azure DevOps service.
-$projectMetadata->getAzureDevopsLink(); // 'https://dev.azure.com/City-of-Helsinki/asuminen'.
 // A link to the Git repository.
 $projectMetadata->getRepositoryUrl(); // 'https://github.com/City-of-Helsinki/drupal-helfi-asuminen'.
 
@@ -31,8 +29,6 @@ $domain = $environment->getDomain(); // 'nginx-asuminen-dev.agw.arodevtest.hel.f
 $baseUrl = $environment->getBaseUrl(); // 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi'
 /** @var \Drupal\helfi_api_base\Environment\EnvironmentMetadata $environmentMetadata */
 $environmentMetadata = $environment->getMetadata();
-// A link to the OpenShift service.
-$environmentMetadata->getOpenshiftConsoleLink(); // 'https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-asuminen-test'
 ```
 
 ### Active environment

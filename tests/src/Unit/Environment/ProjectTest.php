@@ -28,7 +28,7 @@ class ProjectTest extends UnitTestCase {
     $caught = FALSE;
     try {
       // Make sure $environments parameter must be an Environment object.
-      new Project(Project::ASUMINEN, new ProjectMetadata('', ''), ['invalid env']);
+      new Project(Project::ASUMINEN, new ProjectMetadata(''), ['invalid env']);
     }
     catch (\InvalidArgumentException $e) {
       $caught = TRUE;
@@ -45,14 +45,13 @@ class ProjectTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::__construct
    */
   public function testGetters() : void {
-    $sut = new Project(Project::ASUMINEN, new ProjectMetadata('', ''), [
+    $sut = new Project(Project::ASUMINEN, new ProjectMetadata(''), [
       new Environment(
         new Address('www.hel.fi'),
         new Address('www.hel.fi'),
         [],
         Project::ASUMINEN,
         EnvironmentEnum::Local,
-        NULL
       ),
     ]);
     $this->assertEquals(Project::ASUMINEN, $sut->getName());
@@ -69,7 +68,7 @@ class ProjectTest extends UnitTestCase {
    */
   public function testGetEnvironmentException() : void {
     $caught = FALSE;
-    $sut = new Project(Project::ASUMINEN, new ProjectMetadata('', ''));
+    $sut = new Project(Project::ASUMINEN, new ProjectMetadata(''));
     try {
       $sut->getEnvironment('local');
     }
@@ -90,7 +89,7 @@ class ProjectTest extends UnitTestCase {
     $found = 0;
     foreach ($constants->getConstants() as $value) {
       $found++;
-      $sut = new Project($value, new ProjectMetadata('', ''));
+      $sut = new Project($value, new ProjectMetadata(''));
       $this->assertInstanceOf(TranslatableMarkup::class, $sut->label());
     }
     $this->assertTrue($found > 0);

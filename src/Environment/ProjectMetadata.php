@@ -14,12 +14,9 @@ final class ProjectMetadata {
    *
    * @param string $repository
    *   The repository.
-   * @param string $azureDevopsLink
-   *   The azure devops link.
    */
   public function __construct(
     private readonly string $repository,
-    private readonly string $azureDevopsLink,
   ) {
   }
 
@@ -35,7 +32,6 @@ final class ProjectMetadata {
   public static function createFromArray(array $data) : self {
     $required = [
       'repository',
-      'azure_devops_link',
     ];
 
     foreach ($required as $key) {
@@ -46,20 +42,9 @@ final class ProjectMetadata {
 
     [
       'repository' => $repository,
-      'azure_devops_link' => $devopsLink,
     ] = $data;
 
-    return new self($repository, $devopsLink);
-  }
-
-  /**
-   * Gets the Azure DevOps link.
-   *
-   * @return string
-   *   The azure_devops_link link.
-   */
-  public function getAzureDevopsLink() : string {
-    return $this->azureDevopsLink;
+    return new self($repository);
   }
 
   /**

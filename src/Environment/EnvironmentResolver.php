@@ -100,7 +100,6 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
           $settings['path'],
           $id,
           EnvironmentEnum::tryFrom($environment),
-          EnvironmentMetadata::createFromArray($settings['meta'] ?? [])
         ));
       }
       $this->projects[$id] = $project;
