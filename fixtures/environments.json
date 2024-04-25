@@ -18,7 +18,8 @@
           "protocol": "http",
           "domain": "helfi-asuminen",
           "port": 8080
-        }
+        },
+        "meta": {}
       },
       "test": {
         "path": {
@@ -33,7 +34,8 @@
         "internal_address": {
           "protocol": "https",
           "domain": "nginx-asuminen-test.apps.arodevtest.hel.fi"
-        }
+        },
+        "meta": {}
       },
       "stage": {
         "path": {
@@ -48,7 +50,8 @@
         "internal_address": {
           "protocol": "https",
           "domain": "nginx-asuminen-staging.apps.platta.hel.fi"
-        }
+        },
+        "meta": {}
       },
       "prod": {
         "path": {
@@ -63,7 +66,8 @@
         "internal_address": {
           "protocol": "https",
           "domain": "nginx-asuminen-prod.apps.platta.hel.fi"
-        }
+        },
+        "meta": {}
       }
     }
   },
@@ -86,6 +90,14 @@
           "protocol": "http",
           "domain": "helfi-etusivu",
           "port": 8080
+        },
+        "meta": {
+          "services": {
+            "elastic-proxy": {
+              "protocol": "http",
+              "domain": "helfi-etusivu-elastic"
+            }
+          }
         }
       },
       "test": {

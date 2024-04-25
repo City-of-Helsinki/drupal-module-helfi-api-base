@@ -22,6 +22,8 @@ final class Environment {
    *   Environment resolver identifier for the project.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentEnum $environment
    *   The environment name.
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentMetadata|null $environmentMetadata
+   *   The environment metadata.
    */
   public function __construct(
     private readonly Address $address,
@@ -29,6 +31,7 @@ final class Environment {
     private readonly array $paths,
     private readonly string $id,
     private readonly EnvironmentEnum $environment,
+    private readonly ?EnvironmentMetadata $environmentMetadata = NULL,
   ) {
   }
 
