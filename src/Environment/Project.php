@@ -42,8 +42,8 @@ final class Project {
    *   The environments.
    */
   public function __construct(
-    private readonly string $name,
-    private readonly ProjectMetadata $metadata,
+    public readonly string $name,
+    public readonly ProjectMetadata $metadata,
     array $environments = [],
   ) {
     Assert::allIsInstanceOf($environments, Environment::class);

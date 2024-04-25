@@ -22,16 +22,16 @@ final class Environment {
    *   Environment resolver identifier for the project.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentEnum $environment
    *   The environment name.
-   * @param \Drupal\helfi_api_base\Environment\Services|null $services
+   * @param \Drupal\helfi_api_base\Environment\Service|null $services
    *   The environment services.
    */
   public function __construct(
-    private readonly Address $address,
-    private readonly Address $internalAddress,
-    private readonly array $paths,
-    private readonly string $id,
-    private readonly EnvironmentEnum $environment,
-    private readonly ?Services $services = NULL,
+    public readonly Address $address,
+    public readonly Address $internalAddress,
+    public readonly array $paths,
+    public readonly string $id,
+    public readonly EnvironmentEnum $environment,
+    public readonly array $services = [],
   ) {
   }
 

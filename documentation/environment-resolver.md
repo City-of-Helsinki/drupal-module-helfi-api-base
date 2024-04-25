@@ -28,7 +28,7 @@ $internalUrl = $environment->getInternalAddress('fi'); // 'https://helfi-asumine
 $path = $environment->getPath('fi'); // '/fi/dev-asuminen'.
 $domain = $environment->getDomain(); // 'nginx-asuminen-dev.agw.arodevtest.hel.fi'.
 $baseUrl = $environment->getBaseUrl(); // 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi'
-/** @var \Drupal\helfi_api_base\Environment\Services $environmentMetadata */
+/** @var \Drupal\helfi_api_base\Environment\Service $environmentMetadata */
 $environmentMetadata = $environment->getMetadata();
 ```
 

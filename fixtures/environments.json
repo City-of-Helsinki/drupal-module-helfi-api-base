@@ -89,8 +89,10 @@
         },
         "services": {
           "elastic-proxy": {
-            "protocol": "http",
-            "domain": "helfi-etusivu-elastic"
+            "address": {
+              "protocol": "http",
+              "domain": "helfi-etusivu-elastic"
+            }
           }
         }
       },

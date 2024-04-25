@@ -94,13 +94,21 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
           throw new \InvalidArgumentException('Project missing "address", "internal_address" or "paths" setting.');
         }
 
+        $services = [];
+        foreach ($settings['services'] ?? [] as $name => $service) {
+          if (!isset($service['address'])) {
+            throw new \InvalidArgumentException('Service is missing "address".');
+          }
+          $services[$name] = new Service($name, new Address(...$service['address']));
+        }
+
         $project->addEnvironment($environment, new Environment(
           new Address(...$settings['address']),
           new Address(...$settings['internal_address']),
           $settings['path'],
           $id,
           EnvironmentEnum::tryFrom($environment),
-          Services::createFromArray($services['services'] ?? []),
+          $services,
         ));
       }
       $this->projects[$id] = $project;
