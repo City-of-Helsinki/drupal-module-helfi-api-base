@@ -28,8 +28,9 @@ $internalUrl = $environment->getInternalAddress('fi'); // 'https://helfi-asumine
 $path = $environment->getPath('fi'); // '/fi/dev-asuminen'.
 $domain = $environment->getDomain(); // 'nginx-asuminen-dev.agw.arodevtest.hel.fi'.
 $baseUrl = $environment->getBaseUrl(); // 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi'
-/** @var \Drupal\helfi_api_base\Environment\Service $environmentMetadata */
-$environmentMetadata = $environment->getMetadata();
+/** @var \Drupal\helfi_api_base\Environment\Service $services */
+$services = $environment->getServices();
+$service = $environment->getService('elastic-proxy'); // Gets the elastic-proxy service.
 ```
 
 ### Active environment
@@ -52,7 +53,3 @@ $environment = $service->getActiveEnvironment();
 // Failure will throw an InvalidArgumentException.
 $project = $service->getActiveProject();
 ```
-
-## Usage in other projects
-
-The [environments.json](/fixtures/environments.json) file should contain up-to-date information of all our available projects in JSON format.

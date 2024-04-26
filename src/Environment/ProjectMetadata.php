@@ -10,41 +10,25 @@ namespace Drupal\helfi_api_base\Environment;
 final class ProjectMetadata {
 
   /**
-   * Constructs a new instance.
+   * The repository.
    *
-   * @param string $repository
-   *   The repository.
+   * @var string
    */
-  public function __construct(
-    private readonly string $repository,
-  ) {
-  }
+  public readonly string $repository;
 
   /**
-   * Construct a new instance from array.
+   * Constructs a new instance.
    *
-   * @param array $data
-   *   The data.
-   *
-   * @return self
-   *   The
+   * @param string $repositoryUrl
+   *   The repository url.
    */
-  public static function createFromArray(array $data) : self {
-    $required = [
-      'repository',
-    ];
-
-    foreach ($required as $key) {
-      if (!isset($data[$key])) {
-        throw new \InvalidArgumentException(sprintf('Missing required "%s".', $key));
-      }
+  public function __construct(
+    private readonly string $repositoryUrl,
+  ) {
+    if (!$path = parse_url($this->repositoryUrl, PHP_URL_PATH)) {
+      throw new \InvalidArgumentException('The repositoryUrl must be a valid URL.');
     }
-
-    [
-      'repository' => $repository,
-    ] = $data;
-
-    return new self($repository);
+    $this->repository = ltrim($path, '/');
   }
 
   /**
@@ -74,7 +58,7 @@ final class ProjectMetadata {
    *   The repository URL.
    */
   public function getRepositoryUrl() : string {
-    return sprintf('https://github.com/%s', $this->repository);
+    return $this->repositoryUrl;
   }
 
 }

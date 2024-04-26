@@ -12,30 +12,20 @@ use Drupal\Tests\UnitTestCase;
 /**
  * Tests environment value object.
  *
- * @coversDefaultClass \Drupal\helfi_api_base\Environment\Environment
  * @group helfi_api_base
  */
 class EnvironmentTest extends UnitTestCase {
 
   /**
-   * @covers ::__construct
-   * @covers ::getId
-   * @covers ::getEnvironment
-   * @covers ::getEnvironmentName
-   * @covers ::getInternalBaseUrl
-   * @covers ::getBaseUrl
-   * @cove
-   * @covers ::getMetadata
+   * Tests getters.
    */
   public function testSimpleGetters() : void {
     $sut = new Environment(
       new Address('www.hel.fi'),
       new Address('internal-address.local', 'http', 8080),
       [],
-      'test',
       EnvironmentEnum::Test,
     );
-    $this->assertEquals('test', $sut->getId());
     $this->assertEquals(EnvironmentEnum::Test, $sut->getEnvironment());
     $this->assertEquals(EnvironmentEnum::Test->value, $sut->getEnvironmentName());
     $this->assertEquals('https://www.hel.fi', $sut->getBaseUrl());
@@ -43,37 +33,37 @@ class EnvironmentTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::__construct
-   * @covers ::getUrl
-   * @covers ::getPath
-   * @covers ::getInternalAddress
+   * Test path validation.
+   */
+  public function testGetUrlException() : void {
+    $sut = new Environment(
+      new Address('www.hel.fi'),
+      new Address('www.hel.fi', 'http'),
+      ['fi' => 'test-path'],
+      EnvironmentEnum::Local,
+    );
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('Path not found for "en" language.');
+    $sut->getUrl('en');
+  }
+
+  /**
+   * Tests getUrl() method.
    */
   public function testGetUrl() : void {
     $sut = new Environment(
       new Address('www.hel.fi'),
       new Address('www.hel.fi', 'http'),
       ['fi' => 'test-path'],
-      'test',
       EnvironmentEnum::Local,
     );
     $this->assertEquals('https://www.hel.fi/test-path', $sut->getUrl('fi'));
     $this->assertEquals('http://www.hel.fi/test-path', $sut->getInternalAddress('fi'));
 
-    $caught = FALSE;
-    try {
-      $sut->getUrl('en');
-    }
-    catch (\InvalidArgumentException $e) {
-      $this->assertEquals('Path not found for "en" language.', $e->getMessage());
-      $caught = TRUE;
-    }
-    $this->assertTrue($caught);
-
     $sut = new Environment(
       new Address('www.hel.fi'),
       new Address('www.hel.fi', 'https', 8080),
       ['fi' => 'test-path'],
-      'test',
       EnvironmentEnum::Local,
     );
     $this->assertEquals('https://www.hel.fi/test-path', $sut->getUrl('fi'));

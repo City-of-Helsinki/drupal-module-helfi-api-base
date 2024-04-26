@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Environment;
 
+use Webmozart\Assert\Assert;
+
 /**
  * A value object to store environment data.
  */
 final class Environment {
+
+  /**
+   * The services.
+   *
+   * @var \Drupal\helfi_api_base\Environment\Service[]
+   */
+  private array $services;
 
   /**
    * Constructs a new instance.
@@ -18,31 +27,23 @@ final class Environment {
    *   The internal address.
    * @param array $paths
    *   The paths.
-   * @param string $id
-   *   Environment resolver identifier for the project.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentEnum $environment
    *   The environment name.
-   * @param \Drupal\helfi_api_base\Environment\Service|null $services
+   * @param \Drupal\helfi_api_base\Environment\Service[] $services
    *   The environment services.
    */
   public function __construct(
     public readonly Address $address,
     public readonly Address $internalAddress,
     public readonly array $paths,
-    public readonly string $id,
     public readonly EnvironmentEnum $environment,
-    public readonly array $services = [],
+    array $services = [],
   ) {
-  }
+    Assert::allIsInstanceOf($services, Service::class);
 
-  /**
-   * Gets the project identifier.
-   *
-   * @return string
-   *   Site identifier.
-   */
-  public function getId() : string {
-    return $this->id;
+    foreach ($services as $service) {
+      $this->services[$service->name] = $service;
+    }
   }
 
   /**
@@ -127,6 +128,29 @@ final class Environment {
    */
   public function getEnvironment() : EnvironmentEnum {
     return $this->environment;
+  }
+
+  /**
+   * Gets the services.
+   *
+   * @return \Drupal\helfi_api_base\Environment\Service[]
+   *   The services.
+   */
+  public function getServices(): array {
+    return $this->services;
+  }
+
+  /**
+   * Gets the given service.
+   *
+   * @param string $name
+   *   The service to get.
+   *
+   * @return \Drupal\helfi_api_base\Environment\Service|null
+   *   The service or null.
+   */
+  public function getService(string $name): ?Service {
+    return $this->services[$name] ?? NULL;
   }
 
 }

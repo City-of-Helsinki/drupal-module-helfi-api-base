@@ -20,7 +20,7 @@ class ApiFixtureTest extends UnitTestCase {
    * @covers \Drupal\helfi_api_base\ApiClient\ApiResponse
    */
   public function testFixtures() {
-    $response = ApiFixture::requestFromFile(vsprintf('%s/../../../fixtures/environments.json', [
+    $response = ApiFixture::requestFromFile(vsprintf('%s/../../../fixtures/response.json', [
       __DIR__,
     ]));
 

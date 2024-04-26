@@ -47,7 +47,10 @@ final class Project {
     array $environments = [],
   ) {
     Assert::allIsInstanceOf($environments, Environment::class);
-    $this->environments = $environments;
+
+    foreach ($environments as $environment) {
+      $this->environments[$environment->environment->value] = $environment;
+    }
   }
 
   /**
@@ -98,22 +101,6 @@ final class Project {
    */
   public function getEnvironments() : array {
     return $this->environments;
-  }
-
-  /**
-   * Adds an environment.
-   *
-   * @param string $key
-   *   The environment key.
-   * @param \Drupal\helfi_api_base\Environment\Environment $environment
-   *   The environment.
-   *
-   * @return $this
-   *   The self.
-   */
-  public function addEnvironment(string $key, Environment $environment) : self {
-    $this->environments[$key] = $environment;
-    return $this;
   }
 
   /**

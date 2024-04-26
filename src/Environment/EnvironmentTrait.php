@@ -19,6 +19,7 @@ trait EnvironmentTrait {
    *   The environment name.
    */
   protected function normalizeEnvironmentName(string $environment) : ? string {
+    $environment = strtolower($environment);
     // Some environments have an incorrect APP_ENV value, like 'production',
     // 'staging' and 'testing' instead of 'local', 'test,' 'stage' and 'prod'.
     // Map all known environment name variations to match environment resolver.
