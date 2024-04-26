@@ -1,6 +1,6 @@
 # Disable user password
 
-Provides a [Deployment hook](/documentation/deploy-hooks.md) that sets listed users' password to NULL.
+Provides a [Deployment hook](/documentation/deploy-hooks.md) that sets configured users' password to NULL.
 
 ## Usage
 
@@ -25,3 +25,12 @@ parameters:
 ```
 
 or dynamically in service provider class: https://www.drupal.org/docs/drupal-apis/services-and-dependency-injection/altering-existing-services-providing-dynamic-services.
+
+## Disable this feature
+
+You can disable this feature by changing the `disable_user_password` setting to false:
+
+```yaml
+# conf/cmi/helfi_api_base.features.yml
+disable_user_password: false
+```

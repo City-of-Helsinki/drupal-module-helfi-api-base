@@ -20,4 +20,4 @@ helfi_api_base.debug_list:
     _title: 'Debug'
     _controller: '\Drupal\helfi_api_base\Controller\DebugController::build'
   requirements:
-    _permission: 'restful get helfi_debug_data'
+    _permission: 'restful get helfi_debug_package_version'

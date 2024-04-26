@@ -37,7 +37,7 @@ class DebugControllerTest extends ApiKernelTestBase {
 
     $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
 
-    $this->drupalSetUpCurrentUser(permissions: ['restful get helfi_debug_data']);
+    $this->drupalSetUpCurrentUser(permissions: ['restful get helfi_debug_package_version']);
     $request = $this->getMockedRequest('/admin/debug');
     $response = $this->processRequest($request);
 
