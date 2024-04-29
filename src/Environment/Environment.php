@@ -42,7 +42,7 @@ final class Environment {
     Assert::allIsInstanceOf($services, Service::class);
 
     foreach ($services as $service) {
-      $this->services[$service->name] = $service;
+      $this->services[$service->name->value] = $service;
     }
   }
 
@@ -143,14 +143,14 @@ final class Environment {
   /**
    * Gets the given service.
    *
-   * @param string $name
+   * @param \Drupal\helfi_api_base\Environment\ServiceEnum $name
    *   The service to get.
    *
    * @return \Drupal\helfi_api_base\Environment\Service|null
    *   The service or null.
    */
-  public function getService(string $name): ?Service {
-    return $this->services[$name] ?? NULL;
+  public function getService(ServiceEnum $name): ?Service {
+    return $this->services[$name->value] ?? NULL;
   }
 
 }

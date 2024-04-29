@@ -142,7 +142,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
           paths: $paths[Project::ETUSIVU],
           environment: EnvironmentEnum::Local,
           services: [
-            new Service('elastic-proxy', new Address('helfi-etusivu-elastic', 'http', 9200)),
+            new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic', 'http', 9200)),
           ],
         ),
         new Environment(
