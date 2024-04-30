@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Environment;
 
 /**
- * A value object to store environment metadata.
+ * A value object to store service data.
  */
 final class Service {
 
