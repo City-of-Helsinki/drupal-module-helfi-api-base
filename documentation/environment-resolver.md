@@ -29,8 +29,7 @@ $path = $environment->getPath('fi'); // '/fi/dev-asuminen'.
 $domain = $environment->getDomain(); // 'nginx-asuminen-dev.agw.arodevtest.hel.fi'.
 $baseUrl = $environment->getBaseUrl(); // 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi'
 /** @var \Drupal\helfi_api_base\Environment\Service $services */
-$services = $environment->getServices();
-$service = $environment->getService('elastic-proxy'); // Gets the elastic-proxy service.
+$service = $environment->getService(\Drupal\helfi_api_base\Environment\ServiceEnum::ElasticProxy); // Gets the elastic-proxy service.
 ```
 
 ### Active environment
