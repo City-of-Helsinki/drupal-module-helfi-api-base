@@ -64,7 +64,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
       Project::ETUSIVU => [
         'fi' => '/fi',
         'sv' => '/sv',
-        'en' => '/en/housing',
+        'en' => '/en',
       ],
       Project::KASVATUS_KOULUTUS => [
         'fi' => '/fi/kasvatus-ja-koulutus',
