@@ -1,5 +1,4 @@
 parameters:
-  helfi_api_base.environment_file: ''
   helfi_api_base.default_composer_lock: '%app.root%/../composer.lock'
   helfi_api_base.internal_domains:
     - 'hel.fi'
@@ -33,7 +32,7 @@ services:
   Drupal\helfi_api_base\Environment\EnvironmentResolver: '@helfi_api_base.environment_resolver'
   helfi_api_base.environment_resolver:
     class: Drupal\helfi_api_base\Environment\EnvironmentResolver
-    arguments: ['%helfi_api_base.environment_file%', '@config.factory']
+    arguments: ['@config.factory']
 
   Drupal\helfi_api_base\Link\InternalDomainResolver: '@helfi_api_base.internal_domain_resolver'
   helfi_api_base.internal_domain_resolver:

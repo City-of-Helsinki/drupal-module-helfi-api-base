@@ -81,7 +81,7 @@ trait EnvironmentResolverTrait {
    */
   protected function getEnvironmentResolver(mixed $projectName = NULL, mixed $envName = NULL) : EnvironmentResolver {
     $configStub = $this->getConfigStub($projectName, $envName);
-    return new EnvironmentResolver(__DIR__ . '/../../../fixtures/environments.json', $configStub);
+    return new EnvironmentResolver($configStub);
   }
 
 }

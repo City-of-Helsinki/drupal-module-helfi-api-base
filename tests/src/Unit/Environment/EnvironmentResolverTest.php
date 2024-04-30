@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\helfi_api_base\Environment\Environment;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
@@ -17,7 +18,6 @@ use Prophecy\PhpUnit\ProphecyTrait;
 /**
  * Tests environment resolver value objects.
  *
- * @coversDefaultClass \Drupal\helfi_api_base\Environment\EnvironmentResolver
  * @group helfi_api_base
  */
 class EnvironmentResolverTest extends UnitTestCase {
@@ -26,26 +26,11 @@ class EnvironmentResolverTest extends UnitTestCase {
   use EnvironmentResolverTrait;
 
   /**
-   * @covers ::populateEnvironments
-   * @covers ::__construct
-   * @covers ::getEnvironment
-   * @covers ::getProject
-   * @covers ::getProjects
-   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
-   * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
-   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
-   * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\Project::hasEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentTrait::normalizeEnvironmentName
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::__construct
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::__construct
+   * Ensures all defined projects have a matching constant.
    */
   public function testProjectConstant() : void {
     $constants = new \ReflectionClass(Project::class);
-    $resolver = new EnvironmentResolver('', $this->getConfigStub());
+    $resolver = new EnvironmentResolver($this->getConfigStub());
 
     foreach ($constants->getConstants() as $value) {
       $this->assertNotEmpty($resolver->getProject($value));
@@ -55,72 +40,8 @@ class EnvironmentResolverTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::populateEnvironments
-   * @covers ::__construct
-   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::__construct
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::createFromArray
-   * @dataProvider populateEnvironmentsExceptionsData
-   */
-  public function testPopulateEnvironmentsExceptions(string $data, string $message) : void {
-    $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessage($message);
-    new EnvironmentResolver($data, $this->getConfigStub());
-  }
-
-  /**
-   * Data provider.
+   * Tests getEnvironment() validation.
    *
-   * @return array
-   *   The data.
-   */
-  public function populateEnvironmentsExceptionsData() : array {
-    return [
-      ['nonexistent.json', 'Environment file not found or is not a valid JSON.'],
-      [__FILE__, 'Failed to parse projects.'],
-      [
-        json_encode([
-          'asuminen' => [
-            'meta' => [
-              'repository' => '123',
-              'azure_devops_link' => 'https://example.com',
-            ],
-            'environments' => [
-              'local' => [],
-            ],
-          ],
-        ]),
-        'Project missing "address", "internal_address" or "paths" setting.',
-      ],
-      [
-        json_encode([
-          'asuminen' => [],
-        ]),
-        'Project missing meta or environments.',
-      ],
-    ];
-  }
-
-  /**
-   * @covers ::populateEnvironments
-   * @covers ::__construct
-   * @covers ::getEnvironment
-   * @covers ::getProject
-   * @covers ::getProjectForRepository
-   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
-   * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
-   * @covers \Drupal\helfi_api_base\Environment\Environment::getUrl
-   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
-   * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\Project::hasEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\Project::getMetadata
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentTrait::normalizeEnvironmentName
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::__construct
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::getNormalizedRepository
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::__construct
    * @dataProvider resolveEnvironmentExceptionData
    */
   public function testGetEnvironmentException(
@@ -149,23 +70,8 @@ class EnvironmentResolverTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::populateEnvironments
-   * @covers ::__construct
-   * @covers ::getEnvironment
-   * @covers ::getProject
-   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
-   * @covers \Drupal\helfi_api_base\Environment\Environment::getPath
-   * @covers \Drupal\helfi_api_base\Environment\Environment::getUrl
-   * @covers \Drupal\helfi_api_base\Environment\Environment::getEnvironmentName
-   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
-   * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\Project::hasEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentTrait::normalizeEnvironmentName
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::__construct
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::__construct
+   * Test environment mapping.
+   *
    * @dataProvider environmentMapData
    */
   public function testEnvironmentMap(string $envName, string $expected) : void {
@@ -189,22 +95,8 @@ class EnvironmentResolverTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::populateEnvironments
-   * @covers ::__construct
-   * @covers ::getEnvironment
-   * @covers ::getProject
-   * @covers ::getActiveProject
-   * @covers ::getConfig
-   * @covers ::configurationMissingExceptionMessage
-   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
-   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
-   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::__construct
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::__construct
+   * Test ::getActiveProject() validation.
+   *
    * @dataProvider activeProjectExceptionData
    */
   public function testGetActiveProjectException(mixed $value) : void {
@@ -218,7 +110,7 @@ class EnvironmentResolverTest extends UnitTestCase {
     $configFactory = $this->prophesize(ConfigFactoryInterface::class);
     $configFactory->get(Argument::any())
       ->willReturn($config->reveal());
-    $sut = new EnvironmentResolver('', $configFactory->reveal());
+    $sut = new EnvironmentResolver($configFactory->reveal());
     $sut->getActiveProject();
   }
 
@@ -237,23 +129,7 @@ class EnvironmentResolverTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::populateEnvironments
-   * @covers ::__construct
-   * @covers ::getEnvironment
-   * @covers ::getProject
-   * @covers ::getActiveProject
-   * @covers ::getConfig
-   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
-   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
-   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironments
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::getProject
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::__construct
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::__construct
+   * Test getActiveProject().
    */
   public function testGetActiveProject() : void {
     $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'dev');
@@ -262,24 +138,7 @@ class EnvironmentResolverTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::populateEnvironments
-   * @covers ::__construct
-   * @covers ::getEnvironment
-   * @covers ::getProject
-   * @covers ::configurationMissingExceptionMessage
-   * @covers ::getActiveEnvironment
-   * @covers ::getActiveEnvironmentName
-   * @covers ::getConfig
-   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::getProject
-   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
-   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::__construct
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::__construct
+   * Tests getActiveEnvironment() validation.
    */
   public function testGetActiveEnvironmentException() : void {
     putenv('APP_ENV=');
@@ -289,18 +148,7 @@ class EnvironmentResolverTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::populateEnvironments
-   * @covers ::__construct
-   * @covers ::getActiveEnvironmentName
-   * @covers ::getConfig
-   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
-   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
-   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentTrait::normalizeEnvironmentName
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::__construct
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::__construct
+   * Make sure getActiveEnvironment() fallbacks to env variable.
    */
   public function testGetActiveEnvironmentFallback() : void {
     // Make sure environment resolver fallbacks to APP_ENV env variable when
@@ -310,30 +158,10 @@ class EnvironmentResolverTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::populateEnvironments
-   * @covers ::__construct
-   * @covers ::getEnvironment
-   * @covers ::getProject
-   * @covers ::getConfig
-   * @covers ::getActiveEnvironment
-   * @covers ::getActiveEnvironmentName
-   * @covers ::getActiveProject
-   * @covers \Drupal\helfi_api_base\Environment\Environment::__construct
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::__construct
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::getProject
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentResolver::populateEnvironments
-   * @covers \Drupal\helfi_api_base\Environment\Project::__construct
-   * @covers \Drupal\helfi_api_base\Environment\Project::addEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\Project::getEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\Project::hasEnvironment
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentTrait::normalizeEnvironmentName
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::__construct
-   * @covers \Drupal\helfi_api_base\Environment\ProjectMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::createFromArray
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::__construct
+   * Tests getActiveEnvironment().
    */
   public function testGetActiveEnvironment() : void {
-    $sut = $this->getEnvironmentResolver(Project::ASUMINEN, 'test');
+    $sut = $this->getEnvironmentResolver(Project::ASUMINEN, EnvironmentEnum::Test);
     $this->assertInstanceOf(Environment::class, $sut->getActiveEnvironment());
   }
 

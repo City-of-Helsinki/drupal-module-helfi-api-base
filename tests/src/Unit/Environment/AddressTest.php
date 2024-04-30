@@ -10,14 +10,13 @@ use Drupal\Tests\UnitTestCase;
 /**
  * Tests Project value object.
  *
- * @coversDefaultClass \Drupal\helfi_api_base\Environment\Address
  * @group helfi_api_base
  */
 class AddressTest extends UnitTestCase {
 
   /**
-   * @covers ::__construct
-   * @covers ::getAddress
+   * Tests getAddress() method.
+   *
    * @dataProvider addressData
    */
   public function testGetAddress(string $expected, array $values) : void {

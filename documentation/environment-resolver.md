@@ -6,6 +6,7 @@
 ## Usage
 
 ### Environment resolver
+
 ```php
 // See \Drupal\helfi_api_base\Environment\Project for all available project constants.
 $projectName = \Drupal\helfi_api_base\Environment\Project::ASUMINEN;
@@ -15,8 +16,6 @@ $resolver = \Drupal::service('helfi_api_base.environment_resolver');
 $project = $resolver->getProject($projectName);
 /** @var \Drupal\helfi_api_base\Environment\ProjectMetadata $projectMetadata */
 $projectMetadata = $project->getMetadata();
-// A link to the Azure DevOps service.
-$projectMetadata->getAzureDevopsLink(); // 'https://dev.azure.com/City-of-Helsinki/asuminen'.
 // A link to the Git repository.
 $projectMetadata->getRepositoryUrl(); // 'https://github.com/City-of-Helsinki/drupal-helfi-asuminen'.
 
@@ -29,10 +28,8 @@ $internalUrl = $environment->getInternalAddress('fi'); // 'https://helfi-asumine
 $path = $environment->getPath('fi'); // '/fi/dev-asuminen'.
 $domain = $environment->getDomain(); // 'nginx-asuminen-dev.agw.arodevtest.hel.fi'.
 $baseUrl = $environment->getBaseUrl(); // 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi'
-/** @var \Drupal\helfi_api_base\Environment\EnvironmentMetadata $environmentMetadata */
-$environmentMetadata = $environment->getMetadata();
-// A link to the OpenShift service.
-$environmentMetadata->getOpenshiftConsoleLink(); // 'https://console-openshift-console.apps.arodevtest.hel.fi/k8s/cluster/projects/hki-kanslia-asuminen-test'
+/** @var \Drupal\helfi_api_base\Environment\Service $services */
+$service = $environment->getService(\Drupal\helfi_api_base\Environment\ServiceEnum::ElasticProxy); // Gets the elastic-proxy service.
 ```
 
 ### Active environment
@@ -55,7 +52,3 @@ $environment = $service->getActiveEnvironment();
 // Failure will throw an InvalidArgumentException.
 $project = $service->getActiveProject();
 ```
-
-## Usage in other projects
-
-The [environments.json](/fixtures/environments.json) file should contain up-to-date information of all our available projects in JSON format.

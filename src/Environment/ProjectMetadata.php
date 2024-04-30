@@ -10,56 +10,25 @@ namespace Drupal\helfi_api_base\Environment;
 final class ProjectMetadata {
 
   /**
+   * The repository.
+   *
+   * @var string
+   */
+  public readonly string $repository;
+
+  /**
    * Constructs a new instance.
    *
-   * @param string $repository
-   *   The repository.
-   * @param string $azureDevopsLink
-   *   The azure devops link.
+   * @param string $repositoryUrl
+   *   The repository url.
    */
   public function __construct(
-    private readonly string $repository,
-    private readonly string $azureDevopsLink,
+    private readonly string $repositoryUrl,
   ) {
-  }
-
-  /**
-   * Construct a new instance from array.
-   *
-   * @param array $data
-   *   The data.
-   *
-   * @return self
-   *   The
-   */
-  public static function createFromArray(array $data) : self {
-    $required = [
-      'repository',
-      'azure_devops_link',
-    ];
-
-    foreach ($required as $key) {
-      if (!isset($data[$key])) {
-        throw new \InvalidArgumentException(sprintf('Missing required "%s".', $key));
-      }
+    if (!$path = parse_url($this->repositoryUrl, PHP_URL_PATH)) {
+      throw new \InvalidArgumentException('The repositoryUrl must be a valid URL.');
     }
-
-    [
-      'repository' => $repository,
-      'azure_devops_link' => $devopsLink,
-    ] = $data;
-
-    return new self($repository, $devopsLink);
-  }
-
-  /**
-   * Gets the Azure DevOps link.
-   *
-   * @return string
-   *   The azure_devops_link link.
-   */
-  public function getAzureDevopsLink() : string {
-    return $this->azureDevopsLink;
+    $this->repository = ltrim($path, '/');
   }
 
   /**
@@ -89,7 +58,7 @@ final class ProjectMetadata {
    *   The repository URL.
    */
   public function getRepositoryUrl() : string {
-    return sprintf('https://github.com/%s', $this->repository);
+    return $this->repositoryUrl;
   }
 
 }
