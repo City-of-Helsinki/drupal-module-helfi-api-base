@@ -131,16 +131,6 @@ final class Environment {
   }
 
   /**
-   * Gets the services.
-   *
-   * @return \Drupal\helfi_api_base\Environment\Service[]
-   *   The services.
-   */
-  public function getServices(): array {
-    return $this->services;
-  }
-
-  /**
    * Gets the given service.
    *
    * @param \Drupal\helfi_api_base\Environment\ServiceEnum $name

@@ -150,18 +150,28 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
           internalAddress: new Address('nginx-etusivu-test.apps.arodevtest.hel.fi'),
           paths: $paths[Project::ETUSIVU],
           environment: EnvironmentEnum::Test,
+          services: [
+            new Service(ServiceEnum::ElasticProxy, new Address('etusivu-elastic-proxy-test.agw.arodevtest.hel.fi')),
+          ],
         ),
         new Environment(
           address: new Address('www.stage.hel.ninja'),
           internalAddress: new Address('nginx-etusivu-staging.apps.platta.hel.fi'),
           paths: $paths[Project::ETUSIVU],
           environment: EnvironmentEnum::Stage,
+          services: [
+            // @todo This shouldn't be using prod address.
+            new Service(ServiceEnum::ElasticProxy, new Address('uutisapi.hel.fi')),
+          ],
         ),
         new Environment(
           address: new Address('www.hel.fi'),
           internalAddress: new Address('nginx-etusivu-prod.apps.platta.hel.fi'),
           paths: $paths[Project::ETUSIVU],
           environment: EnvironmentEnum::Prod,
+          services: [
+            new Service(ServiceEnum::ElasticProxy, new Address('uutisapi.hel.fi')),
+          ],
         ),
       ],
     );
