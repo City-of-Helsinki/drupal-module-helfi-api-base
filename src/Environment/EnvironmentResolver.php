@@ -102,290 +102,291 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         'en' => '/en/business-and-work',
       ],
     ];
-    $this->projects[Project::ASUMINEN] = new Project(
-      Project::ASUMINEN,
-      new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-asuminen'),
-      [
-        new Environment(
-          address: new Address('helfi-asuminen.docker.so'),
-          internalAddress: new Address('helfi-asuminen', 'http', 8080),
-          paths: $paths[Project::ASUMINEN],
-          environment: EnvironmentEnum::Local,
-        ),
-        new Environment(
-          address: new Address('www.test.hel.ninja'),
-          internalAddress: new Address('nginx-asuminen-test.apps.arodevtest.hel.fi'),
-          paths: $paths[Project::ASUMINEN],
-          environment: EnvironmentEnum::Test,
-        ),
-        new Environment(
-          address: new Address('www.stage.hel.ninja'),
-          internalAddress: new Address('nginx-asuminen-staging.apps.platta.hel.fi'),
-          paths: $paths[Project::ASUMINEN],
-          environment: EnvironmentEnum::Stage,
-        ),
-        new Environment(
-          address: new Address('www.hel.fi'),
-          internalAddress: new Address('nginx-asuminen-prod.apps.platta.hel.fi'),
-          paths: $paths[Project::ASUMINEN],
-          environment: EnvironmentEnum::Prod,
-        ),
-      ],
-    );
-    $this->projects[Project::ETUSIVU] = new Project(
-      Project::ETUSIVU,
-      new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-etusivu'),
-      [
-        new Environment(
-          address: new Address('helfi-etusivu.docker.so'),
-          internalAddress: new Address('helfi-etusivu', 'http', 8080),
-          paths: $paths[Project::ETUSIVU],
-          environment: EnvironmentEnum::Local,
-          services: [
-            new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic', 'http', 9200)),
-          ],
-        ),
-        new Environment(
-          address: new Address('www.test.hel.ninja'),
-          internalAddress: new Address('nginx-etusivu-test.apps.arodevtest.hel.fi'),
-          paths: $paths[Project::ETUSIVU],
-          environment: EnvironmentEnum::Test,
-          services: [
-            new Service(ServiceEnum::ElasticProxy, new Address('etusivu-elastic-proxy-test.agw.arodevtest.hel.fi')),
-          ],
-        ),
-        new Environment(
-          address: new Address('www.stage.hel.ninja'),
-          internalAddress: new Address('nginx-etusivu-staging.apps.platta.hel.fi'),
-          paths: $paths[Project::ETUSIVU],
-          environment: EnvironmentEnum::Stage,
-          services: [
-            // @todo This shouldn't be using prod address.
-            new Service(ServiceEnum::ElasticProxy, new Address('uutisapi.hel.fi')),
-          ],
-        ),
-        new Environment(
-          address: new Address('www.hel.fi'),
-          internalAddress: new Address('nginx-etusivu-prod.apps.platta.hel.fi'),
-          paths: $paths[Project::ETUSIVU],
-          environment: EnvironmentEnum::Prod,
-          services: [
-            new Service(ServiceEnum::ElasticProxy, new Address('uutisapi.hel.fi')),
-          ],
-        ),
-      ],
-    );
-
-    $this->projects[Project::KASVATUS_KOULUTUS] = new Project(
-      Project::KASVATUS_KOULUTUS,
-      new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-kasvatus-koulutus'),
-      [
-        new Environment(
-          address: new Address('helfi-kasko.docker.so'),
-          internalAddress: new Address('helfi-kasko', 'http', 8080),
-          paths: $paths[Project::KASVATUS_KOULUTUS],
-          environment: EnvironmentEnum::Local,
-        ),
-        new Environment(
-          address: new Address('www.test.hel.ninja'),
-          internalAddress: new Address('nginx-kasvatus-koulutus-test.apps.arodevtest.hel.fi'),
-          paths: $paths[Project::KASVATUS_KOULUTUS],
-          environment: EnvironmentEnum::Test,
-        ),
-        new Environment(
-          address: new Address('www.stage.hel.ninja'),
-          internalAddress: new Address('nginx-kasvatus-koulutus-staging.apps.platta.hel.fi'),
-          paths: $paths[Project::KASVATUS_KOULUTUS],
-          environment: EnvironmentEnum::Stage,
-        ),
-        new Environment(
-          address: new Address('www.hel.fi'),
-          internalAddress: new Address('nginx-kasvatus-koulutus-prod.apps.platta.hel.fi'),
-          paths: $paths[Project::KASVATUS_KOULUTUS],
-          environment: EnvironmentEnum::Prod,
-        ),
-      ],
-    );
-    $this->projects[Project::KUVA] = new Project(
-      Project::KUVA,
-      new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-kuva'),
-      [
-        new Environment(
-          address: new Address('helfi-kuva.docker.so'),
-          internalAddress: new Address('helfi-kuva', 'http', 8080),
-          paths: $paths[Project::KUVA],
-          environment: EnvironmentEnum::Local,
-        ),
-        new Environment(
-          address: new Address('www.test.hel.ninja'),
-          internalAddress: new Address('nginx-kuva-test.apps.arodevtest.hel.fi'),
-          paths: $paths[Project::KUVA],
-          environment: EnvironmentEnum::Test,
-        ),
-        new Environment(
-          address: new Address('www.stage.hel.ninja'),
-          internalAddress: new Address('nginx-kuva-staging.apps.platta.hel.fi'),
-          paths: $paths[Project::KUVA],
-          environment: EnvironmentEnum::Stage,
-        ),
-        new Environment(
-          address: new Address('www.hel.fi'),
-          internalAddress: new Address('nginx-kuva-prod.apps.platta.hel.fi'),
-          paths: $paths[Project::KUVA],
-          environment: EnvironmentEnum::Prod,
-        ),
-      ],
-    );
-    $this->projects[Project::LIIKENNE] = new Project(
-      Project::LIIKENNE,
-      new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-kymp'),
-      [
-        new Environment(
-          address: new Address('helfi-kymp.docker.so'),
-          internalAddress: new Address('helfi-kymp', 'http', 8080),
-          paths: $paths[Project::LIIKENNE],
-          environment: EnvironmentEnum::Local,
-        ),
-        new Environment(
-          address: new Address('www.test.hel.ninja'),
-          internalAddress: new Address('nginx-liikenne-test.apps.arodevtest.hel.fi'),
-          paths: $paths[Project::LIIKENNE],
-          environment: EnvironmentEnum::Test,
-        ),
-        new Environment(
-          address: new Address('www.stage.hel.ninja'),
-          internalAddress: new Address('nginx-liikenne-staging.apps.platta.hel.fi'),
-          paths: $paths[Project::LIIKENNE],
-          environment: EnvironmentEnum::Stage,
-        ),
-        new Environment(
-          address: new Address('www.hel.fi'),
-          internalAddress: new Address('nginx-liikenne-prod.apps.platta.hel.fi'),
-          paths: $paths[Project::LIIKENNE],
-          environment: EnvironmentEnum::Prod,
-        ),
-      ],
-    );
-    $this->projects[Project::REKRY] = new Project(
-      Project::REKRY,
-      new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-rekry'),
-      [
-        new Environment(
-          address: new Address('helfi-rekry.docker.so'),
-          internalAddress: new Address('helfi-rekry', 'http', 8080),
-          paths: $paths[Project::REKRY],
-          environment: EnvironmentEnum::Local,
-        ),
-        new Environment(
-          address: new Address('www.test.hel.ninja'),
-          internalAddress: new Address('nginx-rekry-test.apps.arodevtest.hel.fi'),
-          paths: $paths[Project::REKRY],
-          environment: EnvironmentEnum::Test,
-        ),
-        new Environment(
-          address: new Address('www.stage.hel.ninja'),
-          internalAddress: new Address('nginx-rekry-staging.apps.platta.hel.fi'),
-          paths: $paths[Project::REKRY],
-          environment: EnvironmentEnum::Stage,
-        ),
-        new Environment(
-          address: new Address('www.hel.fi'),
-          internalAddress: new Address('nginx-rekry-prod.apps.platta.hel.fi'),
-          paths: $paths[Project::REKRY],
-          environment: EnvironmentEnum::Prod,
-        ),
-      ],
-    );
-    $this->projects[Project::STRATEGIA] = new Project(
-      Project::STRATEGIA,
-      new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-strategia'),
-      [
-        new Environment(
-          address: new Address('helfi-strategia.docker.so'),
-          internalAddress: new Address('helfi-strategia', 'http', 8080),
-          paths: $paths[Project::STRATEGIA],
-          environment: EnvironmentEnum::Local,
-        ),
-        new Environment(
-          address: new Address('www.test.hel.ninja'),
-          internalAddress: new Address('nginx-strategia-talous-test.apps.arodevtest.hel.fi'),
-          paths: $paths[Project::STRATEGIA],
-          environment: EnvironmentEnum::Test,
-        ),
-        new Environment(
-          address: new Address('www.stage.hel.ninja'),
-          internalAddress: new Address('nginx-strategia-talous-staging.apps.platta.hel.fi'),
-          paths: $paths[Project::STRATEGIA],
-          environment: EnvironmentEnum::Stage,
-        ),
-        new Environment(
-          address: new Address('www.hel.fi'),
-          internalAddress: new Address('nginx-strategia-talous-prod.apps.platta.hel.fi'),
-          paths: $paths[Project::STRATEGIA],
-          environment: EnvironmentEnum::Prod,
-        ),
-      ],
-    );
-    $this->projects[Project::TERVEYS] = new Project(
-      Project::TERVEYS,
-      new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-sote'),
-      [
-        new Environment(
-          address: new Address('helfi-sote.docker.so'),
-          internalAddress: new Address('helfi-sote', 'http', 8080),
-          paths: $paths[Project::TERVEYS],
-          environment: EnvironmentEnum::Local,
-        ),
-        new Environment(
-          address: new Address('www.test.hel.ninja'),
-          internalAddress: new Address('nginx-terveys-test.apps.arodevtest.hel.fi'),
-          paths: $paths[Project::TERVEYS],
-          environment: EnvironmentEnum::Test,
-        ),
-        new Environment(
-          address: new Address('www.stage.hel.ninja'),
-          internalAddress: new Address('nginx-terveys-staging.apps.platta.hel.fi'),
-          paths: $paths[Project::TERVEYS],
-          environment: EnvironmentEnum::Stage,
-        ),
-        new Environment(
-          address: new Address('www.hel.fi'),
-          internalAddress: new Address('nginx-terveys-prod.apps.platta.hel.fi'),
-          paths: $paths[Project::TERVEYS],
-          environment: EnvironmentEnum::Prod,
-        ),
-      ],
-    );
-    $this->projects[Project::TYO_YRITTAMINEN] = new Project(
-      Project::TYO_YRITTAMINEN,
-      new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-tyo-yrittaminen'),
-      [
-        new Environment(
-          address: new Address('helfi-elo.docker.so'),
-          internalAddress: new Address('helfi-elo', 'http', 8080),
-          paths: $paths[Project::TYO_YRITTAMINEN],
-          environment: EnvironmentEnum::Local,
-        ),
-        new Environment(
-          address: new Address('www.test.hel.ninja'),
-          internalAddress: new Address('nginx-tyo-yrittaminen-test.apps.arodevtest.hel.fi'),
-          paths: $paths[Project::TYO_YRITTAMINEN],
-          environment: EnvironmentEnum::Test,
-        ),
-        new Environment(
-          address: new Address('www.stage.hel.ninja'),
-          internalAddress: new Address('nginx-tyo-yrittaminen-staging.apps.platta.hel.fi'),
-          paths: $paths[Project::TYO_YRITTAMINEN],
-          environment: EnvironmentEnum::Stage,
-        ),
-        new Environment(
-          address: new Address('www.hel.fi'),
-          internalAddress: new Address('nginx-tyo-yrittaminen-prod.apps.platta.hel.fi'),
-          paths: $paths[Project::TYO_YRITTAMINEN],
-          environment: EnvironmentEnum::Prod,
-        ),
-      ],
-    );
+    $this->projects = [
+      Project::ASUMINEN => new Project(
+        Project::ASUMINEN,
+        new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-asuminen'),
+        [
+          new Environment(
+            address: new Address('helfi-asuminen.docker.so'),
+            internalAddress: new Address('helfi-asuminen', 'http', 8080),
+            paths: $paths[Project::ASUMINEN],
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('www.test.hel.ninja'),
+            internalAddress: new Address('nginx-asuminen-test.apps.arodevtest.hel.fi'),
+            paths: $paths[Project::ASUMINEN],
+            environment: EnvironmentEnum::Test,
+          ),
+          new Environment(
+            address: new Address('www.stage.hel.ninja'),
+            internalAddress: new Address('nginx-asuminen-staging.apps.platta.hel.fi'),
+            paths: $paths[Project::ASUMINEN],
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('www.hel.fi'),
+            internalAddress: new Address('nginx-asuminen-prod.apps.platta.hel.fi'),
+            paths: $paths[Project::ASUMINEN],
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+      ),
+      Project::ETUSIVU => new Project(
+        Project::ETUSIVU,
+        new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-etusivu'),
+        [
+          new Environment(
+            address: new Address('helfi-etusivu.docker.so'),
+            internalAddress: new Address('helfi-etusivu', 'http', 8080),
+            paths: $paths[Project::ETUSIVU],
+            environment: EnvironmentEnum::Local,
+            services: [
+              new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic', 'http', 9200)),
+            ],
+          ),
+          new Environment(
+            address: new Address('www.test.hel.ninja'),
+            internalAddress: new Address('nginx-etusivu-test.apps.arodevtest.hel.fi'),
+            paths: $paths[Project::ETUSIVU],
+            environment: EnvironmentEnum::Test,
+            services: [
+              new Service(ServiceEnum::ElasticProxy, new Address('etusivu-elastic-proxy-test.agw.arodevtest.hel.fi')),
+            ],
+          ),
+          new Environment(
+            address: new Address('www.stage.hel.ninja'),
+            internalAddress: new Address('nginx-etusivu-staging.apps.platta.hel.fi'),
+            paths: $paths[Project::ETUSIVU],
+            environment: EnvironmentEnum::Stage,
+            services: [
+              // @todo This shouldn't be using prod address.
+              new Service(ServiceEnum::ElasticProxy, new Address('uutisapi.hel.fi')),
+            ],
+          ),
+          new Environment(
+            address: new Address('www.hel.fi'),
+            internalAddress: new Address('nginx-etusivu-prod.apps.platta.hel.fi'),
+            paths: $paths[Project::ETUSIVU],
+            environment: EnvironmentEnum::Prod,
+            services: [
+              new Service(ServiceEnum::ElasticProxy, new Address('uutisapi.hel.fi')),
+            ],
+          ),
+        ],
+      ),
+      Project::KASVATUS_KOULUTUS => new Project(
+        Project::KASVATUS_KOULUTUS,
+        new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-kasvatus-koulutus'),
+        [
+          new Environment(
+            address: new Address('helfi-kasko.docker.so'),
+            internalAddress: new Address('helfi-kasko', 'http', 8080),
+            paths: $paths[Project::KASVATUS_KOULUTUS],
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('www.test.hel.ninja'),
+            internalAddress: new Address('nginx-kasvatus-koulutus-test.apps.arodevtest.hel.fi'),
+            paths: $paths[Project::KASVATUS_KOULUTUS],
+            environment: EnvironmentEnum::Test,
+          ),
+          new Environment(
+            address: new Address('www.stage.hel.ninja'),
+            internalAddress: new Address('nginx-kasvatus-koulutus-staging.apps.platta.hel.fi'),
+            paths: $paths[Project::KASVATUS_KOULUTUS],
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('www.hel.fi'),
+            internalAddress: new Address('nginx-kasvatus-koulutus-prod.apps.platta.hel.fi'),
+            paths: $paths[Project::KASVATUS_KOULUTUS],
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+      ),
+      Project::KUVA => new Project(
+        Project::KUVA,
+        new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-kuva'),
+        [
+          new Environment(
+            address: new Address('helfi-kuva.docker.so'),
+            internalAddress: new Address('helfi-kuva', 'http', 8080),
+            paths: $paths[Project::KUVA],
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('www.test.hel.ninja'),
+            internalAddress: new Address('nginx-kuva-test.apps.arodevtest.hel.fi'),
+            paths: $paths[Project::KUVA],
+            environment: EnvironmentEnum::Test,
+          ),
+          new Environment(
+            address: new Address('www.stage.hel.ninja'),
+            internalAddress: new Address('nginx-kuva-staging.apps.platta.hel.fi'),
+            paths: $paths[Project::KUVA],
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('www.hel.fi'),
+            internalAddress: new Address('nginx-kuva-prod.apps.platta.hel.fi'),
+            paths: $paths[Project::KUVA],
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+      ),
+      Project::LIIKENNE => new Project(
+        Project::LIIKENNE,
+        new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-kymp'),
+        [
+          new Environment(
+            address: new Address('helfi-kymp.docker.so'),
+            internalAddress: new Address('helfi-kymp', 'http', 8080),
+            paths: $paths[Project::LIIKENNE],
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('www.test.hel.ninja'),
+            internalAddress: new Address('nginx-liikenne-test.apps.arodevtest.hel.fi'),
+            paths: $paths[Project::LIIKENNE],
+            environment: EnvironmentEnum::Test,
+          ),
+          new Environment(
+            address: new Address('www.stage.hel.ninja'),
+            internalAddress: new Address('nginx-liikenne-staging.apps.platta.hel.fi'),
+            paths: $paths[Project::LIIKENNE],
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('www.hel.fi'),
+            internalAddress: new Address('nginx-liikenne-prod.apps.platta.hel.fi'),
+            paths: $paths[Project::LIIKENNE],
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+      ),
+      Project::REKRY => new Project(
+        Project::REKRY,
+        new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-rekry'),
+        [
+          new Environment(
+            address: new Address('helfi-rekry.docker.so'),
+            internalAddress: new Address('helfi-rekry', 'http', 8080),
+            paths: $paths[Project::REKRY],
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('www.test.hel.ninja'),
+            internalAddress: new Address('nginx-rekry-test.apps.arodevtest.hel.fi'),
+            paths: $paths[Project::REKRY],
+            environment: EnvironmentEnum::Test,
+          ),
+          new Environment(
+            address: new Address('www.stage.hel.ninja'),
+            internalAddress: new Address('nginx-rekry-staging.apps.platta.hel.fi'),
+            paths: $paths[Project::REKRY],
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('www.hel.fi'),
+            internalAddress: new Address('nginx-rekry-prod.apps.platta.hel.fi'),
+            paths: $paths[Project::REKRY],
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+      ),
+      Project::STRATEGIA => new Project(
+        Project::STRATEGIA,
+        new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-strategia'),
+        [
+          new Environment(
+            address: new Address('helfi-strategia.docker.so'),
+            internalAddress: new Address('helfi-strategia', 'http', 8080),
+            paths: $paths[Project::STRATEGIA],
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('www.test.hel.ninja'),
+            internalAddress: new Address('nginx-strategia-talous-test.apps.arodevtest.hel.fi'),
+            paths: $paths[Project::STRATEGIA],
+            environment: EnvironmentEnum::Test,
+          ),
+          new Environment(
+            address: new Address('www.stage.hel.ninja'),
+            internalAddress: new Address('nginx-strategia-talous-staging.apps.platta.hel.fi'),
+            paths: $paths[Project::STRATEGIA],
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('www.hel.fi'),
+            internalAddress: new Address('nginx-strategia-talous-prod.apps.platta.hel.fi'),
+            paths: $paths[Project::STRATEGIA],
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+      ),
+      Project::TERVEYS => new Project(
+        Project::TERVEYS,
+        new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-sote'),
+        [
+          new Environment(
+            address: new Address('helfi-sote.docker.so'),
+            internalAddress: new Address('helfi-sote', 'http', 8080),
+            paths: $paths[Project::TERVEYS],
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('www.test.hel.ninja'),
+            internalAddress: new Address('nginx-terveys-test.apps.arodevtest.hel.fi'),
+            paths: $paths[Project::TERVEYS],
+            environment: EnvironmentEnum::Test,
+          ),
+          new Environment(
+            address: new Address('www.stage.hel.ninja'),
+            internalAddress: new Address('nginx-terveys-staging.apps.platta.hel.fi'),
+            paths: $paths[Project::TERVEYS],
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('www.hel.fi'),
+            internalAddress: new Address('nginx-terveys-prod.apps.platta.hel.fi'),
+            paths: $paths[Project::TERVEYS],
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+      ),
+      Project::TYO_YRITTAMINEN => new Project(
+        Project::TYO_YRITTAMINEN,
+        new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-tyo-yrittaminen'),
+        [
+          new Environment(
+            address: new Address('helfi-elo.docker.so'),
+            internalAddress: new Address('helfi-elo', 'http', 8080),
+            paths: $paths[Project::TYO_YRITTAMINEN],
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('www.test.hel.ninja'),
+            internalAddress: new Address('nginx-tyo-yrittaminen-test.apps.arodevtest.hel.fi'),
+            paths: $paths[Project::TYO_YRITTAMINEN],
+            environment: EnvironmentEnum::Test,
+          ),
+          new Environment(
+            address: new Address('www.stage.hel.ninja'),
+            internalAddress: new Address('nginx-tyo-yrittaminen-staging.apps.platta.hel.fi'),
+            paths: $paths[Project::TYO_YRITTAMINEN],
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('www.hel.fi'),
+            internalAddress: new Address('nginx-tyo-yrittaminen-prod.apps.platta.hel.fi'),
+            paths: $paths[Project::TYO_YRITTAMINEN],
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+      ),
+    ];
   }
 
   /**
