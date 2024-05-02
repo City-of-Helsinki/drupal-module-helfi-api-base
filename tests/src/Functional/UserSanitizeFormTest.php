@@ -12,7 +12,8 @@ use Drush\TestTraits\DrushTestTrait;
  * Tests user sanitation form and drush command.
  *
  * @group helfi_api_base
- * @coversDefaultClass \Drupal\helfi_api_base\Entity\Form\UserEntitySanitizeForm
+ * @covers \Drupal\helfi_api_base\Entity\Form\UserEntitySanitizeForm
+ * @covers \Drupal\helfi_api_base\Commands\UserSanitizeCommands
  */
 class UserSanitizeFormTest extends BrowserTestBase {
 
