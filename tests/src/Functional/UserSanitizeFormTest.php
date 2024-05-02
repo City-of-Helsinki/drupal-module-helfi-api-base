@@ -85,59 +85,59 @@ class UserSanitizeFormTest extends BrowserTestBase {
   /**
    * Tests admin/people sanitize user account operation.
    */
-//  public function testUserSanitizeOperation(): void {
-//    // Make sure the sanitize link is available only for blocked users.
-//    $this->drupalGet('/admin/people');
-//    $this->assertSession()->statusCodeEquals(200);
-//    $this->assertSession()->linkByHrefNotExists("/user/{$this->testUser->id()}/sanitize");
-//
-//    // Deactivate testUser to reveal the sanitize link and click it.
-//    $this->testUser->block()->save();
-//    $this->drupalGet('/admin/people');
-//    $this->assertSession()->statusCodeEquals(200);
-//    $this->assertSession()->linkByHrefExists("/user/{$this->testUser->id()}/sanitize");
-//
-//    // Test that the sanitize link works.
-//    $this->getSession()->getPage()->find('xpath', '//a[contains(@href, "/user/' . $this->testUser->id() . '/sanitize")]')->click();
-//    $this->assertSession()->statusCodeEquals(200);
-//  }
-//
-//  /**
-//   * Tests user cancel method form.
-//   */
-//  public function testUserSanitizeFormWithoutCsrfToken(): void {
-//    $this->drupalGet("user/{$this->testUser->id()}/sanitize");
-//    $this->assertSession()->statusCodeEquals(403);
-//  }
-//
-//  /**
-//   * Tests user sanitation form.
-//   */
-//  public function testUserSanitizeForm(): void {
-//    // Test that the sanitize link works.
-//    $this->testUser->block()->save();
-//    $this->drupalGet('/admin/people');
-//    $this->assertSession()->statusCodeEquals(200);
-//    $this->getSession()
-//      ->getPage()
-//      ->find('xpath', '//a[contains(@href, "/user/' . $this->testUser->id() . '/sanitize")]')
-//      ->click();
-//    $this->assertSession()->statusCodeEquals(200);
-//    $this->assertSession()->pageTextContains($this->testUser->getAccountName());
-//    $this->assertSession()->buttonExists('Sanitize');
-//
-//    // Test the form functionality without selecting any fields.
-//    $this->submitForm([], 'Sanitize');
-//    $this->assertSession()->pageTextContains('I understand that this action will sanitize all selected data from the user account and the action cannot be undone. field is required.');
-//    $this->submitForm(['confirm' => 'on'], 'Sanitize');
-//    $this->assertSession()->pageTextContains('There was an error with saving the sanitized information to the account.');
-//
-//    // Test the form functionality with selecting some fields.
-//    $this->submitForm(['confirm' => 'on', 'fields[email]' => TRUE], 'Sanitize');
-//    $this->assertSession()->statusCodeEquals(200);
-//    $this->assertSession()->pageTextContains('People');
-//    $this->assertSession()->pageTextContains("User account id {$this->testUser->id()} was sanitized.");
-//  }
+  public function testUserSanitizeOperation(): void {
+    // Make sure the sanitize link is available only for blocked users.
+    $this->drupalGet('/admin/people');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->linkByHrefNotExists("/user/{$this->testUser->id()}/sanitize");
+
+    // Deactivate testUser to reveal the sanitize link and click it.
+    $this->testUser->block()->save();
+    $this->drupalGet('/admin/people');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->linkByHrefExists("/user/{$this->testUser->id()}/sanitize");
+
+    // Test that the sanitize link works.
+    $this->getSession()->getPage()->find('xpath', '//a[contains(@href, "/user/' . $this->testUser->id() . '/sanitize")]')->click();
+    $this->assertSession()->statusCodeEquals(200);
+  }
+
+  /**
+   * Tests user cancel method form.
+   */
+  public function testUserSanitizeFormWithoutCsrfToken(): void {
+    $this->drupalGet("user/{$this->testUser->id()}/sanitize");
+    $this->assertSession()->statusCodeEquals(403);
+  }
+
+  /**
+   * Tests user sanitation form.
+   */
+  public function testUserSanitizeForm(): void {
+    // Test that the sanitize link works.
+    $this->testUser->block()->save();
+    $this->drupalGet('/admin/people');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->getSession()
+      ->getPage()
+      ->find('xpath', '//a[contains(@href, "/user/' . $this->testUser->id() . '/sanitize")]')
+      ->click();
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains($this->testUser->getAccountName());
+    $this->assertSession()->buttonExists('Sanitize');
+
+    // Test the form functionality without selecting any fields.
+    $this->submitForm([], 'Sanitize');
+    $this->assertSession()->pageTextContains('I understand that this action will sanitize all selected data from the user account and the action cannot be undone. field is required.');
+    $this->submitForm(['confirm' => 'on'], 'Sanitize');
+    $this->assertSession()->pageTextContains('There was an error with saving the sanitized information to the account.');
+
+    // Test the form functionality with selecting some fields.
+    $this->submitForm(['confirm' => 'on', 'fields[email]' => TRUE], 'Sanitize');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('People');
+    $this->assertSession()->pageTextContains("User account id {$this->testUser->id()} was sanitized.");
+  }
 
   /**
    * Tests helfi:yser-sanitize command with field options.

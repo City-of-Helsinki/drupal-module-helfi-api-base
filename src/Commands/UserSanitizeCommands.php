@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Commands;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\helfi_api_base\Entity\Utility\UserEntitySanitizer;
 use Drush\Attributes\Argument;
 use Drush\Attributes\Command;
 use Drush\Attributes\Option;
-use Drupal\helfi_api_base\Entity\Utility\UserEntitySanitizer;
 use Drush\Attributes\Usage;
 use Drush\Commands\DrushCommands;
 use Drush\Utils\StringUtils;
@@ -22,7 +22,6 @@ final class UserSanitizeCommands extends DrushCommands {
 
   const FIELDS = ['username', 'email', 'password'];
 
-
   /**
    * Constructs a new instance.
    *
@@ -34,14 +33,11 @@ final class UserSanitizeCommands extends DrushCommands {
   ) {
   }
 
-
   /**
    * Sanitizes user entity fields.
    *
-   * @param string $entityType
-   *   The entity type.
-   * @param int|null $entityId
-   *   The entity ID.
+   * @param string $uids
+   *   The user IDs.
    * @param array $options
    *   The options.
    *

@@ -8,9 +8,9 @@
 declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\helfi_api_base\Link\LinkProcessor;
 use Drupal\helfi_api_base\UserExpire\UserExpireManager;
 use Drupal\user\UserInterface;
