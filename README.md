@@ -17,7 +17,8 @@ A base module for [drupal-helfi-platform](https://github.com/City-of-Helsinki/dr
 - [Debug collector](documentation/debug.md): A plugin to collect and show various debug information in one place.
 - [Default language resolver](documentation/default-languages.md): A service to handle default primary languages and language fallbacks.
 - [Deploy hooks](documentation/deploy-hooks.md): Allows custom tasks to be run before or after deployment.
-- [Disable user password](/documentation/disable-user-password.md): A deployment hook to prevent users from logging in using password.
+- [Disable user password](/documentation/disable-user-password.md): A deployment hook to prevent configured users from logging in using password.
+- [Disable email sending](/documentation/disable-email-sending.md): Sending email is disabled by default.
 - [Environment resolver](documentation/environment-resolver.md): A service to fetch metadata for given project.
 - [Feature toggle](/documentation/feature-toggle.md): Allow certain functionality to be toggled on/off.
 - [Logging](documentation/logging.md): Log to Docker container stdout.
@@ -27,6 +28,7 @@ A base module for [drupal-helfi-platform](https://github.com/City-of-Helsinki/dr
 - [PubSub messaging](documentation/pubsub-messaging.md): A PubSub message service to send/receive messages.
 - [Remote Entity](documentation/remote-entity.md): A base entity to be used with migrations.
 - [Testing](documentation/testing.md): Various features to help with automated testing.
+- [User expire](/documentation/user-expire.md): Block inactive accounts automatically.
 - [User sanitation](documentation/user-sanitation.md): A service to handle user sanitation.
 
 ## Contact

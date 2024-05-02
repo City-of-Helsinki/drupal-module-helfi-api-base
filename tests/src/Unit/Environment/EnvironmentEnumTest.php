@@ -11,13 +11,12 @@ use Drupal\Tests\UnitTestCase;
 /**
  * Tests environment enum.
  *
- * @coversDefaultClass \Drupal\helfi_api_base\Environment\EnvironmentEnum
  * @group helfi_api_base
  */
 class EnvironmentEnumTest extends UnitTestCase {
 
   /**
-   * @covers ::label
+   * Tests label() method.
    */
   public function testLabel() : void {
     $found = 0;

@@ -38,10 +38,12 @@ final class EnvironmentResponseSubscriber implements EventSubscriberInterface {
     $response = $event->getResponse();
 
     try {
-      $environment = $this->environmentResolver
-        ->getActiveEnvironment();
-      $response->headers->add([self::INSTANCE_HEADER_NAME => $environment->getId()]);
-      $response->headers->add([self::ENVIRONMENT_HEADER_NAME => $environment->getEnvironmentName()]);
+      $response->headers->add([
+        self::INSTANCE_HEADER_NAME => $this->environmentResolver->getActiveProject()->getName(),
+      ]);
+      $response->headers->add([
+        self::ENVIRONMENT_HEADER_NAME => $this->environmentResolver->getActiveEnvironmentName(),
+      ]);
     }
     catch (\InvalidArgumentException) {
     }

@@ -12,7 +12,7 @@ use Drupal\KernelTests\KernelTestBase;
  *
  * @group helfi_api_base
  */
-class FeatureToggleTest extends KernelTestBase {
+class FeatureManagerTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -80,7 +80,8 @@ class FeatureToggleTest extends KernelTestBase {
 
     $this->assertEquals([
       FeatureManager::DISABLE_USER_PASSWORD => TRUE,
-      FeatureManager::LOGGER => TRUE,
+      FeatureManager::DISABLE_EMAIL_SENDING => TRUE,
+      FeatureManager::USER_EXPIRE => TRUE,
     ], $features);
   }
 

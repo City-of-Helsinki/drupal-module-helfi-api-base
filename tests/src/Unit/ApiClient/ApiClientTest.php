@@ -11,10 +11,10 @@ use Drupal\Core\File\Exception\FileNotExistsException;
 use Drupal\helfi_api_base\ApiClient\ApiClient;
 use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_api_base\ApiClient\CacheValue;
-use Drupal\helfi_api_base\Environment\EnvironmentResolver;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
@@ -37,6 +37,7 @@ class ApiClientTest extends UnitTestCase {
 
   use ApiTestTrait;
   use ProphecyTrait;
+  use EnvironmentResolverTrait;
 
   /**
    * The cache.
@@ -46,11 +47,11 @@ class ApiClientTest extends UnitTestCase {
   private ?CacheBackendInterface $cache;
 
   /**
-   * The default environment resolver config.
+   * The default environment.
    *
-   * @var array
+   * @var \Drupal\helfi_api_base\Environment\EnvironmentEnum
    */
-  private array $environmentResolverConfiguration = [];
+  private EnvironmentEnum $environment = EnvironmentEnum::Local;
 
   /**
    * Response fixture JSON file.
@@ -67,10 +68,6 @@ class ApiClientTest extends UnitTestCase {
 
     $this->fixture = sprintf('%s/../../../fixtures/response.json', __DIR__);
     $this->cache = new MemoryBackend();
-    $this->environmentResolverConfiguration = [
-      EnvironmentResolver::PROJECT_NAME_KEY => Project::ASUMINEN,
-      EnvironmentResolver::ENVIRONMENT_NAME_KEY => 'local',
-    ];
   }
 
   /**
@@ -97,8 +94,6 @@ class ApiClientTest extends UnitTestCase {
    *   The time prophecy.
    * @param \Psr\Log\LoggerInterface|null $logger
    *   The logger.
-   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface|null $environmentResolver
-   *   The environment resolver.
    * @param array $requestOptions
    *   The default request options.
    *
@@ -109,7 +104,6 @@ class ApiClientTest extends UnitTestCase {
     ClientInterface $client = NULL,
     TimeInterface $time = NULL,
     LoggerInterface $logger = NULL,
-    EnvironmentResolverInterface $environmentResolver = NULL,
     array $requestOptions = [],
   ) : ApiClient {
     if (!$client) {
@@ -123,17 +117,11 @@ class ApiClientTest extends UnitTestCase {
     if (!$logger) {
       $logger = $this->prophesize(LoggerInterface::class)->reveal();
     }
-    if (!$environmentResolver) {
-      $environmentResolver = new EnvironmentResolver('', $this->getConfigFactoryStub([
-        'helfi_api_base.environment_resolver.settings' => $this->environmentResolverConfiguration,
-      ]));
-    }
-
     return new ApiClient(
       $client,
       $this->cache,
       $time,
-      $environmentResolver,
+      $this->getEnvironmentResolver(Project::ASUMINEN, $this->environment),
       $logger,
       $requestOptions,
     );
@@ -342,8 +330,8 @@ class ApiClientTest extends UnitTestCase {
    * @covers ::getRequestOptions
    */
   public function testFastRequestFailure() : void {
-    // Override environment name so we don't fallback to mock responses.
-    $this->environmentResolverConfiguration[EnvironmentResolver::ENVIRONMENT_NAME_KEY] = 'test';
+    // Override environment so we don't fallback to mock responses.
+    $this->environment = EnvironmentEnum::Test;
 
     $client = $this->createMockHttpClient([
       new ConnectException(

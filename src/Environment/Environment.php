@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Environment;
 
+use Webmozart\Assert\Assert;
+
 /**
  * A value object to store environment data.
  */
 final class Environment {
+
+  /**
+   * The services.
+   *
+   * @var \Drupal\helfi_api_base\Environment\Service[]
+   */
+  private array $services;
 
   /**
    * Constructs a new instance.
@@ -18,31 +27,23 @@ final class Environment {
    *   The internal address.
    * @param array $paths
    *   The paths.
-   * @param string $id
-   *   Environment resolver identifier for the project.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentEnum $environment
    *   The environment name.
-   * @param \Drupal\helfi_api_base\Environment\EnvironmentMetadata|null $metadata
-   *   The environment specific metadata.
+   * @param \Drupal\helfi_api_base\Environment\Service[] $services
+   *   The environment services.
    */
   public function __construct(
-    private readonly Address $address,
-    private readonly Address $internalAddress,
-    private readonly array $paths,
-    private readonly string $id,
-    private readonly EnvironmentEnum $environment,
-    private readonly ?EnvironmentMetadata $metadata,
+    public readonly Address $address,
+    public readonly Address $internalAddress,
+    public readonly array $paths,
+    public readonly EnvironmentEnum $environment,
+    array $services = [],
   ) {
-  }
+    Assert::allIsInstanceOf($services, Service::class);
 
-  /**
-   * Gets the project identifier.
-   *
-   * @return string
-   *   Site identifier.
-   */
-  public function getId() : string {
-    return $this->id;
+    foreach ($services as $service) {
+      $this->services[$service->name->value] = $service;
+    }
   }
 
   /**
@@ -130,13 +131,16 @@ final class Environment {
   }
 
   /**
-   * Gets the environment metadata.
+   * Gets the given service.
    *
-   * @return \Drupal\helfi_api_base\Environment\EnvironmentMetadata|null
-   *   The metadata.
+   * @param \Drupal\helfi_api_base\Environment\ServiceEnum $name
+   *   The service to get.
+   *
+   * @return \Drupal\helfi_api_base\Environment\Service|null
+   *   The service or null.
    */
-  public function getMetadata(): ?EnvironmentMetadata {
-    return $this->metadata;
+  public function getService(ServiceEnum $name): ?Service {
+    return $this->services[$name->value] ?? NULL;
   }
 
 }

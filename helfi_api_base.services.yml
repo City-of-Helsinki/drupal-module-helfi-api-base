@@ -1,6 +1,4 @@
 parameters:
-  helfi_api_base.json_logger_path: '/tmp/drupal.log'
-  helfi_api_base.environment_file: ''
   helfi_api_base.default_composer_lock: '%app.root%/../composer.lock'
   helfi_api_base.internal_domains:
     - 'hel.fi'
@@ -25,6 +23,7 @@ services:
     parent: logger.channel_base
     arguments: [ 'helfi_api_base' ]
 
+  Drupal\helfi_api_base\UserExpire\UserExpireManager: ~
   Drupal\helfi_api_base\EventSubscriber\SentryTracesSamplerSubscriber: ~
   Drupal\helfi_api_base\EventSubscriber\DisableUserPasswordSubscriber: ~
   Drupal\helfi_api_base\Features\FeatureManager: ~
@@ -33,7 +32,7 @@ services:
   Drupal\helfi_api_base\Environment\EnvironmentResolver: '@helfi_api_base.environment_resolver'
   helfi_api_base.environment_resolver:
     class: Drupal\helfi_api_base\Environment\EnvironmentResolver
-    arguments: ['%helfi_api_base.environment_file%', '@config.factory']
+    arguments: ['@config.factory']
 
   Drupal\helfi_api_base\Link\InternalDomainResolver: '@helfi_api_base.internal_domain_resolver'
   helfi_api_base.internal_domain_resolver:
@@ -97,17 +96,6 @@ services:
     arguments: ['@entity_type.manager', '@messenger', '@config.factory']
     tags:
       - { name: event_subscriber }
-
-  helfi_api_base.logger_filesystem:
-    class: Symfony\Component\Filesystem\Filesystem
-    public: false
-
-  Symfony\Component\Filesystem\Filesystem:
-    class: Symfony\Component\Filesystem\Filesystem
-    public: false
-  Drupal\helfi_api_base\Logger\JsonLog:
-    tags:
-      - { name: logger }
 
   Drupal\helfi_api_base\Vault\VaultManager: '@helfi_api_base.vault_manager'
   helfi_api_base.vault_manager:

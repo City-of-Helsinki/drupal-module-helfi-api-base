@@ -1,9 +1,6 @@
 <?php
 
-// phpcs:ignoreFile
-// @todo remove phpcs ignore once https://www.drupal.org/project/coder/issues/3283741 is fixed.
-
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Environment;
 

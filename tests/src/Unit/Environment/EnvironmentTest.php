@@ -7,79 +7,99 @@ namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 use Drupal\helfi_api_base\Environment\Address;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
-use Drupal\helfi_api_base\Environment\EnvironmentMetadata;
+use Drupal\helfi_api_base\Environment\Service;
+use Drupal\helfi_api_base\Environment\ServiceEnum;
 use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests environment value object.
  *
- * @coversDefaultClass \Drupal\helfi_api_base\Environment\Environment
  * @group helfi_api_base
  */
 class EnvironmentTest extends UnitTestCase {
 
   /**
-   * @covers ::__construct
-   * @covers ::getId
-   * @covers ::getEnvironment
-   * @covers ::getEnvironmentName
-   * @covers ::getInternalBaseUrl
-   * @covers ::getBaseUrl
-   * @cove
-   * @covers ::getMetadata
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::__construct
-   * @covers \Drupal\helfi_api_base\Environment\EnvironmentMetadata::getOpenshiftConsoleLink
+   * Gets the SUT.
+   *
+   * @param array $paths
+   *   The paths.
+   * @param array $services
+   *   The services.
+   *
+   * @return \Drupal\helfi_api_base\Environment\Environment
+   *   The SUT.
    */
-  public function testSimpleGetters() : void {
-    $sut = new Environment(
+  private function getSut(array $paths = [], array $services = []) : Environment {
+    return new Environment(
       new Address('www.hel.fi'),
       new Address('internal-address.local', 'http', 8080),
-      [],
-      'test',
+      $paths,
       EnvironmentEnum::Test,
-      new EnvironmentMetadata('https://localhost'));
-    $this->assertEquals('test', $sut->getId());
+      $services,
+    );
+  }
+
+  /**
+   * Tests getters.
+   */
+  public function testSimpleGetters() : void {
+    $sut = $this->getSut();
     $this->assertEquals(EnvironmentEnum::Test, $sut->getEnvironment());
     $this->assertEquals(EnvironmentEnum::Test->value, $sut->getEnvironmentName());
     $this->assertEquals('https://www.hel.fi', $sut->getBaseUrl());
     $this->assertEquals('http://internal-address.local:8080', $sut->getInternalBaseUrl());
-    $this->assertEquals('https://localhost', $sut->getMetadata()->getOpenshiftConsoleLink());
+    $this->assertNull($sut->getService(ServiceEnum::ElasticProxy));
   }
 
   /**
-   * @covers ::__construct
-   * @covers ::getUrl
-   * @covers ::getPath
-   * @covers ::getInternalAddress
+   * Make sure only Service instances can be passed.
+   */
+  public function testServiceException() : void {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->getSut(services: [1]);
+  }
+
+  /**
+   * Tests service getter.
+   */
+  public function testGetService() : void {
+    $sut = $this->getSut(
+      services: [
+        new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic')),
+      ],
+    );
+    $this->assertInstanceOf(Service::class, $sut->getService(ServiceEnum::ElasticProxy));
+  }
+
+  /**
+   * Test path validation.
+   */
+  public function testGetUrlException() : void {
+    $sut = $this->getSut(['fi' => 'test-path']);
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('Path not found for "en" language.');
+    $sut->getUrl('en');
+  }
+
+  /**
+   * Tests getUrl() method.
    */
   public function testGetUrl() : void {
     $sut = new Environment(
       new Address('www.hel.fi'),
       new Address('www.hel.fi', 'http'),
       ['fi' => 'test-path'],
-      'test',
       EnvironmentEnum::Local,
-      NULL);
+    );
     $this->assertEquals('https://www.hel.fi/test-path', $sut->getUrl('fi'));
     $this->assertEquals('http://www.hel.fi/test-path', $sut->getInternalAddress('fi'));
-
-    $caught = FALSE;
-    try {
-      $sut->getUrl('en');
-    }
-    catch (\InvalidArgumentException $e) {
-      $this->assertEquals('Path not found for "en" language.', $e->getMessage());
-      $caught = TRUE;
-    }
-    $this->assertTrue($caught);
 
     $sut = new Environment(
       new Address('www.hel.fi'),
       new Address('www.hel.fi', 'https', 8080),
       ['fi' => 'test-path'],
-      'test',
       EnvironmentEnum::Local,
-      NULL);
+    );
     $this->assertEquals('https://www.hel.fi/test-path', $sut->getUrl('fi'));
     $this->assertEquals('https://www.hel.fi:8080/test-path', $sut->getInternalAddress('fi'));
   }

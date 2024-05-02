@@ -50,7 +50,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
         [
           'username' => 'helfi-admin',
           'password' => '123',
-          'roles' => ['debug_api'],
+          'roles' => [],
         ],
       ])
       ->save();
@@ -81,7 +81,6 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
     $service->dispatch(new PostDeployEvent());
     $account = user_load_by_name('helfi-admin');
     $this->assertInstanceOf(UserInterface::class, $account);
-    $this->assertTrue($account->hasRole('debug_api'));
     $this->assertTrue($passwordHasher->check('123', $account->getPassword()));
 
     Role::create(['id' => 'test', 'label' => 'Test'])->save();

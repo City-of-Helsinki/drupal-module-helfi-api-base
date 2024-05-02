@@ -11,8 +11,9 @@ use Drupal\Core\Config\ConfigFactoryInterface;
  */
 final class FeatureManager {
 
-  public const LOGGER = 'logger';
   public const DISABLE_USER_PASSWORD = 'disable_user_password';
+  public const USER_EXPIRE = 'user_expire';
+  public const DISABLE_EMAIL_SENDING = 'disable_email_sending';
 
   /**
    * Constructs a new instance.
@@ -86,7 +87,10 @@ final class FeatureManager {
   }
 
   /**
-   * {@inheritdoc}
+   * Checks if the given feature is enabled.
+   *
+   * @return bool
+   *   TRUE if feature is enabled, FALSE if not.
    */
   public function isEnabled(string $feature) : bool {
     $this->assertFeature($feature);
