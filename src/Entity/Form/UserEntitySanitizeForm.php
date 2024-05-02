@@ -93,16 +93,29 @@ final class UserEntitySanitizeForm extends FormBase {
       return;
     }
     $user = $form_state->get('account');
+    $values = $form_state->getValues()['fields'];
+    $fields = [];
+
+    // Add only selected fields.
+    foreach ($values as $key => $value) {
+      if ($value) {
+        $fields[] = $key;
+      }
+    }
 
     // Use sanitizer service to Sanitize the user entity fields.
-    $operation = $this->sanitizer
-      ->sanitizeUserEntity($user, $form_state->getValues()['fields']);
+    try {
+      $operation = $this->sanitizer->sanitizeUserEntity($user, $fields);
 
-    // If the operation is 0, none of the field values were saved, probably
-    // due to a non-existent field selections in the form.
-    if ($operation === 0) {
-      $this->messenger()->addError($this->t('There was an error with saving the sanitized information to the account.'));
-      return;
+      // If the operation is 0, none of the field values were saved, probably
+      // due to a non-existent field selections in the form.
+      if ($operation === 0) {
+        $this->messenger()->addError($this->t('There was an error with saving the sanitized information to the account.'));
+        return;
+      }
+    }
+    catch (\Exception $e) {
+      $this->messenger()->addError($e->getMessage());
     }
 
     // Return to People page after successful sanitization.

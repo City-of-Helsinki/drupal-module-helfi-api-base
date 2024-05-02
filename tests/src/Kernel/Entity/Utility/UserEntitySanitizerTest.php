@@ -75,21 +75,27 @@ class UserEntitySanitizerTest extends ApiKernelTestBase {
   public function testActiveUserSanitation(): void {
     // Activate testUser.
     $this->testUser->activate()->save();
-    $operation = $this->sanitizer->sanitizeUserEntity($this->testUser, []);
 
-    // Test that the operation returns 0 as nothing should happen.
-    $this->assertEquals($operation, 0);
+    // Expect exception for active user.
+    $this->expectException(\Exception::class);
+    $this->expectExceptionMessage('Cannot sanitize active users. Block user "1" before sanitizing it.');
+    $this->sanitizer->sanitizeUserEntity($this->testUser, []);
 
     // Assert that the user's information remains unchanged.
-    $this->assertEquals($this->testUser->getAccountName() === $this->defaultValues['username'], TRUE);
-    $this->assertEquals($this->testUser->getEmail() === $this->defaultValues['email'], TRUE);
-    $password_service = $this->container->get('password');
-    $this->assertEquals($password_service->check($this->defaultValues['password'], $this->testUser->getPassword()), TRUE);
+    $this->ensureUserInformationIsDefault();
+  }
 
-    // Test user sanitation with user id.
-    $operation = $this->sanitizer->sanitizeUserEntity((int) $this->testUser->id(), []);
-    // Test that the operation returns 0 as nothing should happen.
-    $this->assertEquals($operation, 0);
+  /**
+   * Test non-existent user sanitation.
+   */
+  public function testNonExistentUserSanitation(): void {
+    // Expect exception for non-existent user.
+    $this->expectException(\Exception::class);
+    $this->expectExceptionMessage('Unable to find a matching user entity for id "999".');
+    $this->sanitizer->sanitizeUserEntity((int) 999, []);
+
+    // Assert that the user's information remains unchanged.
+    $this->ensureUserInformationIsDefault();
   }
 
   /**
@@ -99,7 +105,7 @@ class UserEntitySanitizerTest extends ApiKernelTestBase {
     // Sanitize user name.
     $operation = $this->sanitizer->sanitizeUserEntity(
       $this->testUser,
-      ['username' => TRUE]
+      ['username']
     );
 
     // Test that the operation other than 0 as user information is sanitized.
@@ -121,7 +127,7 @@ class UserEntitySanitizerTest extends ApiKernelTestBase {
     // Sanitize user name.
     $operation = $this->sanitizer->sanitizeUserEntity(
       $this->testUser,
-      ['password' => TRUE]
+      ['password']
     );
 
     // Test that the operation other than 0 as user information is sanitized.
@@ -142,7 +148,7 @@ class UserEntitySanitizerTest extends ApiKernelTestBase {
   public function testUserEmailSanitation(): void {
     // Sanitize user name.
     $operation = $this->sanitizer
-      ->sanitizeUserEntity($this->testUser, ['email' => TRUE]);
+      ->sanitizeUserEntity($this->testUser, ['email']);
 
     // Test that the operation other than 0 as user information is sanitized.
     $this->assertNotEquals($operation, 0);
@@ -164,9 +170,9 @@ class UserEntitySanitizerTest extends ApiKernelTestBase {
     $operation = $this->sanitizer->sanitizeUserEntity(
       $this->testUser,
       [
-        'username' => TRUE,
-        'password' => TRUE,
-        'email' => TRUE,
+        'username',
+        'password',
+        'email',
       ]
     );
 
@@ -178,6 +184,17 @@ class UserEntitySanitizerTest extends ApiKernelTestBase {
     $this->assertNotEquals($this->testUser->getEmail() === $this->defaultValues['email'], TRUE);
     $password_service = $this->container->get('password');
     $this->assertNotEquals($password_service->check($this->defaultValues['password'], $this->testUser->getPassword()), TRUE);
+  }
+
+  /**
+   * Assures that the user's information remains unchanged.
+   */
+  protected function ensureUserInformationIsDefault(): void {
+    // Assert that the user's information remains unchanged.
+    $this->assertEquals($this->testUser->getAccountName() === $this->defaultValues['username'], TRUE);
+    $this->assertEquals($this->testUser->getEmail() === $this->defaultValues['email'], TRUE);
+    $password_service = $this->container->get('password');
+    $this->assertEquals($password_service->check($this->defaultValues['password'], $this->testUser->getPassword()), TRUE);
   }
 
 }
