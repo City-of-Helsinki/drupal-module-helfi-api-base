@@ -36,3 +36,8 @@ services:
       - '@database'
     tags:
       - { name: drush.command }
+  helfi_api_base.user_sanitize_commands:
+    class: \Drupal\helfi_api_base\Commands\UserSanitizeCommands
+    arguments: ['@helfi_api_base.user_entity_sanitizer']
+    tags:
+      - { name: drush.command }
