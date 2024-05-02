@@ -6,7 +6,6 @@ namespace Drupal\Tests\helfi_api_base\Functional;
 
 use Drupal\Tests\BrowserTestBase;
 use Drupal\user\Entity\User;
-use Drush\TestTraits\DrushTestTrait;
 
 /**
  * Tests user sanitation form and drush command.
