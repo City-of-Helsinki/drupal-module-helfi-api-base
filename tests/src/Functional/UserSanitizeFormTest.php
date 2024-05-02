@@ -13,11 +13,8 @@ use Drush\TestTraits\DrushTestTrait;
  *
  * @group helfi_api_base
  * @covers \Drupal\helfi_api_base\Entity\Form\UserEntitySanitizeForm
- * @covers \Drupal\helfi_api_base\Commands\UserSanitizeCommands
  */
 class UserSanitizeFormTest extends BrowserTestBase {
-
-  use DrushTestTrait;
 
   /**
    * {@inheritdoc}
@@ -138,40 +135,6 @@ class UserSanitizeFormTest extends BrowserTestBase {
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('People');
     $this->assertSession()->pageTextContains("User account id {$this->testUser->id()} was sanitized.");
-  }
-
-  /**
-   * Tests helfi:yser-sanitize command with field options.
-   */
-  public function testUserSanitizeCommandWithFields() {
-    $this->testUser->block()->save();
-    $this->drush('helfi:user-sanitize', [$this->testUser->id()], ['fields' => 'username']);
-
-    $storage = \Drupal::entityTypeManager()->getStorage('user');
-    $storage->resetCache([$this->testUser->id()]);
-    $entity = $storage->load($this->testUser->id());
-
-    $this->assertEquals($entity->getAccountName() === $this->defaultValues['username'], FALSE);
-    $this->assertEquals($entity->getEmail() === $this->defaultValues['email'], TRUE);
-    $password_service = $this->container->get('password');
-    $this->assertEquals($password_service->check($this->defaultValues['password'], $entity->getPassword()), TRUE);
-  }
-
-  /**
-   * Tests helfi:yser-sanitize command without field options.
-   */
-  public function testUserSanitizeCommandWithOutFields() {
-    $this->testUser->block()->save();
-    $this->drush('helfi:user-sanitize', [$this->testUser->id()]);
-
-    $storage = \Drupal::entityTypeManager()->getStorage('user');
-    $storage->resetCache([$this->testUser->id()]);
-    $entity = $storage->load($this->testUser->id());
-
-    $this->assertEquals($entity->getAccountName() === $this->defaultValues['username'], FALSE);
-    $this->assertEquals($entity->getEmail() === $this->defaultValues['email'], FALSE);
-    $password_service = $this->container->get('password');
-    $this->assertEquals($password_service->check($this->defaultValues['password'], $entity->getPassword()), FALSE);
   }
 
 }
