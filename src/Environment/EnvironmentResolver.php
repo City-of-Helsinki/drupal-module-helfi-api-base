@@ -161,8 +161,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             paths: $paths[Project::ETUSIVU],
             environment: EnvironmentEnum::Stage,
             services: [
-              // @todo This shouldn't be using prod address.
-              new Service(ServiceEnum::ElasticProxy, new Address('uutisapi.hel.fi')),
+              new Service(ServiceEnum::ElasticProxy, new Address('uutisapi.stage.hel.ninja')),
             ],
           ),
           new Environment(
