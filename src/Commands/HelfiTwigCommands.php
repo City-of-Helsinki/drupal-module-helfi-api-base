@@ -26,17 +26,6 @@ final class HelfiTwigCommands extends DrushCommands {
   ) {
   }
 
-  public static function create(ContainerInterface $container): self
-  {
-    $commandHandler = new static(
-      $container->get('twig'),
-      $container->get('module_handler'),
-      $container->get('extension.list.module'),
-    );
-
-    return $commandHandler;
-  }
-
   public function getTwig(): TwigEnvironment {
     return $this->twig;
   }
