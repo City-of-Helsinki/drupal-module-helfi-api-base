@@ -36,3 +36,11 @@ services:
       - '@database'
     tags:
       - { name: drush.command }
+  helfi_api_base.helfi_twig_commands:
+    class: \Drupal\helfi_api_base\Commands\HelfiTwigCommands
+    arguments:
+      - '@twig'
+      - '@module_handler'
+      - '@extension.list.module'
+    tags:
+      - { name: drush.command }
