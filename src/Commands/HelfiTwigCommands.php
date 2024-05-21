@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drush\Commands\core;
+namespace Drupal\helfi_api_base\Commands;
 
 use Drupal\Core\Extension\ExtensionList;
 use Drupal\Core\Template\TwigEnvironment;
@@ -12,7 +12,6 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drush\Drush;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Drush command to compile twig.
