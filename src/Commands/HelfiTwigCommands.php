@@ -35,6 +35,9 @@ final class HelfiTwigCommands extends DrushCommands {
 
   /**
    * Compile all Twig template(s).
+   * UHF-10063 prevent unknown function -error caused by
+   * twig files in core modules' help_topics folders
+   *
    */
   #[Command(name: 'helfi:twig:compile')]
   public function helfiTwigCompile(): void {
