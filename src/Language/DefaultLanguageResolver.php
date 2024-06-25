@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Language;
 
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -78,11 +79,14 @@ final class DefaultLanguageResolver {
   /**
    * Get current or fallback langcode.
    *
+   * @param string $type
+   *   (optional) The language type.
+   *
    * @return string
    *   Current or fallback language ID if current doesn't have full support.
    */
-  public function getCurrentOrFallbackLanguage(): string {
-    $langcode = $this->languageManager->getCurrentLanguage()->getId();
+  public function getCurrentOrFallbackLanguage(string $type = LanguageInterface::TYPE_INTERFACE): string {
+    $langcode = $this->languageManager->getCurrentLanguage($type)->getId();
     if ($this->isAltLanguage($langcode)) {
       return $this->getFallbackLanguage();
     }
