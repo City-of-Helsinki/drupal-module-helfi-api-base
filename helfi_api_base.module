@@ -110,8 +110,9 @@ function helfi_api_base_cron() : void {
  */
 function helfi_api_base_template_preprocess_default_variables_alter(array &$variables): void {
   // Set the language object and alternative language attributes.
-  $variables['language'] = $language = \Drupal::languageManager()
+  $variables['language'] = $language = Drupal::languageManager()
     ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
+
   // Set alternative language fallback attributes.
   $defaultLanguageResolver = Drupal::service('helfi_api_base.default_language_resolver');
   $variables['alternative_language'] = $defaultLanguageResolver->isAltLanguage($language->getId());
