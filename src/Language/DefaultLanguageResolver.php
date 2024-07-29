@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 /**
  * Resolves default languages and fallbacks.
  */
-final class DefaultLanguageResolver implements DefaultLanguageResolverInterface {
+final class DefaultLanguageResolver {
 
   /**
    * Constructs a new instance.
