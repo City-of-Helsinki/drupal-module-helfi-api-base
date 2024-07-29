@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 /**
  * Resolves default languages and fallbacks.
  */
-final class DefaultLanguageResolver {
+final class DefaultLanguageResolver implements DefaultLanguageResolverInterface {
 
   /**
    * Constructs a new instance.
@@ -48,7 +48,7 @@ final class DefaultLanguageResolver {
    *
    * Non-default languages use this for certain elements.
    * Can be configured by overriding the
-   * 'helfi_api_base.fallback_language' parameter in servies.yml  file.
+   * 'helfi_api_base.fallback_language' parameter in services.yml  file.
    *
    * @return string
    *   The fallback language ID.
