@@ -67,7 +67,8 @@ class ApiClientTest extends UnitTestCase {
     parent::setUp();
 
     $this->fixture = sprintf('%s/../../../fixtures/response.json', __DIR__);
-    $this->cache = new MemoryBackend();
+    $time = $this->prophesize(TimeInterface::class)->reveal();
+    $this->cache = new MemoryBackend($time);
   }
 
   /**

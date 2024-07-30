@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\helfi_api_base\Link\LinkProcessor;
 use Drupal\helfi_api_base\UserExpire\UserExpireManager;
@@ -101,5 +102,24 @@ function helfi_api_base_cron() : void {
     /** @var \Drupal\helfi_api_base\UserExpire\UserExpireManager $userExpireManager */
     $userExpireManager = \Drupal::service(UserExpireManager::class);
     $userExpireManager->cancelExpiredUsers();
+  }
+}
+
+/**
+ * Implements hook_template_preprocess_default_variables_alter().
+ */
+function helfi_api_base_template_preprocess_default_variables_alter(array &$variables): void {
+  // Set the language object and alternative language attributes.
+  $variables['language'] = $language = Drupal::languageManager()
+    ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
+
+  // Set alternative language fallback attributes.
+  $defaultLanguageResolver = Drupal::service('helfi_api_base.default_language_resolver');
+  $variables['alternative_language'] = $defaultLanguageResolver->isAltLanguage($language->getId());
+
+  if ($variables['alternative_language']) {
+    $attributes = $defaultLanguageResolver->getFallbackLangAttributes();
+    $variables['lang_attributes']['fallback_lang'] = $attributes['lang'];
+    $variables['lang_attributes']['fallback_dir'] = $attributes['dir'];
   }
 }

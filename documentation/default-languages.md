@@ -33,3 +33,24 @@ $language_resolver->getFallbackLangAttributes();
 $language_resolver->getCurrentLangAttributes();
 
 ```
+
+## Twig
+
+The current language object, the alternative language boolean and possible fallback language attributes are added to each template via `helfi_api_base_template_preprocess_default_variables_alter()`. 
+
+### Usage
+
+```twig
+{# Get the language ID or "langcode" #}
+{{ language.id }}
+
+{# Get the language human readable name #}
+{{ language.name }}
+
+{# Check for alternative language. (true|false) #}
+{{ alternative_language }}
+
+{# Get the alternative language fallback attributes. #}
+{% set lang = lang_attributes.fallback_lang %}
+{% set dir = lang_attributes.fallback_dir %}
+```
