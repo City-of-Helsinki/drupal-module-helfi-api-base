@@ -13,7 +13,6 @@ For example, this can be used to invalidate:
 
 ### OpenShift
 
-Add or modify `DRUPAL-VAULT-ACCOUNTS` KeyVault variable value.
 - See
 [Managing external API credentials](/documentation/api-accounts.md#managing-external-api-credentials) for documentation.
 - Credentials can be found on Confluence: [PubSub Staging/Prod access key](https://helsinkisolutionoffice.atlassian.net/wiki/spaces/HEL/pages/8354005224/Tunnusten+salasanojen+ja+muiden+avainten+jakaminen).
