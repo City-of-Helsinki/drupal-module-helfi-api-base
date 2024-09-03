@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Commands;
 
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
 use Drush\Attributes\Command;
 use Drush\Commands\DrushCommands;
@@ -19,6 +20,8 @@ use WebSocket\TimeoutException;
  *    reached and then exits with code 0.
  */
 final class PubSubCommands extends DrushCommands {
+
+  use AutowireTrait;
 
   public const MAX_MESSAGES = 100;
   public const CLIENT_TIMEOUT = 120;

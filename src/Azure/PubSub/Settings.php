@@ -19,13 +19,16 @@ final class Settings {
    * @param string $endpoint
    *   The API endpoint.
    * @param string $accessKey
-   *   The API access token.
+   *   The API access key.
+   * @param string $secondaryAccessKey
+   *   The secondary API access key.
    */
   public function __construct(
     public readonly string $hub,
     public readonly string $group,
     public readonly string $endpoint,
     public readonly string $accessKey,
+    public readonly string $secondaryAccessKey,
   ) {
   }
 

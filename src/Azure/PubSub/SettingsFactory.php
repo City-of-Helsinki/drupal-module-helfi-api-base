@@ -34,6 +34,7 @@ final class SettingsFactory {
       'group' => '',
       'endpoint' => '',
       'access_key' => '',
+      'secondary_access_key' => '',
     ];
 
     if ($settings = $this->vaultManager->get('pubsub')) {
@@ -50,7 +51,8 @@ final class SettingsFactory {
       $data->hub ?: '',
       $data->group ?: '',
       $data->endpoint ?: '',
-      $data->access_key ?: ''
+      $data->access_key ?: '',
+      $data->secondary_access_key ?: '',
     );
   }
 

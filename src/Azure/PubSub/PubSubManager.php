@@ -6,7 +6,6 @@ namespace Drupal\helfi_api_base\Azure\PubSub;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use WebSocket\Client;
 use WebSocket\ConnectionException;
 
 /**
@@ -24,8 +23,6 @@ final class PubSubManager implements PubSubManagerInterface {
   /**
    * Constructs a new instance.
    *
-   * @param \WebSocket\Client $client
-   *   The websocket client.
    * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
@@ -34,11 +31,39 @@ final class PubSubManager implements PubSubManagerInterface {
    *   The PubSub settings.
    */
   public function __construct(
-    private readonly Client $client,
+    private readonly PubSubClientFactory $clientFactory,
     private readonly EventDispatcherInterface $eventDispatcher,
     private readonly TimeInterface $time,
     private readonly Settings $settings,
   ) {
+  }
+
+  private function clientReceive() : string {
+    try {
+      return (string) $this->clientFactory
+        ->create(AccessTokenType::Primary)
+        ->receive();
+    }
+    catch (ConnectionException) {
+    }
+    return (string) $this->clientFactory
+      ->create(AccessTokenType::Secondary)
+      ->receive();
+  }
+
+  private function clientText(array $message) : void {
+    $message = $this->encodeMessage($message);
+
+    try {
+      $this->clientFactory
+        ->create(AccessTokenType::Primary)
+        ->text($message);
+    }
+    catch (ConnectionException) {
+    }
+    $this->clientFactory
+      ->create(AccessTokenType::Secondary)
+      ->text($message);
   }
 
   /**
@@ -52,16 +77,14 @@ final class PubSubManager implements PubSubManagerInterface {
     if ($this->joinedGroup) {
       return;
     }
-    $this->client->text(
-      $this->encodeMessage([
-        'type' => 'joinGroup',
-        'group' => $this->settings->group,
-      ])
-    );
+    $this->clientText([
+      'type' => 'joinGroup',
+      'group' => $this->settings->group,
+    ]);
 
     try {
       // Wait until we've actually joined the group.
-      $message = $this->decodeMessage((string) $this->client->receive());
+      $message = $this->decodeMessage($this->clientReceive());
 
       if (isset($message['event']) && $message['event'] === 'connected') {
         $this->joinedGroup = TRUE;
@@ -135,17 +158,15 @@ final class PubSubManager implements PubSubManagerInterface {
     $this->assertSettings();
     $this->joinGroup();
 
-    $this->client
-      ->text(
-        $this->encodeMessage([
-          'type' => 'sendToGroup',
-          'group' => $this->settings->group,
-          'dataType' => 'json',
-          'data' => $message + [
-            'timestamp' => $this->time->getCurrentTime(),
-          ],
-        ])
-      );
+    $this
+      ->clientText([
+        'type' => 'sendToGroup',
+        'group' => $this->settings->group,
+        'dataType' => 'json',
+        'data' => $message + [
+          'timestamp' => $this->time->getCurrentTime(),
+        ],
+      ]);
 
     return $this;
   }
@@ -157,7 +178,7 @@ final class PubSubManager implements PubSubManagerInterface {
     $this->assertSettings();
     $this->joinGroup();
 
-    $message = (string) $this->client->receive();
+    $message = $this->clientReceive();
     $json = $this->decodeMessage($message);
 
     $this->eventDispatcher
