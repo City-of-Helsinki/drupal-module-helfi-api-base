@@ -109,8 +109,10 @@ services:
       - '@config.factory'
 
   Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactory: ~
+  Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactoryInterface: '@Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactory'
+  Drupal\helfi_api_base\Azure\PubSub\SettingsFactory: ~
   Drupal\helfi_api_base\Azure\PubSub\Settings:
-    factory: ['Drupal\helfi_api_base\Azure\PubSub\SettingsFactory', 'create']
+    factory: ['@Drupal\helfi_api_base\Azure\PubSub\SettingsFactory', 'create']
   Drupal\helfi_api_base\Azure\PubSub\PubSubManager: ~
   Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface: '@Drupal\helfi_api_base\Azure\PubSub\PubSubManager'
   Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface: '@Drupal\helfi_api_base\Cache\CacheTagInvalidator'

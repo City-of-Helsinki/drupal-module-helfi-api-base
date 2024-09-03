@@ -11,7 +11,7 @@ use WebSocket\Client;
 /**
  * A Web socket client factory.
  */
-final class PubSubClientFactory {
+final class PubSubClientFactory implements PubSubClientFactoryInterface {
 
   /**
    * Constructs a new instance.
@@ -30,20 +30,15 @@ final class PubSubClientFactory {
   /**
    * Constructs a new websocket client object.
    *
-   * @param \Drupal\helfi_api_base\Azure\PubSub\AccessTokenType $type
-   *   The client type.
+   * @param string $accessKey
+   *   The access key.
    *
    * @return \WebSocket\Client
    *   The client.
    */
-  public function create(AccessTokenType $type) : Client {
+  public function create(string $accessKey) : Client {
     $url = sprintf('wss://%s/client/hubs/%s', rtrim($this->settings->endpoint, '/'), $this->settings->hub);
 
-    $accessKey = $this->settings->accessKey;
-
-    if ($type === AccessTokenType::Secondary) {
-      $accessKey = $this->settings->secondaryAccessKey;
-    }
     $authorizationToken = JWT::encode([
       'aud' => $url,
       'iat' => $this->time->getCurrentTime(),

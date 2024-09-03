@@ -28,10 +28,10 @@ class PubSubClientFactoryTest extends UnitTestCase {
       'hub',
       'group',
       'endpoint',
-      'accessToken',
+      ['accessToken', 'secondaryAccessToken'],
     );
-    $sut = new PubSubClientFactory();
-    $client = $sut->create($settings, $this->prophesize(TimeInterface::class)->reveal());
+    $sut = new PubSubClientFactory($this->prophesize(TimeInterface::class)->reveal(), $settings);
+    $client = $sut->create($settings->accessKeys[0]);
     $this->assertInstanceOf(Client::class, $client);
   }
 

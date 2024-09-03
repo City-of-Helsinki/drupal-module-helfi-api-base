@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Azure\PubSub;
 
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Utility\Error;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use WebSocket\Client;
 use WebSocket\ConnectionException;
 
 /**
@@ -14,56 +18,105 @@ use WebSocket\ConnectionException;
 final class PubSubManager implements PubSubManagerInterface {
 
   /**
+   * The websocket client.
+   *
+   * @var \WebSocket\Client|null
+   */
+  private ?Client $client = NULL;
+
+  /**
    * A flag indicating whether we've joined the group.
    *
    * @var bool
    */
-  private bool $joinedGroup = FALSE;
+  protected bool $joinedGroup = FALSE;
 
   /**
    * Constructs a new instance.
    *
+   * @param \Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactoryInterface $clientFactory
+   *   The client factory.
    * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The datetime service.
    * @param \Drupal\helfi_api_base\Azure\PubSub\Settings $settings
    *   The PubSub settings.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger.
    */
   public function __construct(
-    private readonly PubSubClientFactory $clientFactory,
+    private readonly PubSubClientFactoryInterface $clientFactory,
     private readonly EventDispatcherInterface $eventDispatcher,
     private readonly TimeInterface $time,
     private readonly Settings $settings,
+    #[Autowire(service: 'logger.channel.helfi_api_base')] private readonly LoggerInterface $logger,
   ) {
   }
 
+  /**
+   * Receives a message from PubSub service.
+   *
+   * @return string
+   *   The received message.
+   *
+   * @throws \WebSocket\ConnectionException
+   */
   private function clientReceive() : string {
-    try {
-      return (string) $this->clientFactory
-        ->create(AccessTokenType::Primary)
-        ->receive();
+    if ($this->client) {
+      return (string) $this->client->receive();
     }
-    catch (ConnectionException) {
+    $exception = new ConnectionException('Failed to receive message.');
+
+    // Initialize client with primary key, fallback to secondary key.
+    foreach ($this->settings->accessKeys as $key) {
+      try {
+        $client = $this->clientFactory->create($key);
+        $message = (string) $client->receive();
+
+        $this->client = $client;
+
+        return $message;
+      }
+      catch (ConnectionException $exception) {
+        Error::logException($this->logger, $exception);
+      }
     }
-    return (string) $this->clientFactory
-      ->create(AccessTokenType::Secondary)
-      ->receive();
+    throw $exception;
   }
 
+  /**
+   * Sends a text message to PubSub service.
+   *
+   * @param array $message
+   *   The message to send.
+   *
+   * @throws \JsonException
+   * @throws \WebSocket\ConnectionException
+   */
   private function clientText(array $message) : void {
     $message = $this->encodeMessage($message);
 
-    try {
-      $this->clientFactory
-        ->create(AccessTokenType::Primary)
-        ->text($message);
+    if ($this->client) {
+      $this->client->text($message);
+
+      return;
     }
-    catch (ConnectionException) {
+    $exception = new ConnectionException('Failed to send text.');
+
+    // Initialize client with primary key, fallback to secondary key.
+    foreach ($this->settings->accessKeys as $key) {
+      try {
+        $client = $this->clientFactory->create($key);
+        $client->text($message);
+        $this->client = $client;
+        return;
+      }
+      catch (ConnectionException $exception) {
+        Error::logException($this->logger, $exception);
+      }
     }
-    $this->clientFactory
-      ->create(AccessTokenType::Secondary)
-      ->text($message);
+    throw $exception;
   }
 
   /**
@@ -131,31 +184,7 @@ final class PubSubManager implements PubSubManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function setTimeout(int $timeout) : self {
-    $this->client->setTimeout($timeout);
-    return $this;
-  }
-
-  /**
-   * Asserts the settings.
-   *
-   * This is used to exit early if required settings are not populated.
-   */
-  private function assertSettings() : void {
-    $vars = get_object_vars($this->settings);
-
-    foreach ($vars as $key => $value) {
-      if (empty($this->settings->{$key})) {
-        throw new ConnectionException("Azure PubSub '$key' is not configured.");
-      }
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function sendMessage(array $message) : self {
-    $this->assertSettings();
     $this->joinGroup();
 
     $this
@@ -175,7 +204,6 @@ final class PubSubManager implements PubSubManagerInterface {
    * {@inheritdoc}
    */
   public function receive() : string {
-    $this->assertSettings();
     $this->joinGroup();
 
     $message = $this->clientReceive();

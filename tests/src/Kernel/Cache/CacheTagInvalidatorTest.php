@@ -9,6 +9,7 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\CacheTagInvalidator;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Log\LoggerInterface;
 use WebSocket\Client;
 
 /**
@@ -75,6 +76,7 @@ class CacheTagInvalidatorTest extends KernelTestBase {
       $this->container->get('event_dispatcher'),
       $this->container->get('datetime.time'),
       $this->container->get('helfi_api_base.pubsub_settings'),
+      $this->prophesize(LoggerInterface::class)->reveal(),
     );
     $this->container->set('helfi_api_base.pubsub_manager', $pubSubManager);
     $pubSubManager->receive();

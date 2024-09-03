@@ -11,19 +11,15 @@ use Drupal\helfi_api_base\Vault\VaultManager;
 use Drupal\Tests\UnitTestCase;
 
 /**
- * @coversDefaultClass \Drupal\helfi_api_base\Azure\PubSub\SettingsFactory
+ * Tests pubsub settings.
+ *
  * @group helfi_api_base
  */
 class SettingsTest extends UnitTestCase {
 
   /**
-   * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
-   * @covers ::create
-   * @covers ::__construct
-   * @covers \Drupal\helfi_api_base\Vault\VaultManager::__construct
-   * @covers \Drupal\helfi_api_base\Vault\VaultManager::get
-   * @covers \Drupal\helfi_api_base\Vault\Json::__construct
-   * @covers \Drupal\helfi_api_base\Vault\Json::data
+   * Tests settings.
+   *
    * @dataProvider settingsData
    */
   public function testSettings(array $values, array $expectedValues) : void {
@@ -36,15 +32,11 @@ class SettingsTest extends UnitTestCase {
     $this->assertSame($expectedValues['hub'], $settings->hub);
     $this->assertSame($expectedValues['group'], $settings->group);
     $this->assertSame($expectedValues['endpoint'], $settings->endpoint);
-    $this->assertSame($expectedValues['access_key'], $settings->accessKey);
+    $this->assertSame($expectedValues['access_key'], $settings->accessKeys);
   }
 
   /**
-   * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
-   * @covers ::create
-   * @covers ::__construct
-   * @covers \Drupal\helfi_api_base\Vault\VaultManager::__construct
-   * @covers \Drupal\helfi_api_base\Vault\VaultManager::get
+   * Tests empty settings.
    */
   public function testEmptySettings() : void {
     $vaultManager = new VaultManager([]);
@@ -54,7 +46,7 @@ class SettingsTest extends UnitTestCase {
     $this->assertSame('', $settings->hub);
     $this->assertSame('', $settings->group);
     $this->assertSame('', $settings->endpoint);
-    $this->assertSame('', $settings->accessKey);
+    $this->assertSame([], $settings->accessKeys);
   }
 
   /**
@@ -77,7 +69,7 @@ class SettingsTest extends UnitTestCase {
           'hub' => 'hub',
           'group' => 'group',
           'endpoint' => 'endpoint',
-          'access_key' => '123',
+          'access_key' => ['123'],
         ],
       ],
     ];
@@ -94,7 +86,7 @@ class SettingsTest extends UnitTestCase {
           'hub' => '',
           'group' => '',
           'endpoint' => '',
-          'access_key' => '',
+          'access_key' => [],
         ],
       ];
     }

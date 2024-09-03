@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Unit\Commands;
 
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
-use Drupal\helfi_api_base\Commands\PubSubCommands;
+use Drupal\helfi_api_base\Drush\Commands\PubSubCommands;
 use Drupal\Tests\UnitTestCase;
 use Drush\Commands\DrushCommands;
 use Prophecy\Argument;
@@ -39,7 +39,6 @@ class PubSubCommandsTest extends UnitTestCase {
       ->shouldBeCalledTimes(1);
 
     $manager = $this->prophesize(PubSubManagerInterface::class);
-    $manager->setTimeout(PubSubCommands::CLIENT_TIMEOUT)->shouldBeCalled();
     $manager->receive()->willReturn($expectedMessage);
 
     $sut = new PubSubCommands($manager->reveal());
@@ -60,7 +59,6 @@ class PubSubCommandsTest extends UnitTestCase {
       ->shouldBeCalledTimes(1);
 
     $manager = $this->prophesize(PubSubManagerInterface::class);
-    $manager->setTimeout(PubSubCommands::CLIENT_TIMEOUT)->shouldBeCalled();
     $manager->receive()->willThrow(new \JsonException('Syntax error'));
 
     $sut = new PubSubCommands($manager->reveal());
@@ -80,7 +78,6 @@ class PubSubCommandsTest extends UnitTestCase {
       ->shouldBeCalledTimes(1);
 
     $manager = $this->prophesize(PubSubManagerInterface::class);
-    $manager->setTimeout(PubSubCommands::CLIENT_TIMEOUT)->shouldBeCalled();
     $manager->receive()->willThrow(TimeoutException::class);
 
     $sut = new PubSubCommands($manager->reveal());
@@ -95,7 +92,6 @@ class PubSubCommandsTest extends UnitTestCase {
   public function testConnectionException() : void {
     $this->expectException(ConnectionException::class);
     $manager = $this->prophesize(PubSubManagerInterface::class);
-    $manager->setTimeout(PubSubCommands::CLIENT_TIMEOUT)->shouldBeCalled();
     $manager->receive()->willThrow(ConnectionException::class);
 
     $sut = new PubSubCommands($manager->reveal());
