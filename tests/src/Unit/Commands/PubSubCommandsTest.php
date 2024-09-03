@@ -25,8 +25,7 @@ class PubSubCommandsTest extends UnitTestCase {
   use ProphecyTrait;
 
   /**
-   * @covers ::__construct
-   * @covers ::listen
+   * Tests listen.
    */
   public function testListen() : void {
     $expectedMessage = '{"message":"test"}';
@@ -47,8 +46,7 @@ class PubSubCommandsTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::listen
-   * @covers ::__construct
+   * Tests exception output.
    */
   public function testExceptionOutput() : void {
     $output = $this->prophesize(OutputInterface::class);
@@ -67,8 +65,7 @@ class PubSubCommandsTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::listen
-   * @covers ::__construct
+   * Tests timeout exception.
    */
   public function testTimeoutException() : void {
     $output = $this->prophesize(OutputInterface::class);
@@ -86,8 +83,7 @@ class PubSubCommandsTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::listen
-   * @covers ::__construct
+   * Tests connection exception.
    */
   public function testConnectionException() : void {
     $this->expectException(ConnectionException::class);
