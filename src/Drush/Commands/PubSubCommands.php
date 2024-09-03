@@ -28,11 +28,11 @@ final class PubSubCommands extends DrushCommands {
   /**
    * Constructs a new instance.
    *
-   * @param \Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface $clientManager
+   * @param \Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface $pubSubManager
    *   The PubSub client.
    */
   public function __construct(
-    private readonly PubSubManagerInterface $clientManager,
+    private readonly PubSubManagerInterface $pubSubManager,
   ) {
     parent::__construct();
   }
@@ -47,7 +47,7 @@ final class PubSubCommands extends DrushCommands {
   public function listen() : int {
     for ($received = 0; $received < self::MAX_MESSAGES; $received++) {
       try {
-        $message = $this->clientManager->receive();
+        $message = $this->pubSubManager->receive();
         $this->io()
           ->writeln(sprintf('Received message [#%d]: %s', $received, $message));
       }
