@@ -20,8 +20,7 @@ class PubSubClientFactoryTest extends UnitTestCase {
   use ProphecyTrait;
 
   /**
-   * @covers ::create
-   * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
+   * Tests client construction.
    */
   public function testConstruct() : void {
     $settings = new Settings(

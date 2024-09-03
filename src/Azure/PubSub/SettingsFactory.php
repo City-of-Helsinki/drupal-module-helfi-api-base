@@ -37,7 +37,7 @@ final class SettingsFactory {
     $data = $settings->data();
 
     $accessKeys = [];
-    foreach (['access_key', 'access_key_secondary'] as $key) {
+    foreach (['access_key', 'secondary_access_key'] as $key) {
       if (empty($data->{$key})) {
         continue;
       }

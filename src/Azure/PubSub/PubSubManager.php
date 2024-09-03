@@ -25,13 +25,6 @@ final class PubSubManager implements PubSubManagerInterface {
   private ?Client $client = NULL;
 
   /**
-   * A flag indicating whether we've joined the group.
-   *
-   * @var bool
-   */
-  protected bool $joinedGroup = FALSE;
-
-  /**
    * Constructs a new instance.
    *
    * @param \Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactoryInterface $clientFactory
@@ -55,100 +48,51 @@ final class PubSubManager implements PubSubManagerInterface {
   }
 
   /**
-   * Receives a message from PubSub service.
-   *
-   * @return string
-   *   The received message.
-   *
-   * @throws \WebSocket\ConnectionException
-   */
-  private function clientReceive() : string {
-    if ($this->client) {
-      return (string) $this->client->receive();
-    }
-    $exception = new ConnectionException('Failed to receive message.');
-
-    // Initialize client with primary key, fallback to secondary key.
-    foreach ($this->settings->accessKeys as $key) {
-      try {
-        $client = $this->clientFactory->create($key);
-        $message = (string) $client->receive();
-
-        $this->client = $client;
-
-        return $message;
-      }
-      catch (ConnectionException $exception) {
-        Error::logException($this->logger, $exception);
-      }
-    }
-    throw $exception;
-  }
-
-  /**
-   * Sends a text message to PubSub service.
-   *
-   * @param array $message
-   *   The message to send.
-   *
-   * @throws \JsonException
-   * @throws \WebSocket\ConnectionException
-   */
-  private function clientText(array $message) : void {
-    $message = $this->encodeMessage($message);
-
-    if ($this->client) {
-      $this->client->text($message);
-
-      return;
-    }
-    $exception = new ConnectionException('Failed to send text.');
-
-    // Initialize client with primary key, fallback to secondary key.
-    foreach ($this->settings->accessKeys as $key) {
-      try {
-        $client = $this->clientFactory->create($key);
-        $client->text($message);
-        $this->client = $client;
-        return;
-      }
-      catch (ConnectionException $exception) {
-        Error::logException($this->logger, $exception);
-      }
-    }
-    throw $exception;
-  }
-
-  /**
    * Joins a group.
    *
    * @throws \JsonException
    * @throws \WebSocket\ConnectionException
    * @throws \WebSocket\TimeoutException
    */
-  private function joinGroup() : void {
-    if ($this->joinedGroup) {
+  private function initializeClient() : void {
+    if ($this->client) {
       return;
     }
-    $this->clientText([
-      'type' => 'joinGroup',
-      'group' => $this->settings->group,
-    ]);
+    $client = $exception = NULL;
+
+    // Initialize client with primary key, fallback to secondary key.
+    foreach ($this->settings->accessKeys as $key) {
+      $exception = NULL;
+
+      try {
+        $client = $this->clientFactory->create($key);
+        $client->text($this->encodeMessage([
+          'type' => 'joinGroup',
+          'group' => $this->settings->group,
+        ]));
+      }
+      catch (ConnectionException $exception) {
+        Error::logException($this->logger, $exception);
+      }
+    }
+
+    if ($exception instanceof ConnectionException) {
+      throw $exception;
+    }
 
     try {
       // Wait until we've actually joined the group.
-      $message = $this->decodeMessage($this->clientReceive());
+      $message = $this->decodeMessage((string) $client->receive());
 
       if (isset($message['event']) && $message['event'] === 'connected') {
-        $this->joinedGroup = TRUE;
+        $this->client = $client;
 
         return;
       }
     }
     catch (\JsonException) {
     }
-
-    throw new ConnectionException('Failed to join a group.');
+    throw new ConnectionException('Failed to initialize the client.');
   }
 
   /**
@@ -185,18 +129,16 @@ final class PubSubManager implements PubSubManagerInterface {
    * {@inheritdoc}
    */
   public function sendMessage(array $message) : self {
-    $this->joinGroup();
+    $this->initializeClient();
 
-    $this
-      ->clientText([
-        'type' => 'sendToGroup',
-        'group' => $this->settings->group,
-        'dataType' => 'json',
-        'data' => $message + [
-          'timestamp' => $this->time->getCurrentTime(),
-        ],
-      ]);
-
+    $this->client->text($this->encodeMessage([
+      'type' => 'sendToGroup',
+      'group' => $this->settings->group,
+      'dataType' => 'json',
+      'data' => $message + [
+        'timestamp' => $this->time->getCurrentTime(),
+      ],
+    ]));
     return $this;
   }
 
@@ -204,9 +146,9 @@ final class PubSubManager implements PubSubManagerInterface {
    * {@inheritdoc}
    */
   public function receive() : string {
-    $this->joinGroup();
+    $this->initializeClient();
 
-    $message = $this->clientReceive();
+    $message = (string) $this->client->receive();
     $json = $this->decodeMessage($message);
 
     $this->eventDispatcher

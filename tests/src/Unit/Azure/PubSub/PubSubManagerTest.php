@@ -26,15 +26,14 @@ class PubSubManagerTest extends UnitTestCase {
   use ProphecyTrait;
 
   /**
-   * Tests joinGroup exceptions.
+   * Tests initializeClient with invalid joinGroup message.
    */
-  public function testJoinGroupException() : void {
+  public function testInitializeClientJoinGroupException() : void {
     $time = $this->prophesize(TimeInterface::class);
     $time->getCurrentTime()->willReturn(1234);
 
     $client = $this->prophesize(Client::class);
     $client->text('{"type":"joinGroup","group":"local"}')->shouldBeCalledTimes(1);
-    $client->send(Argument::any())->shouldNotBeCalled();
     $client->receive()->willReturn('');
     $clientFactory = $this->prophesize(PubSubClientFactoryInterface::class);
     $clientFactory->create('token')
@@ -53,7 +52,39 @@ class PubSubManagerTest extends UnitTestCase {
       $this->prophesize(LoggerInterface::class)->reveal(),
     );
     $this->expectException(ConnectionException::class);
-    $this->expectExceptionMessage('Failed to join a group.');
+    $this->expectExceptionMessage('Failed to initialize the client.');
+    $sut->sendMessage(['test' => 'something']);
+  }
+
+  /**
+   * Tests initializeClient with invalid credentials.
+   */
+  public function testInitializeClientInvalidCredentials(): void {
+    $time = $this->prophesize(TimeInterface::class);
+    $time->getCurrentTime()->willReturn(1234);
+
+    $client = $this->prophesize(Client::class);
+    $client->text('{"type":"joinGroup","group":"local"}')
+      ->shouldBeCalledTimes(1)
+      ->willThrow(new ConnectionException('Test exception'));
+    $clientFactory = $this->prophesize(PubSubClientFactoryInterface::class);
+    $clientFactory->create('token')
+      ->willReturn($client->reveal());
+
+    $sut = new PubSubManager(
+      $clientFactory->reveal(),
+      $this->prophesize(EventDispatcherInterface::class)->reveal(),
+      $time->reveal(),
+      new Settings(
+        'hub',
+        'local',
+        'localhost',
+        ['token'],
+      ),
+      $this->prophesize(LoggerInterface::class)->reveal(),
+    );
+    $this->expectException(ConnectionException::class);
+    $this->expectExceptionMessage('Test exception');
     $sut->sendMessage(['test' => 'something']);
   }
 
