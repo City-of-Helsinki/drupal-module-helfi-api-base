@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_api_base\Commands;
+namespace Drupal\helfi_api_base\Drush\Commands;
 
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
 use Drush\Attributes\Command;
+use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
 use WebSocket\TimeoutException;
 
@@ -20,18 +21,20 @@ use WebSocket\TimeoutException;
  */
 final class PubSubCommands extends DrushCommands {
 
+  use AutowireTrait;
+
   public const MAX_MESSAGES = 100;
-  public const CLIENT_TIMEOUT = 120;
 
   /**
    * Constructs a new instance.
    *
-   * @param \Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface $pubSubClient
+   * @param \Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface $pubSubManager
    *   The PubSub client.
    */
   public function __construct(
-    private readonly PubSubManagerInterface $pubSubClient,
+    private readonly PubSubManagerInterface $pubSubManager,
   ) {
+    parent::__construct();
   }
 
   /**
@@ -42,11 +45,9 @@ final class PubSubCommands extends DrushCommands {
    */
   #[Command(name: 'helfi:azure:pubsub-listen')]
   public function listen() : int {
-    $this->pubSubClient->setTimeout(self::CLIENT_TIMEOUT);
-
     for ($received = 0; $received < self::MAX_MESSAGES; $received++) {
       try {
-        $message = $this->pubSubClient->receive();
+        $message = $this->pubSubManager->receive();
         $this->io()
           ->writeln(sprintf('Received message [#%d]: %s', $received, $message));
       }

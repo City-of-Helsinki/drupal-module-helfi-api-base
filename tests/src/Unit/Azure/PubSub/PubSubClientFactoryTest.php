@@ -20,18 +20,17 @@ class PubSubClientFactoryTest extends UnitTestCase {
   use ProphecyTrait;
 
   /**
-   * @covers ::create
-   * @covers \Drupal\helfi_api_base\Azure\PubSub\Settings::__construct
+   * Tests client construction.
    */
   public function testConstruct() : void {
     $settings = new Settings(
       'hub',
       'group',
       'endpoint',
-      'accessToken',
+      ['accessToken', 'secondaryAccessToken'],
     );
-    $sut = new PubSubClientFactory();
-    $client = $sut->create($settings, $this->prophesize(TimeInterface::class)->reveal());
+    $sut = new PubSubClientFactory($this->prophesize(TimeInterface::class)->reveal(), $settings);
+    $client = $sut->create($settings->accessKeys[0]);
     $this->assertInstanceOf(Client::class, $client);
   }
 

@@ -4,10 +4,10 @@ Provides an integration to [Azure's Web PubSub service](https://azure.microsoft.
 
 ## Configuration
 
-You must define a [JSON Vault item](/documentation/api-accounts.md#managing-external-api-credentials) to use this feature. The data field should be a JSON string containing `endpoint`, `hub`, `group` and `access_key`:
+You must define a [JSON Vault item](/documentation/api-accounts.md#managing-external-api-credentials) to use this feature. The data field should be a JSON string containing `endpoint`, `hub`, `group` and `access_key` and optional `secondary_access_key`:
 
 ```json
-{"endpoint": "<endpoint>", "hub": "<hub>", "group": "<group>", "access_key": "<access-key>"}
+{"endpoint": "<endpoint>", "hub": "<hub>", "group": "<group>", "access_key": "<access-key>", "secondary_access_key":  "<secondary-access-key>"}
 ```
 
 ## Usage
@@ -85,34 +85,8 @@ $pubsub_account = [
     'hub' => '<hub>',
     'group' => '<group>',
     'access_key' => '<access-key>',
+    'secondary_access_key' => '<secondary-access-key>',
   ]),
 ];
 $config['helfi_api_base.api_accounts']['vault'][] = $pubsub_account;
 ```
-
-## Solving pubsub related problems
-
-If menus or news or other content doesn't update normally, you can verify that the pubsub service is working correctly
-
-### Artemis is not up on etusivu-instance
-- See that frontpage production has artemis pod up and running
-
-#### If the pod is not running
-- See if there is a pipeline to get it up again OR
-- Contact HiQ
-
-
-### Pubsub-process is not running
-- Go to any production site's cron pod
-  - run `ps aux`, you should see pubsub related process on the list
-
-#### If the process is not running
-- Short term solution is to run `drush cr` to force the site to fetch new data.
-- You can run production deployment to get it running again.
-
-
-### Bad credentials
-- Go to any cron pod and look for authorization error
-
-#### Update the credentials
-- Go and update the pubsub-vault credentials

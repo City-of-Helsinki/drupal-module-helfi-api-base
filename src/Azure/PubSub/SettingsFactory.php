@@ -29,28 +29,26 @@ final class SettingsFactory {
    *   The PubSub settings object.
    */
   public function create() : Settings {
-    $data = [
-      'hub' => '',
-      'group' => '',
-      'endpoint' => '',
-      'access_key' => '',
-    ];
-
-    if ($settings = $this->vaultManager->get('pubsub')) {
-      foreach ($data as $key => $value) {
-        if (!isset($settings->data()->{$key})) {
-          continue;
-        }
-        $data[$key] = $settings->data()->{$key};
-      }
+    if (!$settings = $this->vaultManager->get('pubsub')) {
+      // Return an empty settings object in case PubSub is not
+      // configured.
+      return new Settings('', '', '', []);
     }
-    $data = (object) $data;
+    $data = $settings->data();
+
+    $accessKeys = [];
+    foreach (['access_key', 'secondary_access_key'] as $key) {
+      if (empty($data->{$key})) {
+        continue;
+      }
+      $accessKeys[] = $data->{$key};
+    }
 
     return new Settings(
       $data->hub ?: '',
       $data->group ?: '',
       $data->endpoint ?: '',
-      $data->access_key ?: ''
+      $accessKeys,
     );
   }
 

@@ -108,53 +108,17 @@ services:
     arguments:
       - '@config.factory'
 
-  Drupal\helfi_api_base\Azure\PubSub\SettingsFactory: '@helfi_api_base.pubsub_settings_factory'
-  helfi_api_base.pubsub_settings_factory:
-    class: Drupal\helfi_api_base\Azure\PubSub\SettingsFactory
-    arguments:
-      - '@helfi_api_base.vault_manager'
+  Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactory: ~
+  Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactoryInterface: '@Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactory'
+  Drupal\helfi_api_base\Azure\PubSub\SettingsFactory: ~
+  Drupal\helfi_api_base\Azure\PubSub\Settings:
+    factory: ['@Drupal\helfi_api_base\Azure\PubSub\SettingsFactory', 'create']
+  Drupal\helfi_api_base\Azure\PubSub\PubSubManager: ~
+  Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface: '@Drupal\helfi_api_base\Azure\PubSub\PubSubManager'
+  Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface: '@Drupal\helfi_api_base\Cache\CacheTagInvalidator'
+  Drupal\helfi_api_base\Cache\CacheTagInvalidator: ~
 
-  Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactory: '@helfi_api_base.pubsub_client_factory'
-  helfi_api_base.pubsub_client_factory:
-    class: Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactory
-
-  helfi_api_base.pubsub_client:
-    public: false
-    class: \WebSocket\Client
-    factory: ['@helfi_api_base.pubsub_client_factory', 'create']
-    arguments:
-      - '@helfi_api_base.pubsub_settings'
-      - '@datetime.time'
-
-  Drupal\helfi_api_base\Azure\PubSub\Settings: '@helfi_api_base.pubsub_settings'
-  helfi_api_base.pubsub_settings:
-    class: Drupal\helfi_api_base\Azure\PubSub\Settings
-    factory: ['@helfi_api_base.pubsub_settings_factory', 'create']
-
-  Drupal\helfi_api_base\Azure\PubSub\PubSubManager: '@helfi_api_base.pubsub_manager'
-  helfi_api_base.pubsub_manager:
-    class: Drupal\helfi_api_base\Azure\PubSub\PubSubManager
-    arguments:
-      - '@helfi_api_base.pubsub_client'
-      - '@event_dispatcher'
-      - '@datetime.time'
-      - '@helfi_api_base.pubsub_settings'
-
-  Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface: '@helfi_api_base.cache_tag_invalidator'
-  Drupal\helfi_api_base\Cache\CacheTagInvalidator: '@helfi_api_base.cache_tag_invalidator'
-  helfi_api_base.cache_tag_invalidator:
-    class: Drupal\helfi_api_base\Cache\CacheTagInvalidator
-    arguments:
-      - '@helfi_api_base.pubsub_manager'
-
-  Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber: '@helfi_api_base.cache_tag_invalidator_subscriber'
-  helfi_api_base.cache_tag_invalidator_subscriber:
-    class: Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber
-    arguments:
-      - '@cache_tags.invalidator'
-      - '@helfi_api_base.environment_resolver'
-    tags:
-      - { name: event_subscriber }
+  Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber: ~
 
   Drupal\helfi_api_base\Entity\Revision\RevisionManager: '@helfi_api_base.revision_manager'
   helfi_api_base.revision_manager:
