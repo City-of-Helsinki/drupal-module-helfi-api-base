@@ -48,7 +48,7 @@ final class PubSubManager implements PubSubManagerInterface {
   }
 
   /**
-   * Joins a group.
+   * Initializes the websocket client.
    *
    * @throws \JsonException
    * @throws \WebSocket\ConnectionException
@@ -60,6 +60,9 @@ final class PubSubManager implements PubSubManagerInterface {
     }
     $client = $exception = NULL;
 
+    if (empty($this->settings->accessKeys)) {
+      throw new ConnectionException('PubSub access key is undefined.');
+    }
     // Initialize client with primary key, fallback to secondary key.
     foreach ($this->settings->accessKeys as $key) {
       $exception = NULL;
