@@ -123,3 +123,22 @@ function helfi_api_base_template_preprocess_default_variables_alter(array &$vari
     $variables['lang_attributes']['fallback_dir'] = $attributes['dir'];
   }
 }
+
+/**
+ * Grants permissions for given role.
+ *
+ * @param array $map
+ *   The role => permissions map.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ * @throws \InvalidArgumentException
+ */
+function helfi_api_base_grant_permissions(array $map): void {
+  foreach ($map as $rid => $permissions) {
+    if (!$role = Role::load($rid)) {
+      throw new InvalidArgumentException("Role ($rid) not found.");
+    }
+    array_map(fn (string $permission) => $role->grantPermission($permission), $permissions);
+    $role->save();
+  }
+}
