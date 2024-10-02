@@ -3,9 +3,9 @@
 namespace Drupal\Tests\helfi_api_base\Unit;
 
 use Drupal\Core\File\Exception\FileNotExistsException;
+use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\ApiClient\ApiFixture;
 use Drupal\helfi_api_base\ApiClient\ApiResponse;
-use Drupal\Tests\UnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\helfi_api_base\ApiClient\ApiFixture

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
+use Drupal\Tests\helfi_api_base\Traits\MigrationTestTrait;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\migrate\MigrateMessageInterface;
-use Drupal\Tests\helfi_api_base\Traits\MigrationTestTrait;
 
 /**
  * Base class for multilingual migration tests.

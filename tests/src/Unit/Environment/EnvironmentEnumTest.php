@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\Tests\UnitTestCase;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 
 /**
  * Tests environment enum.

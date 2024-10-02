@@ -7,10 +7,10 @@ namespace Drupal\Tests\helfi_api_base\Kernel\Plugin;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\RenderContext;
-use Drupal\filter\FilterPluginCollection;
-use Drupal\filter\FilterProcessResult;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\TestLoggerTrait;
+use Drupal\filter\FilterPluginCollection;
+use Drupal\filter\FilterProcessResult;
 
 /**
  * Tests custom language negotiator functionality.

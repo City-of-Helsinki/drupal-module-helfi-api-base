@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Kernel\Entity\Form;
 
 use Drupal\Core\Form\FormState;
+use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use Drupal\helfi_api_base\Entity\Form\RevisionRevertTranslationForm;
 use Drupal\remote_entity_test\Entity\RemoteEntityTest;
-use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

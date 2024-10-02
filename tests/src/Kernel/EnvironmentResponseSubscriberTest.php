@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
 use Drupal\Core\Render\HtmlResponse;
+use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\EventSubscriber\EnvironmentResponseSubscriber;
-use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -45,7 +45,7 @@ class EnvironmentResponseSubscriberTest extends KernelTestBase {
    * @return \Symfony\Component\HttpKernel\Event\ResponseEvent
    *   The response event.
    */
-  private function getResponseEvent(Request $request = NULL) : ResponseEvent {
+  private function getResponseEvent(?Request $request = NULL) : ResponseEvent {
     if (!$request) {
       $request = Request::createFromGlobals();
     }

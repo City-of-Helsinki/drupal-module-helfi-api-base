@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Unit;
 
-use Drupal\helfi_api_base\Cache\CacheKeyTrait;
 use Drupal\Tests\UnitTestCase;
+use Drupal\helfi_api_base\Cache\CacheKeyTrait;
 
 /**
  * Tests cache key trait.
