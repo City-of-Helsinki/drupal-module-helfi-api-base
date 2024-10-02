@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Plugin\DebugDataItem;
 
-use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Cache\CacheableDependencyInterface;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\KeyValueStore\KeyValueStoreInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;

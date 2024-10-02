@@ -132,7 +132,7 @@ final class MigrationUpdateAction extends ActionBase implements ContainerFactory
    */
   public function access(
     $object,
-    ?AccountInterface $account = NULL,
+    AccountInterface $account = NULL,
     $return_as_object = FALSE,
   ) {
     /** @var \Drupal\helfi_api_base\Entity\RemoteEntityBase $object */

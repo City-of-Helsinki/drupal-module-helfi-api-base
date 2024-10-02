@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Unit\EventSubscriber;
 
-use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\EventSubscriber\SentryTracesSamplerSubscriber;
 use Drupal\raven\Event\OptionsAlter;
+use Drupal\Tests\UnitTestCase;
 use Sentry\Tracing\SamplingContext;
 use Sentry\Tracing\TransactionContext;
 

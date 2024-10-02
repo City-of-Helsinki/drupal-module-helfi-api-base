@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
-use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Environment\Address;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Service;
 use Drupal\helfi_api_base\Environment\ServiceEnum;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests environment value object.

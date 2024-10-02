@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\EventSubscriber;
 
-use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
-use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Event\PostDeployEvent;
+use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
+use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\user\Entity\Role;
 use Drupal\user\UserInterface;
 

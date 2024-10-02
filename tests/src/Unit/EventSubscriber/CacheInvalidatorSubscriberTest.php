@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Unit\EventSubscriber;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
-use Drupal\Tests\UnitTestCase;
-use Drupal\Tests\helfi_api_base\Traits\CacheTagInvalidator;
-use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber;
+use Drupal\Tests\helfi_api_base\Traits\CacheTagInvalidator;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
+use Drupal\Tests\UnitTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**

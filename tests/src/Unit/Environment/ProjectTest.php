@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Environment\Address;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectMetadata;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests Project value object.

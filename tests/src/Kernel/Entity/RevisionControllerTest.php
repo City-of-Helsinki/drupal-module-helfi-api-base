@@ -6,9 +6,9 @@ namespace Drupal\Tests\helfi_api_base\Kernel\Entity;
 
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use Drupal\helfi_api_base\Entity\RevisionController;
 use Drupal\remote_entity_test\Entity\RemoteEntityTest;
+use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Routing\Route;
 

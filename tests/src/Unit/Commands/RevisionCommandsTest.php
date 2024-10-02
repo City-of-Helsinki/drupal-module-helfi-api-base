@@ -9,9 +9,9 @@ use Drupal\Core\Database\Query\Select;
 use Drupal\Core\Database\StatementInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Commands\RevisionCommands;
 use Drupal\helfi_api_base\Entity\Revision\RevisionManager;
+use Drupal\Tests\UnitTestCase;
 use Drush\Commands\DrushCommands;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -46,9 +46,9 @@ class RevisionCommandsTest extends UnitTestCase {
    */
   private function getSut(
     RevisionManager $revisionManager,
-    ?EntityTypeManagerInterface $entityTypeManager = NULL,
-    ?Connection $connection = NULL,
-    ?ObjectProphecy $io = NULL,
+    EntityTypeManagerInterface $entityTypeManager = NULL,
+    Connection $connection = NULL,
+    ObjectProphecy $io = NULL,
   ) : RevisionCommands {
     if (!$entityTypeManager) {
       $definition = $this->prophesize(EntityTypeInterface::class);

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Kernel\Plugin\rest\resource;
 
 use Drupal\Core\Cache\CacheableResponse;
-use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use Drupal\helfi_api_base\Package\HelfiPackage;
+use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;

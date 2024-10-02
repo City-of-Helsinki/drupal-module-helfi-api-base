@@ -50,7 +50,7 @@ class JsonSchemaConstraintValidatorTest extends KernelTestBase {
    * @return \Symfony\Component\Validator\ConstraintViolationListInterface
    *   The violations.
    */
-  private function assertViolations(mixed $value, ?string $schema = NULL) : ConstraintViolationListInterface {
+  private function assertViolations(mixed $value, string $schema = NULL) : ConstraintViolationListInterface {
     if (!$schema) {
       $schema = 'file://' . realpath(__DIR__ . '/../../fixtures/schema.json');
     }

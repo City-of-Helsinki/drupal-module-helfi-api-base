@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Functional;
 
-use Drupal\Tests\BrowserTestBase as CoreBrowserTestBase;
 use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\Tests\BrowserTestBase as CoreBrowserTestBase;
 
 /**
  * Base class for multilingual tests.

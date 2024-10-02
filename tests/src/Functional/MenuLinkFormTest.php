@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Functional;
 
 use Drupal\Core\Url;
-use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\remote_entity_test\Entity\RemoteEntityTest;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 
 /**
  * Tests menu link form.

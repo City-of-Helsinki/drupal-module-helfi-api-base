@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Unit\Cache;
 
-use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
+use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use WebSocket\ConnectionException;

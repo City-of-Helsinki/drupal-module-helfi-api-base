@@ -9,9 +9,9 @@ use Drupal\Core\GeneratedLink;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\LinkGeneratorInterface;
-use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\helfi_api_base\Link\LinkProcessor;
+use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 

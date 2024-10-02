@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\UserExpire;
 
-use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\helfi_api_base\UserExpire\UserExpireManager;
+use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\user\Entity\User;
 
 /**

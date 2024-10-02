@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Unit\Package;
 
-use Drupal\Tests\UnitTestCase;
-use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\helfi_api_base\Exception\InvalidPackageException;
 use Drupal\helfi_api_base\Package\HelfiPackage;
 use Drupal\helfi_api_base\Package\Version;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;

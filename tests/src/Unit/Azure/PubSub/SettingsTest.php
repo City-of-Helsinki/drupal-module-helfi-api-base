@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Unit\Azure\PubSub;
 
-use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Azure\PubSub\Settings;
 use Drupal\helfi_api_base\Azure\PubSub\SettingsFactory;
 use Drupal\helfi_api_base\Vault\Json;
 use Drupal\helfi_api_base\Vault\VaultManager;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * @coversDefaultClass \Drupal\helfi_api_base\Azure\PubSub\SettingsFactory

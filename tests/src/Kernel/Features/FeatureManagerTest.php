@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\Features;
 
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\helfi_api_base\Features\FeatureManager;
+use Drupal\KernelTests\KernelTestBase;
 
 /**
  * Tests feature toggle.

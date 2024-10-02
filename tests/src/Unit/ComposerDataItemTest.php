@@ -8,8 +8,8 @@ use ComposerLockParser\ComposerInfo;
 use ComposerLockParser\Package;
 use ComposerLockParser\PackagesCollection;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Plugin\DebugDataItem\Composer;
+use Drupal\Tests\UnitTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**

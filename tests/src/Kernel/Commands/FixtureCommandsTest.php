@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\Commands;
 
-use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use Drupal\helfi_api_base\Commands\FixtureCommands;
 use Drupal\remote_entity_test\Entity\RemoteEntityTest;
+use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**

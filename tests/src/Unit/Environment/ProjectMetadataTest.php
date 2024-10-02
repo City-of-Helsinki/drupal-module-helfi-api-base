@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
-use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Environment\ProjectMetadata;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests Project metadata value object.

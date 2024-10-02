@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Plugin\migrate\source;
 
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Cache\CacheableDependencyInterface;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\helfi_api_base\Event\MigrationConfigurationEvent;
 use Drupal\helfi_api_base\MigrateTrait;
-use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
+use Drupal\migrate\Plugin\MigrationInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Utils;
@@ -273,7 +273,7 @@ abstract class HttpSourcePluginBase extends SourcePluginBase implements Cacheabl
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    ?MigrationInterface $migration = NULL,
+    MigrationInterface $migration = NULL,
   ) {
     /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher */
     $eventDispatcher = $container->get('event_dispatcher');

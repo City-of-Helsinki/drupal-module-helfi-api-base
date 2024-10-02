@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Entity\Form;
 
-use Drupal\Core\Entity\RevisionLogInterface;
 use Drupal\Core\Entity\RevisionableInterface;
+use Drupal\Core\Entity\RevisionLogInterface;
 use Drupal\Core\Entity\TranslatableRevisionableInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -70,7 +70,7 @@ final class RevisionRevertTranslationForm extends RevisionRevertForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $_entity_revision = NULL, ?Request $request = NULL) : array {
+  public function buildForm(array $form, FormStateInterface $form_state, $_entity_revision = NULL, Request $request = NULL) : array {
     if (!$request->attributes->has('langcode')) {
       throw new \LogicException('The revision revert form is missing "langcode" request attribute.');
     }

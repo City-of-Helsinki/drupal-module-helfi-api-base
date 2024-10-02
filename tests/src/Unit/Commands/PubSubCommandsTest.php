@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Unit\Commands;
 
-use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
 use Drupal\helfi_api_base\Commands\PubSubCommands;
+use Drupal\Tests\UnitTestCase;
 use Drush\Commands\DrushCommands;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

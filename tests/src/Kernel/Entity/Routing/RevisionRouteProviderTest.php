@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\Entity\Routing;
 
-use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use Drupal\remote_entity_test\Entity\RemoteEntityRevisionTest;
+use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 
 /**
  * Tests revision route provider.

@@ -68,7 +68,7 @@ final class DefaultLanguageResolver {
    * @return bool
    *   If language is considered alternative and not fully supported.
    */
-  public function isAltLanguage(?string $langcode = NULL): bool {
+  public function isAltLanguage(string $langcode = NULL): bool {
     if (!$langcode) {
       $langcode = $this->languageManager->getCurrentLanguage()->getId();
     }
