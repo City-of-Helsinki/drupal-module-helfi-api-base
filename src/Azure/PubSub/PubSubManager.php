@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Azure\PubSub;
 
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Utility\Error;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use WebSocket\Client;
 use WebSocket\ConnectionException;
@@ -15,29 +18,32 @@ use WebSocket\ConnectionException;
 final class PubSubManager implements PubSubManagerInterface {
 
   /**
-   * A flag indicating whether we've joined the group.
+   * The websocket client.
    *
-   * @var bool
+   * @var \WebSocket\Client|null
    */
-  private bool $joinedGroup = FALSE;
+  private ?Client $client = NULL;
 
   /**
    * Constructs a new instance.
    *
-   * @param \WebSocket\Client $client
-   *   The websocket client.
+   * @param \Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactoryInterface $clientFactory
+   *   The client factory.
    * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The datetime service.
    * @param \Drupal\helfi_api_base\Azure\PubSub\Settings $settings
    *   The PubSub settings.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger.
    */
   public function __construct(
-    private readonly Client $client,
+    private readonly PubSubClientFactoryInterface $clientFactory,
     private readonly EventDispatcherInterface $eventDispatcher,
     private readonly TimeInterface $time,
     private readonly Settings $settings,
+    #[Autowire(service: 'logger.channel.helfi_api_base')] private readonly LoggerInterface $logger,
   ) {
   }
 
@@ -48,31 +54,45 @@ final class PubSubManager implements PubSubManagerInterface {
    * @throws \WebSocket\ConnectionException
    * @throws \WebSocket\TimeoutException
    */
-  private function joinGroup() : void {
-    if ($this->joinedGroup) {
+  private function initializeClient() : void {
+    if ($this->client) {
       return;
     }
-    $this->client->text(
-      $this->encodeMessage([
-        'type' => 'joinGroup',
-        'group' => $this->settings->group,
-      ])
-    );
+    $client = $exception = NULL;
+
+    // Initialize client with primary key, fallback to secondary key.
+    foreach ($this->settings->accessKeys as $key) {
+      $exception = NULL;
+
+      try {
+        $client = $this->clientFactory->create($key);
+        $client->text($this->encodeMessage([
+          'type' => 'joinGroup',
+          'group' => $this->settings->group,
+        ]));
+      }
+      catch (ConnectionException $exception) {
+        Error::logException($this->logger, $exception);
+      }
+    }
+
+    if ($exception instanceof ConnectionException) {
+      throw $exception;
+    }
 
     try {
       // Wait until we've actually joined the group.
-      $message = $this->decodeMessage((string) $this->client->receive());
+      $message = $this->decodeMessage((string) $client->receive());
 
       if (isset($message['event']) && $message['event'] === 'connected') {
-        $this->joinedGroup = TRUE;
+        $this->client = $client;
 
         return;
       }
     }
     catch (\JsonException) {
     }
-
-    throw new ConnectionException('Failed to join a group.');
+    throw new ConnectionException('Failed to initialize the client.');
   }
 
   /**
@@ -108,45 +128,17 @@ final class PubSubManager implements PubSubManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function setTimeout(int $timeout) : self {
-    $this->client->setTimeout($timeout);
-    return $this;
-  }
-
-  /**
-   * Asserts the settings.
-   *
-   * This is used to exit early if required settings are not populated.
-   */
-  private function assertSettings() : void {
-    $vars = get_object_vars($this->settings);
-
-    foreach ($vars as $key => $value) {
-      if (empty($this->settings->{$key})) {
-        throw new ConnectionException("Azure PubSub '$key' is not configured.");
-      }
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function sendMessage(array $message) : self {
-    $this->assertSettings();
-    $this->joinGroup();
+    $this->initializeClient();
 
-    $this->client
-      ->text(
-        $this->encodeMessage([
-          'type' => 'sendToGroup',
-          'group' => $this->settings->group,
-          'dataType' => 'json',
-          'data' => $message + [
-            'timestamp' => $this->time->getCurrentTime(),
-          ],
-        ])
-      );
-
+    $this->client->text($this->encodeMessage([
+      'type' => 'sendToGroup',
+      'group' => $this->settings->group,
+      'dataType' => 'json',
+      'data' => $message + [
+        'timestamp' => $this->time->getCurrentTime(),
+      ],
+    ]));
     return $this;
   }
 
@@ -154,8 +146,7 @@ final class PubSubManager implements PubSubManagerInterface {
    * {@inheritdoc}
    */
   public function receive() : string {
-    $this->assertSettings();
-    $this->joinGroup();
+    $this->initializeClient();
 
     $message = (string) $this->client->receive();
     $json = $this->decodeMessage($message);

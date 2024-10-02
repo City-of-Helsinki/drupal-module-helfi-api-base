@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\Cache;
 
+use Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactoryInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManager;
+use Drupal\helfi_api_base\Azure\PubSub\Settings;
+use Drupal\helfi_api_base\Cache\CacheTagInvalidator as CacheTagInvalidatorService;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\CacheTagInvalidator;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Log\LoggerInterface;
 use WebSocket\Client;
 
 /**
@@ -70,17 +74,21 @@ class CacheTagInvalidatorTest extends KernelTestBase {
       '{"type":"event","event":"connected"}',
       '{"data": {"tags":["node:123"]}}'
     );
+    $clientFactory = $this->prophesize(PubSubClientFactoryInterface::class);
+    $clientFactory->create('123')->willReturn($client->reveal());
+
     $pubSubManager = new PubSubManager(
-      $client->reveal(),
+      $clientFactory->reveal(),
       $this->container->get('event_dispatcher'),
       $this->container->get('datetime.time'),
-      $this->container->get('helfi_api_base.pubsub_settings'),
+      $this->container->get(Settings::class),
+      $this->prophesize(LoggerInterface::class)->reveal(),
     );
-    $this->container->set('helfi_api_base.pubsub_manager', $pubSubManager);
+    $this->container->set(PubSubManager::class, $pubSubManager);
     $pubSubManager->receive();
 
     /** @var \Drupal\helfi_api_base\Cache\CacheTagInvalidator $sut */
-    $sut = $this->container->get('helfi_api_base.cache_tag_invalidator');
+    $sut = $this->container->get(CacheTagInvalidatorService::class);
     $sut->invalidateTags(['node:123']);
     $this->assertArrayHasKey('node:123', $cacheTagInvalidator->tags);
   }
