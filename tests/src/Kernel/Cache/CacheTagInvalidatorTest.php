@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\Cache;
 
+use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\helfi_api_base\Traits\CacheTagInvalidator;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactoryInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManager;
 use Drupal\helfi_api_base\Azure\PubSub\Settings;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidator as CacheTagInvalidatorService;
-use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\helfi_api_base\Traits\CacheTagInvalidator;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;

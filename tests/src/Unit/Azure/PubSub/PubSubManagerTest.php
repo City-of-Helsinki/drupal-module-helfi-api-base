@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Unit\Azure\PubSub;
 
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubClientFactoryInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManager;
 use Drupal\helfi_api_base\Azure\PubSub\Settings;
-use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;

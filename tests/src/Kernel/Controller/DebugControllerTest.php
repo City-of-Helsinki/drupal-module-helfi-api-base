@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\Controller;
 
-use Drupal\helfi_api_base\Controller\DebugController;
 use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
+use Drupal\helfi_api_base\Controller\DebugController;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Response;
 

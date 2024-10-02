@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Unit\Azure\PubSub;
 
-use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
 use Drupal\Tests\UnitTestCase;
+use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
 
 /**
  * @coversDefaultClass \Drupal\helfi_api_base\Azure\PubSub\PubSubMessage

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
-use Drupal\helfi_api_base\Link\UrlHelper;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\helfi_api_base\Link\UrlHelper;
 
 /**
  * Tests Url helper.

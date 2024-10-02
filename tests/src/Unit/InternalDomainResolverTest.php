@@ -7,8 +7,8 @@ namespace Drupal\Tests\helfi_api_base\Unit;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Url;
-use Drupal\helfi_api_base\Link\InternalDomainResolver;
 use Drupal\Tests\UnitTestCase;
+use Drupal\helfi_api_base\Link\InternalDomainResolver;
 
 /**
  * Tests internal domain resolver.
