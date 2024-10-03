@@ -89,7 +89,24 @@ class PubSubManagerTest extends UnitTestCase {
   }
 
   /**
-   * Tests sendMessage() and clientText() methods.
+   * Tests initializeClient() with empty access keys.
+   */
+  public function testInitializeClientNoSettings() : void {
+    $this->expectException(ConnectionException::class);
+    $this->expectExceptionMessage('PubSub access key is undefined.');
+    $sut = new PubSubManager(
+      $this->prophesize(PubSubClientFactoryInterface::class)->reveal(),
+      $this->prophesize(EventDispatcherInterface::class)->reveal(),
+      $this->prophesize(TimeInterface::class)->reveal(),
+      new Settings('', '', '', []),
+      $this->prophesize(LoggerInterface::class)->reveal(),
+    );
+    // Make sure initialize client fails when settings are empty.
+    $sut->sendMessage(['test' => 'something']);
+  }
+
+  /**
+   * Tests sendMessage() method.
    */
   public function testSendMessage() : void {
     $time = $this->prophesize(TimeInterface::class);
@@ -121,7 +138,7 @@ class PubSubManagerTest extends UnitTestCase {
   }
 
   /**
-   * Tests receive() and clientReceive() methods.
+   * Tests receive() method.
    */
   public function testReceive() : void {
     $expectedMessage = '{"message":"test"}';
