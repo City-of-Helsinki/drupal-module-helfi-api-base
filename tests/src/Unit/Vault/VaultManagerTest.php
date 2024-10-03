@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Unit\Vault;
 
+use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Vault\AuthorizationToken;
 use Drupal\helfi_api_base\Vault\Json;
 use Drupal\helfi_api_base\Vault\VaultManager;
 use Drupal\helfi_api_base\Vault\VaultManagerFactory;
-use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests Vault manager.

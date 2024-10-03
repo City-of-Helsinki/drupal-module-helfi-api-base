@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\UserExpire;
 
-use Drupal\helfi_api_base\Features\FeatureManager;
-use Drupal\helfi_api_base\UserExpire\UserExpireManager;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\helfi_api_base\Features\FeatureManager;
+use Drupal\helfi_api_base\UserExpire\UserExpireManager;
 use Drupal\user\Entity\User;
 
 /**
@@ -54,6 +54,7 @@ class UserExpireManagerTest extends KernelTestBase {
     $user = $this->createUser();
     $this->assertFalse($user->isBlocked());
     $user->setLastAccessTime(strtotime('-7 months'))
+      ->setChangedTime(strtotime('-2 days'))
       ->save();
 
     // Make sure the user is canceled when the cron is run.
@@ -88,6 +89,7 @@ class UserExpireManagerTest extends KernelTestBase {
       '1' => $this->createUser(),
       '2' => $this->createUser(),
       '3' => $this->createUser(),
+      '4' => $this->createUser(),
     ];
 
     foreach ($users as $user) {
@@ -101,9 +103,16 @@ class UserExpireManagerTest extends KernelTestBase {
 
     // Set access time below the threshold.
     $users['1']->setLastAccessTime(strtotime('-1 months'))
+      ->setChangedTime(strtotime('-2 days'))
       ->save();
     // Set access time over the threshold.
     $users['2']->setLastAccessTime(strtotime('-7 months'))
+      ->setChangedTime(strtotime('-2 days'))
+      ->save();
+    // Set changed time below threshold to make sure
+    // users have some leeway.
+    $users['4']->setLastAccessTime(strtotime('-1 months'))
+      ->setChangedTime(strtotime('now'))
       ->save();
 
     $expired = $this->getSut()->getExpiredUserIds();
@@ -111,6 +120,7 @@ class UserExpireManagerTest extends KernelTestBase {
 
     // Set created time over the threshold.
     $users['3']->set('created', strtotime('-7 months'))
+      ->setChangedTime(strtotime('-2 days'))
       ->save();
 
     $expired = $this->getSut()->getExpiredUserIds();
@@ -120,6 +130,7 @@ class UserExpireManagerTest extends KernelTestBase {
 
     // Users 2 and 3 should be blocked.
     $this->assertFalse(User::load(1)->isBlocked());
+    $this->assertFalse(User::load(4)->isBlocked());
     $this->assertTrue(User::load(2)->isBlocked());
     $this->assertTrue(User::load(3)->isBlocked());
   }

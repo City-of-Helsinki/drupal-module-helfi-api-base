@@ -6,8 +6,8 @@ namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Drupal\Tests\UnitTestCase;
+use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**

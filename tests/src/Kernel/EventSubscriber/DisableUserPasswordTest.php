@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Kernel\EventSubscriber;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\helfi_api_base\Event\PostDeployEvent;
-use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\helfi_api_base\Event\PostDeployEvent;
+use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\user\Entity\User;
 
 /**

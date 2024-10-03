@@ -17,6 +17,8 @@ final class UserExpireManager {
    */
   public const DEFAULT_EXPIRE = 15638400;
 
+  public const LEEWAY = 86400;
+
   /**
    * Constructs a new instance.
    *
@@ -71,9 +73,15 @@ final class UserExpireManager {
       ->condition($accessCondition)
       ->condition($createdCondition);
 
+    // Give recently 'changed' users some leeway until the account
+    // is blocked again. This is used to make sure the account does not
+    // immediately get blocked again after the account is unblocked.
+    $leeway = ($this->time->getCurrentTime() - self::LEEWAY);
+
     $query
       ->condition($expireCondition)
       ->condition('status', 1)
+      ->condition('changed', $leeway, '<=')
       ->addTag('expired_users')
       // Make sure we have an upper bound.
       ->range(0, 50);

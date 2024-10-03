@@ -8,14 +8,14 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Cache\MemoryBackend;
 use Drupal\Core\File\Exception\FileNotExistsException;
+use Drupal\Tests\UnitTestCase;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\helfi_api_base\ApiClient\ApiClient;
 use Drupal\helfi_api_base\ApiClient\ApiResponse;
 use Drupal\helfi_api_base\ApiClient\CacheValue;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
-use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
-use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
@@ -102,9 +102,9 @@ class ApiClientTest extends UnitTestCase {
    *   The api client instance.
    */
   private function getSut(
-    ClientInterface $client = NULL,
-    TimeInterface $time = NULL,
-    LoggerInterface $logger = NULL,
+    ?ClientInterface $client = NULL,
+    ?TimeInterface $time = NULL,
+    ?LoggerInterface $logger = NULL,
     array $requestOptions = [],
   ) : ApiClient {
     if (!$client) {
