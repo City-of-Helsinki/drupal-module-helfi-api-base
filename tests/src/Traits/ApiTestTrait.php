@@ -45,7 +45,7 @@ trait ApiTestTrait {
   /**
    * Overrides the default 'http_client_factory' service with mock.
    *
-   * @param \Psr\Http\Message\ResponseInterface[] $responses
+   * @param \Psr\Http\Message\ResponseInterface[]|\GuzzleHttp\Exception\GuzzleException[] $responses
    *   The expected responses.
    *
    * @return \GuzzleHttp\Client
