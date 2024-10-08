@@ -11,6 +11,7 @@ use Drupal\monolog\Logger\Handler\ConditionalHandler;
 use Drupal\monolog\Logger\Handler\DrupalHandler;
 use Drush\Log\DrushLog;
 use Monolog\Handler\StreamHandler;
+use Monolog\Level;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -27,6 +28,12 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
     $modules = $container->getParameter('container.modules');
 
     if (isset($modules['monolog'])) {
+      $logLevel = Level::Info->value;
+
+      if ($container->hasParameter('helfi_api_base.log_level')) {
+        $logLevel = $container->getParameter('helfi_api_base.log_level');
+      }
+
       $container->setParameter('monolog.channel_handlers', [
         'default' => [
           'handlers' => [
@@ -51,7 +58,8 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
       $container->register('monolog.handler.default_conditional_handler', ConditionalHandler::class)
         ->addArgument(new Reference('monolog.handler.drupal.drupaltodrush'))
         ->addArgument(new Reference('monolog.handler.website'))
-        ->addArgument(new Reference('monolog.condition_resolver.cli'));
+        ->addArgument(new Reference('monolog.condition_resolver.cli'))
+        ->addArgument($logLevel);
       $container->register('monolog.handler.website', StreamHandler::class)
         ->addArgument('php://stdout');
       $container->register('monolog.formatter.drush_or_json', ConditionalFormatter::class)
