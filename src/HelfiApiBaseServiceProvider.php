@@ -6,6 +6,7 @@ namespace Drupal\helfi_api_base;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
+use Drupal\Core\Site\Settings;
 use Drupal\monolog\Logger\Formatter\ConditionalFormatter;
 use Drupal\monolog\Logger\Handler\ConditionalHandler;
 use Drupal\monolog\Logger\Handler\DrupalHandler;
@@ -28,12 +29,6 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
     $modules = $container->getParameter('container.modules');
 
     if (isset($modules['monolog'])) {
-      $logLevel = Level::Info->value;
-
-      if ($container->hasParameter('helfi_api_base.log_level')) {
-        $logLevel = $container->getParameter('helfi_api_base.log_level');
-      }
-
       $container->setParameter('monolog.channel_handlers', [
         'default' => [
           'handlers' => [
@@ -44,6 +39,8 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
           ],
         ],
       ]);
+
+      $logLevel = Settings::get('helfi_api_base.log_level', Level::Info->value);
 
       if (!$container->has('logger.drupaltodrush')) {
         $container->register('logger.drupaltodrush', DrushLog::class)

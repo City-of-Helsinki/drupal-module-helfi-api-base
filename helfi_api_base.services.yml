@@ -14,9 +14,6 @@ parameters:
   helfi_api_base.disable_password_users:
     - helfi-admin
     - 1
-  # Supported values:
-  # https://github.com/Seldaek/monolog/blob/main/doc/01-usage.md#log-levels.
-  helfi_api_base.log_level: 200
 services:
   _defaults:
     autowire: true
