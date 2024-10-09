@@ -7,6 +7,7 @@ namespace Drupal\helfi_api_base;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Drupal\Core\Site\Settings;
+use Drupal\helfi_api_base\Logger\CurrentUserProcessor;
 use Drupal\monolog\Logger\Formatter\ConditionalFormatter;
 use Drupal\monolog\Logger\Handler\ConditionalHandler;
 use Drupal\monolog\Logger\Handler\DrupalHandler;
@@ -64,6 +65,17 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
         ->addArgument(new Reference('monolog.formatter.json'))
         ->addArgument(new Reference('monolog.condition_resolver.cli'))
         ->setShared(FALSE);
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function alter(ContainerBuilder $container) {
+    if ($container->hasDefinition('monolog.processor.current_user')) {
+      $definition = $container->getDefinition('monolog.processor.current_user');
+      $definition->setClass(CurrentUserProcessor::class)
+        ->addArgument(new Reference('current_user'));
     }
   }
 
