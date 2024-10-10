@@ -13,9 +13,10 @@ For example, this can be used to invalidate:
 
 ### OpenShift
 
+- Add a secret called `DRUPAL_PUBSUB_VAULT` to your project's Azure KeyVault.
+  - Credentials can be found on Confluence: [PubSub Staging/Prod access key](https://helsinkisolutionoffice.atlassian.net/wiki/spaces/HEL/pages/8354005224/Tunnusten+salasanojen+ja+muiden+avainten+jakaminen).
 - See
-[Managing external API credentials](/documentation/api-accounts.md#managing-external-api-credentials) for documentation.
-- Credentials can be found on Confluence: [PubSub Staging/Prod access key](https://helsinkisolutionoffice.atlassian.net/wiki/spaces/HEL/pages/8354005224/Tunnusten+salasanojen+ja+muiden+avainten+jakaminen).
+[Managing external API credentials](/documentation/api-accounts.md#managing-external-api-credentials) for more documentation.
 
 ### Testing locally
 ```php
