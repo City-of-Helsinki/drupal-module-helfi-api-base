@@ -39,6 +39,7 @@ function helfi_api_base_install(bool $is_syncing = FALSE) : void {
       ->set('drush_error_handler', TRUE)
       ->set('request_tracing', TRUE)
       ->set('traces_sample_rate', 0.2)
+      ->set('browser_traces_sample_rate', 0.2)
       ->set('database_tracing', TRUE)
       ->set('twig_tracing', TRUE)
       ->save();
@@ -187,4 +188,15 @@ function helfi_api_base_update_9019(): void {
   // Delete rest endpoint configuration.
   \Drupal::configFactory()->getEditable('rest.resource.helfi_debug_data')
     ->delete();
+}
+
+/**
+ * UHF-9982: Configure sentry browser tracking.
+ */
+function helfi_api_base_update_9020(): void {
+  if (Drupal::moduleHandler()->moduleExists('raven')) {
+    Drupal::configFactory()->getEditable('raven.settings')
+      ->set('browser_traces_sample_rate', 0.2)
+      ->save();
+  }
 }
