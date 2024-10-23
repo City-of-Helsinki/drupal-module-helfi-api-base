@@ -9,7 +9,7 @@
         "drupal/entity": "^1.0",
         "drupal/health_check": "^3.0",
         "drupal/monolog": "^3.0",
-        "drupal/raven": "^4.0 || ^5.0",
+        "drupal/raven": "^5.0 || ^6.0",
         "firebase/php-jwt": "^6.5",
         "php": "^8.1",
         "t4web/composer-lock-parser": "^1.0",
