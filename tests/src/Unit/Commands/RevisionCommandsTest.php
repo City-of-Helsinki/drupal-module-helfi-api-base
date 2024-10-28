@@ -13,12 +13,12 @@ use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Commands\RevisionCommands;
 use Drupal\helfi_api_base\Entity\Revision\RevisionManager;
 use Drush\Commands\DrushCommands;
+use Drush\Style\DrushStyle;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Tests revision commands.
@@ -114,7 +114,7 @@ class RevisionCommandsTest extends UnitTestCase {
    * Test command with invalid entity type.
    */
   public function testInvalidEntityType() : void {
-    $io = $this->prophesize(SymfonyStyle::class);
+    $io = $this->prophesize(DrushStyle::class);
     $io->writeln(Argument::containingString('Given entity type is not supported.'))
       ->shouldBeCalled();
 
@@ -130,7 +130,7 @@ class RevisionCommandsTest extends UnitTestCase {
    * Test delete without any entities.
    */
   public function testNoEntities() : void {
-    $io = $this->prophesize(SymfonyStyle::class);
+    $io = $this->prophesize(DrushStyle::class);
     $io->isDecorated()
       ->willReturn(TRUE);
     $io->getVerbosity()
@@ -148,7 +148,7 @@ class RevisionCommandsTest extends UnitTestCase {
    * Tests delete method with proper data.
    */
   public function testDelete() : void {
-    $io = $this->prophesize(SymfonyStyle::class);
+    $io = $this->prophesize(DrushStyle::class);
     $io->isDecorated()
       ->willReturn(TRUE);
     $io->getVerbosity()
@@ -170,7 +170,7 @@ class RevisionCommandsTest extends UnitTestCase {
    * Tests delete method with optional ID.
    */
   public function testDeleteWithId() : void {
-    $io = $this->prophesize(SymfonyStyle::class);
+    $io = $this->prophesize(DrushStyle::class);
     $io->isDecorated()
       ->willReturn(TRUE);
     $io->getVerbosity()

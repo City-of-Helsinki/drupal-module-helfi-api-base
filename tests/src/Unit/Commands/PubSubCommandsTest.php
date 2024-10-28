@@ -8,11 +8,11 @@ use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
 use Drupal\helfi_api_base\Drush\Commands\PubSubCommands;
 use Drush\Commands\DrushCommands;
+use Drush\Style\DrushStyle;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use WebSocket\ConnectionException;
 use WebSocket\TimeoutException;
 
@@ -31,7 +31,7 @@ class PubSubCommandsTest extends UnitTestCase {
     $expectedMessage = '{"message":"test"}';
     $output = $this->prophesize(OutputInterface::class);
     $input = $this->prophesize(InputInterface::class);
-    $io = $this->prophesize(SymfonyStyle::class);
+    $io = $this->prophesize(DrushStyle::class);
     $io->writeln(Argument::containingString('Received message'))
       ->shouldBeCalledTimes(PubSubCommands::MAX_MESSAGES);
     $io->writeln(Argument::containingString('Received maximum number of messages'))
@@ -51,7 +51,7 @@ class PubSubCommandsTest extends UnitTestCase {
   public function testExceptionOutput() : void {
     $output = $this->prophesize(OutputInterface::class);
     $input = $this->prophesize(InputInterface::class);
-    $io = $this->prophesize(SymfonyStyle::class);
+    $io = $this->prophesize(DrushStyle::class);
     $io->writeln('Invalid json: Syntax error')->shouldBeCalledTimes(PubSubCommands::MAX_MESSAGES);
     $io->writeln(Argument::containingString('Received maximum number of messages'))
       ->shouldBeCalledTimes(1);
@@ -70,7 +70,7 @@ class PubSubCommandsTest extends UnitTestCase {
   public function testTimeoutException() : void {
     $output = $this->prophesize(OutputInterface::class);
     $input = $this->prophesize(InputInterface::class);
-    $io = $this->prophesize(SymfonyStyle::class);
+    $io = $this->prophesize(DrushStyle::class);
     $io->writeln(Argument::containingString('Received maximum number of messages'))
       ->shouldBeCalledTimes(1);
 
