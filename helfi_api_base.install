@@ -42,6 +42,17 @@ function helfi_api_base_install(bool $is_syncing = FALSE) : void {
       ->set('browser_traces_sample_rate', 0.2)
       ->set('database_tracing', TRUE)
       ->set('twig_tracing', TRUE)
+      ->set('log_levels', [
+        'emergency' => TRUE,
+        'alert' => TRUE,
+        'critical' => TRUE,
+        'error' => TRUE,
+        'warning' => FALSE,
+        'notice' => FALSE,
+        'info' => FALSE,
+        'debug' => FALSE,
+      ])
+      ->set('fatal_error_handler', TRUE)
       ->save();
   }
 }
@@ -199,4 +210,11 @@ function helfi_api_base_update_9020(): void {
       ->set('browser_traces_sample_rate', 0.2)
       ->save();
   }
+}
+
+/**
+ * UHF-10880: Update the Raven settings.
+ */
+function helfi_api_base_update_9021() : void {
+  helfi_api_base_install();
 }
