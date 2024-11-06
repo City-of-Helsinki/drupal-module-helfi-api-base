@@ -53,7 +53,6 @@ function helfi_api_base_install(bool $is_syncing = FALSE) : void {
         'debug' => FALSE,
       ])
       ->set('fatal_error_handler', TRUE)
-      ->set('javascript_error_handler', TRUE)
       ->save();
   }
 }
