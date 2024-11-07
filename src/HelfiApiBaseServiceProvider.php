@@ -34,6 +34,16 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
         'default' => [
           'handlers' => [
             [
+              'name' => 'drupal.raven',
+              'processors' => [
+                'current_user',
+                'request_uri',
+                'ip',
+                'referer',
+                'filter_backtrace',
+              ],
+            ],
+            [
               'name' => 'default_conditional_handler',
               'formatter' => 'drush_or_json',
             ],
