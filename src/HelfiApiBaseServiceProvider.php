@@ -34,12 +34,24 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
         'default' => [
           'handlers' => [
             [
-              'name' => 'default_conditional_handler',
-              'formatter' => 'drush_or_json',
+              // The Raven logger handler must be added to forward log messages
+              // to Sentry. We remove the `message_placeholder` processor from
+              // the default processors, as Raven already handles placeholders.
+              // NOTE: The `filter_backtrace` processor should be included.
+              // Without it, logging long backtraces may lead to out-of-memory
+              // errors.
+              'name' => 'drupal.raven',
+              'processors' => [
+                'current_user',
+                'request_uri',
+                'ip',
+                'referer',
+                'filter_backtrace',
+              ],
             ],
             [
-              'name' => 'drupal.raven',
-              'processors' => ['current_user', 'request_uri', 'ip', 'referer'],
+              'name' => 'default_conditional_handler',
+              'formatter' => 'drush_or_json',
             ],
           ],
         ],
