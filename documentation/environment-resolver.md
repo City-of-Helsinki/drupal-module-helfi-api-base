@@ -52,3 +52,32 @@ $environment = $service->getActiveEnvironment();
 // Failure will throw an InvalidArgumentException.
 $project = $service->getActiveProject();
 ```
+
+### Active project roles
+
+This can be used to determine what "roles" the currently active project has.
+
+See [\Drupal\helfi_api_base\Environment\ProjectRoleEnum](src/Environment/ProjectRolesEnum.php) for available roles.
+
+```php
+/** @var \Drupal\helfi_api_base\Environment\ActiveProjectRoles $activeProjectRoles */
+$activeProjectRoles = \Drupal::service(\Drupal\helfi_api_base\Environment\ActiveProjectRoles::class);
+// A boolean indicating whether the current instance has the given role.
+$activeProjectRoles->hasRole(\Drupal\helfi_api_base\Environment\ProjectRoleEnum::Core);
+```
+
+#### Determine if the current instance is a "core" instance
+
+The instance is considered as "core" instance if the instance is a part of the main-navigation structure. Currently, this includes all Drupal instances under www.hel.fi domain.
+
+This can be used to conditionally run code only in core instances, such as enabling a module.
+
+```php
+/** @var \Drupal\helfi_api_base\Environment\ActiveProjectRoles $activeProjectRoles */
+$activeProjectRoles = \Drupal::service(\Drupal\helfi_api_base\Environment\ActiveProjectRoles::class);
+
+if ($activeProjectRoles->hasRole(\Drupal\helfi_api_base\Environment\ProjectRoleEnum::Core)) {
+  // Do something only on "core" instances.
+}
+```
+
