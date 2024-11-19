@@ -57,7 +57,7 @@ $project = $service->getActiveProject();
 
 This can be used to determine what "roles" the currently active project has.
 
-See [\Drupal\helfi_api_base\Environment\ProjectRoleEnum](/src/Environment/ProjectRolesEnum.php) for available roles.
+See [\Drupal\helfi_api_base\Environment\ProjectRoleEnum](/src/Environment/ProjectRoleEnum.php) for available roles.
 
 ```php
 /** @var \Drupal\helfi_api_base\Environment\ActiveProjectRoles $activeProjectRoles */
