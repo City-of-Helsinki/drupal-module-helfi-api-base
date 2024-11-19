@@ -77,7 +77,7 @@ This can be used to conditionally run code only in core instances, such as enabl
 $activeProjectRoles = \Drupal::service(\Drupal\helfi_api_base\Environment\ActiveProjectRoles::class);
 
 if ($activeProjectRoles->hasRole(\Drupal\helfi_api_base\Environment\ProjectRoleEnum::Core)) {
-  // Do something only on "core" instances.
+  // Do something only in core instances.
 }
 ```
 

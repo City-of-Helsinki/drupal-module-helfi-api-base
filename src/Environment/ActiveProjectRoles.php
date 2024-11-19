@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Environment;
 
 /**
- * A service to determine the type of currently active project.
+ * A service to determine the roles of currently active project.
  */
 final readonly class ActiveProjectRoles {
 
