@@ -7,9 +7,9 @@ namespace Drupal\helfi_api_base\Environment;
 /**
  * A service to determine the roles of currently active project.
  */
-final readonly class ActiveProjectRoles {
+final class ActiveProjectRoles {
 
-  public function __construct(private EnvironmentResolverInterface $environmentResolver) {
+  public function __construct(private readonly EnvironmentResolverInterface $environmentResolver) {
   }
 
   /**
