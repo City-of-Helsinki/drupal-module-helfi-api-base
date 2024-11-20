@@ -1,0 +1,2 @@
+plugin.plugin_configuration.elasticsearch_connector.helfi_connector:
+  type: plugin.plugin_configuration.elasticsearch_connector.basicauth
