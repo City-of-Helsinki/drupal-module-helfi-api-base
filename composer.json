@@ -24,6 +24,8 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "dg/bypass-finals": "^1.0",
         "drupal/coder": "^8.3",
+        "drupal/search_api": "^1.0",
+        "drupal/elasticsearch_connector": "^8.0@alpha",
         "donatj/mock-webserver": "dev-master"
     }
 }
