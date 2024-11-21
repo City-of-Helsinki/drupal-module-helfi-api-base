@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Plugin\Filter;
 
+use Drupal\Component\Render\MarkupInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -157,10 +158,10 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
    * @param \DOMElement $node
    *   The node.
    *
-   * @return string
+   * @return string|\Drupal\Component\Render\MarkupInterface
    *   The rendered markup or string.
    */
-  private function getLinkText(\DOMElement $node) : string {
+  private function getLinkText(\DOMElement $node) : MarkupInterface|string {
     if ($node->childElementCount === 0) {
       return $node->nodeValue;
     }
@@ -170,7 +171,7 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
       /** @var \DOMNode $childNode */
       $text .= $childNode->C14N();
     }
-    return Xss::filterAdmin(Markup::create($text));
+    return Markup::create(Xss::filter($text, ['span']));
   }
 
   /**
