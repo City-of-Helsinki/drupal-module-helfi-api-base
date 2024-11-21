@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Plugin\Filter;
 
+use Drupal\Component\Render\MarkupInterface;
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -99,7 +102,7 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
       $build = [
         '#type' => 'link',
         '#url' => $url,
-        '#title' => $node->nodeValue,
+        '#title' => $this->getLinkText($node),
         '#attributes' => $this->getNodeAttributes($node),
       ];
       unset($build['#attributes']['href']);
@@ -150,6 +153,30 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
       $node->parentNode->insertBefore($replacement_node, $node);
     }
     $node->parentNode->removeChild($node);
+  }
+
+  /**
+   * Renders the text.
+   *
+   * @param \DOMElement $node
+   *   The node.
+   *
+   * @return \Drupal\Component\Render\MarkupInterface|string
+   *   The rendered markup or string.
+   */
+  private function getLinkText(\DOMElement $node) : MarkupInterface|string {
+    if ($node->childElementCount === 0) {
+      return $node->nodeValue;
+    }
+    // Keep all child elements.
+    $text = '';
+    foreach ($node->childNodes as $childNode) {
+      /** @var \DOMNode $childNode */
+      $text .= $childNode->C14N();
+    }
+    // Make sure we support HTML inside html tags, such as
+    // <span lang="en" dir="ltr">.
+    return Markup::create(Xss::filterAdmin($text));
   }
 
   /**
