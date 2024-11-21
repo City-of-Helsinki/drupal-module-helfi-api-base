@@ -100,10 +100,10 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
         '#type' => 'link',
         '#url' => $url,
         '#title' => $node->nodeValue,
+        '#attributes' => $this->getNodeAttributes($node),
       ];
-      $build['#attributes'] = $this->getNodeAttributes($node);
-
       unset($build['#attributes']['href']);
+
       $this->render($build, $node, $result);
     }
 

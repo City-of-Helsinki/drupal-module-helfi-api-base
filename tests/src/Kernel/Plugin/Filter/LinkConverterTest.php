@@ -13,7 +13,7 @@ use Drupal\filter\FilterPluginCollection;
 use Drupal\filter\FilterProcessResult;
 
 /**
- * Tests custom language negotiator functionality.
+ * Tests Link converter filter.
  *
  * @coversDefaultClass \Drupal\helfi_api_base\Plugin\Filter\LinkConverter
  * @group helfi_api_base
@@ -49,7 +49,6 @@ class LinkConverterTest extends KernelTestBase {
    * @covers ::create
    * @covers ::process
    * @covers ::render
-   * @covers ::getLinkText
    * @covers ::getNodeAttributes
    */
   public function testInvalidLink() : void {
@@ -61,7 +60,6 @@ class LinkConverterTest extends KernelTestBase {
    * @covers ::create
    * @covers ::process
    * @covers ::render
-   * @covers ::getLinkText
    * @covers ::getNodeAttributes
    * @dataProvider linkProcessingData
    */
