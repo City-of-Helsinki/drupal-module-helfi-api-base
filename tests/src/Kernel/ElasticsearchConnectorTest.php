@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_api_base\Functional;
+namespace Drupal\Tests\helfi_api_base\Kernel;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Url;
+use Drupal\KernelTests\KernelTestBase;
 use Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend;
 use Drupal\helfi_api_base\Plugin\ElasticSearch\Connector\HelfiConnector;
+use Elastic\Elasticsearch\Client;
 
 /**
  * Test for elasticsearch connector plugin.
  */
-class ElasticsearchConnectorTest extends BrowserTestBase {
+class ElasticsearchConnectorTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -26,20 +27,10 @@ class ElasticsearchConnectorTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   public function setUp(): void {
     parent::setUp();
 
-    // Create an admin user.
-    $admin_user = $this->drupalCreateUser([
-      'access administration pages',
-      'administer search_api',
-    ]);
-    $this->drupalLogin($admin_user);
+    $this->installEntitySchema('search_api_server');
   }
 
   /**
@@ -73,14 +64,9 @@ class ElasticsearchConnectorTest extends BrowserTestBase {
 
     $backend = $server->getBackend();
     assert($backend instanceof ElasticSearchBackend);
-    $this->assertInstanceOf(HelfiConnector::class, $backend->getConnector());
-
-    $assert_session = $this->assertSession();
-    $this->drupalGet(Url::fromRoute('entity.search_api_server.edit_form', [
-      'search_api_server' => 'default',
-    ]));
-    $assert_session->statusCodeEquals(200);
-    $assert_session->pageTextContains('Helfi Connector');
+    $connector = $backend->getConnector();
+    $this->assertInstanceOf(HelfiConnector::class, $connector);
+    $this->assertInstanceOf(Client::class, $connector->getClient());
   }
 
 }
