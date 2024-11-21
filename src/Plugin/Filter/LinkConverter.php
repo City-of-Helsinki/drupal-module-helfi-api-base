@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Plugin\Filter;
 
-use Drupal\Component\Render\MarkupInterface;
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\Xss;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\BubbleableMetadata;
-use Drupal\Core\Render\Markup;
 use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -92,8 +88,7 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
       }
 
       try {
-        $build = Link::fromTextAndUrl($this->getLinkText($node), UrlHelper::parse($value))
-          ->toRenderable();
+        $url = UrlHelper::parse($value);
       }
       catch (\InvalidArgumentException) {
         $this->logger->notice(
@@ -101,6 +96,11 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
         );
         continue;
       }
+      $build = [
+        '#type' => 'link',
+        '#url' => $url,
+        '#title' => $node->nodeValue,
+      ];
       $build['#attributes'] = $this->getNodeAttributes($node);
 
       unset($build['#attributes']['href']);
@@ -150,28 +150,6 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
       $node->parentNode->insertBefore($replacement_node, $node);
     }
     $node->parentNode->removeChild($node);
-  }
-
-  /**
-   * Renders the text.
-   *
-   * @param \DOMElement $node
-   *   The node.
-   *
-   * @return string|\Drupal\Component\Render\MarkupInterface
-   *   The rendered markup or string.
-   */
-  private function getLinkText(\DOMElement $node) : MarkupInterface|string {
-    if ($node->childElementCount === 0) {
-      return $node->nodeValue;
-    }
-    // Keep all child elements.
-    $text = '';
-    foreach ($node->childNodes as $childNode) {
-      /** @var \DOMNode $childNode */
-      $text .= $childNode->C14N();
-    }
-    return Markup::create(Xss::filter($text, ['span']));
   }
 
   /**
