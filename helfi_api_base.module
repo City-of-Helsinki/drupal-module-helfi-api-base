@@ -80,15 +80,18 @@ function helfi_api_base_entity_update(EntityInterface $entity) : void {
   if (!$revisionManager->entityTypeIsSupported($entity->getEntityTypeId())) {
     return;
   }
-  $revisions = $revisionManager->getRevisions($entity->getEntityTypeId(), $entity->id());
+  static $cache = [];
 
-  // Queue entity revisions for deletion.
-  if ($revisions) {
+  $key = sprintf('%s-%s', $entity->getEntityTypeId(), $entity->id());
+
+  // Only queue entity once per request.
+  if (!isset($cache[$key])) {
     $queue = \Drupal::queue('helfi_api_base_revision');
     $queue->createItem([
       'entity_id' => $entity->id(),
       'entity_type' => $entity->getEntityTypeId(),
     ]);
+    $cache[$key] = TRUE;
   }
 }
 

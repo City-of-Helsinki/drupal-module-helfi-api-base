@@ -144,7 +144,7 @@ class RevisionManagerTest extends ApiKernelTestBase {
       ->save();
 
     $this->assertCount(0, $this->getSut()->getRevisions('remote_entity_test', $entity->id()));
-    $this->assertQueueItems(0);
+    $this->assertQueueItems(1);
 
     for ($i = 0; $i < 10; $i++) {
       $rmt = $storage->load($entity->id());
@@ -162,8 +162,8 @@ class RevisionManagerTest extends ApiKernelTestBase {
 
       $storage->createRevision($rmt)->save();
     }
-    // Make sure items are queued on entity update.
-    $this->assertQueueItems(5);
+    // Make sure items are only queued once per request.
+    $this->assertQueueItems(1);
 
     $revisions = $this->getSut()->getRevisionsPerLanguage('remote_entity_test', $entity->id());
 
