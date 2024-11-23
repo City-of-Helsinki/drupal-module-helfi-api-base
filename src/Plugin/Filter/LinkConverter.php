@@ -6,31 +6,33 @@ namespace Drupal\helfi_api_base\Plugin\Filter;
 
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Render\RenderContext;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\filter\Attribute\Filter;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
+use Drupal\filter\Plugin\FilterInterface;
 use Drupal\helfi_api_base\Link\UrlHelper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a 'Link converter' filter.
- *
- * @Filter(
- *   id = "helfi_link_converter",
- *   title = @Translation("Hel.fi: Link converter"),
- *   description = @Translation("Runs embedded links through a template. NOTE: This filter must be run after 'Convert URLs into links' filter."),
- *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
- *   settings = {},
- *   weight = -10
- * )
  */
+#[Filter(
+  id: 'helfi_link_converter',
+  title: new TranslatableMarkup('Hel.fi: Link converter'),
+  type: FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
+  description: new TranslatableMarkup("Runs embedded links through a template. NOTE: This filter must be run after 'Convert URLs into links' filter."),
+  weight: -10,
+  settings: [],
+)]
 final class LinkConverter extends FilterBase implements ContainerFactoryPluginInterface {
 
   /**
@@ -89,8 +91,7 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
       }
 
       try {
-        $build = Link::fromTextAndUrl($this->getLinkText($node), UrlHelper::parse($value))
-          ->toRenderable();
+        $url = UrlHelper::parse($value);
       }
       catch (\InvalidArgumentException) {
         $this->logger->notice(
@@ -98,9 +99,14 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
         );
         continue;
       }
-      $build['#attributes'] = $this->getNodeAttributes($node);
-
+      $build = [
+        '#type' => 'link',
+        '#url' => $url,
+        '#title' => $this->getLinkText($node),
+        '#attributes' => $this->getNodeAttributes($node),
+      ];
       unset($build['#attributes']['href']);
+
       $this->render($build, $node, $result);
     }
 
@@ -155,8 +161,6 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
    * @param \DOMElement $node
    *   The node.
    *
-   * @todo Review this.
-   *
    * @return \Drupal\Component\Render\MarkupInterface|string
    *   The rendered markup or string.
    */
@@ -170,7 +174,9 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
       /** @var \DOMNode $childNode */
       $text .= $childNode->C14N();
     }
-    return Markup::create($text);
+    // Make sure we support HTML inside html tags, such as
+    // <span lang="en" dir="ltr">.
+    return Markup::create(Xss::filterAdmin($text));
   }
 
   /**

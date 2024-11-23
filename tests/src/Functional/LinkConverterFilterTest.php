@@ -152,7 +152,8 @@ class LinkConverterFilterTest extends BrowserTestBase {
     }
     $element = $this->getSession()->getPage()->find('css', '.nested-dom-link');
     $children = $element->find('css', '.nested');
-    // Make sure nested tags get run through filter.
+    // Make sure HTML inside links is kept, but sanitized.
+    $this->assertNotNull($children);
     $this->assertFalse($children->hasAttribute('onload'));
   }
 
