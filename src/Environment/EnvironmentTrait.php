@@ -28,6 +28,8 @@ trait EnvironmentTrait {
       'testing' => 'test',
       'staging' => 'stage',
       'production' => 'prod',
+      // Make sure CI resolves to a known environment.
+      'ci' => 'test',
     ];
 
     if (array_key_exists($environment, $environments)) {

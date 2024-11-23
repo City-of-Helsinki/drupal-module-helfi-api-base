@@ -28,6 +28,7 @@ services:
   Drupal\helfi_api_base\EventSubscriber\DisableUserPasswordSubscriber: ~
   Drupal\helfi_api_base\Features\FeatureManager: ~
 
+  Drupal\helfi_api_base\Environment\ActiveProjectRoles: ~
   Drupal\helfi_api_base\Environment\EnvironmentResolverInterface: '@helfi_api_base.environment_resolver'
   Drupal\helfi_api_base\Environment\EnvironmentResolver: '@helfi_api_base.environment_resolver'
   helfi_api_base.environment_resolver:
