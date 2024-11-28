@@ -7,7 +7,10 @@
 
 declare(strict_types=1);
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\rest\Entity\RestResourceConfig;
 use Drupal\user\Entity\Role;
@@ -217,4 +220,121 @@ function helfi_api_base_update_9020(): void {
  */
 function helfi_api_base_update_9021() : void {
   helfi_api_base_install();
+}
+
+/**
+ * UHF-10969 Fix URLs with spaces.
+ */
+function helfi_api_base_update_9022(): void {
+  helfi_api_base_sanitize_links();
+}
+
+/**
+ * Sanitize links from text fields.
+ */
+function helfi_api_base_sanitize_links(): void {
+  /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager */
+  $entity_field_manager = Drupal::service('entity_field.manager');
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  $field_types = [
+    'text_with_summary',
+    'text',
+    'text_long',
+  ];
+
+  $count = 0;
+
+  foreach ($field_types as $field_type) {
+    $field_map = $entity_field_manager->getFieldMapByFieldType($field_type);
+
+    foreach ($field_map as $entity_type => $fields) {
+      foreach ($fields as $name => $field) {
+        $query = $entity_type_manager
+          ->getStorage($entity_type)
+          ->getQuery();
+
+        $condition_group = $query->orConditionGroup();
+
+        $conditions = [
+          // Matches spaces immediately after href=".
+          '<a href=" +[^"]+',
+          // Matches URLs starting with %20.
+          '<a href="%20[^"]+',
+          // Matches URLs ending with %20.
+          '<a href="[^"]*%20"',
+          // Matches URLs ending with a literal or non-breaking space.
+          '<a href="[^"]*[ \ ]"',
+        ];
+
+        foreach ($conditions as $condition) {
+          $condition_group->condition($name, $condition, 'REGEXP');
+        }
+
+        $query->exists($name)->condition($condition_group);
+        $query->accessCheck(FALSE);
+        $ids = $query->execute();
+
+        foreach ($ids as $id) {
+          $entity = $entity_type_manager->getStorage($entity_type)->load($id);
+
+          assert($entity instanceof TranslatableInterface);
+          foreach ($entity->getTranslationLanguages() as $language) {
+            _helfi_api_base_process_links(
+              $entity->getTranslation($language->getId()),
+              $name,
+              $count
+            );
+          }
+        }
+      }
+    }
+  }
+  \Drupal::logger('helfi_api_base')
+    ->notice(sprintf('Fixed %s links with extra spaces.', $count));
+}
+
+/**
+ * Sanitize filenames inside text fields.
+ *
+ * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+ *   The entity translation to process.
+ * @param string $field_name
+ *   The field name.
+ * @param int $count
+ *   The number of links fixed.
+ */
+function _helfi_api_base_process_links(ContentEntityInterface $entity, string $field_name, int &$count = 0) : void {
+  if (!$value = $entity->get($field_name)->value) {
+    return;
+  }
+
+  $hasChanges = FALSE;
+  $dom = Html::load($value);
+  /** @var \DOMElement $node */
+  foreach ($dom->getElementsByTagName('a') as $node) {
+    // Nothing to do if link has no href.
+    if (!$href = $node->getAttribute('href')) {
+      continue;
+    }
+
+    // Remove non-breaking spaces, any leading or trailing `%20`
+    // and trim the href.
+    $newHref = preg_replace('/^( )+|( )$/u', '', $href);
+    $newHref = preg_replace('/^(%20)|(%20)$/u', '', $newHref);
+    $newHref = trim($newHref);
+
+    if ($newHref === $href) {
+      continue;
+    }
+
+    $hasChanges = TRUE;
+    $count++;
+    $node->setAttribute('href', $newHref);
+  }
+
+  if ($hasChanges) {
+    $entity->get($field_name)->value = Html::serialize($dom);
+    $entity->save();
+  }
 }
