@@ -6,14 +6,17 @@ on:
 name: CI
 env:
   SYMFONY_DEPRECATIONS_HELPER: disabled
+  COMPOSER_MIRROR_PATH_REPOS: 1
+  COMPOSER_DISCARD_CHANGES: true
 jobs:
   tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: ['8.3']
     container:
-      image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
+      image: ghcr.io/city-of-helsinki/drupal-web:${{ matrix.php-versions }}
+      options: --hostname app --user 1001
 
     services:
       db:
@@ -28,14 +31,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Parse $MODULE_NAME from composer.json
         run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
 
       - name: Set Drupal root
         run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
+
+        # Actions worker overrides the default entrypoint with "tail -f /dev/null", so
+        # we have to start services manually.
+      - name: Start services
+        env:
+          WEBROOT: ${{ env.DRUPAL_ROOT }}/public
+        run: entrypoint &
 
       - name: Set module folder
         run: |
@@ -85,9 +93,11 @@ jobs:
             --coverage-clover=$MODULE_FOLDER/coverage.xml \
             $MODULE_FOLDER
 
-      - name: Run codecov
-        working-directory: ${{ env.MODULE_FOLDER }}
-        run: codecov -t ${{ secrets.CODECOV_TOKEN }}
+      - uses: codecov/codecov-action@v5
+        with:
+          fail_ci_if_error: true
+          directory: ${{ env.MODULE_FOLDER }}
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Create an artifact from test report
         uses: actions/upload-artifact@v4
