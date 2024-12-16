@@ -22,7 +22,7 @@ final class HelfiPackage implements VersionCheckerInterface {
    *   The HTTP client.
    */
   public function __construct(
-    private ClientInterface $client,
+    private readonly ClientInterface $client,
   ) {
   }
 
@@ -30,7 +30,6 @@ final class HelfiPackage implements VersionCheckerInterface {
    * {@inheritdoc}
    */
   public function applies(string $packageName): bool {
-    // @todo Allow other city-of-helsinki packages too.
     return str_starts_with($packageName, 'drupal/helfi_')
       || str_starts_with($packageName, 'drupal/hdbt');
   }
@@ -83,7 +82,7 @@ final class HelfiPackage implements VersionCheckerInterface {
     if (empty($latest['version']) || !is_string($latest['version'])) {
       throw new InvalidPackageException('No version data found.');
     }
-    return new Version($packageName, $latest['version'], version_compare($version, $latest['version'], '>='));
+    return new Version($packageName, $latest['version'], version_compare($version, $latest['version'], '>='), $version);
   }
 
 }

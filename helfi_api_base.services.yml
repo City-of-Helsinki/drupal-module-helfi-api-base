@@ -77,10 +77,11 @@ services:
     tags:
       - { name: service_collector, call: add, tag: helfi_api_base.version_checker }
 
+  Drupal\helfi_api_base\Package\ComposerOutdatedProcess: ~
+
   Drupal\helfi_api_base\Package\HelfiPackage: '@helfi_api_base.helfi_package_version_checker'
   helfi_api_base.helfi_package_version_checker:
     class: Drupal\helfi_api_base\Package\HelfiPackage
-    arguments: ['@http_client']
     tags:
       - { name: helfi_api_base.version_checker }
 

@@ -15,14 +15,17 @@ final class Version {
    * @param string $name
    *   The package name.
    * @param string $latestVersion
-   *   The version.
+   *   The latest version.
    * @param bool $isLatest
    *   Whether the given version is latest or not.
+   * @param string $version
+   *   The current version.
    */
   public function __construct(
     public string $name,
     public string $latestVersion,
     public bool $isLatest,
+    public string $version,
   ) {
   }
 
@@ -37,6 +40,7 @@ final class Version {
       'name' => $this->name,
       'latestVersion' => $this->latestVersion,
       'isLatest' => $this->isLatest,
+      'version' => $this->version,
     ];
   }
 
