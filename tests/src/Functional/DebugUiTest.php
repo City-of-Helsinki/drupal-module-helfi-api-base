@@ -32,7 +32,7 @@ class DebugUiTest extends MigrationTestBase {
     $this->drupalGet('/admin/debug');
     $this->assertSession()->statusCodeEquals(403);
 
-    $account = $this->createUser(['restful get helfi_debug_package_version']);
+    $account = $this->createUser(['access debug page']);
     $this->drupalLogin($account);
 
     $this->drupalGet('/admin/debug');
