@@ -338,3 +338,13 @@ function _helfi_api_base_process_links(ContentEntityInterface $entity, string $f
     $entity->save();
   }
 }
+
+/**
+ * UHF-10713 Remove VersionChecker.
+ */
+function helfi_api_base_update_9023(): void {
+  \Drupal::entityTypeManager()
+    ->getStorage('rest_resource_config')
+    ->load('helfi_debug_package_version')
+    ->delete();
+}

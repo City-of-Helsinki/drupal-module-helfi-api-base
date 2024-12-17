@@ -11,3 +11,5 @@ view remote entities:
   title: View remote entities
 edit remote entities:
   title: Edit remote entities
+access debug page:
+  title: Access debug page
