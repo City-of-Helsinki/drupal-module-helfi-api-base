@@ -13,6 +13,6 @@ jobs:
         php-versions: ['8.3']
     uses: city-of-helsinki/drupal-gh-actions/.github/workflows/module-tests.yml@main
     with:
-
+      php_version: ${{ matrix.php-versions }}
     secrets:
       codecov_token: ${{ secrets.CODECOV_TOKEN }}
