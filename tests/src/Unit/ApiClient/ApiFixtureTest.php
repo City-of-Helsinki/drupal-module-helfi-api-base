@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\Tests\helfi_api_base\Unit;
 
 use Drupal\Core\File\Exception\FileNotExistsException;
