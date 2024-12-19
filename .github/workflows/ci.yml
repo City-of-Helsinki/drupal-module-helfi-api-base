@@ -4,95 +4,13 @@ on:
     branches:
       - main
 name: CI
-env:
-  SYMFONY_DEPRECATIONS_HELPER: disabled
 jobs:
   tests:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
-    container:
-      image: ghcr.io/city-of-helsinki/drupal-php-docker:${{ matrix.php-versions }}-alpine
-
-    services:
-      db:
-        image: mysql:8
-        env:
-          MYSQL_USER: drupal
-          MYSQL_PASSWORD: drupal
-          MYSQL_DATABASE: drupal
-          MYSQL_ROOT_PASSWORD: drupal
-        ports:
-          - 3306:3306
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Parse $MODULE_NAME from composer.json
-        run: echo "MODULE_NAME=$(cat composer.json | jq -r .name | awk -F/ '{print $NF}')" >> $GITHUB_ENV
-
-      - name: Set Drupal root
-        run: echo "DRUPAL_ROOT=$HOME/drupal" >> $GITHUB_ENV
-
-      - name: Set module folder
-        run: |
-          echo "MODULE_FOLDER=$DRUPAL_ROOT/public/modules/contrib/$MODULE_NAME" >> $GITHUB_ENV
-          echo "BROWSERTEST_OUTPUT_DIRECTORY=$DRUPAL_ROOT/public/sites/simpletest" >> $GITHUB_ENV
-
-      - name: Clone platform
-        run: |
-          git clone --depth=1 https://github.com/City-of-Helsinki/drupal-helfi-platform.git $DRUPAL_ROOT
-          rm -rf $DRUPAL_ROOT/.git
-
-      - name: Install required composer dependencies
-        working-directory: ${{ env.DRUPAL_ROOT }}
-        run: |
-          composer config repositories.5 path $GITHUB_WORKSPACE
-          composer require drupal/$MODULE_NAME -W
-          # We use COMPOSER_MIRROR_PATH_REPOS=1 to mirror local repository
-          # instead of symlinking it to prevent code coverage issues with
-          # phpunit. Copy .git folder manually so codecov can generate line by
-          # line coverage.
-          cp -r $GITHUB_WORKSPACE/.git $MODULE_FOLDER/
-
-      - name: Install Drupal
-        working-directory: ${{ env.DRUPAL_ROOT }}
-        run: |
-          php -d sendmail_path=$(which true); vendor/bin/drush --yes -v site-install minimal --db-url="$SIMPLETEST_DB"
-          vendor/bin/drush en $MODULE_NAME -y
-
-      - name: Run PHPCS
-        working-directory: ${{ env.DRUPAL_ROOT }}
-        run: vendor/bin/phpcs $MODULE_FOLDER --standard=Drupal,DrupalPractice --extensions=php,module,install
-
-      - name: Run phpstan
-        working-directory: ${{ env.DRUPAL_ROOT }}
-        run: vendor/bin/phpstan analyze -c $MODULE_FOLDER/phpstan.neon $MODULE_FOLDER
-
-      - name: Start services
-        working-directory: ${{ env.DRUPAL_ROOT }}
-        run: vendor/bin/drush runserver $SIMPLETEST_BASE_URL --dns &
-
-      - name: Run PHPUnit tests
-        working-directory: ${{ env.DRUPAL_ROOT }}
-        run: |
-          vendor/bin/phpunit \
-            --bootstrap $DRUPAL_ROOT/public/core/tests/bootstrap.php \
-            -c $MODULE_FOLDER/phpunit.xml \
-            --coverage-clover=$MODULE_FOLDER/coverage.xml \
-            $MODULE_FOLDER
-
-      - name: Run codecov
-        working-directory: ${{ env.MODULE_FOLDER }}
-        run: codecov -t ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Create an artifact from test report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: results-${{ matrix.php-versions }}
-          path: ${{ env.BROWSERTEST_OUTPUT_DIRECTORY }}
-          retention-days: 1
+        php-versions: ['8.3']
+    uses: city-of-helsinki/drupal-gh-actions/.github/workflows/module-tests.yml@main
+    with:
+      php_version: ${{ matrix.php-versions }}
+    secrets:
+      codecov_token: ${{ secrets.CODECOV_TOKEN }}
