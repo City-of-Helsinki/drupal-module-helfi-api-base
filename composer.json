@@ -20,6 +20,13 @@
     "conflict": {
         "drupal/helfi_debug": "*"
     },
+    "extra": {
+        "patches": {
+            "drupal/entity": {
+                "[#3023527] Add: View any unpublished [entity_type] permission": "https://raw.githubusercontent.com/City-of-Helsinki/drupal-module-helfi-api-base/df21b7657d700c0c2f888cbdf085b895d56053c7/patches/3023527.patch"
+            }
+        }
+    },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "dg/bypass-finals": "^1.0",
