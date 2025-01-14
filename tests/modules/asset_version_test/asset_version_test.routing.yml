@@ -1,0 +1,6 @@
+asset_version_test.controller:
+  path: '/test-controller'
+  defaults:
+    _controller: '\Drupal\asset_version_test\Controller\Controller::build'
+  requirements:
+    _access: 'TRUE'
