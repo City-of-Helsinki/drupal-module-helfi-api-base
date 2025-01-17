@@ -9,7 +9,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 /**
  * Enum to contains all available environments.
  */
-enum EnvironmentEnum : string {
+enum EnvironmentEnum: string {
 
   case Local = 'local';
   case Dev = 'dev';
