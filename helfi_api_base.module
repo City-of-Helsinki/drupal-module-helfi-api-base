@@ -10,6 +10,7 @@ declare(strict_types=1);
 use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\helfi_api_base\Link\LinkProcessor;
 use Drupal\helfi_api_base\UserExpire\UserExpireManager;
@@ -136,5 +137,16 @@ function helfi_api_base_js_settings_alter(array &$settings, AttachedAssetsInterf
   // PHP tracking.
   if (isset($settings['raven']['options']['dsn'])) {
     $settings['raven']['options']['dsn'] = getenv('SENTRY_DSN_PUBLIC');
+  }
+}
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function helfi_api_base_library_info_alter(array &$libraries, string $extension): void {
+  foreach ($libraries as &$library) {
+    if (isset($library['version']) && $library['version'] === 'HELFI_DEPLOYMENT_IDENTIFIER') {
+      $library['version'] = Settings::get('deployment_identifier', '0.0.0');
+    }
   }
 }

@@ -1,0 +1,7 @@
+my-library:
+  version: HELFI_DEPLOYMENT_IDENTIFIER
+  js:
+    dist/my-library.js: {
+      preprocess: false,
+      minified: true
+    }

@@ -1,0 +1,4 @@
+type: module
+name: Asset version test
+package: Custom
+core_version_requirement: ^10 || ^11
