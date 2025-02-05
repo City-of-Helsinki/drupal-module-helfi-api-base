@@ -71,6 +71,8 @@ trait LanguageManagerTrait {
     $negotiator = $this->languageManager()->getNegotiator();
     assert($negotiator instanceof LanguageNegotiator);
     $negotiator->setLanguageCode($langcode);
+    // Override the language manager to make sure it's available everywhere.
+    $this->container->set('language_manager', $this->languageManager());
   }
 
 }
