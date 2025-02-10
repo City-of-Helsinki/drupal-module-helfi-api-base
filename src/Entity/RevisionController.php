@@ -102,6 +102,8 @@ class RevisionController extends RevisionOverviewController {
         'url' => $entity_revision->toUrl('revision-revert-language-form')->setRouteParameter('langcode', $entity_revision->language()->getId()),
       ];
     }
+
+    throw new \Exception("Revision revert language form not available");
   }
 
 }

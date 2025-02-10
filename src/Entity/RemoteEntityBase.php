@@ -13,7 +13,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 /**
  * Base class for remote entities.
  */
-abstract class RemoteEntityBase extends ContentEntityBase {
+abstract class RemoteEntityBase extends ContentEntityBase implements RemoteEntityInterface {
 
   /**
    * The maximum sync attempts.
