@@ -173,6 +173,9 @@ class RevisionManager {
     foreach ($revision_ids as $vid) {
       /** @var \Drupal\Core\Entity\TranslatableRevisionableInterface $revision */
       $revision = $storage->loadRevision($vid);
+
+      // @TODO figure out why revision is not found
+      // @see #UHF-11480
       if (!$revision) {
         continue;
       }
