@@ -173,6 +173,9 @@ class RevisionManager {
     foreach ($revision_ids as $vid) {
       /** @var \Drupal\Core\Entity\TranslatableRevisionableInterface $revision */
       $revision = $storage->loadRevision($vid);
+      if (!$revision) {
+        continue;
+      }
 
       foreach ($revision->getTranslationLanguages() as $langcode => $language) {
         if (!$this->isValidRevision($langcode, $revision)) {
