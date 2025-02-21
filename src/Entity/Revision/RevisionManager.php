@@ -174,6 +174,12 @@ class RevisionManager {
       /** @var \Drupal\Core\Entity\TranslatableRevisionableInterface $revision */
       $revision = $storage->loadRevision($vid);
 
+      // @todo Figure out why revision is not found,
+      // @see #UHF-11480.
+      if (!$revision) {
+        continue;
+      }
+
       foreach ($revision->getTranslationLanguages() as $langcode => $language) {
         if (!$this->isValidRevision($langcode, $revision)) {
           continue;
