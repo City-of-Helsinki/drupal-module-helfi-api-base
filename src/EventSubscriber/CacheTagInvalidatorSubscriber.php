@@ -8,6 +8,7 @@ use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -22,11 +23,13 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
    *   The cache tag invalidator subscriber.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
    *   The environment resolver.
+   * @param \Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface $purgeQueue
+   *   The purge queue service.
    */
   public function __construct(
     private readonly CacheTagsInvalidatorInterface $cacheTagsInvalidator,
     private readonly EnvironmentResolverInterface $environmentResolver,
-    private readonly QueueServiceInterface $purgeQueue,
+    #[Autowire('@purge.queue')] private readonly QueueServiceInterface $purgeQueue,
   ) {
   }
 

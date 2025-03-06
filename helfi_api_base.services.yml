@@ -105,14 +105,7 @@ services:
   Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface: '@Drupal\helfi_api_base\Cache\CacheTagInvalidator'
   Drupal\helfi_api_base\Cache\CacheTagInvalidator: ~
 
-  Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber:
-    class: Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber
-    arguments:
-      - '@cache_tags.invalidator'
-      - '@helfi_api_base.environment_resolver'
-      - '@purge.queue'
-    tags:
-      - { name: event_subscriber }
+  Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber: ~
 
   Drupal\helfi_api_base\Entity\Revision\RevisionManager: '@helfi_api_base.revision_manager'
   helfi_api_base.revision_manager:
