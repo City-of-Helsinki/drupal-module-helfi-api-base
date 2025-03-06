@@ -7,8 +7,9 @@ namespace Drupal\helfi_api_base\EventSubscriber;
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 /**
  * A cache invalidator subscriber.
  */
