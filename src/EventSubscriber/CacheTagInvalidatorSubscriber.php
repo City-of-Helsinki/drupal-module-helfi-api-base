@@ -95,9 +95,9 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
     // queue's storage/database.
     // This method executed within a long-running loop inside a drush
     // command that also contains a blocking function.
-    // In certain cases, the buffer is procssed only after the loop has ended,
-    // and in some failure scenarios, the buffer is not be processed at all
-    // resulting in tag not being purged from varnish.
+    // In certain cases, the buffer is processed only after the loop has ended,
+    // and in some failure scenarios, the buffer is not processed at all
+    // resulting in tags not being purged from varnish.
     // To ensure the tag revalidations are committed to the queue's database,
     // the commit method must be invoked to process and finalize the buffer.
     // @see \Drupal\purge\Plugin\Purge\Queue\QueueService::commit().
