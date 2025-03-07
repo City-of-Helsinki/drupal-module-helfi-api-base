@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\EventSubscriber;
 
+use Drupal\Component\EventDispatcher\Event;
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
-use Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -23,13 +24,13 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
    *   The cache tag invalidator subscriber.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
    *   The environment resolver.
-   * @param \Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface $purgeQueue
-   *   The purge queue service.
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+   *   The event dispatcher.
    */
   public function __construct(
     private readonly CacheTagsInvalidatorInterface $cacheTagsInvalidator,
     private readonly EnvironmentResolverInterface $environmentResolver,
-    #[Autowire('@purge.queue')] private readonly QueueServiceInterface $purgeQueue,
+    #[Autowire('@event_dispatcher')] private readonly EventDispatcherInterface $eventDispatcher,
   ) {
   }
 
@@ -100,12 +101,8 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
     // To ensure the tag revalidations are committed to the queue's database,
     // the commit method must be invoked to process and finalize the buffer.
     // @see \Drupal\purge\Plugin\Purge\Queue\QueueService::commit().
-    if (!method_exists($this->purgeQueue, 'commit')) {
-      // The commit method is mostly used in tests. Check if the method exists
-      // before invoking it.
-      throw new \LogicException('QueueServiceInterface::commit() does not exist anymore.');
-    }
-    $this->purgeQueue->commit();
+    // @see \Drupal\helfi_proxy\Event\PurgeCommitEvent
+    $this->eventDispatcher->dispatch(new Event(), 'helfi_proxy.purge_queue_commit');
   }
 
   /**
