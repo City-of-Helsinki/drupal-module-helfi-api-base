@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\EventSubscriber;
 
-use Drupal\Component\EventDispatcher\Event;
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Event\CacheTagInvalidateEvent;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -102,7 +102,7 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
     // the commit method must be invoked to process and finalize the buffer.
     // @see \Drupal\purge\Plugin\Purge\Queue\QueueService::commit().
     // @see \Drupal\helfi_proxy\Event\PurgeCommitEvent
-    $this->eventDispatcher->dispatch(new Event(), 'helfi_proxy.purge_queue_commit');
+    $this->eventDispatcher->dispatch(new CacheTagInvalidateEvent(), CacheTagInvalidateEvent::EVENT_NAME);
   }
 
   /**
