@@ -102,7 +102,7 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
     // the commit method must be invoked to process and finalize the buffer.
     // @see \Drupal\purge\Plugin\Purge\Queue\QueueService::commit().
     // @see \Drupal\helfi_proxy\Event\PurgeCommitEvent
-    $this->eventDispatcher->dispatch(new CacheTagInvalidateEvent(), CacheTagInvalidateEvent::EVENT_NAME);
+    $this->eventDispatcher->dispatch(new CacheTagInvalidateEvent());
   }
 
   /**

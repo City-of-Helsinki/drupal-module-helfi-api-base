@@ -9,11 +9,4 @@ use Drupal\Component\EventDispatcher\Event;
 /**
  * Cache tag invalidate event.
  */
-final class CacheTagInvalidateEvent extends Event {
-
-  /**
-   * The event name.
-   */
-  public const EVENT_NAME = 'helfi_cache_tag_invalidate';
-
-}
+final class CacheTagInvalidateEvent extends Event {}
