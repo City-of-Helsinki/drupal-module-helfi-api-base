@@ -8,9 +8,8 @@ use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Event\CacheTagInvalidateEvent;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * A cache invalidator subscriber.
@@ -30,7 +29,7 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
   public function __construct(
     private readonly CacheTagsInvalidatorInterface $cacheTagsInvalidator,
     private readonly EnvironmentResolverInterface $environmentResolver,
-    #[Autowire('@event_dispatcher')] private readonly EventDispatcherInterface $eventDispatcher,
+    private readonly EventDispatcherInterface $eventDispatcher,
   ) {
   }
 
