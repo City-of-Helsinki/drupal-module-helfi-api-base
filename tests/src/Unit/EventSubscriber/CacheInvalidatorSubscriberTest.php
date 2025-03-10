@@ -8,11 +8,14 @@ use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Tests\UnitTestCase;
 use Drupal\Tests\helfi_api_base\Traits\CacheTagInvalidator;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
+use Drupal\helfi_api_base\Event\CacheTagInvalidateEvent;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @coversDefaultClass \Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber
@@ -42,8 +45,12 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
     $this->expectException(\LogicException::class);
     $invalidator = $this->prophesize(CacheTagsInvalidatorInterface::class);
     $invalidator->invalidateTags(['node:123'])->shouldBeCalled();
+    $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+    $eventDispatcher->dispatch(Argument::any(), Argument::any())
+      ->shouldNotBeCalled()
+      ->willReturn(new CacheTagInvalidateEvent());
     $environmentResolver = $this->getEnvironmentResolver();
-    $sut = new CacheTagInvalidatorSubscriber($invalidator->reveal(), $environmentResolver);
+    $sut = new CacheTagInvalidatorSubscriber($invalidator->reveal(), $environmentResolver, $eventDispatcher->reveal());
     $sut->onReceive(new PubSubMessage(['data' => ['tags' => ['node:123']]]));
   }
 
@@ -58,7 +65,10 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
     // fails to find an active project.
     $mock = new CacheTagInvalidator();
     $environmentResolver = $this->getEnvironmentResolver('invalid_project');
-    $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);
+    $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+    $eventDispatcher->dispatch(Argument::any(), Argument::any())
+      ->willReturn(new CacheTagInvalidateEvent());
+    $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver, $eventDispatcher->reveal());
     $sut->onReceive(new PubSubMessage([
       'data' => [
         'tags' => ['node:123'],
@@ -78,7 +88,11 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
   public function testInvalidCacheTags() : void {
     $mock = new CacheTagInvalidator();
     $environmentResolver = $this->getEnvironmentResolver();
-    $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);
+    $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+    $eventDispatcher->dispatch(Argument::any(), Argument::any())
+      ->shouldNotBeCalled()
+      ->willReturn(new CacheTagInvalidateEvent());
+    $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver, $eventDispatcher->reveal());
     $sut->onReceive(new PubSubMessage([]));
     $this->assertEmpty($mock->tags);
   }
@@ -92,7 +106,11 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
   public function testValidCacheTags() : void {
     $mock = new CacheTagInvalidator();
     $environmentResolver = $this->getEnvironmentResolver();
-    $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);
+    $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+    $eventDispatcher->dispatch(Argument::any(), Argument::any())
+      ->shouldBeCalled()
+      ->willReturn(new CacheTagInvalidateEvent());
+    $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver, $eventDispatcher->reveal());
     $sut->onReceive(new PubSubMessage(['data' => ['tags' => ['node:123']]]));
 
     $this->assertArrayHasKey('node:123', $mock->tags);
@@ -108,8 +126,11 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
   public function testValidInstances() : void {
     $mock = new CacheTagInvalidator();
     $environmentResolver = $this->getEnvironmentResolver(Project::ASUMINEN, EnvironmentEnum::Local);
-
-    $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver);
+    $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+    $eventDispatcher->dispatch(Argument::any(), Argument::any())
+      ->shouldBeCalled()
+      ->willReturn(new CacheTagInvalidateEvent());
+    $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver, $eventDispatcher->reveal());
     $sut->onReceive(new PubSubMessage([
       'data' => [
         'tags' => ['node:123'],

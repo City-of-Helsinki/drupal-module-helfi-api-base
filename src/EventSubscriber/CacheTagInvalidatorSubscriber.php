@@ -7,7 +7,9 @@ namespace Drupal\helfi_api_base\EventSubscriber;
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\helfi_api_base\Azure\PubSub\PubSubMessage;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Event\CacheTagInvalidateEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * A cache invalidator subscriber.
@@ -21,10 +23,13 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
    *   The cache tag invalidator subscriber.
    * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
    *   The environment resolver.
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+   *   The event dispatcher.
    */
   public function __construct(
     private readonly CacheTagsInvalidatorInterface $cacheTagsInvalidator,
     private readonly EnvironmentResolverInterface $environmentResolver,
+    private readonly EventDispatcherInterface $eventDispatcher,
   ) {
   }
 
@@ -83,6 +88,20 @@ final class CacheTagInvalidatorSubscriber implements EventSubscriberInterface {
       throw new \LogicException('CacheTagsInvalidatorInterface::resetCheckSums() does not exist anymore.');
     }
     $this->cacheTagsInvalidator->resetChecksums();
+
+    // The Purge Queue service temporarily stores all incoming revalidations
+    // in a buffer (refer to: TxBufferInterface) before inserting them into the
+    // queue's storage/database.
+    // This method executed within a long-running loop inside a drush
+    // command that also contains a blocking function.
+    // In certain cases, the buffer is processed only after the loop has ended,
+    // and in some failure scenarios, the buffer is not processed at all
+    // resulting in tags not being purged from varnish.
+    // To ensure the tag revalidations are committed to the queue's database,
+    // the commit method must be invoked to process and finalize the buffer.
+    // @see \Drupal\purge\Plugin\Purge\Queue\QueueService::commit().
+    // @see \Drupal\helfi_proxy\Event\PurgeCommitEvent
+    $this->eventDispatcher->dispatch(new CacheTagInvalidateEvent());
   }
 
   /**
