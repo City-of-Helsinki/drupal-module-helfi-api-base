@@ -47,6 +47,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
     $invalidator->invalidateTags(['node:123'])->shouldBeCalled();
     $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
     $eventDispatcher->dispatch(Argument::any(), Argument::any())
+      ->shouldNotBeCalled()
       ->willReturn(new CacheTagInvalidateEvent());
     $environmentResolver = $this->getEnvironmentResolver();
     $sut = new CacheTagInvalidatorSubscriber($invalidator->reveal(), $environmentResolver, $eventDispatcher->reveal());
@@ -89,6 +90,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
     $environmentResolver = $this->getEnvironmentResolver();
     $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
     $eventDispatcher->dispatch(Argument::any(), Argument::any())
+      ->shouldNotBeCalled()
       ->willReturn(new CacheTagInvalidateEvent());
     $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver, $eventDispatcher->reveal());
     $sut->onReceive(new PubSubMessage([]));
@@ -106,6 +108,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
     $environmentResolver = $this->getEnvironmentResolver();
     $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
     $eventDispatcher->dispatch(Argument::any(), Argument::any())
+      ->shouldBeCalled()
       ->willReturn(new CacheTagInvalidateEvent());
     $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver, $eventDispatcher->reveal());
     $sut->onReceive(new PubSubMessage(['data' => ['tags' => ['node:123']]]));
@@ -125,6 +128,7 @@ class CacheInvalidatorSubscriberTest extends UnitTestCase {
     $environmentResolver = $this->getEnvironmentResolver(Project::ASUMINEN, EnvironmentEnum::Local);
     $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
     $eventDispatcher->dispatch(Argument::any(), Argument::any())
+      ->shouldBeCalled()
       ->willReturn(new CacheTagInvalidateEvent());
     $sut = new CacheTagInvalidatorSubscriber($mock, $environmentResolver, $eventDispatcher->reveal());
     $sut->onReceive(new PubSubMessage([
