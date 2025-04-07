@@ -6,18 +6,18 @@ namespace Drupal\helfi_api_base\Plugin\DebugDataItem;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\State\StateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_api_base\Attribute\DebugDataItem;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the debug_data_item.
- *
- * @DebugDataItem(
- *   id = "maintenance_mode",
- *   label = @Translation("Maintenance mode"),
- *   description = @Translation("Maintenance mode")
- * )
  */
+#[DebugDataItem(
+  id: 'maintenance_mode',
+  title: new TranslatableMarkup('Maintenance mode'),
+)]
 final class MaintenanceMode extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface {
 
   /**

@@ -16,7 +16,7 @@ abstract class DebugDataItemPluginBase extends PluginBase implements DebugDataIt
    */
   public function label() : string {
     // Cast the label to a string since it is a TranslatableMarkup object.
-    return (string) $this->pluginDefinition['label'];
+    return (string) $this->pluginDefinition['title'];
   }
 
   /**
