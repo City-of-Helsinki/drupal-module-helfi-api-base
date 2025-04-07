@@ -21,7 +21,7 @@ class MaintenanceModeTest extends KernelTestBase {
   ];
 
   /**
-   * Tests that composer plugin collects data properly.
+   * Tests that the plugin collects data properly.
    *
    * @covers \Drupal\helfi_api_base\Plugin\DebugDataItem\MaintenanceMode::collect
    * @covers \Drupal\helfi_api_base\Plugin\DebugDataItem\MaintenanceMode::create
@@ -33,9 +33,11 @@ class MaintenanceModeTest extends KernelTestBase {
     $plugin = $manager->createInstance('maintenance_mode');
     \Drupal::state()->set('system.maintenance_mode', TRUE);
     $this->assertEquals(['maintenance_mode' => TRUE], $plugin->collect());
+    $this->assertFalse($plugin->check());
 
     \Drupal::state()->set('system.maintenance_mode', FALSE);
     $this->assertEquals(['maintenance_mode' => FALSE], $plugin->collect());
+    $this->assertTrue($plugin->check());
   }
 
 }

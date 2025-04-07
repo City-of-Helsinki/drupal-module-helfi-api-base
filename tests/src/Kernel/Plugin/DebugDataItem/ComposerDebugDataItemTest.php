@@ -22,7 +22,7 @@ class ComposerDebugDataItemTest extends KernelTestBase {
   ];
 
   /**
-   * Tests that composer plugin collects data properly.
+   * Tests that the plugin collects data properly.
    */
   public function testCompile() : void {
     /** @var \Drupal\helfi_api_base\DebugDataItemPluginManager $manager */

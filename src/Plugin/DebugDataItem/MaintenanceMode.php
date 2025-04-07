@@ -40,7 +40,15 @@ final class MaintenanceMode extends DebugDataItemPluginBase implements Container
    * {@inheritdoc}
    */
   public function collect(): array {
-    return ['maintenance_mode' => $this->state->get('system.maintenance_mode')];
+    return ['maintenance_mode' => !$this->check()];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function check(): bool {
+    // Maintenance mode = false indicates success.
+    return !$this->state->get('system.maintenance_mode');
   }
 
 }
