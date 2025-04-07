@@ -21,3 +21,13 @@ helfi_api_base.debug_list:
     _controller: '\Drupal\helfi_api_base\Controller\DebugController::build'
   requirements:
     _permission: 'access debug page'
+
+helfi_api_base.debug_api:
+  path: '/api/v1/debug/{plugin}'
+  defaults:
+    _title: 'Debug'
+    _controller: '\Drupal\helfi_api_base\Controller\DebugController::api'
+  requirements:
+    _permission: 'access debug api'
+  options:
+    _maintenance_access: TRUE

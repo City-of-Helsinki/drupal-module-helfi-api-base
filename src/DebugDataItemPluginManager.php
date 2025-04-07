@@ -7,6 +7,7 @@ namespace Drupal\helfi_api_base;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
+use Drupal\helfi_api_base\Attribute\DebugDataItem;
 
 /**
  * DebugDataItem plugin manager.
@@ -30,7 +31,7 @@ class DebugDataItemPluginManager extends DefaultPluginManager {
       $namespaces,
       $module_handler,
       'Drupal\helfi_api_base\DebugDataItemInterface',
-      'Drupal\helfi_api_base\Annotation\DebugDataItem'
+      DebugDataItem::class,
     );
     $this->alterInfo('debug_data_item_info');
     $this->setCacheBackend($cache_backend, 'debug_data_item_plugins');

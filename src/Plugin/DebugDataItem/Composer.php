@@ -7,18 +7,18 @@ namespace Drupal\helfi_api_base\Plugin\DebugDataItem;
 use ComposerLockParser\ComposerInfo;
 use ComposerLockParser\Package;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_api_base\Attribute\DebugDataItem;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the debug_data_item.
- *
- * @DebugDataItem(
- *   id = "composer",
- *   label = @Translation("Composer"),
- *   description = @Translation("Composer")
- * )
  */
+#[DebugDataItem(
+  id: 'composer',
+  title: new TranslatableMarkup('Composer'),
+)]
 final class Composer extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface {
 
   /**

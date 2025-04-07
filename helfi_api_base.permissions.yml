@@ -13,3 +13,5 @@ edit remote entities:
   title: Edit remote entities
 access debug page:
   title: Access debug page
+access debug api:
+  title: Access debug api

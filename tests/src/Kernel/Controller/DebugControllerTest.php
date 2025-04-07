@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\Controller;
 
+use Drupal\helfi_api_base\DebugDataItemInterface;
+use Drupal\helfi_api_base\DebugDataItemPluginManager;
 use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use Drupal\helfi_api_base\Controller\DebugController;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -37,8 +39,19 @@ class DebugControllerTest extends ApiKernelTestBase {
 
     $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
 
+    $request = $this->getMockedRequest('/api/v1/debug/maintenance_mode');
+    $response = $this->processRequest($request);
+
+    $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+
     $this->drupalSetUpCurrentUser(permissions: ['access debug page']);
     $request = $this->getMockedRequest('/admin/debug');
+    $response = $this->processRequest($request);
+
+    $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+
+    $this->drupalSetUpCurrentUser(permissions: ['access debug api']);
+    $request = $this->getMockedRequest('/api/v1/debug/maintenance_mode');
     $response = $this->processRequest($request);
 
     $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
@@ -54,6 +67,33 @@ class DebugControllerTest extends ApiKernelTestBase {
     $this->assertArrayHasKey('migrate', $build);
     $this->assertArrayHasKey('composer', $build);
     $this->assertArrayHasKey('maintenance-mode', $build);
+  }
+
+  /**
+   * Tests build.
+   */
+  public function testApi() : void {
+    $plugin = $this->prophesize(DebugDataItemInterface::class);
+    $plugin
+      ->check()
+      ->willReturn(TRUE, FALSE);
+
+    $manager = $this->prophesize(DebugDataItemPluginManager::class);
+    $manager
+      ->createInstance('test')
+      ->willReturn($plugin->reveal());
+
+    $this->container->set(DebugDataItemPluginManager::class, $manager->reveal());
+
+    $this->drupalSetUpCurrentUser(permissions: ['access debug api']);
+
+    $request = $this->getMockedRequest('/api/v1/debug/test');
+
+    $response = $this->processRequest($request);
+    $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+
+    $response = $this->processRequest($request);
+    $this->assertEquals(Response::HTTP_SERVICE_UNAVAILABLE, $response->getStatusCode());
   }
 
 }
