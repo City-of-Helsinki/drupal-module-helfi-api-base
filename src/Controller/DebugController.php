@@ -74,8 +74,8 @@ final class DebugController extends ControllerBase {
       /** @var \Drupal\helfi_api_base\DebugDataItemInterface $instance */
       $instance = $this->manager->createInstance($plugin);
     }
-    catch (PluginException $e) {
-      throw new NotFoundHttpException($e->getMessage());
+    catch (PluginException) {
+      throw new NotFoundHttpException();
     }
 
     $check = $instance->check();
