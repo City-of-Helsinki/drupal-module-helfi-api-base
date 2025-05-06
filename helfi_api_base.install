@@ -362,6 +362,7 @@ function helfi_api_base_update_9024(): void {
   if (!Drupal::moduleHandler()->moduleExists('big_pipe')) {
     Drupal::service('module_installer')->install([
       'big_pipe',
+      'big_pipe_sessionless',
     ]);
   }
   // Disable page_cache module if Varnish is enabled.
