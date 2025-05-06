@@ -353,9 +353,8 @@ function helfi_api_base_update_9023(): void {
     ?->delete();
 }
 
-
 /**
- * UHF-11025: Enable big_pipe module, disable page_cache.
+ * UHF-11025: Enable big_pipe module.
  */
 function helfi_api_base_update_9024(): void {
   // Enable big_pipe module.
@@ -365,11 +364,4 @@ function helfi_api_base_update_9024(): void {
       'big_pipe_sessionless',
     ]);
   }
-  // Disable page_cache module if Varnish is enabled.
-  if (Drupal::moduleHandler()->moduleExists('varnish_purger')) {
-    Drupal::service('module_installer')->uninstall([
-      'page_cache',
-    ]);
-  }
-
 }
