@@ -6,6 +6,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
+        "drupal/big_pipe_sessionless": "^2.0",
         "drupal/entity": "^1.0",
         "drupal/health_check": "^3.0",
         "drupal/monolog": "^3.0",
