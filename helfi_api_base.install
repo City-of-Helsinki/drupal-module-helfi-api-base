@@ -352,3 +352,16 @@ function helfi_api_base_update_9023(): void {
     ->load('helfi_debug_package_version')
     ?->delete();
 }
+
+/**
+ * UHF-11025: Enable big_pipe module.
+ */
+function helfi_api_base_update_9024(): void {
+  // Enable big_pipe module.
+  if (!Drupal::moduleHandler()->moduleExists('big_pipe')) {
+    Drupal::service('module_installer')->install([
+      'big_pipe',
+      'big_pipe_sessionless',
+    ]);
+  }
+}
