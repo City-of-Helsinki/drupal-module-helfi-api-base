@@ -365,3 +365,12 @@ function helfi_api_base_update_9024(): void {
     ]);
   }
 }
+
+/**
+ * Disable new feature.
+ */
+function helfi_api_base_update_9025(): void {
+  /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
+  $service = \Drupal::service(FeatureManager::class);
+  $service->disableFeature(FeatureManager::USE_MOCK_RESPONSES);
+}
