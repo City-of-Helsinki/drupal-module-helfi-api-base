@@ -11,6 +11,14 @@ use Drupal\Core\Config\ConfigFactoryInterface;
  */
 final class FeatureManager {
 
+  /**
+   * Disables network calls from supported features.
+   *
+   * This is useful for example on visual regression tests, where we don't want
+   * the tests to make requests to external services. Features that want to use
+   * this must implement their own support for this flag.
+   */
+  public const USE_MOCK_RESPONSES = 'use_mock_responses';
   public const DISABLE_USER_PASSWORD = 'disable_user_password';
   public const USER_EXPIRE = 'user_expire';
   public const DISABLE_EMAIL_SENDING = 'disable_email_sending';

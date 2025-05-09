@@ -82,6 +82,7 @@ class FeatureManagerTest extends KernelTestBase {
       FeatureManager::DISABLE_USER_PASSWORD => TRUE,
       FeatureManager::DISABLE_EMAIL_SENDING => TRUE,
       FeatureManager::USER_EXPIRE => TRUE,
+      FeatureManager::USE_MOCK_RESPONSES => FALSE,
     ], $features);
   }
 
