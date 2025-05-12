@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Environment\Address;
 use Drupal\helfi_api_base\Environment\Environment;
@@ -67,6 +68,20 @@ class ProjectTest extends UnitTestCase {
       $this->assertInstanceOf(TranslatableMarkup::class, $sut->label());
     }
     $this->assertTrue($found > 0);
+  }
+
+  /**
+   * Tests role checkker.
+   */
+  public function testHasRole() : void {
+    $sut = new Project(
+      Project::ASUMINEN,
+      new ProjectMetadata('https://github.com/city-of-helsinki/something'),
+      [],
+      [ProjectRoleEnum::Core],
+    );
+
+    $this->assertTrue($sut->hasRole(ProjectRoleEnum::Core));
   }
 
 }

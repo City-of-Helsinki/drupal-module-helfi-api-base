@@ -41,6 +41,7 @@ class ActiveProjectRolesTest extends UnitTestCase {
       [FALSE, NULL, NULL],
       [TRUE, Project::ASUMINEN, EnvironmentEnum::Local],
       [FALSE, 'non-existent', NULL],
+      [FALSE, Project::PAATOKSET, EnvironmentEnum::Prod],
     ];
   }
 

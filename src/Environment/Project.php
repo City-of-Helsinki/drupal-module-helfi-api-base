@@ -14,6 +14,7 @@ final class Project {
 
   use EnvironmentTrait;
 
+  // Core projects.
   public const ASUMINEN = 'asuminen';
   public const ETUSIVU = 'etusivu';
   public const KASVATUS_KOULUTUS = 'kasvatus-koulutus';
@@ -23,6 +24,8 @@ final class Project {
   public const STRATEGIA = 'strategia';
   public const TERVEYS = 'terveys';
   public const TYO_YRITTAMINEN = 'tyo-yrittaminen';
+  // Non-core projects.
+  public const PAATOKSET = 'paatokset';
 
   /**
    * The environments.
@@ -40,13 +43,17 @@ final class Project {
    *   The metadata.
    * @param \Drupal\helfi_api_base\Environment\Environment[] $environments
    *   The environments.
+   * @param \Drupal\helfi_api_base\Environment\ProjectRoleEnum[] $roles
+   *   The project roles.
    */
   public function __construct(
     public readonly string $name,
     public readonly ProjectMetadata $metadata,
     array $environments = [],
+    public readonly array $roles = [],
   ) {
     Assert::allIsInstanceOf($environments, Environment::class);
+    Assert::allIsInstanceOf($roles, ProjectRoleEnum::class);
 
     foreach ($environments as $environment) {
       $this->environments[$environment->environment->value] = $environment;
@@ -90,6 +97,7 @@ final class Project {
       self::STRATEGIA => new TranslatableMarkup('Decision-making'),
       self::TERVEYS => new TranslatableMarkup('Health and social services'),
       self::TYO_YRITTAMINEN => new TranslatableMarkup('Business and work'),
+      self::PAATOKSET => new TranslatableMarkup('Decisions'),
     };
   }
 
@@ -134,6 +142,19 @@ final class Project {
       throw new \InvalidArgumentException(sprintf('Environment "%s" not found.', $environment));
     }
     return $this->environments[$environment];
+  }
+
+  /**
+   * Checks if this project has a role.
+   *
+   * @param \Drupal\helfi_api_base\Environment\ProjectRoleEnum $role
+   *   The role to check.
+   *
+   * @return bool
+   *   True if this project has the role.
+   */
+  public function hasRole(ProjectRoleEnum $role): bool {
+    return in_array($role, $this->roles);
   }
 
 }

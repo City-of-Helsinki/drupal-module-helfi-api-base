@@ -55,16 +55,17 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
     if (!empty($this->projects)) {
       return;
     }
+    $nonCorePaths = [
+      'fi' => '/fi',
+      'sv' => '/sv',
+      'en' => '/en',
+    ];
     $paths = [
+      Project::ETUSIVU => $nonCorePaths,
       Project::ASUMINEN => [
         'fi' => '/fi/asuminen',
         'sv' => '/sv/boende',
         'en' => '/en/housing',
-      ],
-      Project::ETUSIVU => [
-        'fi' => '/fi',
-        'sv' => '/sv',
-        'en' => '/en',
       ],
       Project::KASVATUS_KOULUTUS => [
         'fi' => '/fi/kasvatus-ja-koulutus',
@@ -132,6 +133,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Prod,
           ),
         ],
+        roles: [ProjectRoleEnum::Core],
       ),
       Project::ETUSIVU => new Project(
         Project::ETUSIVU,
@@ -174,6 +176,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             ],
           ),
         ],
+        roles: [ProjectRoleEnum::Core],
       ),
       Project::KASVATUS_KOULUTUS => new Project(
         Project::KASVATUS_KOULUTUS,
@@ -204,6 +207,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Prod,
           ),
         ],
+        roles: [ProjectRoleEnum::Core],
       ),
       Project::KUVA => new Project(
         Project::KUVA,
@@ -234,6 +238,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Prod,
           ),
         ],
+        roles: [ProjectRoleEnum::Core],
       ),
       Project::LIIKENNE => new Project(
         Project::LIIKENNE,
@@ -264,6 +269,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Prod,
           ),
         ],
+        roles: [ProjectRoleEnum::Core],
       ),
       Project::REKRY => new Project(
         Project::REKRY,
@@ -294,6 +300,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Prod,
           ),
         ],
+        roles: [ProjectRoleEnum::Core],
       ),
       Project::STRATEGIA => new Project(
         Project::STRATEGIA,
@@ -324,6 +331,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Prod,
           ),
         ],
+        roles: [ProjectRoleEnum::Core],
       ),
       Project::TERVEYS => new Project(
         Project::TERVEYS,
@@ -354,6 +362,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Prod,
           ),
         ],
+        roles: [ProjectRoleEnum::Core],
       ),
       Project::TYO_YRITTAMINEN => new Project(
         Project::TYO_YRITTAMINEN,
@@ -381,6 +390,37 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             address: new Address('www.hel.fi'),
             internalAddress: new Address('nginx-tyo-yrittaminen-prod.apps.platta.hel.fi'),
             paths: $paths[Project::TYO_YRITTAMINEN],
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+        roles: [ProjectRoleEnum::Core],
+      ),
+      Project::PAATOKSET => new Project(
+        Project::PAATOKSET,
+        new ProjectMetadata('https://github.com/City-of-Helsinki/helsinki-paatokset'),
+        [
+          new Environment(
+            address: new Address('helsinki-paatokset.docker.so'),
+            internalAddress: new Address('helsinki-paatokset', 'http', 8080),
+            paths: $nonCorePaths,
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('nginx-paatokset-test.agw.arodevtest.hel.fi/'),
+            internalAddress: new Address('nginx-paatokset-test.apps.arodevtest.hel.fi/'),
+            paths: $nonCorePaths,
+            environment: EnvironmentEnum::Test,
+          ),
+          new Environment(
+            address: new Address('drupal-paatokset.stage.hel.ninja'),
+            internalAddress: new Address('nginx-paatokset-staging.apps.platta.hel.fi'),
+            paths: $nonCorePaths,
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('paatokset.hel.fi'),
+            internalAddress: new Address('nginx-paatokset-prod.apps.platta.hel.fi'),
+            paths: $nonCorePaths,
             environment: EnvironmentEnum::Prod,
           ),
         ],
