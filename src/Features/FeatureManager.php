@@ -9,7 +9,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 /**
  * Provides a service to manage different features.
  */
-final class FeatureManager {
+final class FeatureManager implements FeatureManagerInterface {
 
   /**
    * Disables network calls from supported features.

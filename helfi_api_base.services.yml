@@ -26,6 +26,8 @@ services:
   Drupal\helfi_api_base\UserExpire\UserExpireManager: ~
   Drupal\helfi_api_base\EventSubscriber\SentryTracesSamplerSubscriber: ~
   Drupal\helfi_api_base\EventSubscriber\DisableUserPasswordSubscriber: ~
+
+  Drupal\helfi_api_base\Features\FeatureManagerInterface: '@Drupal\helfi_api_base\Features\FeatureManager'
   Drupal\helfi_api_base\Features\FeatureManager: ~
 
   Drupal\helfi_api_base\Environment\ActiveProjectRoles: ~
