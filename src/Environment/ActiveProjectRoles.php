@@ -29,24 +29,13 @@ final class ActiveProjectRoles {
    *   The features.
    */
   private function getRoles(): array {
-    $roles = [];
-
     try {
-      // Instance is considered as a "core" if it's included in main-navigation
-      // structure, so basically all Drupal instances under www.hel.fi domain.
-      //
-      // Currently, only core instances are defined in EnvironmentResolver, so
-      // we can use ::getActiveProject() to determine if the current instance is
-      // a core instance.
-      // @todo Include all instances in EnvironmentResolver and include
-      // Project role data in Project object.
-      $this->environmentResolver->getActiveProject();
-
-      $roles[] = ProjectRoleEnum::Core;
+      return $this->environmentResolver->getActiveProject()->roles;
     }
     catch (\InvalidArgumentException) {
     }
-    return $roles;
+
+    return [];
   }
 
 }
