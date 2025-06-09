@@ -91,8 +91,8 @@ class LocaleCommands extends DrushCommands {
         // Import translations as not-customized translations.
         // Let users override translations from UI translate interface.
         '--type=not-customized',
-        // Override only not customized translations.
-        '--override=not-customized',
+        // Override all translations.
+        '--override=all',
         $language->getId(),
         $file->uri,
       ]);
