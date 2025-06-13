@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_api_base\Commands;
+namespace Drupal\helfi_api_base\Drush\Commands;
 
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\Hooks\HookManager;
@@ -11,16 +11,20 @@ use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Drush\Attributes\Hook;
+use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
 use Drush\Utils\StringUtils;
 use Robo\ResultData;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Migrate hook commands.
  */
 final class MigrateHookCommands extends DrushCommands {
+
+  use AutowireTrait;
 
   /**
    * Constructs a new instance.
@@ -34,6 +38,7 @@ final class MigrateHookCommands extends DrushCommands {
    */
   public function __construct(
     private readonly MigrationPluginManagerInterface $migrationPluginManager,
+    #[Autowire(service: 'keyvalue')]
     private readonly KeyValueFactoryInterface $keyValueFactory,
     private readonly TimeInterface $time,
   ) {

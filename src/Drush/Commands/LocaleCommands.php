@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_api_base\Commands;
+namespace Drupal\helfi_api_base\Drush\Commands;
 
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\StringTranslation\TranslationManager;
+use Drupal\Core\StringTranslation\TranslationInterface;
+use Drush\Attributes\Argument;
+use Drush\Attributes\Command;
+use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -17,6 +20,7 @@ use Drush\Commands\DrushCommands;
 class LocaleCommands extends DrushCommands {
 
   use StringTranslationTrait;
+  use AutowireTrait;
 
   /**
    * Constructs a new instance.
@@ -25,7 +29,7 @@ class LocaleCommands extends DrushCommands {
    *   The language manager.
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The file system service.
-   * @param \Drupal\Core\StringTranslation\TranslationManager $translationManager
+   * @param \Drupal\Core\StringTranslation\TranslationInterface $translationManager
    *   The translation manager.
    * @param \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList
    *   The module extension list.
@@ -33,7 +37,7 @@ class LocaleCommands extends DrushCommands {
   public function __construct(
     protected LanguageManagerInterface $languageManager,
     protected FileSystemInterface $fileSystem,
-    protected TranslationManager $translationManager,
+    protected TranslationInterface $translationManager,
     protected ModuleExtensionList $moduleExtensionList,
   ) {
   }
@@ -67,13 +71,10 @@ class LocaleCommands extends DrushCommands {
 
   /**
    * Pre-command hook to import english source strings.
-   *
-   * @param string $module
-   *   The module name.
-   *
-   * @command helfi:locale-import
    */
-  public function import(string $module) {
+  #[Command(name: 'helfi:locale-import')]
+  #[Argument(name: 'module', description: 'The module name')]
+  public function import(string $module): void {
     foreach ($this->languageManager->getLanguages() as $language) {
       // Skip default language.
       if ($language->isDefault()) {

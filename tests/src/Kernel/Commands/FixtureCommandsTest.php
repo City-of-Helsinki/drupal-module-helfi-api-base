@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\Commands;
 
+use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
-use Drupal\helfi_api_base\Commands\FixtureCommands;
+use Drupal\helfi_api_base\Drush\Commands\FixtureCommands;
 use Drupal\remote_entity_test\Entity\RemoteEntityTest;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -41,7 +42,7 @@ class FixtureCommandsTest extends ApiKernelTestBase {
    */
   public function testFixtureMigrate() : void {
     $this->assertNull(RemoteEntityTest::load(1));
-    $sut = new FixtureCommands($this->container);
+    $sut = new FixtureCommands($this->container, $this->container->get(MigrationPluginManagerInterface::class));
     $sut->migrateFixtures('dummy_migrate');
 
     $entity = RemoteEntityTest::load(1);

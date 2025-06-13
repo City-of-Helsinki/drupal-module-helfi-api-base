@@ -10,7 +10,7 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Drupal\Core\KeyValueStore\KeyValueStoreInterface;
 use Drupal\Tests\UnitTestCase;
-use Drupal\helfi_api_base\Commands\MigrateHookCommands;
+use Drupal\helfi_api_base\Drush\Commands\MigrateHookCommands;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Prophecy\Argument;
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @coversDefaultClass \Drupal\helfi_api_base\Commands\MigrateHookCommands
+ * @coversDefaultClass \Drupal\helfi_api_base\Drush\Commands\MigrateHookCommands
  * @group helfi_api_base
  */
 class MigrateHookCommandsTest extends UnitTestCase {
