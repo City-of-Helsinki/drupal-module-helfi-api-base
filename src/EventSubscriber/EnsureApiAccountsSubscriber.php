@@ -7,7 +7,6 @@ namespace Drupal\helfi_api_base\EventSubscriber;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\user\Entity\Role;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -49,6 +48,7 @@ final class EnsureApiAccountsSubscriber extends DeployHookEventSubscriberBase {
 
     /** @var \Drupal\user\UserStorageInterface $storage */
     $storage = $this->entityTypeManager->getStorage('user');
+    $roleStorage = $this->entityTypeManager->getStorage('user_role');
 
     foreach ($accounts ?? [] as $account) {
       if (!isset($account['roles'])) {
@@ -76,7 +76,7 @@ final class EnsureApiAccountsSubscriber extends DeployHookEventSubscriberBase {
         ]);
       }
       foreach ($roles as $role) {
-        if (!Role::load($role)) {
+        if (!$roleStorage->load($role)) {
           $this->messenger
             ->addError(sprintf('Role %s not found. Skipping.', $role));
           continue;
