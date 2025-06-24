@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_api_base\Commands;
+namespace Drupal\helfi_api_base\Drush\Commands;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
@@ -11,6 +11,10 @@ use Drupal\helfi_api_base\Plugin\migrate\destination\TranslatableEntity;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessage;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
+use Drush\Attributes\Argument;
+use Drush\Attributes\Command;
+use Drush\Attributes\Option;
+use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -23,27 +27,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class FixtureCommands extends DrushCommands {
 
   use StringTranslationTrait;
-
-  /**
-   * The service container.
-   *
-   * @var \Symfony\Component\DependencyInjection\ContainerInterface
-   */
-  protected ContainerInterface $container;
-
-  /**
-   * The migration plugin manager.
-   *
-   * @var \Drupal\migrate\Plugin\MigrationPluginManagerInterface
-   */
-  protected MigrationPluginManagerInterface $migrationPluginManager;
+  use AutowireTrait;
 
   /**
    * Constructs a new instance.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The service container.
+   * @param \Drupal\migrate\Plugin\MigrationPluginManagerInterface $migrationPluginManager
+   *   The migration plugin manager.
    */
-  public function __construct(ContainerInterface $container) {
-    $this->container = $container;
-    $this->migrationPluginManager = $container->get('plugin.manager.migration');
+  public function __construct(
+    private readonly ContainerInterface $container,
+    private readonly MigrationPluginManagerInterface $migrationPluginManager,
+  ) {
   }
 
   /**
@@ -64,15 +61,11 @@ class FixtureCommands extends DrushCommands {
 
   /**
    * Command to run migrates with mocked fixture data.
-   *
-   * @param string $migration
-   *   The migration name.
-   * @param array $options
-   *   The options.
-   *
-   * @command helfi:migrate-fixture
    */
-  public function migrateFixtures(string $migration, array $options = ['publish' => FALSE]) {
+  #[Command(name: 'helfi:migrate-fixture')]
+  #[Argument(name: 'migration', description: 'The migration name.')]
+  #[Option(name: 'publish', description: 'Publish data.')]
+  public function migrateFixtures(string $migration, array $options = ['publish' => FALSE]): void {
     $serviceName = sprintf('migration_fixture.%s', $migration);
 
     if (!$this->container->has($serviceName)) {

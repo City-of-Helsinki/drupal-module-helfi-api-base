@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Unit\Commands;
 
 use Drupal\Tests\UnitTestCase;
-use Drupal\helfi_api_base\Commands\DeployCommands;
+use Drupal\helfi_api_base\Drush\Commands\DeployCommands;
 use Drupal\helfi_api_base\Event\PostDeployEvent;
 use Drupal\helfi_api_base\Event\PreDeployEvent;
 use Drush\Commands\DrushCommands;
@@ -13,7 +13,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @coversDefaultClass \Drupal\helfi_api_base\Commands\DeployCommands
+ * @coversDefaultClass \Drupal\helfi_api_base\Drush\Commands\DeployCommands
  * @group helfi_api_base
  */
 class DeployCommandsTest extends UnitTestCase {

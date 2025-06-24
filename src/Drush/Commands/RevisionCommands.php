@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_api_base\Commands;
+namespace Drupal\helfi_api_base\Drush\Commands;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_api_base\Entity\Revision\RevisionManager;
 use Drush\Attributes\Command;
 use Drush\Attributes\Option;
+use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
 use Symfony\Component\Console\Helper\ProgressBar;
 
@@ -16,6 +17,8 @@ use Symfony\Component\Console\Helper\ProgressBar;
  * A drush command file to manage revisions.
  */
 final class RevisionCommands extends DrushCommands {
+
+  use AutowireTrait;
 
   /**
    * Constructs a new instance.

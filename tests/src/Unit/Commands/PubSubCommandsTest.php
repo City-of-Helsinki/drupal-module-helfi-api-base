@@ -17,7 +17,7 @@ use WebSocket\ConnectionException;
 use WebSocket\TimeoutException;
 
 /**
- * @coversDefaultClass \Drupal\helfi_api_base\Commands\PubSubCommands
+ * @coversDefaultClass \Drupal\helfi_api_base\Drush\Commands\PubSubCommands
  * @group helfi_api_base
  */
 class PubSubCommandsTest extends UnitTestCase {

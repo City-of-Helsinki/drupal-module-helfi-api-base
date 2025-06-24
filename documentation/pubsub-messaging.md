@@ -29,7 +29,7 @@ The `$data` variable can contain anything that can be converted into a JSON stri
 
 Use `drush helfi:azure:pubsub-listen` Drush command to listen to an incoming messages.
 
-The command is run until `\Drupal\helfi_api_base\Commands\PubSubCommands::MAX_MESSAGES` (500 by default) is reached and will exit with code 0 to prevent memory leaks.
+The command is run until `\Drupal\helfi_api_base\Drush\Commands\PubSubCommands::MAX_MESSAGES` (500 by default) is reached and will exit with code 0 to prevent memory leaks.
 
 Alternatively, you can listen to incoming messages using `helfi_api_base.pubsub_manager` service:
 

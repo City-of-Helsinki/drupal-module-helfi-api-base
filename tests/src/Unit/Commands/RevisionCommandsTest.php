@@ -10,7 +10,7 @@ use Drupal\Core\Database\StatementInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Tests\UnitTestCase;
-use Drupal\helfi_api_base\Commands\RevisionCommands;
+use Drupal\helfi_api_base\Drush\Commands\RevisionCommands;
 use Drupal\helfi_api_base\Entity\Revision\RevisionManager;
 use Drush\Commands\DrushCommands;
 use Drush\Style\DrushStyle;
@@ -41,7 +41,7 @@ class RevisionCommandsTest extends UnitTestCase {
    * @param \Prophecy\Prophecy\ObjectProphecy|null $io
    *   The IO prophecy.
    *
-   * @return \Drupal\helfi_api_base\Commands\RevisionCommands
+   * @return \Drupal\helfi_api_base\Drush\Commands\RevisionCommands
    *   The SUT.
    */
   private function getSut(

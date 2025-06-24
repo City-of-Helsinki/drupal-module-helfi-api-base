@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_api_base\Commands;
+namespace Drupal\helfi_api_base\Drush\Commands;
 
 use Drupal\helfi_api_base\Event\PostDeployEvent;
 use Drupal\helfi_api_base\Event\PreDeployEvent;
 use Drush\Attributes\Command;
+use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -15,10 +16,12 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 final class DeployCommands extends DrushCommands {
 
+  use AutowireTrait;
+
   /**
    * Constructs a new instance.
    *
-   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+   * @param \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $eventDispatcher
    *   The event dispatcher.
    */
   public function __construct(
