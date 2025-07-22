@@ -8,7 +8,7 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
- * A class to expire users automatically.
+ * A class to expire/delete users automatically.
  */
 final class UserExpireManager {
 
@@ -16,6 +16,11 @@ final class UserExpireManager {
    * Expire time in seconds (six months).
    */
   public const DEFAULT_EXPIRE = 15638400;
+
+  /**
+   * Delete time in seconds (~5 years).
+   */
+  public const DEFAULT_DELETE = 157680000;
 
   public const LEEWAY = 86400;
 
@@ -28,9 +33,26 @@ final class UserExpireManager {
    *   The time interface.
    */
   public function __construct(
-    private EntityTypeManagerInterface $entityTypeManager,
-    private TimeInterface $time,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly TimeInterface $time,
   ) {
+  }
+
+  /**
+   * Loads and deletes the expired users.
+   */
+  public function deleteExpiredUsers() : void {
+    $storage = $this->entityTypeManager->getStorage('user');
+
+    $queryFilter = new QueryFilter(
+      expire: self::DEFAULT_DELETE,
+      // Only load already blocked users.
+      status: 0,
+    );
+    foreach ($this->getExpiredUserIds($queryFilter) as $uid) {
+      $storage->load($uid)
+        ->delete();
+    }
   }
 
   /**
@@ -39,7 +61,11 @@ final class UserExpireManager {
   public function cancelExpiredUsers() : void {
     $storage = $this->entityTypeManager->getStorage('user');
 
-    foreach ($this->getExpiredUserIds() as $uid) {
+    $queryFilter = new QueryFilter(
+      expire: self::DEFAULT_EXPIRE,
+      status: 1,
+    );
+    foreach ($this->getExpiredUserIds($queryFilter) as $uid) {
       $account = $storage->load($uid);
 
       $account->block()
@@ -53,8 +79,8 @@ final class UserExpireManager {
    * @return array<int, string>
    *   An array of user ids.
    */
-  public function getExpiredUserIds() : array {
-    $expireDate = ($this->time->getCurrentTime() - self::DEFAULT_EXPIRE);
+  public function getExpiredUserIds(QueryFilter $queryFilter) : array {
+    $expireDate = ($this->time->getCurrentTime() - $queryFilter->expire);
 
     $query = $this->entityTypeManager->getStorage('user')
       ->getQuery();
@@ -80,8 +106,8 @@ final class UserExpireManager {
 
     $query
       ->condition($expireCondition)
-      ->condition('status', 1)
       ->condition('changed', $leeway, '<=')
+      ->condition('status', $queryFilter->status)
       ->addTag('expired_users')
       // Make sure we have an upper bound.
       ->range(0, 50);
