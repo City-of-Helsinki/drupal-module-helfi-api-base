@@ -14,4 +14,4 @@ Accounts that have been inactive for longer than 6 months are blocked automatica
 
 ## User delete
 
-Blocked accounts that have been inactive for longer than five years are deleted automatically.
+Accounts that have been inactive for longer than five years are deleted automatically.
