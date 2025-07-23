@@ -28,7 +28,7 @@ A base module for [drupal-helfi-platform](https://github.com/City-of-Helsinki/dr
 - [PubSub messaging](documentation/pubsub-messaging.md): A PubSub message service to send/receive messages.
 - [Remote Entity](documentation/remote-entity.md): A base entity to be used with migrations.
 - [Testing](documentation/testing.md): Various features to help with automated testing.
-- [User expire](/documentation/user-expire.md): Block inactive accounts automatically.
+- [User expire / Delete](/documentation/user-expire.md): Block/delete inactive accounts automatically.
 - [Asset versioning](./documentation/asset-versioning.md): Replace js/css library version with deployment identifier.
 
 ## Contact
