@@ -46,8 +46,6 @@ final class UserExpireManager {
 
     $queryFilter = new QueryFilter(
       expire: self::DEFAULT_DELETE,
-      // Only load already blocked users.
-      status: 0,
       // Use different query tag for deletion so Tunnistamo
       // users are included as well.
       // @see helfi_tunnistamo_query_expired_users_alter().
@@ -112,10 +110,13 @@ final class UserExpireManager {
     if ($queryFilter->queryTag) {
       $query->addTag($queryFilter->queryTag);
     }
+
+    if ($queryFilter->status !== NULL) {
+      $query->condition('status', $queryFilter->status);
+    }
     $query
       ->condition($expireCondition)
       ->condition('changed', $leeway, '<=')
-      ->condition('status', $queryFilter->status)
       // Make sure we have an upper bound.
       ->range(0, 50);
 
