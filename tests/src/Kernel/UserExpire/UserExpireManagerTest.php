@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\UserExpire;
 
-use Drupal\helfi_api_base\UserExpire\QueryFilter;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\helfi_api_base\Features\FeatureManager;
@@ -38,6 +37,23 @@ class UserExpireManagerTest extends KernelTestBase {
     $this->installSchema('user', ['users_data']);
     $this->installEntitySchema('user');
     $this->installConfig(['helfi_api_base']);
+  }
+
+  /**
+   * Asserts that the given users have been blocked.
+   *
+   * @param array $expected
+   *   The expected users.
+   * @param \Drupal\user\UserInterface[] $users
+   *   The users.
+   */
+  private function assertExpiredUsers(array $expected, array $users) : void {
+    $expired = array_keys(
+      array_filter($users, fn ($user) => User::load($user->id())->isBlocked())
+    );
+
+    $this->assertCount(count($expected), $expired);
+    $this->assertEquals($expected, $expired);
   }
 
   /**
@@ -78,7 +94,7 @@ class UserExpireManagerTest extends KernelTestBase {
     $user->setLastAccessTime(strtotime('-7 months'))
       ->save();
 
-    // Make sure the user is canceled when the cron is run.
+    // Make sure the user is not canceled when the cron is run.
     helfi_api_base_cron();
     $this->assertFalse(User::load($user->id())->isBlocked());
   }
@@ -101,14 +117,12 @@ class UserExpireManagerTest extends KernelTestBase {
       $this->assertTrue($user->getCreatedTime() > 0);
     }
 
-    $expired = $this->getSut()
-      ->getExpiredUserIds(
-        new QueryFilter(
-          expire: UserExpireManager::DEFAULT_EXPIRE,
-          status: 1,
-        )
-      );
-    $this->assertEmpty($expired);
+    $this->getSut()->cancelExpiredUsers();
+
+    // Make sure no users are canceled.
+    foreach ($users as $user) {
+      $this->assertFalse($user->isBlocked());
+    }
 
     // Set access time below the expiry threshold.
     $users['1']->setLastAccessTime(strtotime('-1 months'))
@@ -124,36 +138,19 @@ class UserExpireManagerTest extends KernelTestBase {
       ->setChangedTime(strtotime('now'))
       ->save();
 
-    $expired = $this->getSut()
-      ->getExpiredUserIds(
-        new QueryFilter(
-          expire: UserExpireManager::DEFAULT_EXPIRE,
-          status: 1,
-        )
-      );
-    $this->assertEquals([2 => 2], $expired);
+    $this->getSut()->cancelExpiredUsers();
+
+    // Uid 2 should be the only expired user.
+    $this->assertExpiredUsers([2], $users);
 
     // Set created time over the expiry threshold.
     $users['3']->set('created', strtotime('-7 months'))
       ->setChangedTime(strtotime('-2 days'))
       ->save();
 
-    $expired = $this->getSut()
-      ->getExpiredUserIds(
-        new QueryFilter(
-          expire: UserExpireManager::DEFAULT_EXPIRE,
-          status: 1,
-        )
-      );
-    $this->assertEquals([2 => 2, 3 => 3], $expired);
-
+    // Only users 2 and 3 should be blocked.
     $this->getSut()->cancelExpiredUsers();
-
-    // Users 2 and 3 should be blocked.
-    $this->assertFalse(User::load(1)->isBlocked());
-    $this->assertFalse(User::load(4)->isBlocked());
-    $this->assertTrue(User::load(2)->isBlocked());
-    $this->assertTrue(User::load(3)->isBlocked());
+    $this->assertExpiredUsers([2, 3], $users);
 
     // Set access time over the delete threshold.
     User::load(2)->setLastAccessTime(strtotime('-5 years 1 day'))

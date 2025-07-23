@@ -16,10 +16,13 @@ final readonly class QueryFilter {
    *   The account expire time. Used as "current_time - expire".
    * @param int $status
    *   The account status.
+   * @param string|null $queryTag
+   *   The query tag.
    */
   public function __construct(
     public int $expire,
     public int $status,
+    public ?string $queryTag = NULL,
   ) {
   }
 

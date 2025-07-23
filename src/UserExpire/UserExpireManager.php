@@ -48,6 +48,10 @@ final class UserExpireManager {
       expire: self::DEFAULT_DELETE,
       // Only load already blocked users.
       status: 0,
+      // Use different query tag for deletion so Tunnistamo
+      // users are included as well.
+      // @see helfi_tunnistamo_query_expired_users_alter().
+      queryTag: 'delete_expired_users',
     );
     foreach ($this->getExpiredUserIds($queryFilter) as $uid) {
       $storage->load($uid)
@@ -64,6 +68,7 @@ final class UserExpireManager {
     $queryFilter = new QueryFilter(
       expire: self::DEFAULT_EXPIRE,
       status: 1,
+      queryTag: 'expired_users',
     );
     foreach ($this->getExpiredUserIds($queryFilter) as $uid) {
       $account = $storage->load($uid);
@@ -79,7 +84,7 @@ final class UserExpireManager {
    * @return array<int, string>
    *   An array of user ids.
    */
-  public function getExpiredUserIds(QueryFilter $queryFilter) : array {
+  private function getExpiredUserIds(QueryFilter $queryFilter) : array {
     $expireDate = ($this->time->getCurrentTime() - $queryFilter->expire);
 
     $query = $this->entityTypeManager->getStorage('user')
@@ -104,11 +109,13 @@ final class UserExpireManager {
     // immediately get blocked again after the account is unblocked.
     $leeway = ($this->time->getCurrentTime() - self::LEEWAY);
 
+    if ($queryFilter->queryTag) {
+      $query->addTag($queryFilter->queryTag);
+    }
     $query
       ->condition($expireCondition)
       ->condition('changed', $leeway, '<=')
       ->condition('status', $queryFilter->status)
-      ->addTag('expired_users')
       // Make sure we have an upper bound.
       ->range(0, 50);
 
