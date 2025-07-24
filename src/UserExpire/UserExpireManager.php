@@ -56,8 +56,14 @@ final class UserExpireManager {
       // Run the batch manually, otherwise only the first batch gets
       // reassigned.
       $batch =& batch_get();
-      $batch['progressive'] = FALSE;
-      batch_process();
+      if (function_exists('drush_backend_batch_process')) {
+        drush_backend_batch_process();
+      }
+      else {
+        $batch['progressive'] = FALSE;
+        batch_process();
+      }
+      $batch = [];
     }
   }
 
