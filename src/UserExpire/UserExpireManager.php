@@ -8,7 +8,7 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
- * A class to expire users automatically.
+ * A class to expire/delete users automatically.
  */
 final class UserExpireManager {
 
@@ -16,6 +16,11 @@ final class UserExpireManager {
    * Expire time in seconds (six months).
    */
   public const DEFAULT_EXPIRE = 15638400;
+
+  /**
+   * Delete time in seconds (~5 years).
+   */
+  public const DEFAULT_DELETE = 157680000;
 
   public const LEEWAY = 86400;
 
@@ -28,9 +33,38 @@ final class UserExpireManager {
    *   The time interface.
    */
   public function __construct(
-    private EntityTypeManagerInterface $entityTypeManager,
-    private TimeInterface $time,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly TimeInterface $time,
   ) {
+  }
+
+  /**
+   * Loads and deletes the expired users.
+   */
+  public function deleteExpiredUsers() : void {
+    $queryFilter = new QueryFilter(
+      expire: self::DEFAULT_DELETE,
+      // Use a different query tag for deletion so Tunnistamo
+      // users are included as well.
+      // @see helfi_tunnistamo_query_expired_users_alter().
+      queryTag: 'delete_expired_users',
+    );
+
+    foreach ($this->getExpiredUserIds($queryFilter) as $uid) {
+      user_cancel([], $uid, 'user_cancel_reassign');
+      // User cancel initiates a batch, but never actually runs it.
+      // Run the batch manually, otherwise only the first batch gets
+      // reassigned.
+      $batch =& batch_get();
+      if (function_exists('drush_backend_batch_process')) {
+        drush_backend_batch_process();
+      }
+      else {
+        $batch['progressive'] = FALSE;
+        batch_process();
+      }
+      $batch = [];
+    }
   }
 
   /**
@@ -39,7 +73,12 @@ final class UserExpireManager {
   public function cancelExpiredUsers() : void {
     $storage = $this->entityTypeManager->getStorage('user');
 
-    foreach ($this->getExpiredUserIds() as $uid) {
+    $queryFilter = new QueryFilter(
+      expire: self::DEFAULT_EXPIRE,
+      status: 1,
+      queryTag: 'expired_users',
+    );
+    foreach ($this->getExpiredUserIds($queryFilter) as $uid) {
       $account = $storage->load($uid);
 
       $account->block()
@@ -53,8 +92,8 @@ final class UserExpireManager {
    * @return array<int, string>
    *   An array of user ids.
    */
-  public function getExpiredUserIds() : array {
-    $expireDate = ($this->time->getCurrentTime() - self::DEFAULT_EXPIRE);
+  private function getExpiredUserIds(QueryFilter $queryFilter) : array {
+    $expireDate = ($this->time->getCurrentTime() - $queryFilter->expire);
 
     $query = $this->entityTypeManager->getStorage('user')
       ->getQuery();
@@ -78,11 +117,16 @@ final class UserExpireManager {
     // immediately get blocked again after the account is unblocked.
     $leeway = ($this->time->getCurrentTime() - self::LEEWAY);
 
+    if ($queryFilter->queryTag) {
+      $query->addTag($queryFilter->queryTag);
+    }
+
+    if ($queryFilter->status !== NULL) {
+      $query->condition('status', $queryFilter->status);
+    }
     $query
       ->condition($expireCondition)
-      ->condition('status', 1)
       ->condition('changed', $leeway, '<=')
-      ->addTag('expired_users')
       // Make sure we have an upper bound.
       ->range(0, 50);
 

@@ -107,6 +107,7 @@ function helfi_api_base_cron() : void {
     /** @var \Drupal\helfi_api_base\UserExpire\UserExpireManager $userExpireManager */
     $userExpireManager = \Drupal::service(UserExpireManager::class);
     $userExpireManager->cancelExpiredUsers();
+    $userExpireManager->deleteExpiredUsers();
   }
 }
 
