@@ -195,8 +195,9 @@ class UserExpireManagerTest extends KernelTestBase {
 
     $nodeIds = [];
 
-    // Create multiple nodes and assign node to newly created
-    // user and make sure the content gets reassigned.
+    // Create multiple nodes and assign them to the newly created
+    // user to make sure the content gets reassigned when
+    // the account is deleted.
     for ($i = 0; $i < 15; $i++) {
       $node = $this->createNode([
         'type' => 'page',
@@ -208,7 +209,6 @@ class UserExpireManagerTest extends KernelTestBase {
     }
 
     $this->getSut()->deleteExpiredUsers();
-    // Make sure user got deleted and nodes were reassigned.
     $this->assertNull(User::load($user->id()));
 
     foreach ($nodeIds as $nid) {
