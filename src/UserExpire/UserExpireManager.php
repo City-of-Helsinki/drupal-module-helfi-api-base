@@ -42,18 +42,22 @@ final class UserExpireManager {
    * Loads and deletes the expired users.
    */
   public function deleteExpiredUsers() : void {
-    $storage = $this->entityTypeManager->getStorage('user');
-
     $queryFilter = new QueryFilter(
       expire: self::DEFAULT_DELETE,
-      // Use different query tag for deletion so Tunnistamo
+      // Use a different query tag for deletion so Tunnistamo
       // users are included as well.
       // @see helfi_tunnistamo_query_expired_users_alter().
       queryTag: 'delete_expired_users',
     );
+
     foreach ($this->getExpiredUserIds($queryFilter) as $uid) {
-      $storage->load($uid)
-        ->delete();
+      user_cancel([], $uid, 'user_cancel_reassign');
+      // User cancel initiates a batch, but never actually runs it.
+      // Run the batch manually, otherwise only the first batch gets
+      // reassigned.
+      $batch =& batch_get();
+      $batch['progressive'] = FALSE;
+      batch_process();
     }
   }
 
