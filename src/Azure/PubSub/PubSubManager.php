@@ -7,6 +7,7 @@ namespace Drupal\helfi_api_base\Azure\PubSub;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Utility\Error;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use WebSocket\Client;
@@ -75,10 +76,13 @@ final class PubSubManager implements PubSubManagerInterface {
         ]));
       }
       catch (ConnectionException $exception) {
-        Error::logException($this->logger, $exception);
+        Error::logException($this->logger, $exception, level: LogLevel::INFO);
       }
     }
 
+    // Propagate the error if connection fails with all available access keys.
+    // When this is called from the Drush command, this causes the command to
+    // fail with exit code 1.
     if ($exception instanceof ConnectionException) {
       throw $exception;
     }
