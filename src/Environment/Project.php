@@ -26,6 +26,10 @@ final class Project {
   public const TYO_YRITTAMINEN = 'tyo-yrittaminen';
   // Non-core projects.
   public const PAATOKSET = 'paatokset';
+  public const GRANTS = 'avustusasiointi';
+  public const EMERGENCY_SITE = 'emergency-site';
+  public const PALVELUKESKUS = 'palvelukeskus';
+  public const KAUPUNKITIETO = 'kaupunkitieto';
 
   /**
    * The environments.
@@ -98,6 +102,10 @@ final class Project {
       self::TERVEYS => new TranslatableMarkup('Health and social services'),
       self::TYO_YRITTAMINEN => new TranslatableMarkup('Business and work'),
       self::PAATOKSET => new TranslatableMarkup('Decisions'),
+      self::GRANTS => new TranslatableMarkup('Grants'),
+      self::PALVELUKESKUS => new TranslatableMarkup('Palvelukeskus'),
+      self::KAUPUNKITIETO => new TranslatableMarkup('Urban research and statistics'),
+      self::EMERGENCY_SITE => new TranslatableMarkup('Emergency site'),
     };
   }
 
