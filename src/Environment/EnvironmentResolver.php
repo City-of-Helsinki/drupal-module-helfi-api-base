@@ -55,13 +55,13 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
     if (!empty($this->projects)) {
       return;
     }
-    $nonCorePaths = [
+    $rootPaths = [
       'fi' => '/fi',
       'sv' => '/sv',
       'en' => '/en',
     ];
     $paths = [
-      Project::ETUSIVU => $nonCorePaths,
+      Project::ETUSIVU => $rootPaths,
       Project::ASUMINEN => [
         'fi' => '/fi/asuminen',
         'sv' => '/sv/boende',
@@ -103,8 +103,8 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         'en' => '/en/business-and-work',
       ],
     ];
-    $this->projects = [
-      Project::ASUMINEN => new Project(
+    $projects = [
+      new Project(
         Project::ASUMINEN,
         new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-asuminen'),
         [
@@ -135,7 +135,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         ],
         roles: [ProjectRoleEnum::Core],
       ),
-      Project::ETUSIVU => new Project(
+      new Project(
         Project::ETUSIVU,
         new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-etusivu'),
         [
@@ -178,7 +178,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         ],
         roles: [ProjectRoleEnum::Core],
       ),
-      Project::KASVATUS_KOULUTUS => new Project(
+      new Project(
         Project::KASVATUS_KOULUTUS,
         new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-kasvatus-koulutus'),
         [
@@ -209,7 +209,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         ],
         roles: [ProjectRoleEnum::Core],
       ),
-      Project::KUVA => new Project(
+      new Project(
         Project::KUVA,
         new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-kuva'),
         [
@@ -240,7 +240,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         ],
         roles: [ProjectRoleEnum::Core],
       ),
-      Project::LIIKENNE => new Project(
+      new Project(
         Project::LIIKENNE,
         new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-kymp'),
         [
@@ -271,7 +271,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         ],
         roles: [ProjectRoleEnum::Core],
       ),
-      Project::REKRY => new Project(
+      new Project(
         Project::REKRY,
         new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-rekry'),
         [
@@ -302,7 +302,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         ],
         roles: [ProjectRoleEnum::Core],
       ),
-      Project::STRATEGIA => new Project(
+      new Project(
         Project::STRATEGIA,
         new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-strategia'),
         [
@@ -333,7 +333,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         ],
         roles: [ProjectRoleEnum::Core],
       ),
-      Project::TERVEYS => new Project(
+      new Project(
         Project::TERVEYS,
         new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-sote'),
         [
@@ -364,7 +364,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         ],
         roles: [ProjectRoleEnum::Core],
       ),
-      Project::TYO_YRITTAMINEN => new Project(
+      new Project(
         Project::TYO_YRITTAMINEN,
         new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-tyo-yrittaminen'),
         [
@@ -395,37 +395,169 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
         ],
         roles: [ProjectRoleEnum::Core],
       ),
-      Project::PAATOKSET => new Project(
+      new Project(
         Project::PAATOKSET,
         new ProjectMetadata('https://github.com/City-of-Helsinki/helsinki-paatokset'),
         [
           new Environment(
             address: new Address('helsinki-paatokset.docker.so'),
             internalAddress: new Address('helsinki-paatokset', 'http', 8080),
-            paths: $nonCorePaths,
+            paths: $rootPaths,
             environment: EnvironmentEnum::Local,
           ),
           new Environment(
-            address: new Address('nginx-paatokset-test.agw.arodevtest.hel.fi/'),
-            internalAddress: new Address('nginx-paatokset-test.apps.arodevtest.hel.fi/'),
-            paths: $nonCorePaths,
+            address: new Address('nginx-paatokset-test.agw.arodevtest.hel.fi'),
+            internalAddress: new Address('nginx-paatokset-test.apps.arodevtest.hel.fi'),
+            paths: $rootPaths,
             environment: EnvironmentEnum::Test,
           ),
           new Environment(
             address: new Address('drupal-paatokset.stage.hel.ninja'),
             internalAddress: new Address('nginx-paatokset-staging.apps.platta.hel.fi'),
-            paths: $nonCorePaths,
+            paths: $rootPaths,
             environment: EnvironmentEnum::Stage,
           ),
           new Environment(
             address: new Address('paatokset.hel.fi'),
             internalAddress: new Address('nginx-paatokset-prod.apps.platta.hel.fi'),
-            paths: $nonCorePaths,
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+      ),
+      new Project(
+        Project::GRANTS,
+        new ProjectMetadata('https://github.com/City-of-Helsinki/hel-fi-drupal-grants'),
+        [
+          new Environment(
+            address: new Address('hel-fi-drupal-grant-applications.docker.so'),
+            internalAddress: new Address('hel-fi-drupal-grant-applications', 'http', 8080),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('avustukset.dev.hel.ninja'),
+            internalAddress: new Address('helsinki-paatokset', 'http', 8080),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Dev,
+          ),
+          new Environment(
+            address: new Address('avustukset.test.hel.ninja'),
+            internalAddress: new Address('nginx-avustusasiointi-dev.apps.arodevtest.hel.fi'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Test,
+          ),
+          new Environment(
+            address: new Address('avustukset.stage.hel.ninja'),
+            internalAddress: new Address('nginx-avustusasiointi-staging.apps.platta.hel.fi'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('avustukset.hel.fi'),
+            internalAddress: new Address('nginx-avustusasiointi-prod.apps.platta.hel.fi'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+      ),
+      new Project(
+        Project::PALVELUKESKUS,
+        new ProjectMetadata('https://github.com/City-of-Helsinki/drupal-palvelukeskus'),
+        [
+          new Environment(
+            address: new Address('drupal-palvelukeskus.docker.so'),
+            internalAddress: new Address('drupal-palvelukeskus', 'http', 8080),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('helfi-palvelukeskus-drupal-test.agw.arodevtest.hel.fi'),
+            internalAddress: new Address('helfi-palvelukeskus-drupal-test.apps.arodevtest.hel.fi'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Test,
+          ),
+          // Environment does not hae publicly accessible address.
+          new Environment(
+            address: new Address('helfi-palvelukeskus-drupal-staging.apps.platta.hel.fi'),
+            internalAddress: new Address('helfi-palvelukeskus-drupal-staging.apps.platta.hel.fi'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('palvelukeskus.hel.fi'),
+            internalAddress: new Address('helfi-palvelukeskus-drupal-prod.apps.platta.hel.fi'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+      ),
+      new Project(
+        Project::KAUPUNKITIETO,
+        new ProjectMetadata('https://github.com/City-of-Helsinki/drupal-kaupunkitieto'),
+        [
+          new Environment(
+            address: new Address('kaupunkitieto.docker.so'),
+            internalAddress: new Address('kaupunkitieto', 'http', 8080),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('drupal-kaupunkitieto.test.hel.ninja'),
+            internalAddress: new Address('drupal-kaupunkitieto.test.hel.ninja'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Test,
+          ),
+          new Environment(
+            address: new Address('drupal-kaupunkitieto.stage.hel.ninja'),
+            internalAddress: new Address('drupal-kaupunkitieto.stage.hel.ninja'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('kaupunkitieto.hel.fi'),
+            internalAddress: new Address('kaupunkitieto.hel.fi'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+      ),
+      new Project(
+        Project::EMERGENCY_SITE,
+        new ProjectMetadata('https://github.com/City-of-Helsinki/drupal-emergency-site'),
+        [
+          new Environment(
+            address: new Address('emergency-site.docker.so'),
+            internalAddress: new Address('emergency-site', 'http', 8080),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('drupal-emergencysite.test.hel.ninja'),
+            internalAddress: new Address('drupal-emergencysite.test.hel.ninja'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Test,
+          ),
+          new Environment(
+            address: new Address('poikkeustilanne.stage.hel.ninja'),
+            internalAddress: new Address('emergency-site.stage.hel.ninja'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('poikkeustilanne.hel.fi'),
+            internalAddress: new Address('emergency-site.hel.ninja'),
+            paths: $rootPaths,
             environment: EnvironmentEnum::Prod,
           ),
         ],
       ),
     ];
+
+    $this->projects = array_combine(
+      array_map(static fn (Project $project) => $project->getName(), $projects),
+      $projects
+    );
   }
 
   /**
