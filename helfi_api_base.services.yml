@@ -14,6 +14,7 @@ parameters:
   helfi_api_base.disable_password_users:
     - helfi-admin
     - 1
+  helfi_api_base.restricted_roles: []
 services:
   _defaults:
     autowire: true
@@ -108,6 +109,8 @@ services:
   Drupal\helfi_api_base\Cache\CacheTagInvalidator: ~
 
   Drupal\helfi_api_base\EventSubscriber\CacheTagInvalidatorSubscriber: ~
+
+  Drupal\helfi_api_base\EventSubscriber\UserLoginSubscriber: ~
 
   Drupal\helfi_api_base\Entity\Revision\RevisionManager: '@helfi_api_base.revision_manager'
   helfi_api_base.revision_manager:
