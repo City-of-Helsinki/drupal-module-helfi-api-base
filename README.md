@@ -29,6 +29,7 @@ A base module for [drupal-helfi-platform](https://github.com/City-of-Helsinki/dr
 - [Remote Entity](documentation/remote-entity.md): A base entity to be used with migrations.
 - [Testing](documentation/testing.md): Various features to help with automated testing.
 - [User expire / Delete](/documentation/user-expire.md): Block/delete inactive accounts automatically.
+- [User login restriction](/documentation/user-login-restriction.md): Blocks login attempts from non-private networks.
 - [Asset versioning](./documentation/asset-versioning.md): Replace js/css library version with deployment identifier.
 
 ## Contact
