@@ -16,7 +16,8 @@
         "t4web/composer-lock-parser": "^1.0",
         "textalk/websocket": "^1.6",
         "webmozart/assert": "^1.0",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "symfony/polyfill": "^1.0"
     },
     "conflict": {
         "drupal/helfi_debug": "*"
