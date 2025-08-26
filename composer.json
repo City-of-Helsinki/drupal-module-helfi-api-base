@@ -17,7 +17,8 @@
         "textalk/websocket": "^1.6",
         "webmozart/assert": "^1.0",
         "ext-curl": "*",
-        "symfony/polyfill": "^1.0"
+        "symfony/polyfill-php84": "^1.0",
+        "symfony/polyfill-php85": "^1.0"
     },
     "conflict": {
         "drupal/helfi_debug": "*"
