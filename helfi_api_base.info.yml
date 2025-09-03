@@ -8,3 +8,5 @@ dependencies:
   - monolog:monolog
   - health_check:health_check
   - raven:raven
+'interface translation project': helfi_api_base
+'interface translation server pattern': modules/contrib/helfi_api_base/translations/%language.po
