@@ -31,3 +31,10 @@ helfi_api_base.debug_api:
     _permission: 'access debug api'
   options:
     _maintenance_access: TRUE
+
+helfi_api_base.location_autocomplete:
+  path: '/api/v1/location-autocomplete'
+  defaults:
+    _controller: '\Drupal\helfi_api_base\ServiceMap\Controller\AutocompleteController::addressSuggestions'
+  requirements:
+    _permission: 'access content'
