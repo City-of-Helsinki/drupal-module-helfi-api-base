@@ -92,20 +92,20 @@ final class Project {
    */
   public function label() : TranslatableMarkup {
     return match ($this->name) {
-      self::ASUMINEN => new TranslatableMarkup('Housing'),
-      self::ETUSIVU => new TranslatableMarkup('Frontpage'),
-      self::KASVATUS_KOULUTUS => new TranslatableMarkup('Childhood and education'),
-      self::KUVA => new TranslatableMarkup('Culture and leisure'),
-      self::LIIKENNE => new TranslatableMarkup('Urban environment and traffic'),
-      self::REKRY => new TranslatableMarkup('Open jobs'),
-      self::STRATEGIA => new TranslatableMarkup('Decision-making'),
-      self::TERVEYS => new TranslatableMarkup('Health and social services'),
-      self::TYO_YRITTAMINEN => new TranslatableMarkup('Business and work'),
-      self::PAATOKSET => new TranslatableMarkup('Decisions'),
-      self::GRANTS => new TranslatableMarkup('Grants'),
-      self::PALVELUKESKUS => new TranslatableMarkup('Palvelukeskus'),
-      self::KAUPUNKITIETO => new TranslatableMarkup('Urban research and statistics'),
-      self::EMERGENCY_SITE => new TranslatableMarkup('Emergency site'),
+      self::ASUMINEN => new TranslatableMarkup('Housing', options: ['context' => 'project label']),
+      self::ETUSIVU => new TranslatableMarkup('Frontpage', options: ['context' => 'project label']),
+      self::KASVATUS_KOULUTUS => new TranslatableMarkup('Childhood and education', options: ['context' => 'project label']),
+      self::KUVA => new TranslatableMarkup('Culture and leisure', options: ['context' => 'project label']),
+      self::LIIKENNE => new TranslatableMarkup('Urban environment and traffic', options: ['context' => 'project label']),
+      self::REKRY => new TranslatableMarkup('Open jobs', options: ['context' => 'project label']),
+      self::STRATEGIA => new TranslatableMarkup('Decision-making', options: ['context' => 'project label']),
+      self::TERVEYS => new TranslatableMarkup('Health and social services', options: ['context' => 'project label']),
+      self::TYO_YRITTAMINEN => new TranslatableMarkup('Business and work', options: ['context' => 'project label']),
+      self::PAATOKSET => new TranslatableMarkup('Decisions', options: ['context' => 'project label']),
+      self::GRANTS => new TranslatableMarkup('Grants', options: ['context' => 'project label']),
+      self::PALVELUKESKUS => new TranslatableMarkup('Palvelukeskus', options: ['context' => 'project label']),
+      self::KAUPUNKITIETO => new TranslatableMarkup('Urban research and statistics', options: ['context' => 'project label']),
+      self::EMERGENCY_SITE => new TranslatableMarkup('Emergency site', options: ['context' => 'project label']),
     };
   }
 
