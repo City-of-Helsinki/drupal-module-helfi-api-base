@@ -92,20 +92,20 @@ final class Project {
    */
   public function label() : TranslatableMarkup {
     return match ($this->name) {
-      self::ASUMINEN => new TranslatableMarkup('Housing', options: ['context' => 'project label']),
-      self::ETUSIVU => new TranslatableMarkup('Frontpage', options: ['context' => 'project label']),
-      self::KASVATUS_KOULUTUS => new TranslatableMarkup('Childhood and education', options: ['context' => 'project label']),
-      self::KUVA => new TranslatableMarkup('Culture and leisure', options: ['context' => 'project label']),
-      self::LIIKENNE => new TranslatableMarkup('Urban environment and traffic', options: ['context' => 'project label']),
-      self::REKRY => new TranslatableMarkup('Open jobs', options: ['context' => 'project label']),
-      self::STRATEGIA => new TranslatableMarkup('Decision-making', options: ['context' => 'project label']),
-      self::TERVEYS => new TranslatableMarkup('Health and social services', options: ['context' => 'project label']),
-      self::TYO_YRITTAMINEN => new TranslatableMarkup('Business and work', options: ['context' => 'project label']),
-      self::PAATOKSET => new TranslatableMarkup('Decisions', options: ['context' => 'project label']),
-      self::GRANTS => new TranslatableMarkup('Grants', options: ['context' => 'project label']),
-      self::PALVELUKESKUS => new TranslatableMarkup('Palvelukeskus', options: ['context' => 'project label']),
-      self::KAUPUNKITIETO => new TranslatableMarkup('Urban research and statistics', options: ['context' => 'project label']),
-      self::EMERGENCY_SITE => new TranslatableMarkup('Emergency site', options: ['context' => 'project label']),
+      self::ASUMINEN => new TranslatableMarkup('Housing', options: ['context' => 'Project label']),
+      self::ETUSIVU => new TranslatableMarkup('Frontpage', options: ['context' => 'Project label']),
+      self::KASVATUS_KOULUTUS => new TranslatableMarkup('Childhood and education', options: ['context' => 'Project label']),
+      self::KUVA => new TranslatableMarkup('Culture and leisure', options: ['context' => 'Project label']),
+      self::LIIKENNE => new TranslatableMarkup('Urban environment and traffic', options: ['context' => 'Project label']),
+      self::REKRY => new TranslatableMarkup('Open jobs', options: ['context' => 'Project label']),
+      self::STRATEGIA => new TranslatableMarkup('Decision-making', options: ['context' => 'Project label']),
+      self::TERVEYS => new TranslatableMarkup('Health and social services', options: ['context' => 'Project label']),
+      self::TYO_YRITTAMINEN => new TranslatableMarkup('Business and work', options: ['context' => 'Project label']),
+      self::PAATOKSET => new TranslatableMarkup('Decisions', options: ['context' => 'Project label']),
+      self::GRANTS => new TranslatableMarkup('Grants', options: ['context' => 'Project label']),
+      self::PALVELUKESKUS => new TranslatableMarkup('Palvelukeskus', options: ['context' => 'Project label']),
+      self::KAUPUNKITIETO => new TranslatableMarkup('Urban research and statistics', options: ['context' => 'Project label']),
+      self::EMERGENCY_SITE => new TranslatableMarkup('Emergency site', options: ['context' => 'Project label']),
     };
   }
 
