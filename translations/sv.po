@@ -1,0 +1,58 @@
+msgid ""
+msgstr ""
+
+msgctxt "Project label"
+msgid "Housing"
+msgstr "Boende"
+
+msgctxt "Project label"
+msgid "Frontpage"
+msgstr "Huvudsida"
+
+msgctxt "Project label"
+msgid "Childhood and education"
+msgstr "Fostran och utbildning"
+
+msgctxt "Project label"
+msgid "Culture and leisure"
+msgstr "Kultur och fritid"
+
+msgctxt "Project label"
+msgid "Urban environment and traffic"
+msgstr "Stadsmiljö och trafik"
+
+msgctxt "Project label"
+msgid "Open jobs"
+msgstr "Lediga jobb"
+
+msgctxt "Project label"
+msgid "Decision-making"
+msgstr "Beslutsfattande och förvaltning"
+
+msgctxt "Project label"
+msgid "Health and social services"
+msgstr "Social- och hälsovårdstjänster"
+
+msgctxt "Project label"
+msgid "Business and work"
+msgstr "Företag och arbete"
+
+msgctxt "Project label"
+msgid "Decisions"
+msgstr "Beslut"
+
+msgctxt "Project label"
+msgid "Grants"
+msgstr "Understöd"
+
+msgctxt "Project label"
+msgid "Palvelukeskus"
+msgstr "Palvelukeskus"
+
+msgctxt "Project label"
+msgid "Urban research and statistics"
+msgstr "Stadsforskning och -statistik"
+
+msgctxt "Project label"
+msgid "Emergency site"
+msgstr "Undantagswebbplats"

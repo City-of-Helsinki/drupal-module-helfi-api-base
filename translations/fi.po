@@ -1,0 +1,58 @@
+msgid ""
+msgstr ""
+
+msgctxt "Project label"
+msgid "Housing"
+msgstr "Asuminen"
+
+msgctxt "Project label"
+msgid "Frontpage"
+msgstr "Etusivu"
+
+msgctxt "Project label"
+msgid "Childhood and education"
+msgstr "Kasvatus ja koulutus"
+
+msgctxt "Project label"
+msgid "Culture and leisure"
+msgstr "Kulttuuri ja vapaa-aika"
+
+msgctxt "Project label"
+msgid "Urban environment and traffic"
+msgstr "Kaupunkiympäristö ja liikenne"
+
+msgctxt "Project label"
+msgid "Open jobs"
+msgstr "Avoimet työpaikat"
+
+msgctxt "Project label"
+msgid "Decision-making"
+msgstr "Päätöksenteko ja hallinto"
+
+msgctxt "Project label"
+msgid "Health and social services"
+msgstr "Sosiaali- ja terveyspalvelut"
+
+msgctxt "Project label"
+msgid "Business and work"
+msgstr "Yritykset ja työ"
+
+msgctxt "Project label"
+msgid "Decisions"
+msgstr "Päätökset"
+
+msgctxt "Project label"
+msgid "Grants"
+msgstr "Avustukset"
+
+msgctxt "Project label"
+msgid "Palvelukeskus"
+msgstr "Palvelukeskus"
+
+msgctxt "Project label"
+msgid "Urban research and statistics"
+msgstr "Kaupunkitieto"
+
+msgctxt "Project label"
+msgid "Emergency site"
+msgstr "Poikkeustilannesivusto"
