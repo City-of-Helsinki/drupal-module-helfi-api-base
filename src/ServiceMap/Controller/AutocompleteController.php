@@ -9,6 +9,7 @@ use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\helfi_api_base\ServiceMap\ServiceMapInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Returns autocomplete results.
@@ -30,7 +31,10 @@ final class AutocompleteController extends ControllerBase {
    *   The result as JSON.
    */
   public function addressSuggestions(Request $request) : JsonResponse {
-    $q = $request->query->get('q');
+    if (!($q = $request->query->get('q'))) {
+      throw new BadRequestHttpException();
+    }
+
     $suggestions = [];
 
     $results = $this->serviceMap->query($q, 10);
