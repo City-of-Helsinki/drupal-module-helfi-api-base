@@ -32,7 +32,7 @@ final class AutocompleteController extends ControllerBase {
    */
   public function addressSuggestions(Request $request) : JsonResponse {
     if (!($q = $request->query->get('q'))) {
-      throw new BadRequestHttpException();
+      throw new BadRequestHttpException("q parameter is required");
     }
 
     $suggestions = [];
