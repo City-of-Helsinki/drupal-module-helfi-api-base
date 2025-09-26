@@ -135,3 +135,11 @@ services:
 
   Drupal\helfi_api_base\ServiceMap\ServiceMap: ~
   Drupal\helfi_api_base\ServiceMap\ServiceMapInterface: '@Drupal\helfi_api_base\ServiceMap\ServiceMap'
+
+  Drupal\helfi_api_base\TextConverter\TextConverterManager:
+    tags:
+      - { name: service_collector, call: add, tag: helfi_api_base.text_converter }
+
+  Drupal\helfi_api_base\TextConverter\RenderTextConverter:
+    tags:
+      - { name: helfi_api_base.text_converter, priority: -1 }
