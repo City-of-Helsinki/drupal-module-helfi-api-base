@@ -26,7 +26,7 @@ final class Project {
   public const TYO_YRITTAMINEN = 'tyo-yrittaminen';
   // Non-core projects.
   public const PAATOKSET = 'paatokset';
-  public const GRANTS = 'avustusasiointi';
+  public const GRANTS = 'avustukset';
   public const EMERGENCY_SITE = 'emergency-site';
   public const PALVELUKESKUS = 'palvelukeskus';
   public const KAUPUNKITIETO = 'kaupunkitieto';
