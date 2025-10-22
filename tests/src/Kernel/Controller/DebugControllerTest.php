@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Kernel\Controller;
 
 use Drupal\helfi_api_base\Debug\SupportsValidityChecksInterface;
-use Drupal\helfi_api_base\DebugDataItemInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginManager;
 use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use Drupal\helfi_api_base\Controller\DebugController;
