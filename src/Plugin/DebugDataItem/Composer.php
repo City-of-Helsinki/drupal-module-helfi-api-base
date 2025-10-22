@@ -9,6 +9,7 @@ use ComposerLockParser\Package;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Attribute\DebugDataItem;
+use Drupal\helfi_api_base\Debug\SupportsCollectionsInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -19,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   id: 'composer',
   title: new TranslatableMarkup('Composer'),
 )]
-final class Composer extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface {
+final class Composer extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface, SupportsCollectionsInterface {
 
   /**
    * The composer info.

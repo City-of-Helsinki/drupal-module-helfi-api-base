@@ -10,6 +10,7 @@ use Drupal\Core\KeyValueStore\KeyValueStoreInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Attribute\DebugDataItem;
+use Drupal\helfi_api_base\Debug\SupportsCollectionsInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   id: 'migrate',
   title: new TranslatableMarkup('Migrate'),
 )]
-final class Migrate extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface, CacheableDependencyInterface {
+final class Migrate extends DebugDataItemPluginBase implements ContainerFactoryPluginInterface, CacheableDependencyInterface, SupportsCollectionsInterface {
 
   /**
    * The migration plugin manager.
