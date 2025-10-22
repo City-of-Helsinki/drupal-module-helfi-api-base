@@ -66,6 +66,13 @@ class DebugControllerTest extends ApiKernelTestBase {
    * Tests build.
    */
   public function testApi() : void {
+    // Make sure plugin without validity check returns 404.
+    $this->drupalSetUpCurrentUser(permissions: ['access debug api']);
+    $request = $this->getMockedRequest('/api/v1/debug/composer');
+    $response = $this->processRequest($request);
+
+    $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+
     $plugin = $this->prophesize(SupportsValidityChecksInterface::class);
     $plugin
       ->check()
