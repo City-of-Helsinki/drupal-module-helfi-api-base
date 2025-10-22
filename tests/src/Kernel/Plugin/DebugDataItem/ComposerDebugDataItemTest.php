@@ -29,6 +29,9 @@ class ComposerDebugDataItemTest extends KernelTestBase {
     $manager = $this->container->get('plugin.manager.debug_data_item');
     /** @var \Drupal\helfi_api_base\Plugin\DebugDataItem\Composer $plugin */
     $plugin = $manager->createInstance('composer');
+    $this->assertNotEmpty($plugin->label());
+    $this->assertEquals([], $plugin->calculateDependencies());
+
     // Make sure we have at least one package.
     $this->assertNotEmpty($plugin->collect()['packages'][0]['name']);
   }
