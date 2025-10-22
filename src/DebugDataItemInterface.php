@@ -19,22 +19,4 @@ interface DebugDataItemInterface extends DependentPluginInterface {
    */
   public function label() : string;
 
-  /**
-   * Collects the data.
-   *
-   * This is used to render debug item.
-   *
-   * @return array
-   *   The data.
-   */
-  public function collect() : array;
-
-  /**
-   * Converts debug item into boolean value.
-   *
-   * @return bool
-   *   True if the debug test should pass.
-   */
-  public function check() : bool;
-
 }

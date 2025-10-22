@@ -10,6 +10,8 @@ use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\AutowireTrait;
+use Drupal\helfi_api_base\Debug\SupportsCollectionsInterface;
+use Drupal\helfi_api_base\Debug\SupportsValidityChecksInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,6 +49,10 @@ final class DebugController extends ControllerBase {
       $instance = $this->manager
         ->createInstance($definition['id']);
 
+      if (!$instance instanceof SupportsCollectionsInterface) {
+        continue;
+      }
+
       $build[$id] = [
         '#theme' => 'debug_item',
         '#id' => $definition['id'],
@@ -73,6 +79,10 @@ final class DebugController extends ControllerBase {
     try {
       /** @var \Drupal\helfi_api_base\DebugDataItemInterface $instance */
       $instance = $this->manager->createInstance($plugin);
+
+      if (!$instance instanceof SupportsValidityChecksInterface) {
+        throw new NotFoundHttpException();
+      }
     }
     catch (PluginException) {
       throw new NotFoundHttpException();
