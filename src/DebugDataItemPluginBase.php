@@ -26,11 +26,4 @@ abstract class DebugDataItemPluginBase extends PluginBase implements DebugDataIt
     return [];
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public function check() : bool {
-    return TRUE;
-  }
-
 }

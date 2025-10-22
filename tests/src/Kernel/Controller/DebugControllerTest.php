@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\Controller;
 
+use Drupal\helfi_api_base\Debug\SupportsValidityChecksInterface;
 use Drupal\helfi_api_base\DebugDataItemInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginManager;
 use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
@@ -39,19 +40,13 @@ class DebugControllerTest extends ApiKernelTestBase {
 
     $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
 
-    $request = $this->getMockedRequest('/api/v1/debug/maintenance_mode');
+    $request = $this->getMockedRequest('/api/v1/debug/composer');
     $response = $this->processRequest($request);
 
     $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
 
     $this->drupalSetUpCurrentUser(permissions: ['access debug page']);
     $request = $this->getMockedRequest('/admin/debug');
-    $response = $this->processRequest($request);
-
-    $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
-
-    $this->drupalSetUpCurrentUser(permissions: ['access debug api']);
-    $request = $this->getMockedRequest('/api/v1/debug/maintenance_mode');
     $response = $this->processRequest($request);
 
     $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
@@ -66,14 +61,13 @@ class DebugControllerTest extends ApiKernelTestBase {
 
     $this->assertArrayHasKey('migrate', $build);
     $this->assertArrayHasKey('composer', $build);
-    $this->assertArrayHasKey('maintenance-mode', $build);
   }
 
   /**
    * Tests build.
    */
   public function testApi() : void {
-    $plugin = $this->prophesize(DebugDataItemInterface::class);
+    $plugin = $this->prophesize(SupportsValidityChecksInterface::class);
     $plugin
       ->check()
       ->willReturn(TRUE, FALSE);
