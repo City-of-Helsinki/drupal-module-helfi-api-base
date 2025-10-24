@@ -6,6 +6,7 @@ namespace Drupal\helfi_api_base\ApiClient;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
@@ -28,6 +29,13 @@ class ApiClient {
    * @var bool
    */
   private bool $bypassCache = FALSE;
+
+  /**
+   * Whether to use fixtures on failure or not.
+   *
+   * @var bool
+   */
+  private bool $useFixtures = FALSE;
 
   /**
    * The previous exception.
@@ -60,6 +68,16 @@ class ApiClient {
     protected readonly LoggerInterface $logger,
     private readonly array $defaultOptions = [],
   ) {
+    try {
+      $environment = $this->environmentResolver
+        ->getActiveEnvironment()
+        ->getEnvironment();
+
+      // Use fallback fixtures on local by default.
+      $this->useFixtures = $environment === EnvironmentEnum::Local;
+    }
+    catch (\InvalidArgumentException) {
+    }
   }
 
   /**
@@ -75,17 +93,27 @@ class ApiClient {
   }
 
   /**
+   * Disable fixture fallback.
+   *
+   * @return $this
+   *   The self.
+   */
+  public function withoutFixtures() : self {
+    $instance = clone $this;
+    $instance->useFixtures = FALSE;
+    return $instance;
+  }
+
+  /**
    * Gets the default request options.
    *
-   * @param string $environmentName
-   *   Environment name.
    * @param array $options
    *   The optional options.
    *
    * @return array
    *   The request options.
    */
-  protected function getRequestOptions(string $environmentName, array $options = []) : array {
+  protected function getRequestOptions(array $options = []) : array {
     // Hardcode cURL options.
     // Curl options are keyed by PHP constants so there is no easy way to
     // define them in yaml files yet. See: https://www.drupal.org/node/3403883
@@ -93,7 +121,11 @@ class ApiClient {
       'curl' => [CURLOPT_TCP_KEEPALIVE => TRUE],
     ];
 
-    if ($environmentName === 'local') {
+    $activeEnvironmentName = $this->environmentResolver
+      ->getActiveEnvironment()
+      ->getEnvironment();
+
+    if ($activeEnvironmentName === EnvironmentEnum::Local) {
       // Disable SSL verification in local environment.
       $default['verify'] = FALSE;
     }
@@ -121,11 +153,8 @@ class ApiClient {
     string $url,
     array $options = [],
   ): ApiResponse {
-    $activeEnvironmentName = $this->environmentResolver
-      ->getActiveEnvironment()
-      ->getEnvironmentName();
 
-    $options = $this->getRequestOptions($activeEnvironmentName, $options);
+    $options = $this->getRequestOptions($options);
 
     $response = $this->httpClient->request($method, $url, $options);
 
@@ -169,14 +198,10 @@ class ApiClient {
         $this->previousException = $e;
       }
 
-      $activeEnvironmentName = $this->environmentResolver
-        ->getActiveEnvironment()
-        ->getEnvironmentName();
-
       // Serve mock data in local environments if requests fail.
       if (
         ($e instanceof ClientException || $e instanceof ConnectException) &&
-        $activeEnvironmentName === 'local'
+        $this->useFixtures
       ) {
         $this->logger->warning(
           sprintf('Request failed: %s. Mock data is used instead.', $e->getMessage())
