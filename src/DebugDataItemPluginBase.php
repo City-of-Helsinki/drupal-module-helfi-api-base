@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base;
 
-use Drupal\Component\Plugin\PluginBase;
+use Drupal\Core\Plugin\PluginBase;
 
 /**
  * Base class for debug_data_item plugins.
