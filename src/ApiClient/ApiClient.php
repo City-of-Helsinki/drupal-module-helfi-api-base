@@ -31,13 +31,6 @@ class ApiClient {
   private bool $bypassCache = FALSE;
 
   /**
-   * Whether to use fixtures on failure or not.
-   *
-   * @var bool
-   */
-  private bool $useFixtures = FALSE;
-
-  /**
    * The previous exception.
    *
    * @var \Exception|null
@@ -68,16 +61,6 @@ class ApiClient {
     protected readonly LoggerInterface $logger,
     private readonly array $defaultOptions = [],
   ) {
-    try {
-      $environment = $this->environmentResolver
-        ->getActiveEnvironment()
-        ->getEnvironment();
-
-      // Use fallback fixtures on local by default.
-      $this->useFixtures = $environment === EnvironmentEnum::Local;
-    }
-    catch (\InvalidArgumentException) {
-    }
   }
 
   /**
@@ -89,18 +72,6 @@ class ApiClient {
   public function withBypassCache() : self {
     $instance = clone $this;
     $instance->bypassCache = TRUE;
-    return $instance;
-  }
-
-  /**
-   * Disable fixture fallback.
-   *
-   * @return $this
-   *   The self.
-   */
-  public function withoutFixtures() : self {
-    $instance = clone $this;
-    $instance->useFixtures = FALSE;
     return $instance;
   }
 
@@ -198,10 +169,14 @@ class ApiClient {
         $this->previousException = $e;
       }
 
+      $environment = $this->environmentResolver
+        ->getActiveEnvironment()
+        ->getEnvironment();
+
       // Serve mock data in local environments if requests fail.
       if (
         ($e instanceof ClientException || $e instanceof ConnectException) &&
-        $this->useFixtures
+        $environment === EnvironmentEnum::Local
       ) {
         $this->logger->warning(
           sprintf('Request failed: %s. Mock data is used instead.', $e->getMessage())
