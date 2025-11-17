@@ -30,5 +30,12 @@
         "drupal/search_api": "^1.0",
         "drupal/elasticsearch_connector": "^8.0@alpha",
         "donatj/mock-webserver": "dev-master"
+    },
+    "extra": {
+        "patches": {
+                "drupal/big_pipe_sessionless": {
+                        "Drupal 11 support (https://drupal.org/i/3428235)": "https://www.drupal.org/files/issues/2025-05-07/3428235.d11.patch"
+                }
+        }
     }
 }
