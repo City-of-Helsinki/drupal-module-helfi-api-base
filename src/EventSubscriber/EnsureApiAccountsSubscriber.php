@@ -25,9 +25,9 @@ final class EnsureApiAccountsSubscriber extends DeployHookEventSubscriberBase {
    *   The config factory service.
    */
   public function __construct(
-    private EntityTypeManagerInterface $entityTypeManager,
-    private MessengerInterface $messenger,
-    private ConfigFactoryInterface $configFactory,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly MessengerInterface $messenger,
+    private readonly ConfigFactoryInterface $configFactory,
   ) {
   }
 
