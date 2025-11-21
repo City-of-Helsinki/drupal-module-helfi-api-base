@@ -12,6 +12,7 @@ use Drupal\monolog\Logger\Formatter\ConditionalFormatter;
 use Drupal\monolog\Logger\Handler\ConditionalHandler;
 use Drupal\monolog\Logger\Handler\DrupalHandler;
 use Drush\Log\DrushLog;
+use LoggerExtra\LoggerContextProcessor;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Symfony\Component\DependencyInjection\Reference;
@@ -30,6 +31,14 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
     $modules = $container->getParameter('container.modules');
 
     if (isset($modules['monolog'])) {
+      $monologProcessors = [
+        'current_user',
+        'request_uri',
+        'ip',
+        'referer',
+        'logger_context',
+      ];
+
       $container->setParameter('monolog.channel_handlers', [
         'default' => [
           'handlers' => [
@@ -41,17 +50,14 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
               // Without it, logging long backtraces may lead to out-of-memory
               // errors.
               'name' => 'drupal.raven',
-              'processors' => [
-                'current_user',
-                'request_uri',
-                'ip',
-                'referer',
+              'processors' => array_merge($monologProcessors, [
                 'filter_backtrace',
-              ],
+              ]),
             ],
             [
               'name' => 'default_conditional_handler',
               'formatter' => 'drush_or_json',
+              'processors' => $monologProcessors,
             ],
           ],
         ],
@@ -68,6 +74,9 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
         $container->register('monolog.handler.drupal.drupaltodrush', DrupalHandler::class)
           ->addArgument(new Reference('logger.drupaltodrush'))
           ->setShared(FALSE);
+      }
+      if (!$container->has('monolog.processor.logger_context')) {
+        $container->register('monolog.processor.logger_context', LoggerContextProcessor::class);
       }
       $container->register('monolog.handler.default_conditional_handler', ConditionalHandler::class)
         ->addArgument(new Reference('monolog.handler.drupal.drupaltodrush'))
