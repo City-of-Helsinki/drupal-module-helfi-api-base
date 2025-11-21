@@ -25,6 +25,11 @@ services:
     parent: logger.channel_base
     arguments: [ 'helfi_api_base' ]
 
+  logger_extra.request_id_middleware:
+    class: LoggerExtra\RequestIdMiddleware
+    tags:
+      - { name: http_middleware, priority: 250 }
+
   Drupal\helfi_api_base\UserExpire\UserExpireManager: ~
   Drupal\helfi_api_base\EventSubscriber\SentryTracesSamplerSubscriber: ~
   Drupal\helfi_api_base\EventSubscriber\DisableUserPasswordSubscriber: ~
