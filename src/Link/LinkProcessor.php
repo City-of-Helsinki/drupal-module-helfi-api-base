@@ -50,6 +50,10 @@ final class LinkProcessor extends Link {
       $element['#title']['#attributes'] = $element['#attributes'] ?? [];
     }
 
+    // Make sure we always have a title.
+    if ($element['#title'] === NULL) {
+      $element['#title'] = '';
+    }
     return parent::preRenderLink($element);
   }
 
