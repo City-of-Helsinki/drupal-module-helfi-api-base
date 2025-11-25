@@ -21,12 +21,6 @@
         "symfony/polyfill-php85": "^1.0",
         "city-of-helsinki/php-logger-extra": "dev-main"
     },
-    "repositories": {
-        "php-logger-extra": {
-            "type": "vcs",
-            "url": "https://github.com/City-of-Helsinki/php-logger-extra.git"
-        }
-    },
     "conflict": {
         "drupal/helfi_debug": "*"
     },
