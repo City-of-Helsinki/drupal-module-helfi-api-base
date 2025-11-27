@@ -112,7 +112,7 @@ final class PartialMigrationSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents() : array {
     return [
       'migrate.post_import' => ['updateMigrationState'],
     ];
