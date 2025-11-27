@@ -51,7 +51,10 @@ final class LinkProcessor extends Link {
     }
 
     // Make sure we always have a title.
-    if ($element['#title'] === NULL) {
+    if (
+      array_key_exists('#title', $element) &&
+      $element['#title'] === NULL
+    ) {
       $element['#title'] = '';
     }
     return parent::preRenderLink($element);
