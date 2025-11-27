@@ -52,7 +52,7 @@ final class LinkProcessor extends Link {
 
     // Make sure we always have a title.
     if (
-      !array_key_exists('#title', $element) ||
+      array_key_exists('#title', $element) &&
       $element['#title'] === NULL
     ) {
       $element['#title'] = '';
