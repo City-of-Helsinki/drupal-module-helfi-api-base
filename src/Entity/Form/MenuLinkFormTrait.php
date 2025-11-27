@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Entity\Form;
 
-use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuParentFormSelectorInterface;
@@ -37,26 +36,6 @@ trait MenuLinkFormTrait {
    * @var \Drupal\Core\Menu\MenuParentFormSelectorInterface
    */
   protected MenuParentFormSelectorInterface $menuParentSelector;
-
-  /**
-   * The entity repository.
-   *
-   * @var \Drupal\Core\Entity\EntityRepositoryInterface
-   */
-  protected $entityRepository;
-
-  /**
-   * Gets the entity repository.
-   *
-   * @return \Drupal\Core\Entity\EntityRepositoryInterface
-   *   The entity repository.
-   */
-  protected function getEntityRepository() : EntityRepositoryInterface {
-    if (!$this->entityRepository) {
-      $this->entityRepository = \Drupal::service(EntityRepositoryInterface::class);
-    }
-    return $this->entityRepository;
-  }
 
   /**
    * Gets the default menu link for given translation.
@@ -205,9 +184,12 @@ trait MenuLinkFormTrait {
   public function attachMenuLinkFormSubmit(array $form, FormStateInterface $formState) : void {
     $entity = $this->getEntity();
     assert($entity instanceof FieldableEntityInterface);
-    $menuLink = $formState->get('menu_link');
     /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menuLink */
-    $menuLink = $this->getEntityRepository()->getTranslationFromContext($menuLink);
+    $menuLink = $formState->get('menu_link');
+
+    $menuLink = $menuLink->hasTranslation($entity->language()->getId()) ?
+      $menuLink->getTranslation($entity->language()->getId()) :
+      $menuLink->addTranslation($entity->language()->getId());
 
     $values = $formState->getValue('menu');
 
