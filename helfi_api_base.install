@@ -374,3 +374,27 @@ function helfi_api_base_update_9025(): void {
   $service = \Drupal::service(FeatureManager::class);
   $service->disableFeature(FeatureManager::USE_MOCK_RESPONSES);
 }
+
+/**
+ * Make sure menu links have a title.
+ */
+function helfi_api_base_update_9026(): void {
+  if (!Drupal::moduleHandler()->moduleExists('menu_link_content')) {
+    return;
+  }
+  $storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $query = $storage->getQuery();
+  $query->accessCheck(FALSE);
+  $query
+    ->condition('title', operator: 'IS NULL');
+  $ids = $query->execute();
+
+  // Make sure menu link is a string. Drupal 11 will throw
+  // an exception if you attempt to pass a null value to
+  // Html::escape().
+  foreach ($ids as $is) {
+    /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $entity */
+    $entity = $storage->load($is);
+    $entity->set('title', '')->save();
+  }
+}
