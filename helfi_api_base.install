@@ -395,6 +395,13 @@ function helfi_api_base_update_9026(): void {
   foreach ($ids as $is) {
     /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $entity */
     $entity = $storage->load($is);
-    $entity->set('title', '')->save();
+
+    foreach ($entity->getTranslationLanguages() as $language) {
+      $translation = $entity->getTranslation($language->getId());
+
+      if ($translation->getTitle() === NULL) {
+        $translation->set('title', ' ')->save();
+      }
+    }
   }
 }
