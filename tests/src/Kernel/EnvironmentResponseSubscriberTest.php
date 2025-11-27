@@ -52,9 +52,7 @@ class EnvironmentResponseSubscriberTest extends KernelTestBase {
     return new ResponseEvent(
       $this->container->get('http_kernel'),
       $request,
-      // @todo Rename this once Core requires 7.0 symfony.
-      // @phpstan-ignore-next-line
-      HttpKernelInterface::MASTER_REQUEST,
+      HttpKernelInterface::MAIN_REQUEST,
       new HtmlResponse()
     );
   }

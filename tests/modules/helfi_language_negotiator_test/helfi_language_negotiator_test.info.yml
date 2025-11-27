@@ -1,7 +1,7 @@
 name: HELfi language negotiator test
 type: module
 package: Custom
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 dependencies:
   - language
   - helfi_api_base

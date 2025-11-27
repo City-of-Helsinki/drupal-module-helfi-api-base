@@ -50,6 +50,14 @@ class LinkProcessorTest extends UnitTestCase {
       'data-is-external' => 'true',
       'data-protocol' => 'tel',
     ], $render['#attributes']);
+
+    // Make sure title is converted to a string.
+    $element = [
+      '#url' => Url::fromUri('base:/'),
+      '#title' => NULL,
+    ];
+    $render = LinkProcessor::preRenderLink($element);
+    $this->assertEquals('', $render['#title']);
   }
 
 }

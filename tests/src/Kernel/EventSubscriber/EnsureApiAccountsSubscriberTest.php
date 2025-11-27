@@ -71,8 +71,6 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
   public function testPasswordReset(): void {
     /** @var \Drupal\Core\Messenger\MessengerInterface $messenger */
     $messenger = $this->container->get('messenger');
-    /** @var \Drupal\Core\Password\PhpassHashedPassword $passwordHasher */
-    $passwordHasher = $this->container->get('password');
 
     $this->assertFalse(user_load_by_name('helfi-admin'));
     // Make sure account is created if one does not exist yet.
@@ -81,7 +79,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
     $service->dispatch(new PostDeployEvent());
     $account = user_load_by_name('helfi-admin');
     $this->assertInstanceOf(UserInterface::class, $account);
-    $this->assertTrue($passwordHasher->check('123', $account->getPassword()));
+    $this->assertTrue(password_verify('123', $account->getPassword()));
 
     Role::create(['id' => 'test', 'label' => 'Test'])->save();
     Role::create(['id' => 'test2', 'label' => 'Test2'])->save();
@@ -103,7 +101,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
     $this->assertFalse($account->isBlocked());
     $this->assertTrue($account->hasRole('test2'));
     $this->assertFalse($account->hasRole('test3'));
-    $this->assertTrue($passwordHasher->check('666', $account->getPassword()));
+    $this->assertTrue(password_verify('666', $account->getPassword()));
 
     $messages = $messenger->messagesByType('status');
     $this->assertCount(1, $messages);
