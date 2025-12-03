@@ -12,7 +12,6 @@ use Drupal\helfi_api_base\ServiceMap\ServiceMap;
 use Drupal\helfi_api_base\ServiceMap\ServiceMapInterface;
 use Drupal\KernelTests\KernelTestBase;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
