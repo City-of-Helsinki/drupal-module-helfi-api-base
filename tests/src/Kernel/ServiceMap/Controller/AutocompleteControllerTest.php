@@ -12,7 +12,6 @@ use Drupal\helfi_api_base\ServiceMap\ServiceMap;
 use Drupal\helfi_api_base\ServiceMap\ServiceMapInterface;
 use Drupal\KernelTests\KernelTestBase;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -55,12 +54,9 @@ class AutocompleteControllerTest extends KernelTestBase {
    * Tests the addressSuggestions method.
    */
   public function testAddressSuggestions() {
-    $mockRequest = $this->createMock(Request::class);
-    $query = new InputBag([
+    $request = new Request([
       'q' => 'Kalev',
     ]);
-    $mockRequest->query = $query;
-
     $this->serviceMap->expects(self::once())
       ->method('query')
       ->willReturn(array_map(
@@ -77,7 +73,7 @@ class AutocompleteControllerTest extends KernelTestBase {
         ]),
       );
 
-    $addressSuggestions = $this->controller->addressSuggestions($mockRequest);
+    $addressSuggestions = $this->controller->addressSuggestions($request);
     $this->assertInstanceOf(JsonResponse::class, $addressSuggestions);
   }
 
