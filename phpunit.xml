@@ -35,7 +35,6 @@
       -->
       <parameter name="verbose" value="true"/>
     </bootstrap>
-    <bootstrap class="DG\BypassFinals\PHPUnitExtension"/>
   </extensions>
   <testsuites>
     <testsuite name="unit">
