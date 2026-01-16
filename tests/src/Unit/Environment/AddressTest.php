@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Environment\Address;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Project value object.
@@ -16,9 +17,8 @@ class AddressTest extends UnitTestCase {
 
   /**
    * Tests getAddress() method.
-   *
-   * @dataProvider addressData
    */
+  #[DataProvider(methodName: 'addressData')]
   public function testGetAddress(string $expected, array $values) : void {
     $this->assertEquals($expected, (new Address(...$values))->getAddress());
   }
@@ -29,7 +29,7 @@ class AddressTest extends UnitTestCase {
    * @return array[]
    *   The data.
    */
-  public function addressData() : array {
+  public static function addressData() : array {
     return [
       [
         'https://www.hel.fi',

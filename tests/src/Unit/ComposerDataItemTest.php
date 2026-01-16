@@ -10,6 +10,7 @@ use ComposerLockParser\PackagesCollection;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Plugin\DebugDataItem\Composer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
@@ -53,9 +54,8 @@ class ComposerDataItemTest extends UnitTestCase {
    * @covers ::isValidPackage
    * @covers ::getPackages
    * @covers ::create
-   *
-   * @dataProvider collectionDataProvider
    */
+  #[DataProvider(methodName: 'collectionDataProvider')]
   public function testCollect(array $expected, array $data) : void {
     $container = $this->getContainer($data);
     $composer = Composer::create($container, [], 'composer', []);
@@ -68,7 +68,7 @@ class ComposerDataItemTest extends UnitTestCase {
    * @return array[]
    *   The data.
    */
-  public function collectionDataProvider() : array {
+  public static function collectionDataProvider() : array {
     return [
       [
         [

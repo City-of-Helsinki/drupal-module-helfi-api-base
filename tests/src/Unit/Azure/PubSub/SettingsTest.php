@@ -9,6 +9,7 @@ use Drupal\helfi_api_base\Azure\PubSub\Settings;
 use Drupal\helfi_api_base\Azure\PubSub\SettingsFactory;
 use Drupal\helfi_api_base\Vault\Json;
 use Drupal\helfi_api_base\Vault\VaultManager;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests pubsub settings.
@@ -19,9 +20,8 @@ class SettingsTest extends UnitTestCase {
 
   /**
    * Tests settings.
-   *
-   * @dataProvider settingsData
    */
+  #[DataProvider(methodName: 'settingsData')]
   public function testSettings(array $values, array $expectedValues) : void {
     $vaultManager = new VaultManager([
       new Json('pubsub', json_encode($values)),
@@ -55,7 +55,7 @@ class SettingsTest extends UnitTestCase {
    * @return array[]
    *   The data.
    */
-  public function settingsData() : array {
+  public static function settingsData() : array {
     $values = [
       [
         [

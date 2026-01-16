@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_api_base\Unit;
 
 use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Cache\CacheKeyTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests cache key trait.
@@ -19,8 +20,8 @@ class CacheKeyTraitTest extends UnitTestCase {
   /**
    * @covers \Drupal\helfi_api_base\Cache\CacheKeyTrait::getCacheKey
    * @covers \Drupal\helfi_api_base\Cache\CacheKeyTrait::requestOptionsToCacheKey
-   * @dataProvider cacheKeyData
    */
+  #[DataProvider(methodName: 'cacheKeyData')]
   public function testGetCacheKey(string $expected, string $baseKey, array $options) : void {
     $actual = $this->getCacheKey($baseKey, $options);
     $this->assertEquals($expected, $actual);
@@ -32,7 +33,7 @@ class CacheKeyTraitTest extends UnitTestCase {
    * @return array[]
    *   The data.
    */
-  public function cacheKeyData() : array {
+  public static function cacheKeyData() : array {
     return [
       [
         'test:1',

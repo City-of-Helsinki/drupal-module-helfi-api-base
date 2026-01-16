@@ -9,6 +9,7 @@ use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Url;
 use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Link\InternalDomainResolver;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests internal domain resolver.
@@ -32,11 +33,11 @@ class InternalDomainResolverTest extends UnitTestCase {
   /**
    * Tests whether the url is external or not.
    *
-   * @dataProvider isExternalData
    * @covers ::isExternal
    * @covers ::__construct
    * @covers ::getDomains
    */
+  #[DataProvider(methodName: 'isExternalData')]
   public function testIsExternal(?string $url, bool $expectedExternal) : void {
     $url = Url::fromUri($url);
     $sut = new InternalDomainResolver([
@@ -53,7 +54,7 @@ class InternalDomainResolverTest extends UnitTestCase {
    * @return array[]
    *   The data.
    */
-  public function isExternalData() : array {
+  public static function isExternalData() : array {
     return [
       ['entity:node/1', FALSE],
       ['internal:/test', FALSE],
@@ -72,9 +73,8 @@ class InternalDomainResolverTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::getDomains
    * @covers ::getProtocol
-   *
-   * @dataProvider getProtocolData
    */
+  #[DataProvider(methodName: 'getProtocolData')]
   public function testGetProtocol(string $url, ?string $expected) : void {
     $url = Url::fromUri($url);
     $sut = new InternalDomainResolver([
@@ -91,7 +91,7 @@ class InternalDomainResolverTest extends UnitTestCase {
    * @return array[]
    *   The data.
    */
-  public function getProtocolData() : array {
+  public static function getProtocolData() : array {
     return [
       ['entity:node/1', NULL],
       ['internal:/test', NULL],

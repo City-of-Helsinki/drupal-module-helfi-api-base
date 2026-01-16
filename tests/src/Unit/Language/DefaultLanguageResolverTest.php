@@ -8,6 +8,7 @@ use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
@@ -24,9 +25,8 @@ class DefaultLanguageResolverTest extends UnitTestCase {
    * @covers ::__construct
    * @covers ::getDefaultLanguages
    * @covers ::getFallbackLanguage
-   *
-   * @dataProvider getDefaultLanguagesData
    */
+  #[DataProvider(methodName: 'getDefaultLanguagesData')]
   public function testGetDefaultLanguages(
     array $expectedLanguages,
     string $expectedLanguage,
@@ -48,7 +48,7 @@ class DefaultLanguageResolverTest extends UnitTestCase {
    * @return array
    *   The data.
    */
-  public function getDefaultLanguagesData() : array {
+  public static function getDefaultLanguagesData() : array {
     return [
       // Test empty.
       [

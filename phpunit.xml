@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          colors="true"
+         bootstrap="/app/public/core/tests/bootstrap.php"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
@@ -35,7 +36,6 @@
       -->
       <parameter name="verbose" value="true"/>
     </bootstrap>
-    <bootstrap class="DG\BypassFinals\PHPUnitExtension"/>
   </extensions>
   <testsuites>
     <testsuite name="unit">

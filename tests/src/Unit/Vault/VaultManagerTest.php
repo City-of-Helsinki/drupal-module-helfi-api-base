@@ -9,6 +9,7 @@ use Drupal\helfi_api_base\Vault\AuthorizationToken;
 use Drupal\helfi_api_base\Vault\Json;
 use Drupal\helfi_api_base\Vault\VaultManager;
 use Drupal\helfi_api_base\Vault\VaultManagerFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Vault manager.
@@ -36,8 +37,8 @@ class VaultManagerTest extends UnitTestCase {
   /**
    * @covers \Drupal\helfi_api_base\Vault\VaultManagerFactory::create
    * @covers \Drupal\helfi_api_base\Vault\VaultManagerFactory::__construct
-   * @dataProvider factoryExceptionData
    */
+  #[DataProvider(methodName: 'factoryExceptionData')]
   public function testFactoryException(array $vault) : void {
     $caught = FALSE;
     try {
@@ -61,7 +62,7 @@ class VaultManagerTest extends UnitTestCase {
    * @return array[]
    *   The data.
    */
-  public function factoryExceptionData() : array {
+  public static function factoryExceptionData() : array {
     return [
       [
         [

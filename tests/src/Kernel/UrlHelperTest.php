@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_api_base\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\helfi_api_base\Link\UrlHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Url helper.
@@ -28,8 +29,8 @@ class UrlHelperTest extends KernelTestBase {
    * Tests URL parsing.
    *
    * @covers ::parse
-   * @dataProvider getUrlMap
    */
+  #[DataProvider(methodName: 'getUrlMap')]
   public function testParse(string $url, string $expected) : void {
     $url = UrlHelper::parse($url);
     $this->assertEquals($expected, $url->toString(TRUE)->getGeneratedUrl());
@@ -56,7 +57,7 @@ class UrlHelperTest extends KernelTestBase {
    * @return array[]
    *   The data.
    */
-  public function getUrlMap() : array {
+  public static function getUrlMap() : array {
     return [
       ['entity:remote_entity_test/1', '/rmt/1'],
       ['internal:/test', '/test'],
