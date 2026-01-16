@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_api_base\Unit\EventSubscriber;
 use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\EventSubscriber\SentryTracesSamplerSubscriber;
 use Drupal\raven\Event\OptionsAlter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Sentry\Tracing\SamplingContext;
 use Sentry\Tracing\TransactionContext;
 
@@ -74,9 +75,8 @@ class SentryTracesSamplerSubscriberTest extends UnitTestCase {
 
   /**
    * Make sure the sample rate is set zero when we get a URL match.
-   *
-   * @dataProvider ignoreUrlData
    */
+  #[DataProvider(methodName: 'ignoreUrlData')]
   public function testTracerIgnoreUrl(string $url) : void {
     $transaction = new TransactionContext();
     $transaction->setData(['http.url' => $url]);
@@ -91,7 +91,7 @@ class SentryTracesSamplerSubscriberTest extends UnitTestCase {
    * @return array[]
    *   The data.
    */
-  public function ignoreUrlData() : array {
+  public static function ignoreUrlData() : array {
     return [
       ['http://localhost/fi/health'],
       ['https://localhost/health'],

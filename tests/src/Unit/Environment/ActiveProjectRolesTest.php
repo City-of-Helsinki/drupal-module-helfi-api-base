@@ -10,6 +10,7 @@ use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests ActiveProjectType.
@@ -22,9 +23,8 @@ class ActiveProjectRolesTest extends UnitTestCase {
 
   /**
    * Tests ::isCoreInstance().
-   *
-   * @dataProvider isCoreInstanceData
    */
+  #[DataProvider(methodName: 'isCoreInstanceData')]
   public function testIsCoreInstance(bool $expected, ?string $projectName, ?EnvironmentEnum $env): void {
     $sut = new ActiveProjectRoles($this->getEnvironmentResolver($projectName, $env));
     $this->assertEquals($expected, $sut->hasRole(ProjectRoleEnum::Core));
@@ -36,7 +36,7 @@ class ActiveProjectRolesTest extends UnitTestCase {
    * @return array[]
    *   The data.
    */
-  public function isCoreInstanceData(): array {
+  public static function isCoreInstanceData(): array {
     return [
       [FALSE, NULL, NULL],
       [TRUE, Project::ASUMINEN, EnvironmentEnum::Local],

@@ -12,6 +12,7 @@ use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -41,9 +42,8 @@ class EnvironmentResolverTest extends UnitTestCase {
 
   /**
    * Tests getEnvironment() validation.
-   *
-   * @dataProvider resolveEnvironmentExceptionData
    */
+  #[DataProvider(methodName: 'resolveEnvironmentExceptionData')]
   public function testGetEnvironmentException(
     string $project,
     string $language,
@@ -62,7 +62,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @return array
    *   The data.
    */
-  public function resolveEnvironmentExceptionData() : array {
+  public static function resolveEnvironmentExceptionData() : array {
     return [
       ['nonexistent', '', '', 'Project "nonexistent" not found.'],
       ['asuminen', 'en', 'nonexistent', 'Environment "nonexistent" not found.'],
@@ -71,9 +71,8 @@ class EnvironmentResolverTest extends UnitTestCase {
 
   /**
    * Test environment mapping.
-   *
-   * @dataProvider environmentMapData
    */
+  #[DataProvider(methodName: 'environmentMapData')]
   public function testEnvironmentMap(string $envName, string $expected) : void {
     $env = $this->getEnvironmentResolver()
       ->getEnvironment(Project::ASUMINEN, $envName);
@@ -86,7 +85,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @return array
    *   The data.
    */
-  public function environmentMapData() : array {
+  public static function environmentMapData() : array {
     return [
       ['ci', 'test'],
       ['testing', 'test'],
@@ -97,9 +96,8 @@ class EnvironmentResolverTest extends UnitTestCase {
 
   /**
    * Test ::getActiveProject() validation.
-   *
-   * @dataProvider activeProjectExceptionData
    */
+  #[DataProvider(methodName: 'activeProjectExceptionData')]
   public function testGetActiveProjectException(mixed $value) : void {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessageMatches('/^No active project found./');
@@ -121,7 +119,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    * @return array
    *   The data.
    */
-  public function activeProjectExceptionData() : array {
+  public static function activeProjectExceptionData() : array {
     return [
       [NULL],
       [FALSE],
