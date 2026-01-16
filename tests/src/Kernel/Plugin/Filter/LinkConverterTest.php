@@ -11,6 +11,7 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\TestLoggerTrait;
 use Drupal\filter\FilterPluginCollection;
 use Drupal\filter\FilterProcessResult;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Link converter filter.
@@ -61,8 +62,8 @@ class LinkConverterTest extends KernelTestBase {
    * @covers ::process
    * @covers ::render
    * @covers ::getNodeAttributes
-   * @dataProvider linkProcessingData
    */
+  #[DataProvider(methodName: 'linkProcessingData')]
   public function testLinkProcessing(string $expected, string $text) : void {
     $result = $this->processText($text, 'en');
     $output = $result->getProcessedText();
@@ -76,7 +77,7 @@ class LinkConverterTest extends KernelTestBase {
    * @return array[]
    *   The data.
    */
-  public function linkProcessingData() : array {
+  public static function linkProcessingData() : array {
     return [
       [
         '<a href="/jotain">',
