@@ -24,7 +24,7 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() : void {
+  protected function setUp() : void {
     parent::setUp();
 
     foreach (['fi', 'sv'] as $langcode) {

@@ -35,7 +35,7 @@ class MenuLinkFormTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->placeBlock('system_menu_block:main', ['id' => 'main-menu']);

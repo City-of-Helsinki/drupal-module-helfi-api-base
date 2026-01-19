@@ -30,7 +30,7 @@ class TranslatableMigrationTest extends MigrationTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() : void {
+  protected function setUp() : void {
     parent::setUp();
 
     $this->installEntitySchema('menu_link_content');
