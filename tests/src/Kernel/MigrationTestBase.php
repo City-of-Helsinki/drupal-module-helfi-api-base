@@ -27,7 +27,7 @@ abstract class MigrationTestBase extends ApiKernelTestBase implements MigrateMes
   /**
    * {@inheritdoc}
    */
-  public function setUp() : void {
+  protected function setUp() : void {
     parent::setUp();
 
     $this->installConfig(['language', 'content_translation']);
