@@ -13,7 +13,7 @@ The default languages and the fallback language are defined in `helfi_api_base.s
 ## Usage
 
 ```php
-/** @var \Drupal\helfi_api_base\Language\DefaultLanguageResolver $language_resolver */
+/** @var \Drupal\helfi_api_base\Language\DefaultLanguageResolverInterface $language_resolver */
 $language_resolver = \Drupal::service('helfi_api_base.default_language_resolver');
 
 // Get list of default language IDs.
@@ -36,7 +36,7 @@ $language_resolver->getCurrentLangAttributes();
 
 ## Twig
 
-The current language object, the alternative language boolean and possible fallback language attributes are added to each template via `helfi_api_base_template_preprocess_default_variables_alter()`. 
+The current language object, the alternative language boolean and possible fallback language attributes are added to each template via `helfi_api_base_template_preprocess_default_variables_alter()`.
 
 ### Usage
 

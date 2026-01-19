@@ -27,7 +27,7 @@ class DefaultLanguageResolverTest extends KernelTestBase {
   public function testContainerParameters() : void {
     $defaultLanguages = $this->container->getParameter('helfi_api_base.default_languages');
     $fallbackLanguage = $this->container->getParameter('helfi_api_base.fallback_language');
-    /** @var \Drupal\helfi_api_base\Language\DefaultLanguageResolver $sut */
+    /** @var \Drupal\helfi_api_base\Language\DefaultLanguageResolverInterface $sut */
     $sut = $this->container->get('helfi_api_base.default_language_resolver');
 
     $this->assertEquals($defaultLanguages, $sut->getDefaultLanguages());

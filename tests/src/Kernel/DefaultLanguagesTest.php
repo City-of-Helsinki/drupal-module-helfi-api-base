@@ -39,7 +39,7 @@ class DefaultLanguagesTest extends KernelTestBase {
    * Make sure default language parameters are loaded properly.
    */
   public function testDefaultLanguageResolver() : void {
-    /** @var \Drupal\helfi_api_base\Language\DefaultLanguageResolver $language_resolver */
+    /** @var \Drupal\helfi_api_base\Language\DefaultLanguageResolverInterface $language_resolver */
     $language_resolver = $this->container->get('helfi_api_base.default_language_resolver');
 
     // Check that default parameters are correct.
