@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Language;
 
-
 use Drupal\Core\Language\LanguageInterface;
 
 /**

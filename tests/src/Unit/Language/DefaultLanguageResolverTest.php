@@ -6,7 +6,6 @@ namespace Drupal\Tests\helfi_api_base\Unit\Environment;
 
 use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\helfi_api_base\Language\DefaultLanguageResolverInterface;
 use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -15,7 +14,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 /**
  * Tests Default language resolver.
  *
- * @coversDefaultClass DefaultLanguageResolverInterface
+ * @coversDefaultClass \Drupal\helfi_api_base\Language\DefaultLanguageResolver
  * @group helfi_api_base
  */
 class DefaultLanguageResolverTest extends UnitTestCase {
