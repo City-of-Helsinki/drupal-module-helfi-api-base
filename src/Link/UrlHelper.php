@@ -25,6 +25,12 @@ final class UrlHelper {
       return Url::fromUserInput($value);
     }
 
+    // Unify telephone links.
+    if (str_starts_with($value, 'tel:')) {
+      // Remove any whitespace.
+      $value = preg_replace('/\s+/u', '', $value);
+    }
+
     try {
       return Url::fromUri($value);
     }

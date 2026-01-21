@@ -96,6 +96,10 @@ class LinkConverterTest extends KernelTestBase {
         '<a href="tel:123456" class="test">dsada</a>',
       ],
       [
+        '<a href="tel:123456" class="test" data-is-external="true" data-protocol="tel">',
+        '<a href="tel:12 34 56" class="test">dsada</a>',
+      ],
+      [
         '<a href="mailto:admin@example.com" class="test" data-test="123" data-is-external="true" data-protocol="mailto">',
         '<a href="mailto:admin@example.com" class="test" data-test="123">dsada</a>',
       ],
