@@ -28,7 +28,7 @@ final class UrlHelper {
     // Unify telephone links.
     if (str_starts_with($value, 'tel:')) {
       // Remove any whitespace.
-      $value = preg_replace('/\s+/', '', $value);
+      $value = preg_replace('/\s+/u', '', $value);
     }
 
     try {
