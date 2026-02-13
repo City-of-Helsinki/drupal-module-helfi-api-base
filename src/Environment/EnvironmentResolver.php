@@ -154,7 +154,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             paths: $paths[Project::ETUSIVU],
             environment: EnvironmentEnum::Test,
             services: [
-              new Service(ServiceEnum::ElasticProxy, new Address('etusivu-elastic-proxy-test.agw.arodevtest.hel.fi')),
+              new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic-proxy.test.hel.ninja')),
             ],
           ),
           new Environment(
@@ -163,7 +163,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             paths: $paths[Project::ETUSIVU],
             environment: EnvironmentEnum::Stage,
             services: [
-              new Service(ServiceEnum::ElasticProxy, new Address('uutisapi.stage.hel.ninja')),
+              new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic-proxy.stage.hel.ninja')),
             ],
           ),
           new Environment(
@@ -172,7 +172,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             paths: $paths[Project::ETUSIVU],
             environment: EnvironmentEnum::Prod,
             services: [
-              new Service(ServiceEnum::ElasticProxy, new Address('uutisapi.hel.fi')),
+              new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic-proxy.api.hel.ninja')),
             ],
           ),
         ],
