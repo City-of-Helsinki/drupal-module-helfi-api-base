@@ -14,7 +14,7 @@
         "firebase/php-jwt": "^7.0",
         "php": "^8.1",
         "t4web/composer-lock-parser": "^1.0",
-        "textalk/websocket": "^1.6",
+        "textalk/websocket": "^3.6",
         "webmozart/assert": "^1.0",
         "ext-curl": "*",
         "symfony/polyfill-php84": "^1.0",
