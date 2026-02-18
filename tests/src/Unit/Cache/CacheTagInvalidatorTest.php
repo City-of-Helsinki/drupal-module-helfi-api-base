@@ -9,7 +9,7 @@ use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use WebSocket\ConnectionException;
+use WebSocket\Exception\ClientException;
 
 /**
  * @coversDefaultClass \Drupal\helfi_api_base\Cache\CacheTagInvalidator
@@ -42,7 +42,7 @@ class CacheTagInvalidatorTest extends UnitTestCase {
   public function testConnectionException() : void {
     $client = $this->prophesize(PubSubManagerInterface::class);
     $client->sendMessage(Argument::any())
-      ->willThrow(ConnectionException::class)
+      ->willThrow(ClientException::class)
       ->shouldBeCalledTimes(1);
     $sut = new CacheTagInvalidator($client->reveal());
     $sut->invalidateTags(['node:123']);

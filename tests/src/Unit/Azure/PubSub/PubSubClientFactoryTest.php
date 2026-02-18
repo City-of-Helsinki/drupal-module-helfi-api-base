@@ -27,7 +27,8 @@ class PubSubClientFactoryTest extends UnitTestCase {
       'hub',
       'group',
       'endpoint',
-      ['accessToken', 'secondaryAccessToken'],
+      // The key must be at least 32 characters.
+      [$this->randomMachineName(32), $this->randomMachineName(32)],
     );
     $sut = new PubSubClientFactory($this->prophesize(TimeInterface::class)->reveal(), $settings);
     $client = $sut->create($settings->accessKeys[0]);

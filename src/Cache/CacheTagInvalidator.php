@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Cache;
 
 use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
-use WebSocket\ConnectionException;
+use WebSocket\Exception\Exception;
 
 /**
  * A service to invalidate cache tags on all instances.
@@ -33,7 +33,7 @@ final class CacheTagInvalidator implements CacheTagInvalidatorInterface {
         'instances' => $instances,
       ]);
     }
-    catch (ConnectionException) {
+    catch (Exception) {
     }
   }
 

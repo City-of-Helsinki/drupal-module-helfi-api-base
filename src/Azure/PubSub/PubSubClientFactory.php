@@ -7,6 +7,8 @@ namespace Drupal\helfi_api_base\Azure\PubSub;
 use Drupal\Component\Datetime\TimeInterface;
 use Firebase\JWT\JWT;
 use WebSocket\Client;
+use WebSocket\Middleware\CloseHandler;
+use WebSocket\Middleware\PingResponder;
 
 /**
  * A Web socket client factory.
@@ -49,12 +51,13 @@ final class PubSubClientFactory implements PubSubClientFactoryInterface {
       ],
     ], $accessKey, 'HS256');
 
-    return new Client($url, [
-      'headers' => [
-        'Authorization' => 'Bearer ' . $authorizationToken,
-        'Sec-WebSocket-Protocol' => 'json.webpubsub.azure.v1',
-      ],
-    ]);
+    $client = (new Client($url))
+      ->addMiddleware(new CloseHandler())
+      ->addMiddleware(new PingResponder());
+    $client->addHeader('Authorization', 'Bearer ' . $authorizationToken);
+    $client->addHeader('Sec-WebSocket-Protocol', 'json.webpubsub.azure.v1');
+
+    return $client;
   }
 
 }
