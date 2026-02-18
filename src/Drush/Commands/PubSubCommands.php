@@ -8,7 +8,7 @@ use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
 use Drush\Attributes\Command;
 use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
-use WebSocket\TimeoutException;
+use WebSocket\Exception\ConnectionTimeoutException;
 
 /**
  * A drush command to process PubSub events from Azure.
@@ -51,7 +51,7 @@ final class PubSubCommands extends DrushCommands {
         $this->io()
           ->writeln(sprintf('Received message [#%d]: %s', $received, $message));
       }
-      catch (TimeoutException) {
+      catch (ConnectionTimeoutException) {
       }
       catch (\JsonException $e) {
         $this->io()->writeln('Invalid json: ' . $e->getMessage());

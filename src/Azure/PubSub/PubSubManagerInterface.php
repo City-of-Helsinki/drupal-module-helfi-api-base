@@ -19,8 +19,8 @@ interface PubSubManagerInterface {
    *   The self.
    *
    * @throws \JsonException
-   * @throws \WebSocket\ConnectionException
-   * @throws \WebSocket\TimeoutException
+   * @throws \LogicException
+   * @throws \WebSocket\Exception\Exception
    */
   public function sendMessage(array $message): self;
 
@@ -31,8 +31,8 @@ interface PubSubManagerInterface {
    *   The received message.
    *
    * @throws \JsonException
-   * @throws \WebSocket\ConnectionException
-   * @throws \WebSocket\TimeoutException
+   * @throws \LogicException
+   * @throws \WebSocket\Exception\Exception
    */
   public function receive(): string;
 

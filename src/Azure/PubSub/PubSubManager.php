@@ -11,7 +11,8 @@ use Psr\Log\LogLevel;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use WebSocket\Client;
-use WebSocket\ConnectionException;
+use WebSocket\Exception\Exception;
+use WebSocket\Message\Ping;
 
 /**
  * A client to interact with Azure's PubSub service.
@@ -52,8 +53,6 @@ final class PubSubManager implements PubSubManagerInterface {
    * Initializes the websocket client.
    *
    * @throws \JsonException
-   * @throws \WebSocket\ConnectionException
-   * @throws \WebSocket\TimeoutException
    */
   private function initializeClient() : void {
     if ($this->client) {
@@ -62,7 +61,7 @@ final class PubSubManager implements PubSubManagerInterface {
     $client = $exception = NULL;
 
     if (empty($this->settings->accessKeys)) {
-      throw new ConnectionException('PubSub access key is undefined.');
+      throw new \LogicException('PubSub access key is undefined.');
     }
     // Initialize client with primary key, fallback to secondary key.
     foreach ($this->settings->accessKeys as $key) {
@@ -75,7 +74,7 @@ final class PubSubManager implements PubSubManagerInterface {
           'group' => $this->settings->group,
         ]));
       }
-      catch (ConnectionException $exception) {
+      catch (Exception $exception) {
         Error::logException($this->logger, $exception, level: LogLevel::INFO);
       }
     }
@@ -83,13 +82,13 @@ final class PubSubManager implements PubSubManagerInterface {
     // Propagate the error if connection fails with all available access keys.
     // When this is called from the Drush command, this causes the command to
     // fail with exit code 1.
-    if ($exception instanceof ConnectionException) {
+    if ($exception instanceof Exception) {
       throw $exception;
     }
 
     try {
       // Wait until we've actually joined the group.
-      $message = $this->decodeMessage((string) $client->receive());
+      $message = $this->decodeMessage($client->receive()->getContent());
 
       if (isset($message['event']) && $message['event'] === 'connected') {
         $this->client = $client;
@@ -99,7 +98,7 @@ final class PubSubManager implements PubSubManagerInterface {
     }
     catch (\JsonException) {
     }
-    throw new ConnectionException('Failed to initialize the client.');
+    throw new \LogicException('Failed to initialize the client.');
   }
 
   /**
@@ -129,6 +128,9 @@ final class PubSubManager implements PubSubManagerInterface {
    * @throws \JsonException
    */
   private function decodeMessage(string $message) : array {
+    if ($message === '') {
+      return [];
+    }
     return json_decode($message, TRUE, flags: JSON_THROW_ON_ERROR);
   }
 
@@ -155,12 +157,20 @@ final class PubSubManager implements PubSubManagerInterface {
   public function receive() : string {
     $this->initializeClient();
 
-    $message = (string) $this->client->receive();
-    $json = $this->decodeMessage($message);
+    // Listen until we receive a non-ping message.
+    do {
+      $message = $this->client->receive();
+
+      if (!$message instanceof Ping) {
+        break;
+      }
+    } while (TRUE);
+
+    $json = $this->decodeMessage($message->getContent());
 
     $this->eventDispatcher
       ->dispatch(new PubSubMessage($json));
-    return $message;
+    return $message->getContent();
   }
 
 }

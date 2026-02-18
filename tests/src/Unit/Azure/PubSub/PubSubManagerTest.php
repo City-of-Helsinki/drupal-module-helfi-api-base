@@ -14,7 +14,8 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use WebSocket\Client;
-use WebSocket\ConnectionException;
+use WebSocket\Exception\ClientException;
+use WebSocket\Message\Text;
 
 /**
  * Tests PubSub manager service.
@@ -34,7 +35,7 @@ class PubSubManagerTest extends UnitTestCase {
 
     $client = $this->prophesize(Client::class);
     $client->text('{"type":"joinGroup","group":"local"}')->shouldBeCalledTimes(1);
-    $client->receive()->willReturn('');
+    $client->receive()->willReturn(new Text(''));
     $clientFactory = $this->prophesize(PubSubClientFactoryInterface::class);
     $clientFactory->create('token')
       ->willReturn($client->reveal());
@@ -51,7 +52,7 @@ class PubSubManagerTest extends UnitTestCase {
       ),
       $this->prophesize(LoggerInterface::class)->reveal(),
     );
-    $this->expectException(ConnectionException::class);
+    $this->expectException(\LogicException::class);
     $this->expectExceptionMessage('Failed to initialize the client.');
     $sut->sendMessage(['test' => 'something']);
   }
@@ -66,7 +67,7 @@ class PubSubManagerTest extends UnitTestCase {
     $client = $this->prophesize(Client::class);
     $client->text('{"type":"joinGroup","group":"local"}')
       ->shouldBeCalledTimes(1)
-      ->willThrow(new ConnectionException('Test exception'));
+      ->willThrow(new ClientException('Test exception'));
     $clientFactory = $this->prophesize(PubSubClientFactoryInterface::class);
     $clientFactory->create('token')
       ->willReturn($client->reveal());
@@ -83,7 +84,7 @@ class PubSubManagerTest extends UnitTestCase {
       ),
       $this->prophesize(LoggerInterface::class)->reveal(),
     );
-    $this->expectException(ConnectionException::class);
+    $this->expectException(ClientException::class);
     $this->expectExceptionMessage('Test exception');
     $sut->sendMessage(['test' => 'something']);
   }
@@ -92,7 +93,7 @@ class PubSubManagerTest extends UnitTestCase {
    * Tests initializeClient() with empty access keys.
    */
   public function testInitializeClientNoSettings() : void {
-    $this->expectException(ConnectionException::class);
+    $this->expectException(\LogicException::class);
     $this->expectExceptionMessage('PubSub access key is undefined.');
     $sut = new PubSubManager(
       $this->prophesize(PubSubClientFactoryInterface::class)->reveal(),
@@ -113,7 +114,7 @@ class PubSubManagerTest extends UnitTestCase {
     $time->getCurrentTime()->willReturn(1234);
 
     $client = $this->prophesize(Client::class);
-    $client->receive()->willReturn('{"type":"event","event":"connected"}');
+    $client->receive()->willReturn(new Text('{"type":"event","event":"connected"}'));
     $client->text('{"type":"joinGroup","group":"local"}')->shouldBeCalledTimes(1);
     $client->text('{"type":"sendToGroup","group":"local","dataType":"json","data":{"test":"something","timestamp":1234}}')->shouldBeCalledTimes(2);
     $clientFactory = $this->prophesize(PubSubClientFactoryInterface::class);
@@ -149,8 +150,8 @@ class PubSubManagerTest extends UnitTestCase {
     $client->text('{"type":"joinGroup","group":"local"}')->shouldBeCalledTimes(1);
     $client->receive()
       ->willReturn(
-        '{"type":"event","event":"connected"}',
-        $expectedMessage,
+        new Text('{"type":"event","event":"connected"}'),
+        new Text($expectedMessage),
       );
     // This called once by ::joinGroup and twice by ::receive().
     $client->receive()->shouldBeCalledTimes(3);
