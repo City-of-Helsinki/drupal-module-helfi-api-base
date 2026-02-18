@@ -13,7 +13,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use WebSocket\Client;
 use WebSocket\Exception\Exception;
 use WebSocket\Message\Ping;
-use WebSocket\Message\Pong;
 
 /**
  * A client to interact with Azure's PubSub service.

@@ -14,6 +14,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use WebSocket\Client;
+use WebSocket\Message\Text;
 
 /**
  * Tests Cache invalidator subscriber.
@@ -71,8 +72,8 @@ class CacheTagInvalidatorTest extends KernelTestBase {
     $client = $this->prophesize(Client::class);
     $client->text(Argument::any());
     $client->receive()->willReturn(
-      '{"type":"event","event":"connected"}',
-      '{"data": {"tags":["node:123"]}}'
+      new Text('{"type":"event","event":"connected"}'),
+      new Text('{"data": {"tags":["node:123"]}}'),
     );
     $clientFactory = $this->prophesize(PubSubClientFactoryInterface::class);
     $clientFactory->create('123')->willReturn($client->reveal());
