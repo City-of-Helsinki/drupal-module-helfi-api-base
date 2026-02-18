@@ -158,13 +158,14 @@ final class PubSubManager implements PubSubManagerInterface {
     $this->initializeClient();
 
     // Listen until we receive a non-ping message.
-    while (TRUE) {
+    do {
       $message = $this->client->receive();
 
       if (!$message instanceof Ping) {
         break;
       }
-    }
+    } while (TRUE);
+
     $json = $this->decodeMessage($message->getContent());
 
     $this->eventDispatcher
