@@ -11,6 +11,7 @@ use Psr\Log\LogLevel;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use WebSocket\Client;
+use WebSocket\Exception\ClientException;
 use WebSocket\Exception\Exception;
 use WebSocket\Message\Ping;
 
@@ -61,7 +62,7 @@ final class PubSubManager implements PubSubManagerInterface {
     $client = $exception = NULL;
 
     if (empty($this->settings->accessKeys)) {
-      throw new \LogicException('PubSub access key is undefined.');
+      throw new ClientException('PubSub access key is undefined.');
     }
     // Initialize client with primary key, fallback to secondary key.
     foreach ($this->settings->accessKeys as $key) {
@@ -98,7 +99,7 @@ final class PubSubManager implements PubSubManagerInterface {
     }
     catch (\JsonException) {
     }
-    throw new \LogicException('Failed to initialize the client.');
+    throw new ClientException('Failed to initialize the client.');
   }
 
   /**
