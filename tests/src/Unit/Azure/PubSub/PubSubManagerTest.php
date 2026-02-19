@@ -52,7 +52,7 @@ class PubSubManagerTest extends UnitTestCase {
       ),
       $this->prophesize(LoggerInterface::class)->reveal(),
     );
-    $this->expectException(\LogicException::class);
+    $this->expectException(ClientException::class);
     $this->expectExceptionMessage('Failed to initialize the client.');
     $sut->sendMessage(['test' => 'something']);
   }
@@ -93,7 +93,7 @@ class PubSubManagerTest extends UnitTestCase {
    * Tests initializeClient() with empty access keys.
    */
   public function testInitializeClientNoSettings() : void {
-    $this->expectException(\LogicException::class);
+    $this->expectException(ClientException::class);
     $this->expectExceptionMessage('PubSub access key is undefined.');
     $sut = new PubSubManager(
       $this->prophesize(PubSubClientFactoryInterface::class)->reveal(),
