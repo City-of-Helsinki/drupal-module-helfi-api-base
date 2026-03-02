@@ -82,15 +82,24 @@ class UserExpireManagerTest extends KernelTestBase {
    * Tests cron user removal.
    */
   public function testCron() : void {
-    $user = $this->createUser();
-    $this->assertFalse($user->isBlocked());
-    $user->setLastAccessTime(strtotime('-7 months'))
-      ->setChangedTime(strtotime('-2 days'))
-      ->save();
+    $users = [
+      '1' => $this->createUser(),
+      '2' => $this->createUser(),
+    ];
+
+    foreach ($users as $user) {
+      $this->assertFalse($user->isBlocked());
+      $user->setLastAccessTime(strtotime('-7 months'))
+        ->setChangedTime(strtotime('-2 days'))
+        ->save();
+    }
 
     // Make sure the user is canceled when the cron is run.
     helfi_api_base_cron();
-    $this->assertTrue(User::load($user->id())->isBlocked());
+    // Make sure uid 1 user is not blocked.
+    $this->assertFalse(User::load($users['1']->id())->isBlocked());
+    $this->assertEquals(1, $users['1']->id());
+    $this->assertTrue(User::load($users['2']->id())->isBlocked());
   }
 
   /**
@@ -115,15 +124,20 @@ class UserExpireManagerTest extends KernelTestBase {
    * Tests the expired users.
    */
   public function testExpiredUsers() : void {
+    // Create UID 1 user.
+    $this->createUser();
+
     /** @var \Drupal\user\UserInterface[] $users */
     $users = [
-      '1' => $this->createUser(),
       '2' => $this->createUser(),
       '3' => $this->createUser(),
       '4' => $this->createUser(),
+      '5' => $this->createUser(),
     ];
 
     foreach ($users as $user) {
+      // Make sure we don't have an account with UID 1.
+      $this->assertTrue($user->id() > 1);
       // Make sure users have never logged in.
       $this->assertEquals(0, $user->getLastAccessedTime());
       $this->assertTrue($user->getCreatedTime() > 0);
@@ -137,47 +151,47 @@ class UserExpireManagerTest extends KernelTestBase {
     }
 
     // Set access time below the expiry threshold.
-    $users['1']->setLastAccessTime(strtotime('-1 months'))
+    $users['2']->setLastAccessTime(strtotime('-1 months'))
       ->setChangedTime(strtotime('-2 days'))
       ->save();
     // Set access time over the expiry threshold.
-    $users['2']->setLastAccessTime(strtotime('-7 months'))
+    $users['3']->setLastAccessTime(strtotime('-7 months'))
       ->setChangedTime(strtotime('-2 days'))
       ->save();
     // Set changed time below expiry threshold to make sure
     // users have some leeway.
-    $users['4']->setLastAccessTime(strtotime('-1 months'))
+    $users['5']->setLastAccessTime(strtotime('-1 months'))
       ->setChangedTime(strtotime('now'))
       ->save();
 
     $this->getSut()->cancelExpiredUsers();
 
-    // Uid 2 should be the only expired user.
-    $this->assertExpiredUsers([2], $users);
+    // Uid 3 should be the only expired user.
+    $this->assertExpiredUsers([3], $users);
 
     // Set created time over the expiry threshold.
-    $users['3']->set('created', strtotime('-7 months'))
+    $users['4']->set('created', strtotime('-7 months'))
       ->setChangedTime(strtotime('-2 days'))
       ->save();
 
-    // Only users 2 and 3 should be blocked.
+    // Only users 3 and 4 should be blocked.
     $this->getSut()->cancelExpiredUsers();
-    $this->assertExpiredUsers([2, 3], $users);
+    $this->assertExpiredUsers([3, 4], $users);
 
     // Set access time over the delete threshold.
-    User::load(2)->setLastAccessTime(strtotime('-5 years 1 day'))
+    User::load(3)->setLastAccessTime(strtotime('-5 years 1 day'))
       ->setChangedTime(strtotime('-2 days'))
       ->save();
     // Set created time over the delete threshold.
-    User::load(3)->set('created', strtotime('-5 years 1 day'))
+    User::load(4)->set('created', strtotime('-5 years 1 day'))
       ->setChangedTime(strtotime('-2 days'))
       ->save();
 
     $this->getSut()->deleteExpiredUsers();
 
-    // Users 2 and 3 should be deleted now.
-    $this->assertNull(User::load(2));
+    // Users 3 and 4 should be deleted now.
     $this->assertNull(User::load(3));
+    $this->assertNull(User::load(4));
   }
 
   /**
