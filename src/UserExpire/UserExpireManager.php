@@ -98,6 +98,8 @@ final class UserExpireManager {
     $query = $this->entityTypeManager->getStorage('user')
       ->getQuery();
     $query->accessCheck(FALSE);
+    // Never expire UID 1 user.
+    $query->condition('uid', 1, '>');
     // Load users that have logged in at some point (access > 0), but
     // the access time is less than (current time - expire time).
     $accessCondition = $query->andConditionGroup()
