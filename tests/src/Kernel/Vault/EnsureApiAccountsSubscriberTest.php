@@ -16,7 +16,7 @@ use Drupal\user\UserInterface;
 /**
  * Tests EnsureApiAccountSubscriber.
  *
- * @coversDefaultClass \Drupal\helfi_api_base\EventSubscriber\EnsureApiAccountsSubscriber
+ * @coversDefaultClass \Drupal\helfi_api_base\Vault\EnsureApiAccountsSubscriber
  *
  * @group helfi_api_base
  */
@@ -32,6 +32,8 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
     'system',
     'user',
     'migrate',
+    'field',
+    'text',
     'helfi_api_base',
   ];
 
@@ -59,6 +61,51 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
     $moduleHandler->loadInclude('helfi_api_base', 'install');
     // Make sure install hook is run.
     helfi_api_base_install();
+  }
+
+  /**
+   * Tests that we can add 'key_auth' api keys.
+   *
+   * @covers ::getSubscribedEvents
+   * @covers ::onPostDeploy
+   * @covers ::__construct
+   */
+  public function testKeyAuth(): void {
+    $field_storage = \Drupal::entityTypeManager()->getStorage('field_storage_config')->create([
+      'field_name' => 'api_key',
+      'entity_type' => 'user',
+      'type' => 'text',
+    ]);
+    $field_storage->save();
+    $field = \Drupal::entityTypeManager()->getStorage('field_config')->create([
+      'field_name' => 'api_key',
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'label' => 'Api key',
+    ]);
+    $field->save();
+
+    /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $service */
+    $service = $this->container->get('event_dispatcher');
+    $service->dispatch(new PostDeployEvent());
+    $account = user_load_by_name('helfi-admin');
+    $this->assertInstanceOf(UserInterface::class, $account);
+    $this->assertTrue($account->hasField('api_key'));
+
+    // Make sure we can add 'api_key' field.
+    $this->config('helfi_api_base.api_accounts')
+      ->set('accounts', [
+        [
+          'username' => 'helfi-admin',
+          'password' => '123',
+          'api_key' => '123',
+        ],
+      ])
+      ->save();
+
+    $service->dispatch(new PostDeployEvent());
+    $account = user_load_by_name('helfi-admin');
+    $this->assertEquals('123', $account->get('api_key')->value);
   }
 
   /**

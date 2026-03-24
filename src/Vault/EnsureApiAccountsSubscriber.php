@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_api_base\EventSubscriber;
+namespace Drupal\helfi_api_base\Vault;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\helfi_api_base\EventSubscriber\DeployHookEventSubscriberBase;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -83,6 +84,12 @@ final class EnsureApiAccountsSubscriber extends DeployHookEventSubscriberBase {
         }
         $user->addRole($role);
       }
+
+      // Support 'key_auth' module.
+      if ($user->hasField('api_key') && isset($account['api_key'])) {
+        $user->set('api_key', $account['api_key']);
+      }
+
       $user->setPassword($password)
         ->setEmail($mail)
         ->activate()

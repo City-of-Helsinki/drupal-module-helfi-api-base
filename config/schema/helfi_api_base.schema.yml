@@ -25,6 +25,8 @@ helfi_api_base.api_accounts:
             type: string
           password:
             type: string
+          api_key:
+            type: string
           roles:
             type: sequence
             sequence:
