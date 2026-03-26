@@ -103,12 +103,15 @@ final class Composer extends DebugDataItemPluginBase implements ContainerFactory
    * @param \ComposerLockParser\Package $package
    *   The package to parse.
    *
-   * @return \Drupal\Core\Url
-   *   The releases page URL on GitHub.
+   * @return \Drupal\Core\Url|null
+   *   The releases page URL on GitHub or null.
    */
-  private function getReleasesUrl(Package $package) : Url {
+  private function getReleasesUrl(Package $package) : ?Url {
     $source = $package->getSource();
 
+    if (empty($source['url'])) {
+      return NULL;
+    }
     $path = parse_url($source['url'], PHP_URL_PATH);
 
     // Deal with git@github.com URLs.
