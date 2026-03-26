@@ -56,3 +56,7 @@ msgstr "Stadsforskning och -statistik"
 msgctxt "Project label"
 msgid "Emergency site"
 msgstr "Undantagswebbplats"
+
+msgctxt "Project label"
+msgid "History Helsinki"
+msgstr "Historia Helsingfors"

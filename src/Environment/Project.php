@@ -30,6 +30,7 @@ final class Project {
   public const EMERGENCY_SITE = 'emergency-site';
   public const PALVELUKESKUS = 'palvelukeskus';
   public const KAUPUNKITIETO = 'kaupunkitieto';
+  public const HISTORIA = 'helhist';
 
   /**
    * The environments.
@@ -106,6 +107,7 @@ final class Project {
       self::PALVELUKESKUS => new TranslatableMarkup('Palvelukeskus', options: ['context' => 'Project label']),
       self::KAUPUNKITIETO => new TranslatableMarkup('Urban research and statistics', options: ['context' => 'Project label']),
       self::EMERGENCY_SITE => new TranslatableMarkup('Emergency site', options: ['context' => 'Project label']),
+      self::HISTORIA => new TranslatableMarkup('History Helsinki', options: ['context' => 'Project label']),
     };
   }
 

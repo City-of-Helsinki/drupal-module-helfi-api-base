@@ -552,6 +552,36 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
           ),
         ],
       ),
+      new Project(
+        Project::HISTORIA,
+        new ProjectMetadata('https://github.com/City-of-Helsinki/historiaportaali'),
+        [
+          new Environment(
+            address: new Address('historiaportaali.docker.so'),
+            internalAddress: new Address('historiaportaali', 'http', 8080),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Local,
+          ),
+          new Environment(
+            address: new Address('historia.test.hel.ninja'),
+            internalAddress: new Address('historia.test.hel.ninja'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Test,
+          ),
+          new Environment(
+            address: new Address('historia.stage.hel.ninja'),
+            internalAddress: new Address('historia.stage.hel.ninja'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Stage,
+          ),
+          new Environment(
+            address: new Address('historia.hel.fi'),
+            internalAddress: new Address('historia.hel.fi'),
+            paths: $rootPaths,
+            environment: EnvironmentEnum::Prod,
+          ),
+        ],
+      ),
     ];
 
     $this->projects = array_combine(

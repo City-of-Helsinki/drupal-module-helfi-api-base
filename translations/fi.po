@@ -56,3 +56,7 @@ msgstr "Kaupunkitieto"
 msgctxt "Project label"
 msgid "Emergency site"
 msgstr "Poikkeustilannesivusto"
+
+msgctxt "Project label"
+msgid "History Helsinki"
+msgstr "Historia Helsinki"
