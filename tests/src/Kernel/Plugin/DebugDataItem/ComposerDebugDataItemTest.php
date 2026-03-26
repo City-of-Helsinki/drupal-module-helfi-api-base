@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\Plugin\DebugDataItem;
 
+use Drupal\Core\Url;
 use Drupal\KernelTests\KernelTestBase;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests Composer debug data plugin.
- *
- * @group helfi_api_base
  */
+#[Group('helfi_api_base')]
+#[RunTestsInSeparateProcesses]
 class ComposerDebugDataItemTest extends KernelTestBase {
 
   /**
@@ -32,8 +35,16 @@ class ComposerDebugDataItemTest extends KernelTestBase {
     $this->assertNotEmpty($plugin->label());
     $this->assertEquals([], $plugin->calculateDependencies());
 
-    // Make sure we have at least one package.
-    $this->assertNotEmpty($plugin->collect()['packages'][0]['name']);
+    $build = $plugin->collect();
+
+    $count = 0;
+    foreach ($build['packages'] as $package) {
+      $this->assertNotEmpty($package['name']);
+      $this->assertInstanceOf(Url::class, $package['releases_url']);
+      $count++;
+    }
+
+    $this->assertTrue($count > 0);
   }
 
 }
