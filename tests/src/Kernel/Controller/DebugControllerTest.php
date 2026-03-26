@@ -8,14 +8,16 @@ use Drupal\helfi_api_base\Debug\SupportsValidityChecksInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginManager;
 use Drupal\Tests\helfi_api_base\Kernel\ApiKernelTestBase;
 use Drupal\helfi_api_base\Controller\DebugController;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Tests Debug controller.
- *
- * @group helfi_api_base
  */
+#[Group('helfi_api_base')]
+#[RunTestsInSeparateProcesses]
 class DebugControllerTest extends ApiKernelTestBase {
 
   use ProphecyTrait;
@@ -25,6 +27,7 @@ class DebugControllerTest extends ApiKernelTestBase {
    */
   protected static $modules = [
     'migrate',
+    'composer_lock_test',
     'serialization',
     'rest',
   ];

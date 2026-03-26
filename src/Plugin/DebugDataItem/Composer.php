@@ -8,6 +8,7 @@ use ComposerLockParser\ComposerInfo;
 use ComposerLockParser\Package;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\helfi_api_base\Attribute\DebugDataItem;
 use Drupal\helfi_api_base\Debug\SupportsCollectionsInterface;
 use Drupal\helfi_api_base\DebugDataItemPluginBase;
@@ -88,11 +89,39 @@ final class Composer extends DebugDataItemPluginBase implements ContainerFactory
       $data['packages'][] = [
         'name' => $package->getName(),
         'source' => $package->getSource(),
+        'releases_url' => $this->getReleasesUrl($package),
         'version' => $package->getVersion(),
         'time' => $package->getTime()?->format('c'),
       ];
     }
     return $data;
+  }
+
+  /**
+   * Gets the releases page URL.
+   *
+   * @param \ComposerLockParser\Package $package
+   *   The package to parse.
+   *
+   * @return \Drupal\Core\Url|null
+   *   The releases page URL on GitHub or null.
+   */
+  private function getReleasesUrl(Package $package) : ?Url {
+    $source = $package->getSource();
+
+    if (empty($source['url'])) {
+      return NULL;
+    }
+    $path = parse_url($source['url'], PHP_URL_PATH);
+
+    // Deal with git@github.com URLs.
+    if (!$path || str_starts_with($path, 'git@')) {
+      [, $path] = explode(':', $source['url'], 2);
+    }
+    $path = strtolower(ltrim($path, '/'));
+    $path = str_replace('.git', '', $path);
+
+    return Url::fromUri(sprintf('https://github.com/%s/releases', $path));
   }
 
 }

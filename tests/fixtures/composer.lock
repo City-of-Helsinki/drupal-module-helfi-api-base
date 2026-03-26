@@ -3939,7 +3939,7 @@
             "version": "1.4.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/City-of-Helsinki/drupal-hdbt-admin.git",
+                "url": "git@github.com:city-of-helsinki/drupal-hdbt-admin.git",
                 "reference": "c9f375da590318ceffce4c331affc9d1feaf7a15"
             },
             "dist": {
