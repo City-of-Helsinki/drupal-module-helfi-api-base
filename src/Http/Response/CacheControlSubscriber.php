@@ -5,10 +5,16 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Http\Response;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Disables 'max-age' header, sets 's-maxage' and 'must-revalidate' headers.
+ *
+ * This should allow Varnish to cache pages up to one day, but browser
+ * must always revalidate the content, instead of loading it from the disk when
+ * Varnish sends a 304 response.
+ */
 final class CacheControlSubscriber implements EventSubscriberInterface {
 
   /**
@@ -45,4 +51,3 @@ final class CacheControlSubscriber implements EventSubscriberInterface {
   }
 
 }
-
