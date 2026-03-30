@@ -32,8 +32,7 @@ final class CacheControlSubscriber implements EventSubscriberInterface {
 
     if (!$response->headers->hasCacheControlDirective('s-maxage')) {
       // Disable max-age and set s-maxage=86400 (one day) instead.
-      $response->setSharedMaxAge(86400)
-        ->setMaxAge(0);
+      $response->setSharedMaxAge(86400);
     }
 
     if ($response->getStatusCode() < 400) {
