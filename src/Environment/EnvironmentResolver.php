@@ -46,8 +46,8 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
   /**
    * Gets the config factory closure.
    *
-   * We have multiple middlewares using Environment resolver, causing
-   * a significant performance hit.
+   * We have multiple middlewares using Environment resolver, causing a
+   * significant performance hit if Config factory is injected directly.
    *
    * @see \Drupal\helfi_api_base\EventSubscriber\EnvironmentResponseSubscriber
    *
