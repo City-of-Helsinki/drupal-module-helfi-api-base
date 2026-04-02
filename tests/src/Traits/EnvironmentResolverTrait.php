@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Traits;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
