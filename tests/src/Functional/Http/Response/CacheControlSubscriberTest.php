@@ -48,7 +48,6 @@ class CacheControlSubscriberTest extends CoreBrowserTestBase {
       ->save();
 
     $this->drupalGet('/dynamic-page-cache-test/html');
-    $headers = $this->getSession()->getResponseHeaders();
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->responseHeaderEquals('Cache-Control', 'max-age=0, must-revalidate, public, s-maxage=3600');
   }
