@@ -8,6 +8,8 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
@@ -16,6 +18,8 @@ use Psr\Log\LoggerInterface;
  *
  * @coversDefaultClass \Drupal\helfi_api_base\ActionLog\ActionLogger
  */
+#[Group('helfi_api_base')]
+#[RunTestsInSeparateProcesses]
 class ActionLogTest extends KernelTestBase {
 
   use UserCreationTrait;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Traits;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
@@ -45,10 +44,10 @@ trait EnvironmentResolverTrait {
    * @param mixed $envName
    *   The environment name.
    *
-   * @return \Drupal\Core\Config\ConfigFactoryInterface
-   *   The config factory stub.
+   * @return \Closure
+   *   The config factory closure.
    */
-  protected function getConfigStub(mixed $projectName = NULL, mixed $envName = NULL) :  ConfigFactoryInterface {
+  protected function getConfigStub(mixed $projectName = NULL, mixed $envName = NULL) :  \Closure {
     $config = [];
 
     if ($projectName) {
@@ -66,11 +65,11 @@ trait EnvironmentResolverTrait {
       $configFactory = $this->getConfigFactoryStub([
         'helfi_api_base.environment_resolver.settings' => $config,
       ]);
-      return $configFactory;
+      return fn() => $configFactory;
     }
     $this->setActiveProject($projectName, $envName);
 
-    return $this->container->get('config.factory');
+    return fn () => $this->container->get('config.factory');
   }
 
   /**

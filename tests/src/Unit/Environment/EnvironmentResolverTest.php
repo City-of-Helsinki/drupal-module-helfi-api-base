@@ -109,7 +109,7 @@ class EnvironmentResolverTest extends UnitTestCase {
     $configFactory = $this->prophesize(ConfigFactoryInterface::class);
     $configFactory->get(Argument::any())
       ->willReturn($config->reveal());
-    $sut = new EnvironmentResolver($configFactory->reveal());
+    $sut = new EnvironmentResolver(fn() => $configFactory->reveal());
     $sut->getActiveProject();
   }
 

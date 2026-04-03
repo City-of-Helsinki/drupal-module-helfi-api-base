@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Environment;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireServiceClosure;
 
 /**
  * Environment resolver.
@@ -37,15 +38,24 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
    */
   private Project $activeProject;
 
-  /**
-   * Constructs a new instance.
-   *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The configuration factory.
-   */
   public function __construct(
-    private readonly ConfigFactoryInterface $configFactory,
+    #[AutowireServiceClosure(service: ConfigFactoryInterface::class)] private readonly \Closure $configFactoryClosure,
   ) {
+  }
+
+  /**
+   * Gets the config factory closure.
+   *
+   * We have multiple middlewares using Environment resolver, causing a
+   * significant performance hit if Config factory is injected directly.
+   *
+   * @see \Drupal\helfi_api_base\EventSubscriber\EnvironmentResponseSubscriber
+   *
+   * @return \Drupal\Core\Config\ConfigFactoryInterface
+   *   The Config factory service.
+   */
+  private function getConfigFactory(): ConfigFactoryInterface {
+    return ($this->configFactoryClosure)();
   }
 
   /**
@@ -609,7 +619,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
    *   The configuration value or null.
    */
   private function getConfig(string $key) : ?string {
-    return $this->configFactory
+    return $this->getConfigFactory()
       ->get('helfi_api_base.environment_resolver.settings')
       ->get($key) ?: NULL;
   }
