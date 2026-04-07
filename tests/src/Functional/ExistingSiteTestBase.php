@@ -27,8 +27,9 @@ abstract class ExistingSiteTestBase extends ExistingSiteBase {
    * {@inheritdoc}
    */
   public function tearDown() : void {
-    parent::tearDown();
     $this->tearDownDefaultConfiguration();
+
+    parent::tearDown();
   }
 
 }
