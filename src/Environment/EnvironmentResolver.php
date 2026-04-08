@@ -156,6 +156,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Local,
             services: [
               new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic', 'http', 9200)),
+              new Service(ServiceEnum::PublicElasticProxy, new Address('elastic-proxy-helfi-etusivu.docker.so')),
             ],
           ),
           new Environment(
@@ -165,6 +166,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Test,
             services: [
               new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic-proxy.test.hel.ninja')),
+              new Service(ServiceEnum::PublicElasticProxy, new Address('helfi-etusivu-elastic-proxy.test.hel.ninja')),
             ],
           ),
           new Environment(
@@ -174,6 +176,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Stage,
             services: [
               new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic-proxy.stage.hel.ninja')),
+              new Service(ServiceEnum::PublicElasticProxy, new Address('helfi-etusivu-elastic-proxy.stage.hel.ninja')),
             ],
           ),
           new Environment(
@@ -183,6 +186,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Prod,
             services: [
               new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic-proxy.api.hel.ninja')),
+              new Service(ServiceEnum::PublicElasticProxy, new Address('helfi-etusivu-elastic-proxy.api.hel.ninja')),
             ],
           ),
         ],
