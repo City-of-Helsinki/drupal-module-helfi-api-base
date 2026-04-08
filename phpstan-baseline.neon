@@ -1,0 +1,1381 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$entity of function _helfi_api_base_process_links expects Drupal\\\\Core\\\\Entity\\\\ContentEntityInterface, Drupal\\\\Core\\\\Entity\\\\TranslatableInterface given\\.$#"
+			count: 1
+			path: helfi_api_base.install
+
+		-
+			message: "#^Parameter \\#2 \\$data of method Drupal\\\\Core\\\\Config\\\\CachedStorage\\:\\:write\\(\\) expects array, array\\|false given\\.$#"
+			count: 1
+			path: helfi_api_base.install
+
+		-
+			message: "#^Function helfi_api_base_element_info_alter\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_api_base.module
+
+		-
+			message: "#^Function helfi_api_base_js_settings_alter\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_api_base.module
+
+		-
+			message: "#^Function helfi_api_base_library_info_alter\\(\\) has parameter \\$libraries with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_api_base.module
+
+		-
+			message: "#^Function helfi_api_base_mail_alter\\(\\) has parameter \\$message with no type specified\\.$#"
+			count: 1
+			path: helfi_api_base.module
+
+		-
+			message: "#^Function helfi_api_base_template_preprocess_default_variables_alter\\(\\) has parameter \\$variables with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_api_base.module
+
+		-
+			message: "#^Function helfi_api_base_theme\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_api_base.module
+
+		-
+			message: "#^Function helfi_api_base_theme_suggestions_debug_item\\(\\) has parameter \\$variables with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_api_base.module
+
+		-
+			message: "#^Function helfi_api_base_theme_suggestions_debug_item\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_api_base.module
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\ActionLog\\\\ActionLogger\\:\\:__construct\\(\\) has parameter \\$actionLogEntities with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ActionLog/ActionLogger.php
+
+		-
+			message: "#^Property Drupal\\\\helfi_api_base\\\\ActionLog\\\\ActionLogger\\:\\:\\$allowedTypes type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ActionLog/ActionLogger.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiClient\\:\\:__construct\\(\\) has parameter \\$defaultOptions with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiClient/ApiClient.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiClient\\:\\:getRequestOptions\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiClient/ApiClient.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiClient\\:\\:getRequestOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiClient/ApiClient.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiClient\\:\\:makeRequest\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiClient/ApiClient.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiClient\\:\\:makeRequestWithFixture\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiClient/ApiClient.php
+
+		-
+			message: "#^Parameter \\#1 \\$data of class Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiResponse constructor expects array\\|object, array\\|bool\\|float\\|int\\|object\\|string\\|null given\\.$#"
+			count: 1
+			path: src/ApiClient/ApiClient.php
+
+		-
+			message: "#^Parameter \\#1 \\$data of class Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiResponse constructor expects array\\|object, array\\|bool\\|float\\|int\\|object\\|string\\|null given\\.$#"
+			count: 1
+			path: src/ApiClient/ApiFixture.php
+
+		-
+			message: "#^Parameter \\#1 \\$json of static method GuzzleHttp\\\\Utils\\:\\:jsonDecode\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/ApiClient/ApiFixture.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiResponse\\:\\:__construct\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiClient/ApiResponse.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\ApiClient\\\\CacheValue\\:\\:__construct\\(\\) has parameter \\$tags with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiClient/CacheValue.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Azure\\\\PubSub\\\\PubSubManager\\:\\:decodeMessage\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Azure/PubSub/PubSubManager.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Azure\\\\PubSub\\\\PubSubManager\\:\\:encodeMessage\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Azure/PubSub/PubSubManager.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Azure\\\\PubSub\\\\PubSubManager\\:\\:sendMessage\\(\\) has parameter \\$message with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Azure/PubSub/PubSubManager.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Azure\\\\PubSub\\\\PubSubManagerInterface\\:\\:sendMessage\\(\\) has parameter \\$message with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Azure/PubSub/PubSubManagerInterface.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Azure\\\\PubSub\\\\PubSubMessage\\:\\:__construct\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Azure/PubSub/PubSubMessage.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Azure\\\\PubSub\\\\PubSubMessage\\:\\:__toString\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: src/Azure/PubSub/PubSubMessage.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Azure\\\\PubSub\\\\Settings\\:\\:__construct\\(\\) has parameter \\$accessKeys with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Azure/PubSub/Settings.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Cache\\\\CacheTagInvalidator\\:\\:invalidateTags\\(\\) has parameter \\$instances with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Cache/CacheTagInvalidator.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Cache\\\\CacheTagInvalidator\\:\\:invalidateTags\\(\\) has parameter \\$tags with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Cache/CacheTagInvalidator.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Cache\\\\CacheTagInvalidatorInterface\\:\\:invalidateTags\\(\\) has parameter \\$instances with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Cache/CacheTagInvalidatorInterface.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Cache\\\\CacheTagInvalidatorInterface\\:\\:invalidateTags\\(\\) has parameter \\$tags with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Cache/CacheTagInvalidatorInterface.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Controller\\\\DebugController\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Controller/DebugController.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Debug\\\\SupportsCollectionsInterface\\:\\:collect\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Debug/SupportsCollectionsInterface.php
+
+		-
+			message: "#^Cannot access offset 'title' on array\\|Drupal\\\\Component\\\\Plugin\\\\Definition\\\\PluginDefinitionInterface\\.$#"
+			count: 1
+			path: src/DebugDataItemPluginBase.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\DebugDataItemPluginBase\\:\\:calculateDependencies\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DebugDataItemPluginBase.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\DebugDataItemPluginManager\\:\\:__construct\\(\\) has parameter \\$namespaces with no value type specified in iterable type Traversable\\.$#"
+			count: 1
+			path: src/DebugDataItemPluginManager.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Drush\\\\Commands\\\\FixtureCommands\\:\\:migrateFixtures\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Drush/Commands/FixtureCommands.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(Drupal\\\\Core\\\\Entity\\\\EntityInterface\\)\\: mixed\\)\\|null, Closure\\(Drupal\\\\Core\\\\Entity\\\\ContentEntityInterface\\)\\: void given\\.$#"
+			count: 1
+			path: src/Drush/Commands/FixtureCommands.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$uri\\.$#"
+			count: 1
+			path: src/Drush/Commands/LocaleCommands.php
+
+		-
+			message: "#^Using nullsafe property access on non\\-nullable type mixed\\. Use \\-\\> instead\\.$#"
+			count: 1
+			path: src/Drush/Commands/LocaleCommands.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Drush\\\\Commands\\\\MigrateHookCommands\\:\\:createResult\\(\\) has parameter \\$migrationIds with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Drush/Commands/MigrateHookCommands.php
+
+		-
+			message: "#^Using nullsafe method call on non\\-nullable type Drupal\\\\Core\\\\KeyValueStore\\\\KeyValueStoreInterface\\. Use \\-\\> instead\\.$#"
+			count: 1
+			path: src/Drush/Commands/MigrateHookCommands.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Drush\\\\Commands\\\\RevisionCommands\\:\\:delete\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Drush/Commands/RevisionCommands.php
+
+		-
+			message: "#^Parameter \\#1 \\$field of method Drupal\\\\Core\\\\Database\\\\Query\\\\ConditionInterface\\:\\:condition\\(\\) expects Drupal\\\\Core\\\\Database\\\\Query\\\\ConditionInterface\\|string, string\\|false given\\.$#"
+			count: 1
+			path: src/Drush/Commands/RevisionCommands.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\Access\\\\RemoteEntityAccess\\:\\:checkCreateAccess\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/Access/RemoteEntityAccess.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\Form\\\\ContentEntitySettingsForm\\:\\:buildForm\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/Form/ContentEntitySettingsForm.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\Form\\\\ContentEntitySettingsForm\\:\\:buildForm\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/Form/ContentEntitySettingsForm.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\Form\\\\ContentEntitySettingsForm\\:\\:submitForm\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Entity/Form/ContentEntitySettingsForm.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\Form\\\\ContentEntitySettingsForm\\:\\:submitForm\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/Form/ContentEntitySettingsForm.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\Form\\\\RevisionRevertTranslationForm\\:\\:buildForm\\(\\) has parameter \\$_entity_revision with no type specified\\.$#"
+			count: 1
+			path: src/Entity/Form/RevisionRevertTranslationForm.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\Form\\\\RevisionRevertTranslationForm\\:\\:buildForm\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/Form/RevisionRevertTranslationForm.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\Form\\\\RevisionRevertTranslationForm\\:\\:buildForm\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/Form/RevisionRevertTranslationForm.php
+
+		-
+			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
+			count: 1
+			path: src/Entity/RemoteEntityBase.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\RemoteEntityBase\\:\\:baseFieldDefinitions\\(\\) should return array\\<string, Drupal\\\\Core\\\\Field\\\\FieldDefinitionInterface\\> but returns array\\<int\\|string, Drupal\\\\Core\\\\Field\\\\FieldDefinitionInterface\\>\\.$#"
+			count: 1
+			path: src/Entity/RemoteEntityBase.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\RemoteEntityBase\\:\\:preSave\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Entity/RemoteEntityBase.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\Revision\\\\RevisionManager\\:\\:deleteRevisions\\(\\) has parameter \\$revisionIds with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/Revision/RevisionManager.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\Revision\\\\RevisionManager\\:\\:getRevisions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/Revision/RevisionManager.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\Revision\\\\RevisionManager\\:\\:getRevisionsPerLanguage\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/Revision/RevisionManager.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\Revision\\\\RevisionManager\\:\\:getSupportedEntityTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/Revision/RevisionManager.php
+
+		-
+			message: "#^Cannot assign offset 'class' to array\\<string, array\\<string, Drupal\\\\Core\\\\StringTranslation\\\\TranslatableMarkup\\|string\\>\\>\\|string\\.$#"
+			count: 1
+			path: src/Entity/RevisionController.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\RevisionController\\:\\:buildRevertRevisionLink\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/RevisionController.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Entity\\\\RevisionController\\:\\:revisionOverview\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/RevisionController.php
+
+		-
+			message: "#^Parameter \\#2 \\$regex of method Symfony\\\\Component\\\\Routing\\\\Route\\:\\:setRequirement\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Entity/Routing/EntityRouteProvider.php
+
+		-
+			message: "#^Parameter \\#1 \\$path of class Symfony\\\\Component\\\\Routing\\\\Route constructor expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Entity/Routing/RevisionRouteProvider.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Environment\\\\Environment\\:\\:__construct\\(\\) has parameter \\$paths with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Environment/Environment.php
+
+		-
+			message: "#^Match expression does not handle remaining value\\: string$#"
+			count: 1
+			path: src/Environment/Project.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Event\\\\MigrationConfigurationEvent\\:\\:__construct\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Event/MigrationConfigurationEvent.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\EventSubscriber\\\\CacheTagInvalidatorSubscriber\\:\\:isValidInstance\\(\\) has parameter \\$instances with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/EventSubscriber/CacheTagInvalidatorSubscriber.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\EventSubscriber\\\\DisableUserPasswordSubscriber\\:\\:__construct\\(\\) has parameter \\$users with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/EventSubscriber/DisableUserPasswordSubscriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$password of method Drupal\\\\user\\\\UserInterface\\:\\:setPassword\\(\\) expects string, null given\\.$#"
+			count: 1
+			path: src/EventSubscriber/DisableUserPasswordSubscriber.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\EventSubscriber\\\\SentryTracesSamplerSubscriber\\:\\:ignoreTracerUrl\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/EventSubscriber/SentryTracesSamplerSubscriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$haystack of function str_ends_with expects string, string\\|false\\|null given\\.$#"
+			count: 1
+			path: src/EventSubscriber/SentryTracesSamplerSubscriber.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\EventSubscriber\\\\UserLoginSubscriber\\:\\:__construct\\(\\) has parameter \\$restrictedRoles with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/EventSubscriber/UserLoginSubscriber.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Fixture\\\\FixtureBase\\:\\:getConfiguration\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Fixture/FixtureBase.php
+
+		-
+			message: "#^Cannot access offset 'monolog' on array\\|bool\\|float\\|int\\|string\\|UnitEnum\\.$#"
+			count: 1
+			path: src/HelfiApiBaseServiceProvider.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\HelfiApiBaseServiceProvider\\:\\:alter\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/HelfiApiBaseServiceProvider.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Language\\\\DefaultLanguageResolver\\:\\:__construct\\(\\) has parameter \\$defaultLanguages with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Language/DefaultLanguageResolver.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Language\\\\DefaultLanguageResolver\\:\\:getCurrentLangAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Language/DefaultLanguageResolver.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Language\\\\DefaultLanguageResolver\\:\\:getDefaultLanguages\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Language/DefaultLanguageResolver.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Language\\\\DefaultLanguageResolver\\:\\:getFallbackLangAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Language/DefaultLanguageResolver.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Language\\\\DefaultLanguageResolverInterface\\:\\:getCurrentLangAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Language/DefaultLanguageResolverInterface.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Language\\\\DefaultLanguageResolverInterface\\:\\:getDefaultLanguages\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Language/DefaultLanguageResolverInterface.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Language\\\\DefaultLanguageResolverInterface\\:\\:getFallbackLangAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Language/DefaultLanguageResolverInterface.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Link\\\\InternalDomainResolver\\:\\:__construct\\(\\) has parameter \\$domains with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Link/InternalDomainResolver.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Link\\\\InternalDomainResolver\\:\\:getDomains\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Link/InternalDomainResolver.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Link\\\\InternalDomainResolver\\:\\:getProtocol\\(\\) should return string\\|null but returns string\\|false\\|null\\.$#"
+			count: 1
+			path: src/Link/InternalDomainResolver.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Link\\\\LinkProcessor\\:\\:preRenderLink\\(\\) has parameter \\$element with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Link/LinkProcessor.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Link\\\\LinkProcessor\\:\\:preRenderLink\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Link/LinkProcessor.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Logger\\\\RfcTestLogger\\:\\:log\\(\\) has parameter \\$message with no type specified\\.$#"
+			count: 1
+			path: src/Logger/RfcTestLogger.php
+
+		-
+			message: "#^Property Drupal\\\\helfi_api_base\\\\Logger\\\\RfcTestLogger\\:\\:\\$messages type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Logger/RfcTestLogger.php
+
+		-
+			message: "#^Cannot access offset 'type' on array\\|Drupal\\\\Component\\\\Plugin\\\\Definition\\\\PluginDefinitionInterface\\.$#"
+			count: 1
+			path: src/Plugin/Action/MigrationUpdateAction.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Action\\\\MigrationUpdateAction\\:\\:calculateDependencies\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Plugin/Action/MigrationUpdateAction.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Action\\\\MigrationUpdateAction\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Action/MigrationUpdateAction.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Action\\\\MigrationUpdateAction\\:\\:execute\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Plugin/Action/MigrationUpdateAction.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Action\\\\MigrationUpdateAction\\:\\:execute\\(\\) has parameter \\$entity with no type specified\\.$#"
+			count: 1
+			path: src/Plugin/Action/MigrationUpdateAction.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Action\\\\MigrationUpdateAction\\:\\:executeMultiple\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Plugin/Action/MigrationUpdateAction.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Action\\\\MigrationUpdateAction\\:\\:executeMultiple\\(\\) has parameter \\$entities with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Action/MigrationUpdateAction.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Action\\\\MigrationUpdateAction\\:\\:getMigration\\(\\) should return Drupal\\\\migrate\\\\Plugin\\\\MigrationInterface but returns object\\.$#"
+			count: 1
+			path: src/Plugin/Action/MigrationUpdateAction.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\DebugDataItem\\\\Composer\\:\\:collect\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/DebugDataItem/Composer.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\DebugDataItem\\\\Composer\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/DebugDataItem/Composer.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\DebugDataItem\\\\Migrate\\:\\:collect\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/DebugDataItem/Migrate.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\DebugDataItem\\\\Migrate\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/DebugDataItem/Migrate.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Derivative\\\\MigrateTranslatableEntity\\:\\:getDerivativeDefinitions\\(\\) has parameter \\$base_plugin_definition with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Derivative/MigrateTranslatableEntity.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Derivative\\\\MigrateTranslatableEntity\\:\\:getDerivativeDefinitions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Derivative/MigrateTranslatableEntity.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Derivative\\\\MigrationUpdateActionDerivative\\:\\:getDerivativeDefinitions\\(\\) has parameter \\$base_plugin_definition with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Derivative/MigrationUpdateActionDerivative.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Derivative\\\\MigrationUpdateActionDerivative\\:\\:getDerivativeDefinitions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Derivative/MigrationUpdateActionDerivative.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Filter\\\\LinkConverter\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Filter/LinkConverter.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Filter\\\\LinkConverter\\:\\:getNodeAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Filter/LinkConverter.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Filter\\\\LinkConverter\\:\\:render\\(\\) has parameter \\$build with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/Filter/LinkConverter.php
+
+		-
+			message: "#^Property Drupal\\\\helfi_api_base\\\\Plugin\\\\Filter\\\\LinkConverter\\:\\:\\$languageManager is never read, only written\\.$#"
+			count: 1
+			path: src/Plugin/Filter/LinkConverter.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\QueueWorker\\\\RevisionQueue\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/QueueWorker/RevisionQueue.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Validation\\\\Constraint\\\\JsonSchemaConstraintValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Plugin/Validation/Constraint/JsonSchemaConstraintValidator.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\migrate\\\\destination\\\\TranslatableEntity\\:\\:getEntity\\(\\) has parameter \\$old_destination_id_values with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/migrate/destination/TranslatableEntity.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\migrate\\\\destination\\\\TranslatableEntity\\:\\:getIds\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/migrate/destination/TranslatableEntity.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\migrate\\\\destination\\\\TranslatableEntity\\:\\:rollback\\(\\) has parameter \\$destination_identifier with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/migrate/destination/TranslatableEntity.php
+
+		-
+			message: "#^Parameter \\#1 \\$property of method Drupal\\\\migrate\\\\Row\\:\\:setDestinationProperty\\(\\) expects string, string\\|false given\\.$#"
+			count: 2
+			path: src/Plugin/migrate/destination/TranslatableEntity.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\migrate\\\\source\\\\HttpSourcePluginBase\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/migrate/source/HttpSourcePluginBase.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\migrate\\\\source\\\\HttpSourcePluginBase\\:\\:getContent\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/migrate/source/HttpSourcePluginBase.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\migrate\\\\source\\\\HttpSourcePluginBase\\:\\:getContent\\(\\) should return array but returns array\\|bool\\|float\\|int\\|object\\|string\\.$#"
+			count: 1
+			path: src/Plugin/migrate/source/HttpSourcePluginBase.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\migrate\\\\source\\\\HttpSourcePluginBase\\:\\:getFromCache\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/migrate/source/HttpSourcePluginBase.php
+
+		-
+			message: "#^Property Drupal\\\\helfi_api_base\\\\Plugin\\\\migrate\\\\source\\\\HttpSourcePluginBase\\:\\:\\$data type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/migrate/source/HttpSourcePluginBase.php
+
+		-
+			message: "#^Property Drupal\\\\helfi_api_base\\\\Plugin\\\\migrate\\\\source\\\\HttpSourcePluginBase\\:\\:\\$entityIds type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Plugin/migrate/source/HttpSourcePluginBase.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\ServiceMap\\\\DTO\\\\Location\\:\\:createFromArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServiceMap/DTO/Location.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\ServiceMap\\\\DTO\\\\StreetName\\:\\:createFromArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ServiceMap/DTO/StreetName.php
+
+		-
+			message: "#^Parameter \\#2 \\$uid of function user_cancel expects int, string given\\.$#"
+			count: 1
+			path: src/UserExpire/UserExpireManager.php
+
+		-
+			message: "#^Method Drupal\\\\helfi_api_base\\\\Vault\\\\VaultManager\\:\\:__construct\\(\\) has parameter \\$vaultItems with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Vault/VaultManager.php
+
+		-
+			message: "#^Match expression does not handle remaining value\\: mixed$#"
+			count: 1
+			path: src/Vault/VaultManagerFactory.php
+
+		-
+			message: "#^Method Drupal\\\\asset_version_test\\\\Controller\\\\Controller\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/modules/asset_version_test/src/Controller/Controller.php
+
+		-
+			message: "#^Method Drupal\\\\remote_entity_test\\\\Entity\\\\RemoteEntityForm\\:\\:attachMenuLinkForm\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/modules/remote_entity_test/src/Entity/RemoteEntityForm.php
+
+		-
+			message: "#^Method Drupal\\\\remote_entity_test\\\\Entity\\\\RemoteEntityForm\\:\\:attachMenuLinkForm\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/modules/remote_entity_test/src/Entity/RemoteEntityForm.php
+
+		-
+			message: "#^Method Drupal\\\\remote_entity_test\\\\Entity\\\\RemoteEntityForm\\:\\:attachMenuLinkFormSubmit\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/modules/remote_entity_test/src/Entity/RemoteEntityForm.php
+
+		-
+			message: "#^Method Drupal\\\\remote_entity_test\\\\Entity\\\\RemoteEntityForm\\:\\:buildForm\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/modules/remote_entity_test/src/Entity/RemoteEntityForm.php
+
+		-
+			message: "#^Method Drupal\\\\remote_entity_test\\\\Entity\\\\RemoteEntityForm\\:\\:buildForm\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/modules/remote_entity_test/src/Entity/RemoteEntityForm.php
+
+		-
+			message: "#^Method Drupal\\\\remote_entity_test\\\\Entity\\\\RemoteEntityForm\\:\\:create\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/modules/remote_entity_test/src/Entity/RemoteEntityForm.php
+
+		-
+			message: "#^Method Drupal\\\\remote_entity_test\\\\Entity\\\\RemoteEntityForm\\:\\:getAvailableMenus\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/modules/remote_entity_test/src/Entity/RemoteEntityForm.php
+
+		-
+			message: "#^Method Drupal\\\\remote_entity_test\\\\Entity\\\\RemoteEntityForm\\:\\:save\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/modules/remote_entity_test/src/Entity/RemoteEntityForm.php
+
+		-
+			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 1
+			path: tests/modules/remote_entity_test/src/Fixture/DummyMigrate.php
+
+		-
+			message: "#^Method Drupal\\\\remote_entity_test\\\\Plugin\\\\migrate\\\\source\\\\DummySource\\:\\:fields\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/modules/remote_entity_test/src/Plugin/migrate/source/DummySource.php
+
+		-
+			message: "#^Method Drupal\\\\remote_entity_test\\\\Plugin\\\\migrate\\\\source\\\\DummySource\\:\\:getIds\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/modules/remote_entity_test/src/Plugin/migrate/source/DummySource.php
+
+		-
+			message: "#^Parameter \\#1 \\$account of method Drupal\\\\Tests\\\\BrowserTestBase\\:\\:drupalLogin\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\Entity\\\\User\\|false given\\.$#"
+			count: 1
+			path: tests/src/Functional/BrowserTestBase.php
+
+		-
+			message: "#^Parameter \\#1 \\$account of method Drupal\\\\Tests\\\\BrowserTestBase\\:\\:drupalLogin\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\UserInterface\\|false given\\.$#"
+			count: 1
+			path: tests/src/Functional/DebugUiTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\ExistingSiteTestBase\\:\\:drupalGetWithLanguage\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/ExistingSiteTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\ExistingSiteTestBase\\:\\:drupalGetWithLanguage\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/ExistingSiteTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\LocaleCommandsTest\\:\\:testImport\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/src/Functional/LocaleCommandsTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MenuLinkFormTest\\:\\:createMockHistoryMiddlewareHttpClient\\(\\) has parameter \\$container with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/MenuLinkFormTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MenuLinkFormTest\\:\\:enableTranslation\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/MenuLinkFormTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MenuLinkFormTest\\:\\:getFixture\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: tests/src/Functional/MenuLinkFormTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MenuLinkFormTest\\:\\:getMockedRequest\\(\\) has parameter \\$document with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/MenuLinkFormTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MenuLinkFormTest\\:\\:getMockedRequest\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/MenuLinkFormTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/MenuLinkFormTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$account of method Drupal\\\\Tests\\\\BrowserTestBase\\:\\:drupalLogin\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\UserInterface\\|false given\\.$#"
+			count: 1
+			path: tests/src/Functional/MenuLinkFormTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$id of method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MenuLinkFormTest\\:\\:getEditRoute\\(\\) expects string, int\\|string\\|null given\\.$#"
+			count: 8
+			path: tests/src/Functional/MenuLinkFormTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MigrationTestBase\\:\\:display\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/src/Functional/MigrationTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MigrationTestBase\\:\\:executeMigration\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/MigrationTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MigrationTestBase\\:\\:getMigration\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/MigrationTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MigrationTestBase\\:\\:getMigration\\(\\) should return Drupal\\\\migrate\\\\Plugin\\\\Migration but returns object\\.$#"
+			count: 1
+			path: tests/src/Functional/MigrationTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MigrationTestBase\\:\\:rollbackMigration\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/MigrationTestBase.php
+
+		-
+			message: "#^Property Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MigrationTestBase\\:\\:\\$migrateMessages type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Functional/MigrationTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\FunctionalJavascript\\\\ExistingSiteJavascriptTestBase\\:\\:drupalGetWithLanguage\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/FunctionalJavascript/ExistingSiteJavascriptTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\FunctionalJavascript\\\\ExistingSiteJavascriptTestBase\\:\\:drupalGetWithLanguage\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/FunctionalJavascript/ExistingSiteJavascriptTestBase.php
+
+		-
+			message: "#^Parameter \\#1 \\$account of method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ActionLogTest\\:\\:setCurrentUser\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\Entity\\\\User\\|false given\\.$#"
+			count: 1
+			path: tests/src/Kernel/ActionLogTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ApiKernelTestBase\\:\\:alter\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/src/Kernel/ApiKernelTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ApiKernelTestBase\\:\\:createMockHistoryMiddlewareHttpClient\\(\\) has parameter \\$container with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/ApiKernelTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ApiKernelTestBase\\:\\:enableTranslation\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/ApiKernelTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ApiKernelTestBase\\:\\:getFixture\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: tests/src/Kernel/ApiKernelTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ApiKernelTestBase\\:\\:getMockedRequest\\(\\) has parameter \\$document with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/ApiKernelTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ApiKernelTestBase\\:\\:getMockedRequest\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/ApiKernelTestBase.php
+
+		-
+			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/ApiKernelTestBase.php
+
+		-
+			message: "#^Parameter \\#2 \\$haystack of method PHPUnit\\\\Framework\\\\Assert\\:\\:assertStringContainsString\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: tests/src/Kernel/AssetVersioningTest.php
+
+		-
+			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) with 'Drupal\\\\\\\\remote_entity_test\\\\\\\\Entity\\\\\\\\RemoteEntityTest' and null will always evaluate to false\\.$#"
+			count: 2
+			path: tests/src/Kernel/Commands/FixtureCommandsTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ElasticsearchConnectorTest\\:\\:testSearchApiConnector\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/src/Kernel/ElasticsearchConnectorTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\Entity\\\\Access\\\\RemoteEntityAccessTestBase\\:\\:assertRemoteEntityAccess\\(\\) has parameter \\$ops with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/Entity/Access/RemoteEntityAccessTestBase.php
+
+		-
+			message: "#^Parameter \\#3 \\$account of method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\Entity\\\\Access\\\\RemoteEntityAccessTestBase\\:\\:assertRemoteEntityAccess\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\Entity\\\\User\\|false given\\.$#"
+			count: 2
+			path: tests/src/Kernel/Entity/Access/RemoteEntityAccessTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\Entity\\\\Revision\\\\RevisionManagerTest\\:\\:setEntityTypes\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/Entity/Revision/RevisionManagerTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$environment of method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\EnvironmentResponseSubscriberTest\\:\\:setActiveProject\\(\\) expects Drupal\\\\helfi_api_base\\\\Environment\\\\EnvironmentEnum, array\\|Drupal\\\\helfi_api_base\\\\Environment\\\\EnvironmentEnum\\|float\\|int\\|string\\|false\\|null given\\.$#"
+			count: 1
+			path: tests/src/Kernel/EnvironmentResponseSubscriberTest.php
+
+		-
+			message: "#^Cannot call method id\\(\\) on Drupal\\\\user\\\\Entity\\\\User\\|false\\.$#"
+			count: 3
+			path: tests/src/Kernel/EventSubscriber/DisableUserPasswordTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\EventSubscriber\\\\SentryTracesSamplerSubscriberTest\\:\\:createMockHistoryMiddlewareHttpClient\\(\\) has parameter \\$container with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/EventSubscriber/SentryTracesSamplerSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\EventSubscriber\\\\SentryTracesSamplerSubscriberTest\\:\\:enableTranslation\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/EventSubscriber/SentryTracesSamplerSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\EventSubscriber\\\\SentryTracesSamplerSubscriberTest\\:\\:getFixture\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: tests/src/Kernel/EventSubscriber/SentryTracesSamplerSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\EventSubscriber\\\\SentryTracesSamplerSubscriberTest\\:\\:getMockedRequest\\(\\) has parameter \\$document with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/EventSubscriber/SentryTracesSamplerSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\EventSubscriber\\\\SentryTracesSamplerSubscriberTest\\:\\:getMockedRequest\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/EventSubscriber/SentryTracesSamplerSubscriberTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/EventSubscriber/SentryTracesSamplerSubscriberTest.php
+
+		-
+			message: "#^Cannot call method addRole\\(\\) on Drupal\\\\user\\\\Entity\\\\User\\|false\\.$#"
+			count: 2
+			path: tests/src/Kernel/EventSubscriber/UserLoginSubscriberTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$account of method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\UserLoginSubscriberTest\\:\\:setCurrentUser\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\Entity\\\\User\\|false given\\.$#"
+			count: 3
+			path: tests/src/Kernel/EventSubscriber/UserLoginSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\CacheControlSubscriberTest\\:\\:createMockHistoryMiddlewareHttpClient\\(\\) has parameter \\$container with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/Http/Response/CacheControlSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\CacheControlSubscriberTest\\:\\:enableTranslation\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/Http/Response/CacheControlSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\CacheControlSubscriberTest\\:\\:getFixture\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: tests/src/Kernel/Http/Response/CacheControlSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\CacheControlSubscriberTest\\:\\:getMockedRequest\\(\\) has parameter \\$document with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/Http/Response/CacheControlSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\CacheControlSubscriberTest\\:\\:getMockedRequest\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/Http/Response/CacheControlSubscriberTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/Http/Response/CacheControlSubscriberTest.php
+
+		-
+			message: "#^Property Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\MigrationConfigurationSubscriberTest\\:\\:\\$caughtEvents type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/MigrationConfigurationSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\MigrationTestBase\\:\\:display\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/src/Kernel/MigrationTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\MigrationTestBase\\:\\:executeMigration\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/MigrationTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\MigrationTestBase\\:\\:getMigration\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/MigrationTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\MigrationTestBase\\:\\:getMigration\\(\\) should return Drupal\\\\migrate\\\\Plugin\\\\Migration but returns object\\.$#"
+			count: 1
+			path: tests/src/Kernel/MigrationTestBase.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\MigrationTestBase\\:\\:rollbackMigration\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/MigrationTestBase.php
+
+		-
+			message: "#^Property Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\MigrationTestBase\\:\\:\\$migrateMessages type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/MigrationTestBase.php
+
+		-
+			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertEmpty\\(\\) with non\\-empty\\-array will always evaluate to false\\.$#"
+			count: 1
+			path: tests/src/Kernel/Plugin/Filter/LinkConverterTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\Plugin\\\\LinkConverterTest\\:\\:linkProcessingData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/Plugin/Filter/LinkConverterTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$prefix of method PHPUnit\\\\Framework\\\\Assert\\:\\:assertStringStartsWith\\(\\) expects non\\-empty\\-string, string given\\.$#"
+			count: 1
+			path: tests/src/Kernel/Plugin/Filter/LinkConverterTest.php
+
+		-
+			message: "#^Property Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\Plugin\\\\LinkConverterTest\\:\\:\\$expectedLogMessages type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/Plugin/Filter/LinkConverterTest.php
+
+		-
+			message: "#^Call to an undefined method Drupal\\\\helfi_api_base\\\\ServiceMap\\\\ServiceMap\\|PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\:\\:expects\\(\\)\\.$#"
+			count: 1
+			path: tests/src/Kernel/ServiceMap/Controller/AutocompleteControllerTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\Controller\\\\AutocompleteControllerTest\\:\\:testAddressSuggestions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/src/Kernel/ServiceMap/Controller/AutocompleteControllerTest.php
+
+		-
+			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) with 'Drupal\\\\\\\\helfi_api_base\\\\\\\\ServiceMap\\\\\\\\DTO\\\\\\\\Address' and null will always evaluate to false\\.$#"
+			count: 1
+			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:createMockHistoryMiddlewareHttpClient\\(\\) has parameter \\$container with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:enableTranslation\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:getFixture\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:getMockedRequest\\(\\) has parameter \\$document with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:getMockedRequest\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:getSut\\(\\) has parameter \\$client with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy but does not specify its types\\: T$#"
+			count: 1
+			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:getSut\\(\\) has parameter \\$logger with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy but does not specify its types\\: T$#"
+			count: 1
+			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Drupal\\\\helfi_api_base\\\\ServiceMap\\\\ServiceMap constructor expects GuzzleHttp\\\\Client, object given\\.$#"
+			count: 1
+			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$logger of class Drupal\\\\helfi_api_base\\\\ServiceMap\\\\ServiceMap constructor expects Psr\\\\Log\\\\LoggerInterface, object given\\.$#"
+			count: 1
+			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
+
+		-
+			message: "#^Parameter \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 2
+			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
+
+		-
+			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertEmpty\\(\\) with non\\-empty\\-array will always evaluate to false\\.$#"
+			count: 1
+			path: tests/src/Kernel/TestLoggerTraitTest.php
+
+		-
+			message: "#^Property Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\TestLoggerTraitTest\\:\\:\\$expectedLogMessages type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/TestLoggerTraitTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\UrlHelperTest\\:\\:getUrlMap\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/UrlHelperTest.php
+
+		-
+			message: "#^Cannot call method id\\(\\) on Drupal\\\\user\\\\Entity\\\\User\\|false\\.$#"
+			count: 8
+			path: tests/src/Kernel/UserExpire/UserExpireManagerTest.php
+
+		-
+			message: "#^Cannot call method isBlocked\\(\\) on Drupal\\\\user\\\\Entity\\\\User\\|false\\.$#"
+			count: 2
+			path: tests/src/Kernel/UserExpire/UserExpireManagerTest.php
+
+		-
+			message: "#^Cannot call method setLastAccessTime\\(\\) on Drupal\\\\user\\\\Entity\\\\User\\|false\\.$#"
+			count: 3
+			path: tests/src/Kernel/UserExpire/UserExpireManagerTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\UserExpire\\\\UserExpireManagerTest\\:\\:assertExpiredUsers\\(\\) has parameter \\$expected with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/UserExpire/UserExpireManagerTest.php
+
+		-
+			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) with 'Drupal\\\\\\\\user\\\\\\\\UserInterface' and false will always evaluate to false\\.$#"
+			count: 2
+			path: tests/src/Kernel/Vault/EnsureApiAccountsSubscriberTest.php
+
+		-
+			message: "#^Cannot call method get\\(\\) on Drupal\\\\user\\\\UserInterface\\|false\\.$#"
+			count: 1
+			path: tests/src/Kernel/Vault/EnsureApiAccountsSubscriberTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$callback of function array_filter expects \\(callable\\(Drupal\\\\Component\\\\Render\\\\MarkupInterface\\|string\\)\\: bool\\)\\|null, Closure\\(string\\)\\: bool given\\.$#"
+			count: 2
+			path: tests/src/Kernel/Vault/EnsureApiAccountsSubscriberTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$environment of method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\EventSubscriber\\\\EnsureApiAccountsSubscriberTest\\:\\:setActiveProject\\(\\) expects Drupal\\\\helfi_api_base\\\\Environment\\\\EnvironmentEnum, array\\|Drupal\\\\helfi_api_base\\\\Environment\\\\EnvironmentEnum\\|float\\|int\\|string\\|false\\|null given\\.$#"
+			count: 1
+			path: tests/src/Kernel/Vault/EnsureApiAccountsSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Traits\\\\CacheTagInvalidator\\:\\:__construct\\(\\) has parameter \\$tags with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Traits/CacheTagInvalidator.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:createMockHistoryMiddlewareHttpClient\\(\\) has parameter \\$container with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ApiClient/ApiClientTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:enableTranslation\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ApiClient/ApiClientTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:getFixture\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: tests/src/Unit/ApiClient/ApiClientTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:getMockedRequest\\(\\) has parameter \\$document with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ApiClient/ApiClientTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:getMockedRequest\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ApiClient/ApiClientTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:getSut\\(\\) has parameter \\$requestOptions with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ApiClient/ApiClientTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:getTimeMock\\(\\) return type with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
+			count: 1
+			path: tests/src/Unit/ApiClient/ApiClientTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:testMakeRequest\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/src/Unit/ApiClient/ApiClientTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/ApiClient/ApiClientTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$time of class Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiClient constructor expects Drupal\\\\Component\\\\Datetime\\\\TimeInterface, object given\\.$#"
+			count: 1
+			path: tests/src/Unit/ApiClient/ApiClientTest.php
+
+		-
+			message: "#^Parameter \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 4
+			path: tests/src/Unit/ApiClient/ApiClientTest.php
+
+		-
+			message: "#^Parameter \\$time of method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:getSut\\(\\) expects Drupal\\\\Component\\\\Datetime\\\\TimeInterface\\|null, object given\\.$#"
+			count: 3
+			path: tests/src/Unit/ApiClient/ApiClientTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiFixtureTest\\:\\:testException\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/src/Unit/ApiClient/ApiFixtureTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiFixtureTest\\:\\:testFixtures\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: tests/src/Unit/ApiClient/ApiFixtureTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Azure\\\\PubSub\\\\SettingsTest\\:\\:settingsData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Azure/PubSub/SettingsTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Azure\\\\PubSub\\\\SettingsTest\\:\\:testSettings\\(\\) has parameter \\$expectedValues with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Azure/PubSub/SettingsTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Azure\\\\PubSub\\\\SettingsTest\\:\\:testSettings\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Azure/PubSub/SettingsTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$string of class Drupal\\\\helfi_api_base\\\\Vault\\\\Json constructor expects string, string\\|false given\\.$#"
+			count: 1
+			path: tests/src/Unit/Azure/PubSub/SettingsTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\CacheKeyTraitTest\\:\\:cacheKeyData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Cache/CacheKeyTraitTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\CacheKeyTraitTest\\:\\:getCacheKey\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Cache/CacheKeyTraitTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\CacheKeyTraitTest\\:\\:requestOptionsToCacheKey\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Cache/CacheKeyTraitTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\CacheKeyTraitTest\\:\\:testGetCacheKey\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Cache/CacheKeyTraitTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Commands\\\\RevisionCommandsTest\\:\\:getConnectionMock\\(\\) has parameter \\$expected with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Commands/RevisionCommandsTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Commands\\\\RevisionCommandsTest\\:\\:getSut\\(\\) has parameter \\$io with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy but does not specify its types\\: T$#"
+			count: 1
+			path: tests/src/Unit/Commands/RevisionCommandsTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$io of method Drush\\\\Commands\\\\DrushCommands\\:\\:restoreState\\(\\) expects Symfony\\\\Component\\\\Console\\\\Style\\\\SymfonyStyle\\|null, object given\\.$#"
+			count: 1
+			path: tests/src/Unit/Commands/RevisionCommandsTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Environment\\\\ActiveProjectRolesTest\\:\\:isCoreInstanceData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Environment/ActiveProjectRolesTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Environment\\\\AddressTest\\:\\:addressData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Environment/AddressTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Environment\\\\AddressTest\\:\\:testGetAddress\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Environment/AddressTest.php
+
+		-
+			message: "#^Comparison operation \"\\>\" between int\\<1, max\\> and 0 is always true\\.$#"
+			count: 1
+			path: tests/src/Unit/Environment/EnvironmentEnumTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Environment\\\\EnvironmentResolverTest\\:\\:activeProjectExceptionData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Environment/EnvironmentResolverTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Environment\\\\EnvironmentResolverTest\\:\\:environmentMapData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Environment/EnvironmentResolverTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Environment\\\\EnvironmentResolverTest\\:\\:resolveEnvironmentExceptionData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Environment/EnvironmentResolverTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Environment\\\\EnvironmentTest\\:\\:getSut\\(\\) has parameter \\$paths with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Environment/EnvironmentTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Environment\\\\EnvironmentTest\\:\\:getSut\\(\\) has parameter \\$services with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Environment/EnvironmentTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$environments of class Drupal\\\\helfi_api_base\\\\Environment\\\\Project constructor expects array\\<Drupal\\\\helfi_api_base\\\\Environment\\\\Environment\\>, array\\<int, string\\> given\\.$#"
+			count: 1
+			path: tests/src/Unit/Environment/ProjectTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\EventSubscriber\\\\SentryTracesSamplerSubscriberTest\\:\\:callSampler\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/EventSubscriber/SentryTracesSamplerSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\EventSubscriber\\\\SentryTracesSamplerSubscriberTest\\:\\:ignoreUrlData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/EventSubscriber/SentryTracesSamplerSubscriberTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\InternalDomainResolverTest\\:\\:getProtocolData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/InternalDomainResolverTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\InternalDomainResolverTest\\:\\:isExternalData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/InternalDomainResolverTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Environment\\\\DefaultLanguageResolverTest\\:\\:getDefaultLanguagesData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Language/DefaultLanguageResolverTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Environment\\\\DefaultLanguageResolverTest\\:\\:testGetDefaultLanguages\\(\\) has parameter \\$defaultLanguages with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Language/DefaultLanguageResolverTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Environment\\\\DefaultLanguageResolverTest\\:\\:testGetDefaultLanguages\\(\\) has parameter \\$expectedLanguages with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Language/DefaultLanguageResolverTest.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$access_key\\.$#"
+			count: 1
+			path: tests/src/Unit/Vault/VaultManagerTest.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$endpoint\\.$#"
+			count: 1
+			path: tests/src/Unit/Vault/VaultManagerTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Vault\\\\VaultManagerTest\\:\\:factoryExceptionData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Vault/VaultManagerTest.php
+
+		-
+			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\Vault\\\\VaultManagerTest\\:\\:testFactoryException\\(\\) has parameter \\$vault with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Unit/Vault/VaultManagerTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$string of class Drupal\\\\helfi_api_base\\\\Vault\\\\Json constructor expects string, string\\|false given\\.$#"
+			count: 1
+			path: tests/src/Unit/Vault/VaultManagerTest.php
