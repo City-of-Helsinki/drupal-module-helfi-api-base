@@ -87,9 +87,10 @@ class RedisDeploySubscriberTest extends KernelTestBase {
 
     $cache = $service->get('default');
     $cache->set('test_key', 'value');
-    $data = $cache->get('test_key');
+    $item = $cache->get('test_key');
 
-    $this->assertEquals('value', $data->data);
+    $this->assertIsObject($item);
+    $this->assertEquals('value', $item->data);
 
     /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $service */
     $service = $this->container->get('event_dispatcher');

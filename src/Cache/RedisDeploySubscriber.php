@@ -27,4 +27,3 @@ final class RedisDeploySubscriber extends DeployHookEventSubscriberBase {
   }
 
 }
-
