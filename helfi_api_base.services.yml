@@ -143,3 +143,4 @@ services:
   Drupal\helfi_api_base\ServiceMap\ServiceMapInterface: '@Drupal\helfi_api_base\ServiceMap\ServiceMap'
 
   Drupal\helfi_api_base\Http\Response\CacheControlSubscriber: ~
+
