@@ -41,6 +41,8 @@ helfi_api_base.features:
       type: boolean
     user_expire:
       type: boolean
+    user_delete:
+      type: boolean
     use_mock_responses:
       type: boolean
 

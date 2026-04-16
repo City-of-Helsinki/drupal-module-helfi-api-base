@@ -109,6 +109,7 @@ class UserExpireManagerTest extends KernelTestBase {
     /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
     $service = $this->container->get(FeatureManager::class);
     $service->disableFeature(FeatureManager::USER_EXPIRE);
+    $service->disableFeature(FeatureManager::USER_DELETE);
 
     $user = $this->createUser();
     $this->assertFalse($user->isBlocked());
@@ -118,6 +119,80 @@ class UserExpireManagerTest extends KernelTestBase {
     // Make sure the user is not canceled when the cron is run.
     helfi_api_base_cron();
     $this->assertFalse(User::load($user->id())->isBlocked());
+  }
+
+  /**
+   * Tests that delete works independently when expire is disabled.
+   */
+  public function testCronDeleteWithoutExpire(): void {
+    /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
+    $service = $this->container->get(FeatureManager::class);
+    $service->disableFeature(FeatureManager::USER_EXPIRE);
+    $service->enableFeature(FeatureManager::USER_DELETE);
+
+    // Create UID 1 user.
+    $this->createUser();
+
+    $user = $this->createUser();
+    $this->assertFalse($user->isBlocked());
+
+    // Set access time over expire threshold but under delete threshold.
+    $user->setLastAccessTime(strtotime('-7 months'))
+      ->setChangedTime(strtotime('-2 days'))
+      ->save();
+
+    helfi_api_base_cron();
+
+    // User should NOT be blocked (expire is disabled).
+    $this->assertFalse(User::load($user->id())->isBlocked());
+
+    // Set access time over delete threshold.
+    User::load($user->id())
+      ->setLastAccessTime(strtotime('-5 years 1 day'))
+      ->setChangedTime(strtotime('-2 days'))
+      ->save();
+
+    helfi_api_base_cron();
+
+    // User should be deleted.
+    $this->assertNull(User::load($user->id()));
+  }
+
+  /**
+   * Tests that expire works independently when delete is disabled.
+   */
+  public function testCronExpireWithoutDelete(): void {
+    /** @var \Drupal\helfi_api_base\Features\FeatureManager $service */
+    $service = $this->container->get(FeatureManager::class);
+    $service->enableFeature(FeatureManager::USER_EXPIRE);
+    $service->disableFeature(FeatureManager::USER_DELETE);
+
+    // Create UID 1 user.
+    $this->createUser();
+
+    $user = $this->createUser();
+    $this->assertFalse($user->isBlocked());
+
+    // Set access time over expire threshold.
+    $user->setLastAccessTime(strtotime('-7 months'))
+      ->setChangedTime(strtotime('-2 days'))
+      ->save();
+
+    helfi_api_base_cron();
+
+    // User should be blocked (expire is enabled).
+    $this->assertTrue(User::load($user->id())->isBlocked());
+
+    // Set access time over delete threshold.
+    User::load($user->id())
+      ->setLastAccessTime(strtotime('-5 years 1 day'))
+      ->setChangedTime(strtotime('-2 days'))
+      ->save();
+
+    helfi_api_base_cron();
+
+    // User should NOT be deleted (delete is disabled).
+    $this->assertNotNull(User::load($user->id()));
   }
 
   /**

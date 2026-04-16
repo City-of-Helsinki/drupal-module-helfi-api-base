@@ -12,6 +12,7 @@ interface FeatureManagerInterface {
   public const USE_MOCK_RESPONSES = 'use_mock_responses';
   public const DISABLE_USER_PASSWORD = 'disable_user_password';
   public const USER_EXPIRE = 'user_expire';
+  public const USER_DELETE = 'user_delete';
   public const DISABLE_EMAIL_SENDING = 'disable_email_sending';
 
   /**

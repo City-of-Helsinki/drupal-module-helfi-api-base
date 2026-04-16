@@ -376,6 +376,15 @@ function helfi_api_base_update_9025(): void {
 }
 
 /**
+ * Split user_expire feature into separate cancel and delete toggles.
+ */
+function helfi_api_base_update_9027(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_api_base.features');
+  $config->set('user_delete', (bool) $config->get('user_expire'))
+    ->save();
+}
+
+/**
  * Make sure menu links have a title.
  */
 function helfi_api_base_update_9026(): void {
