@@ -12,12 +12,15 @@ use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\helfi_api_base\UserExpire\UserExpireManager;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests user expiration feature.
- *
- * @group helfi_api_base
  */
+#[Group('helfi_api_base')]
+#[RunTestsInSeparateProcesses]
 class UserExpireManagerTest extends KernelTestBase {
 
   use UserCreationTrait;
@@ -134,6 +137,7 @@ class UserExpireManagerTest extends KernelTestBase {
     $this->createUser();
 
     $user = $this->createUser();
+    assert($user instanceof UserInterface);
     $this->assertFalse($user->isBlocked());
 
     // Set access time over expire threshold but under delete threshold.
@@ -144,12 +148,13 @@ class UserExpireManagerTest extends KernelTestBase {
     helfi_api_base_cron();
 
     // User should NOT be blocked (expire is disabled).
-    $this->assertFalse(User::load($user->id())->isBlocked());
+    $loaded = User::load($user->id());
+    assert($loaded instanceof UserInterface);
+    $this->assertFalse($loaded->isBlocked());
 
     // Set access time over delete threshold.
-    User::load($user->id())
-      ->setLastAccessTime(strtotime('-5 years 1 day'))
-      ->setChangedTime(strtotime('-2 days'))
+    $loaded->setLastAccessTime(strtotime('-5 years 1 day'))
+      ->setChangedTime(strtotime('-3 days'))
       ->save();
 
     helfi_api_base_cron();
@@ -171,6 +176,7 @@ class UserExpireManagerTest extends KernelTestBase {
     $this->createUser();
 
     $user = $this->createUser();
+    assert($user instanceof UserInterface);
     $this->assertFalse($user->isBlocked());
 
     // Set access time over expire threshold.
@@ -181,12 +187,13 @@ class UserExpireManagerTest extends KernelTestBase {
     helfi_api_base_cron();
 
     // User should be blocked (expire is enabled).
-    $this->assertTrue(User::load($user->id())->isBlocked());
+    $loaded = User::load($user->id());
+    assert($loaded instanceof UserInterface);
+    $this->assertTrue($loaded->isBlocked());
 
     // Set access time over delete threshold.
-    User::load($user->id())
-      ->setLastAccessTime(strtotime('-5 years 1 day'))
-      ->setChangedTime(strtotime('-2 days'))
+    $loaded->setLastAccessTime(strtotime('-5 years 1 day'))
+      ->setChangedTime(strtotime('-3 days'))
       ->save();
 
     helfi_api_base_cron();
