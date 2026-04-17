@@ -104,10 +104,14 @@ function helfi_api_base_cron() : void {
   /** @var \Drupal\helfi_api_base\Features\FeatureManager $featureManager */
   $featureManager = \Drupal::service(FeatureManager::class);
 
+  /** @var \Drupal\helfi_api_base\UserExpire\UserExpireManager $userExpireManager */
+  $userExpireManager = \Drupal::service(UserExpireManager::class);
+
   if ($featureManager->isEnabled(FeatureManager::USER_EXPIRE)) {
-    /** @var \Drupal\helfi_api_base\UserExpire\UserExpireManager $userExpireManager */
-    $userExpireManager = \Drupal::service(UserExpireManager::class);
     $userExpireManager->cancelExpiredUsers();
+  }
+
+  if ($featureManager->isEnabled(FeatureManager::USER_DELETE)) {
     $userExpireManager->deleteExpiredUsers();
   }
 }
