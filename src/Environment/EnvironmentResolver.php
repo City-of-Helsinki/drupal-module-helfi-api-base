@@ -420,13 +420,13 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Local,
           ),
           new Environment(
-            address: new Address('nginx-paatokset-test.agw.arodevtest.hel.fi'),
+            address: new Address('paatokset.test.hel.ninja'),
             internalAddress: new Address('nginx-paatokset-test.apps.arodevtest.hel.fi'),
             paths: $rootPaths,
             environment: EnvironmentEnum::Test,
           ),
           new Environment(
-            address: new Address('drupal-paatokset.stage.hel.ninja'),
+            address: new Address('paatokset.stage.hel.ninja'),
             internalAddress: new Address('nginx-paatokset-staging.apps.platta.hel.fi'),
             paths: $rootPaths,
             environment: EnvironmentEnum::Stage,
@@ -486,14 +486,14 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Local,
           ),
           new Environment(
-            address: new Address('helfi-palvelukeskus-drupal-test.agw.arodevtest.hel.fi'),
+            address: new Address('palvelukeskus.test.hel.ninja'),
             internalAddress: new Address('helfi-palvelukeskus-drupal-test.apps.arodevtest.hel.fi'),
             paths: $rootPaths,
             environment: EnvironmentEnum::Test,
           ),
           // Environment does not hae publicly accessible address.
           new Environment(
-            address: new Address('helfi-palvelukeskus-drupal-staging.apps.platta.hel.fi'),
+            address: new Address('palvelukeskus.stage.hel.ninja'),
             internalAddress: new Address('helfi-palvelukeskus-drupal-staging.apps.platta.hel.fi'),
             paths: $rootPaths,
             environment: EnvironmentEnum::Stage,
@@ -517,14 +517,14 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Local,
           ),
           new Environment(
-            address: new Address('drupal-kaupunkitieto.test.hel.ninja'),
-            internalAddress: new Address('drupal-kaupunkitieto.test.hel.ninja'),
+            address: new Address('kaupunkitieto.test.hel.ninja'),
+            internalAddress: new Address('kaupunkitieto.test.hel.ninja'),
             paths: $rootPaths,
             environment: EnvironmentEnum::Test,
           ),
           new Environment(
-            address: new Address('drupal-kaupunkitieto.stage.hel.ninja'),
-            internalAddress: new Address('drupal-kaupunkitieto.stage.hel.ninja'),
+            address: new Address('kaupunkitieto.stage.hel.ninja'),
+            internalAddress: new Address('kaupunkitieto.stage.hel.ninja'),
             paths: $rootPaths,
             environment: EnvironmentEnum::Stage,
           ),
