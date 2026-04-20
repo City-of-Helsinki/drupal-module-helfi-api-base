@@ -381,16 +381,6 @@ parameters:
 			path: src/Fixture/FixtureBase.php
 
 		-
-			message: "#^Cannot access offset 'monolog' on array\\|bool\\|float\\|int\\|string\\|UnitEnum\\.$#"
-			count: 1
-			path: src/HelfiApiBaseServiceProvider.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_api_base\\\\HelfiApiBaseServiceProvider\\:\\:alter\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/HelfiApiBaseServiceProvider.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_api_base\\\\Language\\\\DefaultLanguageResolver\\:\\:__construct\\(\\) has parameter \\$defaultLanguages with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Language/DefaultLanguageResolver.php
