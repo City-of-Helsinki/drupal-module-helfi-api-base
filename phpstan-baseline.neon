@@ -536,21 +536,6 @@ parameters:
 			path: src/Plugin/Filter/LinkConverter.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Filter\\\\LinkConverter\\:\\:getNodeAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Plugin/Filter/LinkConverter.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Filter\\\\LinkConverter\\:\\:render\\(\\) has parameter \\$build with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Plugin/Filter/LinkConverter.php
-
-		-
-			message: "#^Property Drupal\\\\helfi_api_base\\\\Plugin\\\\Filter\\\\LinkConverter\\:\\:\\$languageManager is never read, only written\\.$#"
-			count: 1
-			path: src/Plugin/Filter/LinkConverter.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\QueueWorker\\\\RevisionQueue\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Plugin/QueueWorker/RevisionQueue.php
