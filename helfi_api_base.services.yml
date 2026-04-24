@@ -54,11 +54,9 @@ services:
   helfi_api_base.default_language_resolver:
     class: Drupal\helfi_api_base\Language\DefaultLanguageResolver
     arguments:
-      [
-        '%helfi_api_base.default_languages%',
-        '%helfi_api_base.fallback_language%',
-        '@language_manager',
-      ]
+      - '%helfi_api_base.default_languages%'
+      - '%helfi_api_base.fallback_language%'
+      - '@language_manager'
 
   Drupal\helfi_api_base\EventSubscriber\MigrationSubscriber: '@helfi_api_base.migration_subscriber'
   helfi_api_base.migration_subscriber:
