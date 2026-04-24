@@ -43,7 +43,7 @@ final readonly class CacheControlSubscriber implements EventSubscriberInterface 
       return;
     }
 
-    if (!$response->headers->hasCacheControlDirective('max-age')) {
+    if (!$response->headers->hasCacheControlDirective('max-age') || !$response->headers->hasCacheControlDirective('public')) {
       return;
     }
 
