@@ -101,9 +101,9 @@ trait ApiTestTrait {
    *   The uri.
    * @param string $method
    *   The method.
-   * @param array $parameters
+   * @param array<mixed> $parameters
    *   The parameters.
-   * @param array $document
+   * @param array<mixed> $document
    *   The document.
    *
    * @return \Symfony\Component\HttpFoundation\Request
@@ -128,7 +128,7 @@ trait ApiTestTrait {
   /**
    * Creates HTTP history middleware client stub.
    *
-   * @param array $container
+   * @param array<mixed> $container
    *   The container.
    * @param \Psr\Http\Message\ResponseInterface[]|\GuzzleHttp\Exception\GuzzleException[] $responses
    *   The expected responses.
@@ -148,7 +148,7 @@ trait ApiTestTrait {
   /**
    * Enable translation for given entity types.
    *
-   * @param array $entityTypes
+   * @param array<string> $entityTypes
    *   The entity types to enable translation for.
    */
   protected function enableTranslation(array $entityTypes) : void {
@@ -200,7 +200,7 @@ trait ApiTestTrait {
    *   The fixture.
    */
   protected function getFixture(string $module, string $name) : string {
-    return file_get_contents($this->getFixturePath($module, $name));
+    return (string) file_get_contents($this->getFixturePath($module, $name));
   }
 
 }

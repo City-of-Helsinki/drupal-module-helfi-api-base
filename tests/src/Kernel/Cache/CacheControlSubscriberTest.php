@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Kernel;
 
 use Drupal\Core\Render\HtmlResponse;
-use Drupal\helfi_api_base\Http\Response\CacheControlSubscriber;
+use Drupal\helfi_api_base\Cache\CacheControlSubscriber;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
@@ -63,7 +63,7 @@ class CacheControlSubscriberTest extends KernelTestBase {
   /**
    * Gets the SUT.
    *
-   * @return \Drupal\helfi_api_base\Http\Response\CacheControlSubscriber
+   * @return \Drupal\helfi_api_base\Cache\CacheControlSubscriber
    *   The sut.
    */
   private function getSut(): CacheControlSubscriber {
