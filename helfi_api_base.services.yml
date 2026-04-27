@@ -23,7 +23,7 @@ services:
 
   logger.channel.helfi_api_base:
     parent: logger.channel_base
-    arguments: [ 'helfi_api_base' ]
+    arguments: ['helfi_api_base']
 
   logger_extra.request_id_middleware:
     class: LoggerExtra\RequestIdMiddleware
@@ -53,7 +53,10 @@ services:
   Drupal\helfi_api_base\Language\DefaultLanguageResolverInterface: '@helfi_api_base.default_language_resolver'
   helfi_api_base.default_language_resolver:
     class: Drupal\helfi_api_base\Language\DefaultLanguageResolver
-    arguments: ['%helfi_api_base.default_languages%', '%helfi_api_base.fallback_language%', '@language_manager']
+    arguments:
+      - '%helfi_api_base.default_languages%'
+      - '%helfi_api_base.fallback_language%'
+      - '@language_manager'
 
   Drupal\helfi_api_base\EventSubscriber\MigrationSubscriber: '@helfi_api_base.migration_subscriber'
   helfi_api_base.migration_subscriber:
@@ -142,6 +145,10 @@ services:
   Drupal\helfi_api_base\ServiceMap\ServiceMap: ~
   Drupal\helfi_api_base\ServiceMap\ServiceMapInterface: '@Drupal\helfi_api_base\ServiceMap\ServiceMap'
 
-  Drupal\helfi_api_base\Http\Response\CacheControlSubscriber: ~
+  Drupal\helfi_api_base\Cache\CacheControlSubscriber: ~
   Drupal\helfi_api_base\Cache\RedisCacheSubscriber: ~
 
+  Drupal\helfi_api_base\Cache\PageCachePolicy:
+    public: false
+    tags:
+      - { name: page_cache_response_policy }

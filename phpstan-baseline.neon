@@ -536,21 +536,6 @@ parameters:
 			path: src/Plugin/Filter/LinkConverter.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Filter\\\\LinkConverter\\:\\:getNodeAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Plugin/Filter/LinkConverter.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\Filter\\\\LinkConverter\\:\\:render\\(\\) has parameter \\$build with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Plugin/Filter/LinkConverter.php
-
-		-
-			message: "#^Property Drupal\\\\helfi_api_base\\\\Plugin\\\\Filter\\\\LinkConverter\\:\\:\\$languageManager is never read, only written\\.$#"
-			count: 1
-			path: src/Plugin/Filter/LinkConverter.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\QueueWorker\\\\RevisionQueue\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Plugin/QueueWorker/RevisionQueue.php
@@ -721,31 +706,6 @@ parameters:
 			path: tests/src/Functional/LocaleCommandsTest.php
 
 		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MenuLinkFormTest\\:\\:createMockHistoryMiddlewareHttpClient\\(\\) has parameter \\$container with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Functional/MenuLinkFormTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MenuLinkFormTest\\:\\:enableTranslation\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Functional/MenuLinkFormTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MenuLinkFormTest\\:\\:getFixture\\(\\) should return string but returns string\\|false\\.$#"
-			count: 1
-			path: tests/src/Functional/MenuLinkFormTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MenuLinkFormTest\\:\\:getMockedRequest\\(\\) has parameter \\$document with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Functional/MenuLinkFormTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\MenuLinkFormTest\\:\\:getMockedRequest\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Functional/MenuLinkFormTest.php
-
-		-
 			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: tests/src/Functional/MenuLinkFormTest.php
@@ -811,31 +771,6 @@ parameters:
 			path: tests/src/Kernel/ApiKernelTestBase.php
 
 		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ApiKernelTestBase\\:\\:createMockHistoryMiddlewareHttpClient\\(\\) has parameter \\$container with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/ApiKernelTestBase.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ApiKernelTestBase\\:\\:enableTranslation\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/ApiKernelTestBase.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ApiKernelTestBase\\:\\:getFixture\\(\\) should return string but returns string\\|false\\.$#"
-			count: 1
-			path: tests/src/Kernel/ApiKernelTestBase.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ApiKernelTestBase\\:\\:getMockedRequest\\(\\) has parameter \\$document with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/ApiKernelTestBase.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ApiKernelTestBase\\:\\:getMockedRequest\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/ApiKernelTestBase.php
-
-		-
 			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: tests/src/Kernel/ApiKernelTestBase.php
@@ -844,6 +779,11 @@ parameters:
 			message: "#^Parameter \\#2 \\$haystack of method PHPUnit\\\\Framework\\\\Assert\\:\\:assertStringContainsString\\(\\) expects string, string\\|false given\\.$#"
 			count: 1
 			path: tests/src/Kernel/AssetVersioningTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/Cache/CacheControlSubscriberTest.php
 
 		-
 			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) with 'Drupal\\\\\\\\remote_entity_test\\\\\\\\Entity\\\\\\\\RemoteEntityTest' and null will always evaluate to false\\.$#"
@@ -881,31 +821,6 @@ parameters:
 			path: tests/src/Kernel/EventSubscriber/DisableUserPasswordTest.php
 
 		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\EventSubscriber\\\\SentryTracesSamplerSubscriberTest\\:\\:createMockHistoryMiddlewareHttpClient\\(\\) has parameter \\$container with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/EventSubscriber/SentryTracesSamplerSubscriberTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\EventSubscriber\\\\SentryTracesSamplerSubscriberTest\\:\\:enableTranslation\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/EventSubscriber/SentryTracesSamplerSubscriberTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\EventSubscriber\\\\SentryTracesSamplerSubscriberTest\\:\\:getFixture\\(\\) should return string but returns string\\|false\\.$#"
-			count: 1
-			path: tests/src/Kernel/EventSubscriber/SentryTracesSamplerSubscriberTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\EventSubscriber\\\\SentryTracesSamplerSubscriberTest\\:\\:getMockedRequest\\(\\) has parameter \\$document with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/EventSubscriber/SentryTracesSamplerSubscriberTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\EventSubscriber\\\\SentryTracesSamplerSubscriberTest\\:\\:getMockedRequest\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/EventSubscriber/SentryTracesSamplerSubscriberTest.php
-
-		-
 			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: tests/src/Kernel/EventSubscriber/SentryTracesSamplerSubscriberTest.php
@@ -919,36 +834,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$account of method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\UserLoginSubscriberTest\\:\\:setCurrentUser\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\Entity\\\\User\\|false given\\.$#"
 			count: 3
 			path: tests/src/Kernel/EventSubscriber/UserLoginSubscriberTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\CacheControlSubscriberTest\\:\\:createMockHistoryMiddlewareHttpClient\\(\\) has parameter \\$container with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/Http/Response/CacheControlSubscriberTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\CacheControlSubscriberTest\\:\\:enableTranslation\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/Http/Response/CacheControlSubscriberTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\CacheControlSubscriberTest\\:\\:getFixture\\(\\) should return string but returns string\\|false\\.$#"
-			count: 1
-			path: tests/src/Kernel/Http/Response/CacheControlSubscriberTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\CacheControlSubscriberTest\\:\\:getMockedRequest\\(\\) has parameter \\$document with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/Http/Response/CacheControlSubscriberTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\CacheControlSubscriberTest\\:\\:getMockedRequest\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/Http/Response/CacheControlSubscriberTest.php
-
-		-
-			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/Http/Response/CacheControlSubscriberTest.php
 
 		-
 			message: "#^Property Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\MigrationConfigurationSubscriberTest\\:\\:\\$caughtEvents type has no value type specified in iterable type array\\.$#"
@@ -1017,31 +902,6 @@ parameters:
 
 		-
 			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) with 'Drupal\\\\\\\\helfi_api_base\\\\\\\\ServiceMap\\\\\\\\DTO\\\\\\\\Address' and null will always evaluate to false\\.$#"
-			count: 1
-			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:createMockHistoryMiddlewareHttpClient\\(\\) has parameter \\$container with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:enableTranslation\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:getFixture\\(\\) should return string but returns string\\|false\\.$#"
-			count: 1
-			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:getMockedRequest\\(\\) has parameter \\$document with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:getMockedRequest\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
 
@@ -1134,31 +994,6 @@ parameters:
 			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Traits\\\\CacheTagInvalidator\\:\\:__construct\\(\\) has parameter \\$tags with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: tests/src/Traits/CacheTagInvalidator.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:createMockHistoryMiddlewareHttpClient\\(\\) has parameter \\$container with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Unit/ApiClient/ApiClientTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:enableTranslation\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Unit/ApiClient/ApiClientTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:getFixture\\(\\) should return string but returns string\\|false\\.$#"
-			count: 1
-			path: tests/src/Unit/ApiClient/ApiClientTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:getMockedRequest\\(\\) has parameter \\$document with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Unit/ApiClient/ApiClientTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:getMockedRequest\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Unit/ApiClient/ApiClientTest.php
 
 		-
 			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Unit\\\\ApiClientTest\\:\\:getSut\\(\\) has parameter \\$requestOptions with no value type specified in iterable type array\\.$#"

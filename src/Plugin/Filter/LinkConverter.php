@@ -7,7 +7,6 @@ namespace Drupal\helfi_api_base\Plugin\Filter;
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Markup;
@@ -43,13 +42,6 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
   private RendererInterface $renderer;
 
   /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  private LanguageManagerInterface $languageManager;
-
-  /**
    * The logger.
    *
    * @var \Psr\Log\LoggerInterface
@@ -67,7 +59,6 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
   ) : self {
     $instance = new self($configuration, $plugin_id, $plugin_definition);
     $instance->renderer = $container->get('renderer');
-    $instance->languageManager = $container->get('language_manager');
     $instance->logger = $container->get('logger.channel.helfi_api_base');
 
     return $instance;
@@ -119,7 +110,7 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
   /**
    * Renders the given render array into the given DOM node.
    *
-   * @param array $build
+   * @param array<mixed> $build
    *   The render array to render in isolation.
    * @param \DOMNode $node
    *   The DOM node to render into.
@@ -185,7 +176,7 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
    * @param \DOMNode $node
    *   The node.
    *
-   * @return array
+   * @return array<mixed>
    *   The rendered attributes.
    */
   private function getNodeAttributes(\DOMNode $node) : array {
