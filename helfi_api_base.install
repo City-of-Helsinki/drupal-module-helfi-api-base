@@ -7,14 +7,8 @@
 
 declare(strict_types=1);
 
-use Drupal\Component\Utility\Html;
-use Drupal\Core\Config\FileStorage;
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Extension\ModuleInstallerInterface;
 use Drupal\helfi_api_base\Features\FeatureManager;
-use Drupal\rest\Entity\RestResourceConfig;
-use Drupal\user\Entity\Role;
 
 /**
  * Implements hook_install().
