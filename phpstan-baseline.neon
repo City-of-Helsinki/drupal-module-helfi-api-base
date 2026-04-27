@@ -1,16 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$entity of function _helfi_api_base_process_links expects Drupal\\\\Core\\\\Entity\\\\ContentEntityInterface, Drupal\\\\Core\\\\Entity\\\\TranslatableInterface given\\.$#"
-			count: 1
-			path: helfi_api_base.install
-
-		-
-			message: "#^Parameter \\#2 \\$data of method Drupal\\\\Core\\\\Config\\\\CachedStorage\\:\\:write\\(\\) expects array, array\\|false given\\.$#"
-			count: 1
-			path: helfi_api_base.install
-
-		-
 			message: "#^Function helfi_api_base_element_info_alter\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: helfi_api_base.module
