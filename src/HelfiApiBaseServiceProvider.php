@@ -31,6 +31,7 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
    */
   private function registerMonolog(ContainerBuilder $container): void {
     $monologProcessors = [
+      'message_placeholder',
       'current_user',
       'request_uri',
       'ip',
