@@ -141,16 +141,31 @@ final class Project {
    *
    * @param string $environment
    *   The environment name.
+   * @param string|null $fallbackEnvironment
+   *   The fallback environment name.
    *
    * @return \Drupal\helfi_api_base\Environment\Environment
    *   The environment.
+   *
+   * @throws \InvalidArgumentException
+   *   If environment or fallback environment is not found.
    */
-  public function getEnvironment(string $environment) : Environment {
+  public function getEnvironment(string $environment, ?string $fallbackEnvironment = NULL) : Environment {
     $environment = $this->normalizeEnvironmentName($environment);
 
     if (!$this->hasEnvironment($environment)) {
-      throw new \InvalidArgumentException(sprintf('Environment "%s" not found.', $environment));
+      if (!$fallbackEnvironment) {
+        throw new \InvalidArgumentException(sprintf('Environment "%s" not found.', $environment));
+      }
+
+      $fallbackEnvironment = $this->normalizeEnvironmentName($fallbackEnvironment);
+      if (!$this->hasEnvironment($fallbackEnvironment)) {
+        throw new \InvalidArgumentException(sprintf('Environment "%s" or fallback environment "%s" not found.', $environment, $fallbackEnvironment));
+      }
+
+      return $this->environments[$fallbackEnvironment];
     }
+
     return $this->environments[$environment];
   }
 

@@ -729,9 +729,9 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEnvironment(string $project, string $environment) : Environment {
+  public function getEnvironment(string $project, string $environment, ?string $fallbackEnvironment = NULL) : Environment {
     return $this->getProject($project)
-      ->getEnvironment($environment);
+      ->getEnvironment($environment, $fallbackEnvironment);
   }
 
 }

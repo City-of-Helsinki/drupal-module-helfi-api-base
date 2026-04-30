@@ -59,10 +59,15 @@ interface EnvironmentResolverInterface {
    *   The project name.
    * @param string $environment
    *   The environment name.
+   * @param string|null $fallbackEnvironment
+   *   The fallback environment name.
    *
    * @return \Drupal\helfi_api_base\Environment\Environment
    *   The environment.
+   *
+   * @throws \InvalidArgumentException
+   *   If project, environment or fallback environment is not found.
    */
-  public function getEnvironment(string $project, string $environment) : Environment;
+  public function getEnvironment(string $project, string $environment, ?string $fallbackEnvironment = NULL) : Environment;
 
 }
