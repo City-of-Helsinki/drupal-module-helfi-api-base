@@ -36,6 +36,7 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
       'ip',
       'referer',
       'logger_context',
+      'filter_backtrace',
     ];
 
     $container->setParameter('monolog.channel_handlers', [
@@ -45,18 +46,13 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
             // The Raven logger handler must be added to forward log messages
             // to Sentry. We remove the `message_placeholder` processor from
             // the default processors, as Raven already handles placeholders.
-            // NOTE: The `filter_backtrace` processor should be included.
-            // Without it, logging long backtraces may lead to out-of-memory
-            // errors.
             'name' => 'drupal.raven',
-            'processors' => array_merge($monologProcessors, [
-              'filter_backtrace',
-            ]),
+            'processors' => $monologProcessors,
           ],
           [
             'name' => 'default_conditional_handler',
             'formatter' => 'drush_or_json',
-            'processors' => $monologProcessors,
+            'processors' => array_merge(['message_placeholder'], $monologProcessors),
           ],
         ],
       ],
