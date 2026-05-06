@@ -141,6 +141,9 @@ services:
       - '@helfi_api_base.environment_resolver'
 
   Drupal\helfi_api_base\ActionLog\ActionLogger: ~
+  Drupal\helfi_api_base\ActionLog\QueueProcessor:
+    tags:
+      - { name: needs_destruction }
 
   Drupal\helfi_api_base\ServiceMap\ServiceMap: ~
   Drupal\helfi_api_base\ServiceMap\ServiceMapInterface: '@Drupal\helfi_api_base\ServiceMap\ServiceMap'
