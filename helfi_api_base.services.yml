@@ -15,6 +15,7 @@ parameters:
     - helfi-admin
     - 1
   helfi_api_base.restricted_roles: []
+  helfi_api_base.audit_log_entity_types: []
 services:
   _defaults:
     autowire: true
