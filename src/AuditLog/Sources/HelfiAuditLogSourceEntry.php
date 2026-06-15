@@ -23,7 +23,7 @@ class HelfiAuditLogSourceEntry implements AbstractLogSourceEntry {
     'date_time',
     'operation',
     'target',
-    'status',
+    'message',
     'origin',
   ];
 
@@ -35,7 +35,11 @@ class HelfiAuditLogSourceEntry implements AbstractLogSourceEntry {
    * @param LogSourceConfig $config
    *   Source configuration for environment details.
    */
-  public function __construct(private readonly int $id, private readonly array $config) {}
+  public function __construct(
+    private readonly int $id,
+    private readonly array $config,
+  ) {
+  }
 
   /**
    * {@inheritdoc}
@@ -87,10 +91,9 @@ class HelfiAuditLogSourceEntry implements AbstractLogSourceEntry {
         "origin" => $this->config["origin"],
         "target" => Helpers::valueAsArray($data["target"]),
         "environment" => $this->config["environment"],
-        "message" => $data["status"],
+        "message" => $data["message"],
         "level" => 0,
         "extra" => array_merge($extra, [
-          "status" => $data["status"],
           "source_pk" => $this->id,
           "original_origin" => $data["origin"],
         ]),

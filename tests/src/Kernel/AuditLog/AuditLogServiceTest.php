@@ -40,7 +40,7 @@ class AuditLogServiceTest extends KernelTestBase {
     // Dispatch audit log event.
     $this->container->get(AuditLogServiceInterface::class)->logOperation(new AuditLogEvent(
       operation: 'TEST_OP',
-      status: 'SUCCESS',
+      message: 'SUCCESS',
       target: ['id' => '123'],
     ));
 
@@ -55,9 +55,8 @@ class AuditLogServiceTest extends KernelTestBase {
     $auditEvent = json_decode($row['message'], TRUE)['audit_event'];
 
     $this->assertEquals('DRUPAL', $auditEvent['origin']);
-    $this->assertEquals('DRUPAL', $auditEvent['source']);
     $this->assertEquals('TEST_OP', $auditEvent['operation']);
-    $this->assertEquals('SUCCESS', $auditEvent['status']);
+    $this->assertEquals('SUCCESS', $auditEvent['message']);
     $this->assertEquals(['id' => '123'], $auditEvent['target']);
 
     // The actor is added generically by the AuditLogActorSubscriber.

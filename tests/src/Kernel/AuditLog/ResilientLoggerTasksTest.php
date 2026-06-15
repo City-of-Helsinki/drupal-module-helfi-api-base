@@ -63,7 +63,7 @@ class ResilientLoggerTasksTest extends KernelTestBase {
 
     $this->container->get(AuditLogServiceInterface::class)->logOperation(new AuditLogEvent(
       operation: 'TEST_OP',
-      status: 'OK',
+      message: 'OK',
       target: ['id' => '42'],
     ));
 

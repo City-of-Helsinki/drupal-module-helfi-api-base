@@ -38,29 +38,13 @@ readonly class AuditLogService implements AuditLogServiceInterface {
    */
   public function logOperation(AuditLogEvent $event): void {
     $this->eventDispatcher->dispatch($event);
-    $current_timestamp = $this->time->getCurrentMicroTime();
-
-    $operation_data = [
-      "origin" => $event->getOrigin(),
-      "source" => "DRUPAL",
-      "date_time_epoch" => floor($current_timestamp * 1000),
-      // Format should be yyyy-MM-ddThh:mm:ss.SSSZ.
-      "date_time" =>
-      gmdate("Y-m-d\TH:i:s", (int) floor($current_timestamp)) .
-      "." .
-      str_pad((string) (int) floor(($current_timestamp - floor($current_timestamp)) * 1000), 3, "0", STR_PAD_LEFT) .
-      "Z",
-    ];
-
-    // Merge message and generic operation data.
-    $operation_data = array_merge($operation_data, $event->getMessage());
 
     try {
       $this->connection->insert('helfi_audit_logs')
         ->fields([
           'created_at' => gmdate('Y-m-d H:i:s', $this->time->getRequestTime()),
           'is_sent' => 0,
-          'message' => Json::encode(['audit_event' => $operation_data]),
+          'message' => Json::encode(['audit_event' => $event->getData()]),
         ])
         ->execute();
     }

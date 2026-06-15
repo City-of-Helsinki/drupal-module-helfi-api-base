@@ -17,7 +17,8 @@ use ResilientLogger\Sources\AbstractLogSourceEntry;
  * @phpstan-import-type AuditLogDocument from \ResilientLogger\Sources\Types
  */
 class HelfiAuditLogSource implements AbstractLogSource {
-  private const TABLE_NAME = 'helfi_audit_logs';
+
+  private const string TABLE_NAME = 'helfi_audit_logs';
 
   /**
    * Constructs new HelfiAuditLogSource.
@@ -36,9 +37,6 @@ class HelfiAuditLogSource implements AbstractLogSource {
    *   Message.
    * @param array<string, mixed> $context
    *   Extra context.
-   *
-   * @return never
-   *   Unsupported operation.
    *
    * @throws \LogicException
    *   Thrown logic exception, operation is not supported.

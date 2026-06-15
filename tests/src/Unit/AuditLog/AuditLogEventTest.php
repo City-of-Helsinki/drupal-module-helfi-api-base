@@ -20,16 +20,16 @@ class AuditLogEventTest extends UnitTestCase {
   public function testCreateEvent() : void {
     $event = new AuditLogEvent('TEST_OP', 'SUCCESS', ['id' => '1']);
     $this->assertEquals('DRUPAL', $event->getOrigin());
-    $this->assertEquals('TEST_OP', $event->getMessage()['operation']);
-    $this->assertEquals('SUCCESS', $event->getMessage()['status']);
-    $this->assertEquals(['id' => '1'], $event->getMessage()['target']);
+    $this->assertEquals('TEST_OP', $event->getData()['operation']);
+    $this->assertEquals('SUCCESS', $event->getData()['message']);
+    $this->assertEquals(['id' => '1'], $event->getData()['target']);
   }
 
   /**
    * Test that the event origin can be set via the constructor and overridden.
    */
   public function testEventOrigin() : void {
-    $event = new AuditLogEvent('TEST_OP', 'SUCCESS', [], 'TEST-ORIGIN');
+    $event = new AuditLogEvent('TEST_OP', 'SUCCESS', [], origin: 'TEST-ORIGIN');
     $this->assertEquals('TEST-ORIGIN', $event->getOrigin());
 
     $event->setOrigin('OTHER-ORIGIN');
@@ -37,15 +37,15 @@ class AuditLogEventTest extends UnitTestCase {
   }
 
   /**
-   * Test that the actor is only included in the message once set.
+   * Test that the actor is only included in the data once set.
    */
   public function testEventActor() : void {
     $event = new AuditLogEvent('TEST_OP', 'SUCCESS', []);
-    $this->assertArrayNotHasKey('actor', $event->getMessage());
+    $this->assertArrayNotHasKey('actor', $event->getData());
 
     $actor = ['role' => 'USER', 'user_id' => '123'];
     $event->setActor($actor);
-    $this->assertSame($actor, $event->getMessage()['actor']);
+    $this->assertSame($actor, $event->getData()['actor']);
   }
 
 }
