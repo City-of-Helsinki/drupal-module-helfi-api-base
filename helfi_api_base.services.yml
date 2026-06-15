@@ -15,7 +15,6 @@ parameters:
     - helfi-admin
     - 1
   helfi_api_base.restricted_roles: []
-  helfi_api_base.action_log_entities: []
 services:
   _defaults:
     autowire: true
@@ -139,8 +138,6 @@ services:
       - '@cache.default'
       - '@datetime.time'
       - '@helfi_api_base.environment_resolver'
-
-  Drupal\helfi_api_base\ActionLog\ActionLogger: ~
 
   Drupal\helfi_api_base\AuditLog\AuditLogService:
     arguments: [
