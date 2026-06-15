@@ -76,8 +76,9 @@ class ResilientLoggerTasksTest extends KernelTestBase {
       target: ['id' => '42'],
     ));
 
-    $this->container->get(ResilientLoggerTasks::class)
-      ->handleSubmitUnsentEntries(time());
+    $tasks = $this->container->get(ResilientLoggerTasks::class);
+    assert($tasks instanceof ResilientLoggerTasks);
+    $tasks->handleSubmitUnsentEntries(time());
 
     // The single seeded row was shipped over HTTP.
     $this->assertCount(1, $history);
@@ -115,8 +116,9 @@ class ResilientLoggerTasksTest extends KernelTestBase {
     $newSentId = $this->insertRow($newTs, 1);
     $newUnsentId = $this->insertRow($newTs, 0);
 
-    $this->container->get(ResilientLoggerTasks::class)
-      ->handleClearSentEntries(time());
+    $tasks = $this->container->get(ResilientLoggerTasks::class);
+    assert($tasks instanceof ResilientLoggerTasks);
+    $tasks->handleClearSentEntries(time());
 
     $remaining = array_map(
       'intval',
@@ -144,6 +146,9 @@ class ResilientLoggerTasksTest extends KernelTestBase {
 
   /**
    * Builds the resilient_logger settings, optionally with a mocked client.
+   *
+   * @return array<string, mixed>
+   *   The resilient_logger settings.
    */
   private function resilientLoggerSettings(?ClientInterface $httpClient = NULL): array {
     $target = [

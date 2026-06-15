@@ -60,7 +60,7 @@ class AuditLogServiceTest extends KernelTestBase {
 
     // The actor is added generically by the AuditLogActorSubscriber.
     $this->assertEquals('anonymous', $auditEvent['actor']['role']);
-    $this->assertArrayHasKey('user_id', $auditEvent['actor']);
+    $this->assertArrayHasKey('id', $auditEvent['actor']);
     $this->assertArrayHasKey('ip_address', $auditEvent['actor']);
   }
 
