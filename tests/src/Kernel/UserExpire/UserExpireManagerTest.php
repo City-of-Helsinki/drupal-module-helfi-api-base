@@ -82,6 +82,13 @@ class UserExpireManagerTest extends KernelTestBase {
   }
 
   /**
+   * Invokes the module's cron hook implementation.
+   */
+  private function runCron() : void {
+    $this->container->get('module_handler')->invoke('helfi_api_base', 'cron');
+  }
+
+  /**
    * Tests cron user removal.
    */
   public function testCron() : void {
@@ -98,7 +105,7 @@ class UserExpireManagerTest extends KernelTestBase {
     }
 
     // Make sure the user is canceled when the cron is run.
-    helfi_api_base_cron();
+    $this->runCron();
     // Make sure uid 1 user is not blocked.
     $this->assertFalse(User::load($users['1']->id())->isBlocked());
     $this->assertEquals(1, $users['1']->id());
@@ -120,7 +127,7 @@ class UserExpireManagerTest extends KernelTestBase {
       ->save();
 
     // Make sure the user is not canceled when the cron is run.
-    helfi_api_base_cron();
+    $this->runCron();
     $this->assertFalse(User::load($user->id())->isBlocked());
   }
 
@@ -145,7 +152,7 @@ class UserExpireManagerTest extends KernelTestBase {
       ->setChangedTime(strtotime('-2 days'))
       ->save();
 
-    helfi_api_base_cron();
+    $this->runCron();
 
     // User should NOT be blocked (expire is disabled).
     $loaded = User::load($user->id());
@@ -157,7 +164,7 @@ class UserExpireManagerTest extends KernelTestBase {
       ->setChangedTime(strtotime('-3 days'))
       ->save();
 
-    helfi_api_base_cron();
+    $this->runCron();
 
     // User should be deleted.
     $this->assertNull(User::load($user->id()));
@@ -184,7 +191,7 @@ class UserExpireManagerTest extends KernelTestBase {
       ->setChangedTime(strtotime('-2 days'))
       ->save();
 
-    helfi_api_base_cron();
+    $this->runCron();
 
     // User should be blocked (expire is enabled).
     $loaded = User::load($user->id());
@@ -196,7 +203,7 @@ class UserExpireManagerTest extends KernelTestBase {
       ->setChangedTime(strtotime('-3 days'))
       ->save();
 
-    helfi_api_base_cron();
+    $this->runCron();
 
     // User should NOT be deleted (delete is disabled).
     $this->assertNotNull(User::load($user->id()));

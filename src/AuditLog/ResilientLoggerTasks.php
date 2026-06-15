@@ -66,7 +66,7 @@ class ResilientLoggerTasks {
   /**
    * Handle cron task.
    *
-   * @see \helfi_api_base_cron
+   * @see \Drupal\helfi_api_base\Hook\CronHook::cron()
    */
   public function handleTasks(int $currentTime): void {
     $this->handleSubmitUnsentEntries($currentTime);

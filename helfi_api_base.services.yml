@@ -146,14 +146,6 @@ services:
     tags:
       - { name: event_subscriber }
 
-  ResilientLogger\ResilientLogger:
-    class: ResilientLogger\ResilientLogger
-    factory: ['Drupal\helfi_api_base\AuditLog\ResilientLogger', 'createFromSettings']
-    arguments:
-      - '@settings'
-
-  Drupal\helfi_api_base\AuditLog\ResilientLoggerTasks: ~
-
   Drupal\helfi_api_base\ServiceMap\ServiceMap: ~
   Drupal\helfi_api_base\ServiceMap\ServiceMapInterface: '@Drupal\helfi_api_base\ServiceMap\ServiceMap'
 

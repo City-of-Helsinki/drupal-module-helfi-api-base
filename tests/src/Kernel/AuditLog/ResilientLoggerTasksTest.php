@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\AuditLog;
 
-use Drupal\Core\Site\Settings;
 use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
 use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
 use Drupal\helfi_api_base\AuditLog\ResilientLoggerTasks;
@@ -34,6 +33,16 @@ class ResilientLoggerTasksTest extends KernelTestBase {
   protected static $modules = [
     'helfi_api_base',
   ];
+
+  /**
+   * {@inheritdoc}
+   *
+   * @see \Drupal\helfi_api_base\HelfiApiBaseServiceProvider::register()
+   */
+  protected function bootKernel(): void {
+    $this->setSetting('resilient_logger', $this->resilientLoggerSettings());
+    parent::bootKernel();
+  }
 
   /**
    * {@inheritdoc}
@@ -130,6 +139,13 @@ class ResilientLoggerTasksTest extends KernelTestBase {
    * Configure resilient logger, optionally with a mocked client.
    */
   private function configureResilientLogger(?ClientInterface $httpClient = NULL): void {
+    $this->setSetting('resilient_logger', $this->resilientLoggerSettings($httpClient));
+  }
+
+  /**
+   * Builds the resilient_logger settings, optionally with a mocked client.
+   */
+  private function resilientLoggerSettings(?ClientInterface $httpClient = NULL): array {
     $target = [
       'class' => ElasticsearchLogTarget::class,
       'es_url' => 'https://fake-es:9200',
@@ -142,17 +158,15 @@ class ResilientLoggerTasksTest extends KernelTestBase {
       $target['http_client'] = $httpClient;
     }
 
-    new Settings(Settings::getAll() + [
-      'resilient_logger' => [
-        'sources' => [
-          ['class' => HelfiAuditLogSource::class],
-        ],
-        'targets' => [$target],
-        'environment' => 'test',
-        'origin' => 'helfi-audit-log-test',
-        'store_old_entries_days' => self::RETENTION_DAYS,
+    return [
+      'sources' => [
+        ['class' => HelfiAuditLogSource::class],
       ],
-    ]);
+      'targets' => [$target],
+      'environment' => 'test',
+      'origin' => 'helfi-audit-log-test',
+      'store_old_entries_days' => self::RETENTION_DAYS,
+    ];
   }
 
   /**
