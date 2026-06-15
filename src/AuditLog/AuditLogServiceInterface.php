@@ -4,27 +4,19 @@ declare (strict_types=1);
 
 namespace Drupal\helfi_api_base\AuditLog;
 
+use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
+
 /**
  * Interface for AuditLogServices.
  */
 interface AuditLogServiceInterface {
 
   /**
-   * Operation that logs the message to database.
+   * Dispatch AuditLogEvent and write the resulting message to the database.
    *
-   * @param array<string, mixed> $message
-   *   Message that is merged with generic data and logged to database.
-   * @param string $origin
-   *   String identifying the source for the audit log message.
+   * @param \Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent $event
+   *   The audit log event to log.
    */
-  public function logOperation(array $message, string $origin): void;
-
-  /**
-   * Dispatch AuditLogEvent.
-   *
-   * @param array<string, mixed> $message
-   *   Message associated with the event.
-   */
-  public function dispatchEvent(array $message): void;
+  public function logOperation(AuditLogEvent $event): void;
 
 }

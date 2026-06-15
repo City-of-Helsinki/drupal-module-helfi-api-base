@@ -142,7 +142,7 @@ services:
   Drupal\helfi_api_base\AuditLog\AuditLogService: ~
   Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface: '@Drupal\helfi_api_base\AuditLog\AuditLogService'
 
-  Drupal\helfi_api_base\AuditLog\EventSubscriber\AuditLogEventSubscriber:
+  Drupal\helfi_api_base\AuditLog\EventSubscriber\AuditLogActorSubscriber:
     tags:
       - { name: event_subscriber }
 

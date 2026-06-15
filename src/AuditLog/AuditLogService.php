@@ -31,29 +31,17 @@ readonly class AuditLogService implements AuditLogServiceInterface {
   }
 
   /**
-   * Dispatch AuditLogEvent.
+   * Dispatch AuditLogEvent and write the resulting message to the database.
    *
-   * @param array<string, mixed> $message
-   *   Message associated with the event.
+   * @param \Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent $event
+   *   The audit log event to log.
    */
-  public function dispatchEvent(array $message): void {
-    $event = new AuditLogEvent($message);
-    $this->eventDispatcher->dispatch($event, AuditLogEvent::LOG);
-  }
-
-  /**
-   * Operation that logs the message to database.
-   *
-   * @param array<string, mixed> $message
-   *   Message that is merged with generic data and logged to database.
-   * @param string $origin
-   *   String identifying the source for the audit log message.
-   */
-  public function logOperation(array $message, string $origin): void {
+  public function logOperation(AuditLogEvent $event): void {
+    $this->eventDispatcher->dispatch($event);
     $current_timestamp = $this->time->getCurrentMicroTime();
 
     $operation_data = [
-      "origin" => $origin,
+      "origin" => $event->getOrigin(),
       "source" => "DRUPAL",
       "date_time_epoch" => floor($current_timestamp * 1000),
       // Format should be yyyy-MM-ddThh:mm:ss.SSSZ.
@@ -65,7 +53,7 @@ readonly class AuditLogService implements AuditLogServiceInterface {
     ];
 
     // Merge message and generic operation data.
-    $operation_data = array_merge($operation_data, $message);
+    $operation_data = array_merge($operation_data, $event->getMessage());
 
     try {
       $this->connection->insert('helfi_audit_logs')

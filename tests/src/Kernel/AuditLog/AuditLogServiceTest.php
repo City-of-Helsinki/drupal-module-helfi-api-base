@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Kernel\AuditLog;
 
 use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
+use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
 use Drupal\KernelTests\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -37,10 +38,11 @@ class AuditLogServiceTest extends KernelTestBase {
    */
   public function testDatabaseWrite(): void {
     // Dispatch audit log event.
-    $this->container->get(AuditLogServiceInterface::class)->dispatchEvent([
-      'key1' => 'value1',
-      'key2' => 'value2',
-    ]);
+    $this->container->get(AuditLogServiceInterface::class)->logOperation(new AuditLogEvent(
+      operation: 'TEST_OP',
+      status: 'SUCCESS',
+      target: ['id' => '123'],
+    ));
 
     // Read back the row that the event subscriber wrote to the database.
     $row = $this->container->get('database')
@@ -54,8 +56,14 @@ class AuditLogServiceTest extends KernelTestBase {
 
     $this->assertEquals('DRUPAL', $auditEvent['origin']);
     $this->assertEquals('DRUPAL', $auditEvent['source']);
-    $this->assertEquals('value1', $auditEvent['key1']);
-    $this->assertEquals('value2', $auditEvent['key2']);
+    $this->assertEquals('TEST_OP', $auditEvent['operation']);
+    $this->assertEquals('SUCCESS', $auditEvent['status']);
+    $this->assertEquals(['id' => '123'], $auditEvent['target']);
+
+    // The actor is added generically by the AuditLogActorSubscriber.
+    $this->assertEquals('anonymous', $auditEvent['actor']['role']);
+    $this->assertArrayHasKey('user_id', $auditEvent['actor']);
+    $this->assertArrayHasKey('ip_address', $auditEvent['actor']);
   }
 
 }

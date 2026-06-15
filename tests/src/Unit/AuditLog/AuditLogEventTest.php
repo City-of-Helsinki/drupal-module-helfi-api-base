@@ -18,31 +18,34 @@ class AuditLogEventTest extends UnitTestCase {
    * Test that event can be created with a default origin.
    */
   public function testCreateEvent() : void {
-    $event = new AuditLogEvent(['operation' => 'TEST_OP']);
+    $event = new AuditLogEvent('TEST_OP', 'SUCCESS', ['id' => '1']);
     $this->assertEquals('DRUPAL', $event->getOrigin());
     $this->assertEquals('TEST_OP', $event->getMessage()['operation']);
+    $this->assertEquals('SUCCESS', $event->getMessage()['status']);
+    $this->assertEquals(['id' => '1'], $event->getMessage()['target']);
   }
 
   /**
-   * Test that the event origin can be set via the constructor.
+   * Test that the event origin can be set via the constructor and overridden.
    */
   public function testEventOrigin() : void {
-    $event = new AuditLogEvent(['operation' => 'TEST_OP'], 'TEST-ORIGIN');
+    $event = new AuditLogEvent('TEST_OP', 'SUCCESS', [], 'TEST-ORIGIN');
     $this->assertEquals('TEST-ORIGIN', $event->getOrigin());
+
+    $event->setOrigin('OTHER-ORIGIN');
+    $this->assertEquals('OTHER-ORIGIN', $event->getOrigin());
   }
 
   /**
-   * Test that the event message is exposed as given.
+   * Test that the actor is only included in the message once set.
    */
-  public function testEventMessage() : void {
-    $message = [
-      'key1' => 'value1',
-      'key2' => 'value2',
-    ];
-    $event = new AuditLogEvent($message);
-    $this->assertSame($message, $event->getMessage());
-    $this->assertEquals('value1', $event->getMessage()['key1']);
-    $this->assertEquals('value2', $event->getMessage()['key2']);
+  public function testEventActor() : void {
+    $event = new AuditLogEvent('TEST_OP', 'SUCCESS', []);
+    $this->assertArrayNotHasKey('actor', $event->getMessage());
+
+    $actor = ['role' => 'USER', 'user_id' => '123'];
+    $event->setActor($actor);
+    $this->assertSame($actor, $event->getMessage()['actor']);
   }
 
 }

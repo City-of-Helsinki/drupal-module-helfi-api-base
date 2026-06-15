@@ -9,31 +9,60 @@ use Drupal\Component\EventDispatcher\Event;
 /**
  * Event class for audit log use.
  *
- * This event allows other modules to control what will
- * will be written in the audit log or invalidate the event
- * to prevent it from ending up in the log.
+ * Event subscribers may enrich the event before
+ * it is written to the audit log.
  *
- * @see \Drupal\helfi_api_base\AuditLog\EventSubscriber\AuditLogEventSubscriber
+ * @see https://helsinkisolutionoffice.atlassian.net/wiki/spaces/platta/pages/10189438980/Implementing+audit+logging
+ * @see \Drupal\helfi_api_base\AuditLog\EventSubscriber\AuditLogActorSubscriber
+ * @see \Drupal\helfi_api_base\AuditLog\AuditLogService::logOperation()
  */
 class AuditLogEvent extends Event {
 
   /**
-   * The name of the audit log events.
+   * The acting user, injected by event subscribers.
+   *
+   * @var array<string, mixed>
    */
-  const string LOG = 'helfi_api_base.audit_log_event';
+  protected array $actor = [];
 
   /**
    * Construct a new event object.
    *
-   * @param array<string, mixed> $message
-   *   Message associated with the event.
+   * @param string $operation
+   *   The operation being logged.
+   * @param string $status
+   *   The status of the operation.
+   * @param array<string, mixed> $target
+   *   The target of the operation.
    * @param string $origin
    *   String identifying the source for the audit log message.
    */
   public function __construct(
-    readonly public array $message,
-    readonly public string $origin = 'DRUPAL',
+    public readonly string $operation,
+    public readonly string $status,
+    public readonly array $target,
+    protected string $origin = 'DRUPAL',
   ) {
+  }
+
+  /**
+   * Set the acting user.
+   *
+   * @param array<string, mixed> $actor
+   *   The actor associated with the event.
+   */
+  public function setActor(array $actor): void {
+    $this->actor = $actor;
+  }
+
+  /**
+   * Get the acting user.
+   *
+   * @return array<string, mixed>
+   *   The actor associated with the event.
+   */
+  public function getActor(): array {
+    return $this->actor;
   }
 
   /**
@@ -43,7 +72,15 @@ class AuditLogEvent extends Event {
    *   Message associated with the event.
    */
   public function getMessage(): array {
-    return $this->message;
+    $message = [
+      'operation' => $this->operation,
+      'status' => $this->status,
+      'target' => $this->target,
+    ];
+    if ($this->actor !== []) {
+      $message['actor'] = $this->actor;
+    }
+    return $message;
   }
 
   /**
@@ -51,6 +88,16 @@ class AuditLogEvent extends Event {
    */
   public function getOrigin(): string {
     return $this->origin;
+  }
+
+  /**
+   * Set origin.
+   *
+   * @param string $origin
+   *   String identifying the source for the audit log message.
+   */
+  public function setOrigin(string $origin): void {
+    $this->origin = $origin;
   }
 
 }

@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_api_base\Kernel\AuditLog;
 
 use Drupal\Core\Site\Settings;
 use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
+use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
 use Drupal\helfi_api_base\AuditLog\ResilientLoggerTasks;
 use Drupal\helfi_api_base\AuditLog\Sources\HelfiAuditLogSource;
 use Drupal\KernelTests\KernelTestBase;
@@ -60,13 +61,11 @@ class ResilientLoggerTasksTest extends KernelTestBase {
     ]);
     $this->configureResilientLogger($guzzle);
 
-    $this->container->get(AuditLogServiceInterface::class)->logOperation([
-      'operation' => 'TEST_OP',
-      'status' => 'OK',
-      'actor' => ['role' => 'TEST'],
-      'target' => ['id' => '42'],
-      'date_time' => gmdate('c'),
-    ], 'DRUPAL');
+    $this->container->get(AuditLogServiceInterface::class)->logOperation(new AuditLogEvent(
+      operation: 'TEST_OP',
+      status: 'OK',
+      target: ['id' => '42'],
+    ));
 
     $this->container->get(ResilientLoggerTasks::class)
       ->handleSubmitUnsentEntries(time());
