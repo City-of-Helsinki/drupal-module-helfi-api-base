@@ -24,7 +24,7 @@ class HelfiAuditLogSourceEntry implements AbstractLogSourceEntry {
     'operation',
     'target',
     'message',
-    'origin',
+    'extra',
   ];
 
   /**
@@ -73,14 +73,9 @@ class HelfiAuditLogSourceEntry implements AbstractLogSourceEntry {
 
     $message = json_decode($result['message'], TRUE);
     $data = array_intersect_key(
-          $message["audit_event"],
-          array_flip(self::KNOWN_KEYS)
-      );
-
-    $extra = array_diff_key(
-          $message["audit_event"],
-          array_flip(self::KNOWN_KEYS)
-      );
+      $message["audit_event"],
+      array_flip(self::KNOWN_KEYS)
+    );
 
     return [
       "@timestamp" => $createdAt,
@@ -93,10 +88,16 @@ class HelfiAuditLogSourceEntry implements AbstractLogSourceEntry {
         "environment" => $this->config["environment"],
         "message" => $data["message"],
         "level" => 0,
-        "extra" => array_merge($extra, [
-          "source_pk" => $this->id,
-          "original_origin" => $data["origin"],
-        ]),
+        "extra" => array_merge(
+          // Unknown keys gets added to extra field.
+          array_diff_key($message["audit_event"], array_flip(self::KNOWN_KEYS)),
+          // Extra fields specified in the message.
+          $data['extra'] ?? [],
+          // Database primary key.
+          [
+            "source_pk" => $this->id,
+          ],
+        ),
       ],
     ];
   }

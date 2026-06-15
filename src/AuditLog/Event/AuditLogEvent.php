@@ -23,24 +23,24 @@ class AuditLogEvent extends Event {
    * Construct a new event object.
    *
    * @param string $operation
-   *   The operation being logged.
+   *   The type of action performed (e.g., create, update, delete).
    * @param string $message
-   *   The message describing the operation.
+   *   Descriptive information about the action.
    * @param array<string, mixed> $target
    *   The target of the operation.
+   * @param array<string, mixed> $extra
+   *   Optional additional structured information.
    * @param array<string, mixed> $actor
-   *   The acting user.
-   * @param string $origin
-   *   String identifying the source for the audit log message.
+   *   Who performed the action (user or system).
    * @param \DateTimeImmutable $dateTime
-   *   The time the operation occurred. Defaults to the current UTC time.
+   *   When the action occurred. Defaults to the current UTC time.
    */
   public function __construct(
     public readonly string $operation,
     public readonly string $message,
     public readonly array $target,
+    public readonly array $extra = [],
     protected array $actor = [],
-    protected string $origin = 'DRUPAL',
     public readonly \DateTimeImmutable $dateTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
   ) {
   }
@@ -66,21 +66,6 @@ class AuditLogEvent extends Event {
   }
 
   /**
-   * Get origin.
-   */
-  public function getOrigin(): string {
-    return $this->origin;
-  }
-
-  /**
-   * Set origin.
-   */
-  public function setOrigin(string $origin): self {
-    $this->origin = $origin;
-    return $this;
-  }
-
-  /**
    * Get the audit event data.
    *
    * @return array<string, mixed>
@@ -88,7 +73,6 @@ class AuditLogEvent extends Event {
    */
   public function getData(): array {
     $data = [
-      'origin' => $this->origin,
       // Format should be yyyy-MM-ddThh:mm:ss.SSSZ.
       'date_time' => $this->dateTime->format('Y-m-d\TH:i:s.v\Z'),
       'operation' => $this->operation,
@@ -97,6 +81,9 @@ class AuditLogEvent extends Event {
     ];
     if ($this->actor) {
       $data['actor'] = $this->actor;
+    }
+    if (!empty($this->extra)) {
+      $data['extra'] = $this->extra;
     }
     return $data;
   }

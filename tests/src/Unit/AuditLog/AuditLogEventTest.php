@@ -15,25 +15,13 @@ use PHPUnit\Framework\Attributes\Group;
 class AuditLogEventTest extends UnitTestCase {
 
   /**
-   * Test that event can be created with a default origin.
+   * Test that event data can be retrieved.
    */
   public function testCreateEvent() : void {
     $event = new AuditLogEvent('TEST_OP', 'SUCCESS', ['id' => '1']);
-    $this->assertEquals('DRUPAL', $event->getOrigin());
     $this->assertEquals('TEST_OP', $event->getData()['operation']);
     $this->assertEquals('SUCCESS', $event->getData()['message']);
     $this->assertEquals(['id' => '1'], $event->getData()['target']);
-  }
-
-  /**
-   * Test that the event origin can be set via the constructor and overridden.
-   */
-  public function testEventOrigin() : void {
-    $event = new AuditLogEvent('TEST_OP', 'SUCCESS', [], origin: 'TEST-ORIGIN');
-    $this->assertEquals('TEST-ORIGIN', $event->getOrigin());
-
-    $event->setOrigin('OTHER-ORIGIN');
-    $this->assertEquals('OTHER-ORIGIN', $event->getOrigin());
   }
 
   /**

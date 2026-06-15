@@ -54,7 +54,6 @@ class AuditLogServiceTest extends KernelTestBase {
     $this->assertNotEmpty($row);
     $auditEvent = json_decode($row['message'], TRUE)['audit_event'];
 
-    $this->assertEquals('DRUPAL', $auditEvent['origin']);
     $this->assertEquals('TEST_OP', $auditEvent['operation']);
     $this->assertEquals('SUCCESS', $auditEvent['message']);
     $this->assertEquals(['id' => '123'], $auditEvent['target']);
