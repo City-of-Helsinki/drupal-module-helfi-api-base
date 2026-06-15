@@ -25,7 +25,7 @@ class HelfiAuditLogSource implements AbstractLogSource {
    * @param LogSourceConfig $config
    *   Configuration and environment information passed during initialization.
    */
-  public function __construct(private array $config) {}
+  public function __construct(private readonly array $config) {}
 
   /**
    * Creates new entry for this given source.

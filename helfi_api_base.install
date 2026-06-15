@@ -59,6 +59,8 @@ function helfi_api_base_install(bool $is_syncing = FALSE) : void {
 
 /**
  * Implements hook_schema().
+ *
+ * @phpstan-return array<string, mixed>
  */
 function helfi_api_base_schema(): array {
   $schema['helfi_audit_logs'] = [
@@ -198,10 +200,11 @@ function helfi_api_base_update_9029(): void {
 }
 
 /**
- * UHF-13284: Adopt audit log functionality moved here from the helfi_audit_log module.
+ * UHF-13284: Move audit log table from helfi_audit_log module.
  */
 function helfi_api_base_update_9030(): void {
-  // The table already exists in grants and its data should be preserved untouched.
+  // The table already exists in grants and
+  // its data should be preserved untouched.
   $schema = \Drupal::database()->schema();
   if (!$schema->tableExists('helfi_audit_logs')) {
     $tables = helfi_api_base_schema();

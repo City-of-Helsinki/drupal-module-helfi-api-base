@@ -17,8 +17,8 @@ use ResilientLogger\Utils\Helpers;
  * @phpstan-import-type AuditLogDocument from \ResilientLogger\Sources\Types
  */
 class HelfiAuditLogSourceEntry implements AbstractLogSourceEntry {
-  private const TABLE_NAME = 'helfi_audit_logs';
-  private const KNOWN_KEYS = [
+  private const string TABLE_NAME = 'helfi_audit_logs';
+  private const array KNOWN_KEYS = [
     'actor',
     'date_time',
     'operation',
@@ -35,7 +35,7 @@ class HelfiAuditLogSourceEntry implements AbstractLogSourceEntry {
    * @param LogSourceConfig $config
    *   Source configuration for environment details.
    */
-  public function __construct(private int $id, private array $config) {}
+  public function __construct(private readonly int $id, private readonly array $config) {}
 
   /**
    * {@inheritdoc}

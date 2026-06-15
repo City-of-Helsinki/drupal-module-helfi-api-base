@@ -15,53 +15,34 @@ use PHPUnit\Framework\Attributes\Group;
 class AuditLogEventTest extends UnitTestCase {
 
   /**
-   * Test that event can be created.
+   * Test that event can be created with a default origin.
    */
   public function testCreateEvent() : void {
-    $event = new AuditLogEvent(['message']);
-    $this->assertEquals($event->getOrigin(), 'DRUPAL');
-    $this->assertEquals($event->isValid(), TRUE);
-    $this->assertEquals($event->getMessage()[0], 'message');
+    $event = new AuditLogEvent(['operation' => 'TEST_OP']);
+    $this->assertEquals('DRUPAL', $event->getOrigin());
+    $this->assertEquals('TEST_OP', $event->getMessage()['operation']);
   }
 
   /**
-   * Test that event origin can be modified.
+   * Test that the event origin can be set via the constructor.
    */
-  public function testModifyEventOrigin() : void {
-    $event = new AuditLogEvent(['message']);
-    $this->assertEquals($event->getOrigin(), 'DRUPAL');
-    $event->setOrigin('TEST-MODIFY-EVENT');
-    $this->assertEquals($event->getOrigin(), 'TEST-MODIFY-EVENT');
+  public function testEventOrigin() : void {
+    $event = new AuditLogEvent(['operation' => 'TEST_OP'], 'TEST-ORIGIN');
+    $this->assertEquals('TEST-ORIGIN', $event->getOrigin());
   }
 
   /**
-   * Test that event message can be modified.
+   * Test that the event message is exposed as given.
    */
-  public function testModifyEventMessage() : void {
-    $event = new AuditLogEvent(['message']);
-    $this->assertArrayHasKey(0, $event->getMessage());
-    $this->assertCount(1, $event->getMessage());
-    $newMessage = [
+  public function testEventMessage() : void {
+    $message = [
       'key1' => 'value1',
       'key2' => 'value2',
     ];
-    $event->setMessage($newMessage);
-    $this->assertArrayNotHasKey(0, $event->getMessage());
-    $this->assertArrayHasKey('key1', $event->getMessage());
+    $event = new AuditLogEvent($message);
+    $this->assertSame($message, $event->getMessage());
     $this->assertEquals('value1', $event->getMessage()['key1']);
-    $this->assertArrayHasKey('key2', $event->getMessage());
     $this->assertEquals('value2', $event->getMessage()['key2']);
-    $this->assertCount(2, $event->getMessage());
-  }
-
-  /**
-   * Test that event validity can be modified.
-   */
-  public function testModifyEventValidity() : void {
-    $event = new AuditLogEvent(['message']);
-    $this->assertEquals($event->isValid(), TRUE);
-    $event->setValid(FALSE);
-    $this->assertEquals($event->isValid(), FALSE);
   }
 
 }

@@ -7,8 +7,8 @@ namespace Drupal\helfi_api_base\AuditLog;
 use Psr\Log\LoggerInterface;
 use ResilientLogger\ResilientLogger;
 use Drupal\Core\State\StateInterface;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Site\Settings;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Drupal-specific helper for scheduling ResilientLogger tasks.
@@ -24,22 +24,16 @@ use Drupal\Core\Site\Settings;
  * will be used instead.
  */
 class ResilientLoggerTasks {
-  private const SETTINGS_NAME = "resilient_logger";
-  private const LOGGER_CHANNEL = "resilient_logger.tasks";
+  private const string SETTINGS_NAME = "resilient_logger";
 
-  private const DEFAULT_OFFSET_SUBMIT = "+15min";
-  private const DEFAULT_OFFSET_CLEAR = "first day of next month midnight";
+  private const string DEFAULT_OFFSET_SUBMIT = "+15min";
+  private const string DEFAULT_OFFSET_CLEAR = "first day of next month midnight";
 
-  private const PARAM_KEY_OFFSET_SUBMIT = "schedule_submit_unsent_entries";
-  private const PARAM_KEY_OFFSET_CLEAR = "schedule_clear_sent_entries";
+  private const string PARAM_KEY_OFFSET_SUBMIT = "schedule_submit_unsent_entries";
+  private const string PARAM_KEY_OFFSET_CLEAR = "schedule_clear_sent_entries";
 
-  private const STATE_KEY_PREV_SUBMIT = "resilient_logger.prev_submit_unsent";
-  private const STATE_KEY_PREV_CLEAR = "resilient_logger.prev_clear_sent";
-
-  /**
-   * The logger.
-   */
-  private LoggerInterface $logger;
+  private const string STATE_KEY_PREV_SUBMIT = "resilient_logger.prev_submit_unsent";
+  private const string STATE_KEY_PREV_CLEAR = "resilient_logger.prev_clear_sent";
 
   /**
    * String representation of the next time submit unsent entries should run.
@@ -56,18 +50,16 @@ class ResilientLoggerTasks {
   private string $clearDateOffset;
 
   public function __construct(
-    private StateInterface $state,
-    private ResilientLogger $service,
-    LoggerChannelFactoryInterface $loggerFactory,
+    private readonly StateInterface $state,
+    private readonly ResilientLogger $service,
+    #[Autowire(service: 'logger.channel.helfi_api_base')]
+    private readonly LoggerInterface $logger,
     Settings $settings,
   ) {
     // Retrieve your resilient_logger settings.
     $config = $settings->get(self::SETTINGS_NAME, []);
 
-    $this->logger = $loggerFactory->get(self::LOGGER_CHANNEL);
-
     $this->submitDateOffset = $config[self::PARAM_KEY_OFFSET_SUBMIT] ?? self::DEFAULT_OFFSET_SUBMIT;
-
     $this->clearDateOffset = $config[self::PARAM_KEY_OFFSET_CLEAR] ?? self::DEFAULT_OFFSET_CLEAR;
   }
 
@@ -76,7 +68,7 @@ class ResilientLoggerTasks {
    *
    * @see \helfi_api_base_cron
    */
-  public function handleTasks(int $currentTime) {
+  public function handleTasks(int $currentTime): void {
     $this->handleSubmitUnsentEntries($currentTime);
     $this->handleClearSentEntries($currentTime);
   }
@@ -84,7 +76,7 @@ class ResilientLoggerTasks {
   /**
    * Submits audit log events from the database.
    */
-  public function handleSubmitUnsentEntries(int $currentTime) {
+  public function handleSubmitUnsentEntries(int $currentTime): void {
     $shouldSubmitUnsent = $this->isTaskDue(
       self::STATE_KEY_PREV_SUBMIT,
       $this->submitDateOffset,
@@ -101,7 +93,7 @@ class ResilientLoggerTasks {
   /**
    * Clears sent audit log events from the database.
    */
-  public function handleClearSentEntries(int $currentTime) {
+  public function handleClearSentEntries(int $currentTime): void {
     $shouldClearSent = $this->isTaskDue(
       self::STATE_KEY_PREV_CLEAR,
       $this->clearDateOffset,

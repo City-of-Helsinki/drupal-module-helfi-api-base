@@ -1,89 +1,39 @@
 <?php
 
+declare (strict_types=1);
+
 namespace Drupal\helfi_api_base\AuditLog;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Utility\Error;
 use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * AuditLog service.
  */
-class AuditLogService implements AuditLogServiceInterface {
-
-  use StringTranslationTrait;
-  /**
-   * Current user.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  protected AccountProxyInterface $currentUser;
-
-  /**
-   * Database connection.
-   *
-   * @var \Drupal\Core\Database\Connection
-   */
-  protected Connection $connection;
-
-  /**
-   * Time.
-   *
-   * @var \Drupal\Component\Datetime\TimeInterface
-   */
-  protected TimeInterface $time;
-
-  /**
-   * Current request.
-   *
-   * @var \Symfony\Component\HttpFoundation\Request
-   */
-  protected Request $request;
-
-  /**
-   * The event dispatcher.
-   *
-   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-   */
-  protected EventDispatcherInterface $eventDispatcher;
-
-  /**
-   * The logger.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected LoggerInterface $logger;
+readonly class AuditLogService implements AuditLogServiceInterface {
 
   /**
    * Constructs a AuditLogService object.
    */
   public function __construct(
-    AccountProxyInterface $accountProxy,
-    Connection $connection,
-    TimeInterface $time,
-    RequestStack $requestStack,
-    EventDispatcherInterface $eventDispatcher,
-    LoggerInterface $logger,
+    private Connection $connection,
+    private TimeInterface $time,
+    private EventDispatcherInterface $eventDispatcher,
+    #[Autowire(service: 'logger.channel.helfi_api_base')]
+    private LoggerInterface $logger,
   ) {
-    $this->currentUser = $accountProxy;
-    $this->connection = $connection;
-    $this->time = $time;
-    $this->request = $requestStack->getCurrentRequest();
-    $this->eventDispatcher = $eventDispatcher;
-    $this->logger = $logger;
   }
 
   /**
    * Dispatch AuditLogEvent.
    *
-   * @param array $message
+   * @param array<string, mixed> $message
    *   Message associated with the event.
    */
   public function dispatchEvent(array $message): void {
@@ -94,13 +44,12 @@ class AuditLogService implements AuditLogServiceInterface {
   /**
    * Operation that logs the message to database.
    *
-   * @param array $message
+   * @param array<string, mixed> $message
    *   Message that is merged with generic data and logged to database.
    * @param string $origin
    *   String identifying the source for the audit log message.
    */
   public function logOperation(array $message, string $origin): void {
-
     $current_timestamp = $this->time->getCurrentMicroTime();
 
     $operation_data = [
@@ -109,9 +58,9 @@ class AuditLogService implements AuditLogServiceInterface {
       "date_time_epoch" => floor($current_timestamp * 1000),
       // Format should be yyyy-MM-ddThh:mm:ss.SSSZ.
       "date_time" =>
-      gmdate("Y-m-d\TH:i:s", floor($current_timestamp)) .
+      gmdate("Y-m-d\TH:i:s", (int) floor($current_timestamp)) .
       "." .
-      str_pad(floor(($current_timestamp - floor($current_timestamp)) * 1000), 3, "0", STR_PAD_LEFT) .
+      str_pad((string) (int) floor(($current_timestamp - floor($current_timestamp)) * 1000), 3, "0", STR_PAD_LEFT) .
       "Z",
     ];
 
@@ -128,8 +77,7 @@ class AuditLogService implements AuditLogServiceInterface {
         ->execute();
     }
     catch (\Exception $e) {
-      $this->logger
-        ->error($this->t('Unable to write log message to database.'));
+      Error::logException($this->logger, $e);
     }
   }
 

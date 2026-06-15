@@ -139,19 +139,10 @@ services:
       - '@datetime.time'
       - '@helfi_api_base.environment_resolver'
 
-  Drupal\helfi_api_base\AuditLog\AuditLogService:
-    arguments: [
-      '@current_user',
-      '@database',
-      '@datetime.time',
-      '@request_stack',
-      '@event_dispatcher',
-      '@logger.channel.helfi_api_base'
-    ]
+  Drupal\helfi_api_base\AuditLog\AuditLogService: ~
   Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface: '@Drupal\helfi_api_base\AuditLog\AuditLogService'
 
   Drupal\helfi_api_base\AuditLog\EventSubscriber\AuditLogEventSubscriber:
-    arguments: [ '@Drupal\helfi_api_base\AuditLog\AuditLogService', '@logger.channel.helfi_api_base' ]
     tags:
       - { name: event_subscriber }
 
