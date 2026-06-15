@@ -25,6 +25,14 @@ final readonly class AuditLogHooks {
    */
   private array $loggedEntityTypes;
 
+  /**
+   * Constructs a new instance.
+   *
+   * @param \Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface $auditLogService
+   *   The audit log service.
+   * @param array<array{entity_type: string, bundle?: string, operations?: array<string>}> $loggedEntityTypes
+   *   The configured entity type matchers.
+   */
   public function __construct(
     private AuditLogServiceInterface $auditLogService,
     #[Autowire(param: 'helfi_api_base.audit_log_entity_types')]
@@ -70,6 +78,11 @@ final readonly class AuditLogHooks {
 
   /**
    * Implements hook_entity_view().
+   *
+   * @param array<string, mixed> $build
+   *   The renderable array representing the entity content.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity being viewed.
    */
   #[Hook('entity_view')]
   public function onEntityView(array &$build, EntityInterface $entity): void {

@@ -120,6 +120,7 @@ class AuditLogHooksTest extends KernelTestBase {
    */
   public function testReadIsNotLoggedByDefault(): void {
     $user = $this->createUser([], 'viewed-user');
+    $this->assertInstanceOf(EntityInterface::class, $user);
     // Clear the CREATE event from user creation.
     $this->container->get('database')->truncate('helfi_audit_logs')->execute();
 
