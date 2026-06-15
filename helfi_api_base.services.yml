@@ -142,6 +142,30 @@ services:
 
   Drupal\helfi_api_base\ActionLog\ActionLogger: ~
 
+  Drupal\helfi_api_base\AuditLog\AuditLogService:
+    arguments: [
+      '@current_user',
+      '@database',
+      '@datetime.time',
+      '@request_stack',
+      '@event_dispatcher',
+      '@logger.channel.helfi_api_base'
+    ]
+  Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface: '@Drupal\helfi_api_base\AuditLog\AuditLogService'
+
+  Drupal\helfi_api_base\AuditLog\EventSubscriber\AuditLogEventSubscriber:
+    arguments: [ '@Drupal\helfi_api_base\AuditLog\AuditLogService', '@logger.channel.helfi_api_base' ]
+    tags:
+      - { name: event_subscriber }
+
+  ResilientLogger\ResilientLogger:
+    class: ResilientLogger\ResilientLogger
+    factory: ['Drupal\helfi_api_base\AuditLog\ResilientLogger', 'createFromSettings']
+    arguments:
+      - '@settings'
+
+  Drupal\helfi_api_base\AuditLog\ResilientLoggerTasks: ~
+
   Drupal\helfi_api_base\ServiceMap\ServiceMap: ~
   Drupal\helfi_api_base\ServiceMap\ServiceMapInterface: '@Drupal\helfi_api_base\ServiceMap\ServiceMap'
 

@@ -58,6 +58,47 @@ function helfi_api_base_install(bool $is_syncing = FALSE) : void {
 }
 
 /**
+ * Implements hook_schema().
+ */
+function helfi_api_base_schema(): array {
+  $schema['helfi_audit_logs'] = [
+    'description' => 'Audit log',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique record ID.',
+      ],
+      'created_at' => [
+        'mysql_type' => 'timestamp',
+        'not null' => TRUE,
+        'description' => 'Timestamp when the record was created.',
+        'default' => '2023-06-28 12:00:00',
+      ],
+      'message' => [
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'normal',
+        'description' => 'JSON data for this event',
+      ],
+      'is_sent' => [
+        'description' => 'Is db entry sent to Elastic.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'unsigned' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'created_at' => ['created_at'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
  * UHF-10713 Remove VersionChecker.
  */
 function helfi_api_base_update_9023(): void {
@@ -153,5 +194,27 @@ function helfi_api_base_update_9029(): void {
   if (!in_array('stage_file_proxy', $ignored, TRUE)) {
     $ignored[] = 'stage_file_proxy';
     $config->set('ignored_channels', $ignored)->save();
+  }
+}
+
+/**
+ * UHF-13284: Adopt audit log functionality moved here from the helfi_audit_log module.
+ */
+function helfi_api_base_update_9030(): void {
+  // The table already exists in grants and its data should be preserved untouched.
+  $schema = \Drupal::database()->schema();
+  if (!$schema->tableExists('helfi_audit_logs')) {
+    $tables = helfi_api_base_schema();
+    $schema->createTable('helfi_audit_logs', $tables['helfi_audit_logs']);
+  }
+
+  // Deregister the old module directly via configuration and key-value store.
+  // Avoid the module installer's uninstall(), which would drop the
+  // helfi_audit_logs table in grants.
+  $extension_config = \Drupal::configFactory()->getEditable('core.extension');
+  if ($extension_config->get('module.helfi_audit_log') !== NULL) {
+    $extension_config->clear('module.helfi_audit_log')->save();
+    // Forget the old module's stored schema version.
+    \Drupal::keyValue('system.schema')->delete('helfi_audit_log');
   }
 }

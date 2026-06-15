@@ -20,7 +20,8 @@
         "ext-curl": "*",
         "symfony/polyfill-php84": "^1.0",
         "symfony/polyfill-php85": "^1.0",
-        "city-of-helsinki/php-logger-extra": "^1.0"
+        "city-of-helsinki/php-logger-extra": "^1.0",
+        "city-of-helsinki/php-resilient-logger": "^2.0"
     },
     "repositories": {
         "php-logger-extra": {
