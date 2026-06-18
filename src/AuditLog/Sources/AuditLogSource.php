@@ -16,12 +16,12 @@ use ResilientLogger\Sources\AbstractLogSourceEntry;
  * @phpstan-import-type LogSourceConfig from \ResilientLogger\Sources\Types
  * @phpstan-import-type AuditLogDocument from \ResilientLogger\Sources\Types
  */
-class HelfiAuditLogSource implements AbstractLogSource {
+class AuditLogSource implements AbstractLogSource {
 
   private const string TABLE_NAME = 'helfi_audit_logs';
 
   /**
-   * Constructs new HelfiAuditLogSource.
+   * Constructs new AuditLogSource.
    *
    * @param LogSourceConfig $config
    *   Configuration and environment information passed during initialization.
@@ -62,7 +62,7 @@ class HelfiAuditLogSource implements AbstractLogSource {
       ->fetchAll(\PDO::FETCH_ASSOC);
 
     foreach ($results as $result) {
-      yield new HelfiAuditLogSourceEntry(intval($result['id']), $this->config);
+      yield new AuditLogSourceEntry(intval($result['id']), $this->config);
     }
   }
 

@@ -7,7 +7,7 @@ namespace Drupal\Tests\helfi_api_base\Kernel\AuditLog;
 use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
 use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
 use Drupal\helfi_api_base\AuditLog\ResilientLoggerTasks;
-use Drupal\helfi_api_base\AuditLog\Sources\HelfiAuditLogSource;
+use Drupal\helfi_api_base\AuditLog\Sources\AuditLogSource;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
@@ -165,7 +165,7 @@ class ResilientLoggerTasksTest extends KernelTestBase {
 
     return [
       'sources' => [
-        ['class' => HelfiAuditLogSource::class],
+        ['class' => AuditLogSource::class],
       ],
       'targets' => [$target],
       'environment' => 'test',

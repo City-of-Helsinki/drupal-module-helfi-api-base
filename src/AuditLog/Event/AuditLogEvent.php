@@ -11,10 +11,10 @@ use Drupal\Component\EventDispatcher\Event;
  *
  * Event subscribers may enrich the event before it is written
  * to the audit log. Origin and environment fields are injected
- * in HelfiAuditLogSourceEntry.
+ * in AuditLogSourceEntry.
  *
  * @see https://helsinkisolutionoffice.atlassian.net/wiki/spaces/platta/pages/10189438980/Implementing+audit+logging
- * @see \Drupal\helfi_api_base\AuditLog\Sources\HelfiAuditLogSourceEntry::getDocument()
+ * @see \Drupal\helfi_api_base\AuditLog\Sources\AuditLogSourceEntry::getDocument()
  * @see \Drupal\helfi_api_base\AuditLog\AuditLogService::logOperation()
  */
 class AuditLogEvent extends Event {
