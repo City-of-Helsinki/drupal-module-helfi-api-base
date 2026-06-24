@@ -1,0 +1,536 @@
+diff --git a/core/core.services.yml b/core/core.services.yml
+index d30e8d93bd7090995d9ad9eca9d4f6906e6cd25e..5b04641b63a0e7937c05083d3d69a05c12faf9b1 100644
+--- a/core/core.services.yml
++++ b/core/core.services.yml
+@@ -266,7 +266,7 @@ services:
+       - [setContainer, ['@service_container']]
+   cache.backend.database:
+     class: Drupal\Core\Cache\DatabaseBackendFactory
+-    arguments: ['@database', '@cache_tags.invalidator.checksum', '@settings', '@serialization.phpserialize', '@datetime.time']
++    arguments: ['@database', '@cache_tags.invalidator.checksum', '@settings', '@serialization.cache_data', '@datetime.time']
+     tags:
+       - { name: backend_overridable }
+   cache.backend.apcu:
+@@ -607,6 +607,8 @@ services:
+ 
+   serialization.json:
+     class: Drupal\Component\Serialization\Json
++  serialization.cache_data:
++    class: Drupal\Component\Serialization\IgbinarySerialize
+   serialization.phpserialize:
+     class: Drupal\Component\Serialization\PhpSerialize
+   Drupal\Component\Serialization\ObjectAwareSerializationInterface: '@serialization.phpserialize'
+diff --git a/core/lib/Drupal/Component/Serialization/IgbinarySerialize.php b/core/lib/Drupal/Component/Serialization/IgbinarySerialize.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..f0c247a292bc32f4c1e1f3ebd8e7ff1b6066fd72
+--- /dev/null
++++ b/core/lib/Drupal/Component/Serialization/IgbinarySerialize.php
+@@ -0,0 +1,136 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Component\Serialization;
++
++use Drupal\Component\Serialization\Exception\InvalidDataTypeException;
++
++/**
++ * Uses igbinary when available while remaining compatible with PHP serialize().
++ */
++class IgbinarySerialize implements ObjectAwareSerializationInterface {
++
++  /**
++   * Prefix used to distinguish igbinary payloads from legacy serialized data.
++   */
++  protected const IGBINARY_PREFIX = "\x00DRUPAL:igbinary\x00";
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function encode($data) {
++    static $is_igbinary_serialize = function_exists('igbinary_serialize');
++
++    if (!$is_igbinary_serialize) {
++      return static::executeEncoding(static fn() => serialize($data));
++    }
++
++    $encoded = static::executeEncoding(static fn() => igbinary_serialize($data));
++
++    if ($encoded === NULL) {
++      throw new InvalidDataTypeException('Igbinary serialization failed.');
++    }
++
++    return static::IGBINARY_PREFIX . $encoded;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function decode($raw) {
++    if (!str_starts_with($raw, static::IGBINARY_PREFIX)) {
++      return static::executeDecoding(
++        static fn() => unserialize($raw),
++        [
++          'unserialize(): Error at offset',
++          'unserialize(): Extra data starting at offset',
++          'unserialize(): Unexpected end of serialized data',
++        ],
++      );
++    }
++    static $is_igbinary_unserialize = function_exists('igbinary_unserialize');
++
++    if (!$is_igbinary_unserialize) {
++      // The extension may have been disabled or removed after data was stored.
++      @trigger_error('The igbinary extension is required to decode igbinary serialized data.', E_USER_WARNING);
++      return FALSE;
++    }
++
++    return static::executeDecoding(
++      static fn() => igbinary_unserialize(substr($raw, strlen(static::IGBINARY_PREFIX))),
++      [
++        'igbinary_unserialize_',
++        'igbinary_unserialize:',
++      ],
++    );
++  }
++
++  /**
++   * Converts thrown encoding failures into typed exceptions.
++   *
++   * @param callable $callback
++   *   The encoding callback to execute.
++   *
++   * @return mixed
++   *   The callback result.
++   *
++   * @throws \Drupal\Component\Serialization\Exception\InvalidDataTypeException
++   *   Thrown when the serializer throws.
++   */
++  protected static function executeEncoding(callable $callback) {
++    try {
++      return $callback();
++    }
++    catch (\Throwable $exception) {
++      throw new InvalidDataTypeException($exception->getMessage(), (int) $exception->getCode(), $exception);
++    }
++  }
++
++  /**
++   * Converts serializer decode warnings and errors into typed exceptions.
++   *
++   * @param callable $callback
++   *   The decoding callback to execute.
++   * @param string[] $failure_warning_prefixes
++   *   Warning prefixes that indicate malformed serialized data.
++   *
++   * @return mixed
++   *   The callback result.
++   *
++   * @throws \Drupal\Component\Serialization\Exception\InvalidDataTypeException
++   *   Thrown when decode fails.
++   */
++  protected static function executeDecoding(callable $callback, array $failure_warning_prefixes) {
++    set_error_handler(static function (int $severity, string $message) use ($failure_warning_prefixes): bool {
++      foreach ($failure_warning_prefixes as $prefix) {
++        if (str_starts_with($message, $prefix)) {
++          throw new InvalidDataTypeException($message, $severity);
++        }
++      }
++
++      return FALSE;
++    }, E_WARNING);
++
++    try {
++      return $callback();
++    }
++    catch (InvalidDataTypeException $exception) {
++      throw $exception;
++    }
++    catch (\Throwable $exception) {
++      throw new InvalidDataTypeException($exception->getMessage(), (int) $exception->getCode(), $exception);
++    }
++    finally {
++      restore_error_handler();
++    }
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function getFileExtension() {
++    return 'serialized';
++  }
++
++}
+diff --git a/core/lib/Drupal/Core/DrupalKernel.php b/core/lib/Drupal/Core/DrupalKernel.php
+index d3db10f3269ba74fb11d3ebf746fa1950d76a8b3..d3c63a65796af22f90023f19d80c4589e2ee6117 100644
+--- a/core/lib/Drupal/Core/DrupalKernel.php
++++ b/core/lib/Drupal/Core/DrupalKernel.php
+@@ -5,6 +5,7 @@
+ use Composer\Autoload\ClassLoader;
+ use Drupal\Component\EventDispatcher\Event;
+ use Drupal\Component\FileCache\FileCacheFactory;
++use Drupal\Component\Serialization\IgbinarySerialize;
+ use Drupal\Component\Serialization\PhpSerialize;
+ use Drupal\Component\Utility\UrlHelper;
+ use Drupal\Core\Cache\DatabaseBackend;
+@@ -91,7 +92,7 @@ class DrupalKernel implements DrupalKernelInterface, TerminableInterface {
+           '@database',
+           '@cache_tags_provider.container',
+           'container',
+-          '@serialization.phpserialize',
++          '@serialization.cache_data',
+           '@datetime.time',
+           DatabaseBackend::MAXIMUM_NONE,
+         ],
+@@ -100,6 +101,9 @@ class DrupalKernel implements DrupalKernelInterface, TerminableInterface {
+         'class' => 'Drupal\Core\Cache\DatabaseCacheTagsChecksum',
+         'arguments' => ['@database'],
+       ],
++      'serialization.cache_data' => [
++        'class' => IgbinarySerialize::class,
++      ],
+       'serialization.phpserialize' => [
+         'class' => PhpSerialize::class,
+       ],
+diff --git a/core/misc/cspell/drupal-dictionary.txt b/core/misc/cspell/drupal-dictionary.txt
+index be964057768f74b982a86dbb3cee6aed041ee232..a43768131f98f23cf65bcbb5e0338fae41f9ade5 100644
+--- a/core/misc/cspell/drupal-dictionary.txt
++++ b/core/misc/cspell/drupal-dictionary.txt
+@@ -24,6 +24,7 @@ fieldable
+ fulldate
+ groupby
+ groupwise
++igbinary
+ itok
+ jswebassert
+ keyvalue
+diff --git a/core/modules/jsonapi/tests/src/Functional/ResourceTestBase.php b/core/modules/jsonapi/tests/src/Functional/ResourceTestBase.php
+index 0754503b24065ed0d5b5e8ab15bdc1a3070902c1..75993c02226e98be3e6d4d8b5d13c0b81bc80cb5 100644
+--- a/core/modules/jsonapi/tests/src/Functional/ResourceTestBase.php
++++ b/core/modules/jsonapi/tests/src/Functional/ResourceTestBase.php
+@@ -1018,8 +1018,9 @@ public function testGetIndividual(): void {
+     $this->assertLessThanOrEqual(5, count($cache_items));
+     $found_cached_200_response = FALSE;
+     $other_cached_responses_are_4xx = TRUE;
++    $serializer = $this->container->get('serialization.cache_data');
+     foreach ($cache_items as $cache_item) {
+-      $cached_response = unserialize($cache_item->data);
++      $cached_response = $serializer::decode($cache_item->data);
+       if (!$cached_response instanceof CacheRedirect) {
+         if ($cached_response->getStatusCode() === 200) {
+           $found_cached_200_response = TRUE;
+diff --git a/core/modules/mysql/tests/src/Kernel/mysql/DbDumpTest.php b/core/modules/mysql/tests/src/Kernel/mysql/DbDumpTest.php
+index 850c2f9661887e4699a45f7377ba410c5cae2de8..412d63788d08905a78a2efb9b6bee0fd9f203cb8 100644
+--- a/core/modules/mysql/tests/src/Kernel/mysql/DbDumpTest.php
++++ b/core/modules/mysql/tests/src/Kernel/mysql/DbDumpTest.php
+@@ -78,7 +78,7 @@ public function register(ContainerBuilder $container): void {
+       ->addArgument(new Reference('database'))
+       ->addArgument(new Reference('cache_tags.invalidator.checksum'))
+       ->addArgument(new Reference('settings'))
+-      ->addArgument(new Reference('serialization.phpserialize'))
++      ->addArgument(new Reference('serialization.cache_data'))
+       ->addArgument(new Reference(TimeInterface::class));
+   }
+ 
+diff --git a/core/modules/rest/tests/src/Functional/EntityResource/EntityResourceTestBase.php b/core/modules/rest/tests/src/Functional/EntityResource/EntityResourceTestBase.php
+index 04a1c2745a982151be56324499929f5bd9bcaf7b..82d77b1575217484c083e88082e450c02e200553 100644
+--- a/core/modules/rest/tests/src/Functional/EntityResource/EntityResourceTestBase.php
++++ b/core/modules/rest/tests/src/Functional/EntityResource/EntityResourceTestBase.php
+@@ -632,8 +632,9 @@ protected function doTestGet(): void {
+       $this->assertLessThanOrEqual(2, count($cache_items));
+       $found_cached_200_response = FALSE;
+       $other_cached_responses_are_4xx = TRUE;
++      $serializer = $this->container->get('serialization.cache_data');
+       foreach ($cache_items as $cache_item) {
+-        $cached_response = unserialize($cache_item->data);
++        $cached_response = $serializer::decode($cache_item->data);
+         if (!$cached_response instanceof CacheRedirect) {
+           if ($cached_response->getStatusCode() === 200) {
+             $found_cached_200_response = TRUE;
+diff --git a/core/tests/Drupal/KernelTests/Core/Cache/ChainedFastBackendTest.php b/core/tests/Drupal/KernelTests/Core/Cache/ChainedFastBackendTest.php
+index 30533bdeb87029b19d2080d91f707e4cf14c935e..5f3f7a2a14f78ef98b17ad2533625988fcf9e45f 100644
+--- a/core/tests/Drupal/KernelTests/Core/Cache/ChainedFastBackendTest.php
++++ b/core/tests/Drupal/KernelTests/Core/Cache/ChainedFastBackendTest.php
+@@ -25,7 +25,7 @@ class ChainedFastBackendTest extends GenericCacheBackendUnitTestBase {
+    *   A new ChainedFastBackend object.
+    */
+   protected function createCacheBackend($bin): ChainedFastBackend {
+-    $consistent_backend = new DatabaseBackend(\Drupal::service('database'), \Drupal::service('cache_tags.invalidator.checksum'), $bin, \Drupal::service('serialization.phpserialize'), \Drupal::service(TimeInterface::class), 100);
++    $consistent_backend = new DatabaseBackend(\Drupal::service('database'), \Drupal::service('cache_tags.invalidator.checksum'), $bin, \Drupal::service('serialization.cache_data'), \Drupal::service(TimeInterface::class), 100);
+     $fast_backend = new PhpBackend($bin, \Drupal::service('cache_tags.invalidator.checksum'), \Drupal::service(TimeInterface::class));
+     $backend = new ChainedFastBackend($consistent_backend, $fast_backend, $bin);
+     // Explicitly register the cache bin as it can not work through the
+diff --git a/core/tests/Drupal/KernelTests/Core/Cache/DatabaseBackendTest.php b/core/tests/Drupal/KernelTests/Core/Cache/DatabaseBackendTest.php
+index 3ec3c7646b6d0306a2954c1fda8498a25e2d01aa..2b2debdf1359c15fa5946a37325a5ab81251d528 100644
+--- a/core/tests/Drupal/KernelTests/Core/Cache/DatabaseBackendTest.php
++++ b/core/tests/Drupal/KernelTests/Core/Cache/DatabaseBackendTest.php
+@@ -5,6 +5,8 @@
+ namespace Drupal\KernelTests\Core\Cache;
+ 
+ use Drupal\Component\Datetime\TimeInterface;
++use Drupal\Component\Serialization\IgbinarySerialize;
++use Drupal\Core\Cache\Cache;
+ use Drupal\Core\Cache\DatabaseBackend;
+ use PHPUnit\Framework\Attributes\Group;
+ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+@@ -34,7 +36,7 @@ protected function createCacheBackend($bin): DatabaseBackend {
+       $this->container->get('database'),
+       $this->container->get('cache_tags.invalidator.checksum'),
+       $bin,
+-      $this->container->get('serialization.phpserialize'),
++      $this->container->get('serialization.cache_data'),
+       \Drupal::service(TimeInterface::class),
+       static::$maxRows,
+     );
+@@ -69,6 +71,63 @@ public function testSetGet(): void {
+     $this->assertSame(DatabaseBackend::MAX_ITEMS_PER_CACHE_SET + 1, $this->getNumRows());
+   }
+ 
++  /**
++   * Tests that legacy PHP-serialized cache rows remain readable.
++   */
++  public function testLegacyPhpSerializedDataRemainsReadable(): void {
++    $backend = $this->getCacheBackend();
++    $data = [
++      'foo' => 'bar',
++      'nested' => ['baz' => TRUE],
++    ];
++
++    // Prime the database table before inserting a raw legacy row.
++    $backend->set('legacy_php_serialized_setup', 'setup');
++    $backend->delete('legacy_php_serialized_setup');
++
++    $this->container->get('database')
++      ->insert('cache_' . $this->testBin)
++      ->fields([
++        'cid' => 'legacy_php_serialized',
++        'expire' => Cache::PERMANENT,
++        'created' => round(microtime(TRUE), 3),
++        'tags' => '',
++        'checksum' => $this->container->get('cache_tags.invalidator.checksum')->getCurrentChecksum([]),
++        'data' => serialize($data),
++        'serialized' => 1,
++      ])
++      ->execute();
++
++    $this->assertSame($data, $backend->get('legacy_php_serialized')->data);
++  }
++
++  /**
++   * Tests that new cache rows use the igbinary serializer when available.
++   */
++  public function testIgbinaryPayloadsAreWrittenWhenAvailable(): void {
++    if (!function_exists('igbinary_serialize')) {
++      $this->markTestSkipped('Requires the igbinary extension.');
++    }
++
++    $cid = 'igbinary_payload';
++    $data = [
++      'foo' => 'bar',
++      'nested' => ['baz' => TRUE],
++    ];
++
++    $this->getCacheBackend()->set($cid, $data);
++
++    $row = $this->container->get('database')
++      ->select('cache_' . $this->testBin, 'c')
++      ->fields('c', ['data', 'serialized'])
++      ->condition('cid', $cid)
++      ->execute()
++      ->fetchAssoc();
++
++    $this->assertSame(1, (int) $row['serialized']);
++    $this->assertSame(IgbinarySerialize::encode($data), $row['data']);
++  }
++
+   /**
+    * Tests the row count limiting of cache bin database tables.
+    */
+diff --git a/core/tests/Drupal/Tests/Component/Serialization/IgbinarySerializeTest.php b/core/tests/Drupal/Tests/Component/Serialization/IgbinarySerializeTest.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..7e49ff845015832f6ced79a81ba6b2452c1d9927
+--- /dev/null
++++ b/core/tests/Drupal/Tests/Component/Serialization/IgbinarySerializeTest.php
+@@ -0,0 +1,159 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Tests\Component\Serialization;
++
++use Drupal\Component\Serialization\Exception\InvalidDataTypeException;
++use Drupal\Component\Serialization\IgbinarySerialize;
++use PHPUnit\Framework\Attributes\CoversClass;
++use PHPUnit\Framework\Attributes\Group;
++use PHPUnit\Framework\TestCase;
++
++/**
++ * Tests Drupal\Component\Serialization\IgbinarySerialize.
++ */
++#[CoversClass(IgbinarySerialize::class)]
++#[Group('Serialization')]
++class IgbinarySerializeTest extends TestCase {
++
++  /**
++   * Tests igbinary encoding and decoding when the extension is available.
++   */
++  public function testEncodeDecodeWithIgbinary(): void {
++    if (!function_exists('igbinary_serialize')) {
++      $this->markTestSkipped('Requires the igbinary extension.');
++    }
++
++    $data = [
++      'foo' => 'bar',
++      'nested' => ['baz' => TRUE],
++      'object' => (object) ['qux' => 'quux'],
++    ];
++
++    $encoded = IgbinarySerialize::encode($data);
++
++    $this->assertNotSame(serialize($data), $encoded);
++    $this->assertEquals($data, IgbinarySerialize::decode($encoded));
++  }
++
++  /**
++   * Tests that encoding falls back to PHP serialization when needed.
++   */
++  public function testEncodeDecodeFallsBackWithoutIgbinary(): void {
++    $data = [
++      'foo' => 'bar',
++      'nested' => ['baz' => TRUE],
++      'object' => (object) ['qux' => 'quux'],
++    ];
++
++    $encoded = TestIgbinarySerializeWithoutExtension::encode($data);
++
++    $this->assertSame(serialize($data), $encoded);
++    $this->assertEquals($data, TestIgbinarySerializeWithoutExtension::decode($encoded));
++  }
++
++  /**
++   * Tests that legacy PHP-serialized data remains readable.
++   */
++  public function testDecodeLegacyPhpSerializedData(): void {
++    $data = [
++      'foo' => 'bar',
++      'nested' => ['baz' => TRUE],
++      'object' => (object) ['qux' => 'quux'],
++    ];
++
++    $this->assertEquals($data, IgbinarySerialize::decode(serialize($data)));
++  }
++
++  /**
++   * Tests that invalid values raise typed exceptions on encode.
++   */
++  public function testEncodeInvalidDataThrowsException(): void {
++    $this->expectException(InvalidDataTypeException::class);
++    $this->expectExceptionMessage("Serialization of 'Closure' is not allowed");
++
++    IgbinarySerialize::encode(static fn() => NULL);
++  }
++
++  /**
++   * Tests that invalid legacy payloads fail with typed exceptions.
++   */
++  public function testDecodeInvalidLegacyPhpSerializedDataThrowsException(): void {
++    $this->expectException(InvalidDataTypeException::class);
++
++    IgbinarySerialize::decode('not serialized');
++  }
++
++  /**
++   * Tests that invalid igbinary payloads fail with typed exceptions.
++   */
++  public function testDecodeInvalidIgbinaryPayloadThrowsException(): void {
++    if (!function_exists('igbinary_unserialize')) {
++      $this->markTestSkipped('Requires the igbinary extension.');
++    }
++
++    $this->expectException(InvalidDataTypeException::class);
++
++    IgbinarySerialize::decode(TestIgbinarySerializeWithoutExtension::getIgbinaryPrefix() . 'not igbinary');
++  }
++
++  /**
++   * Tests that igbinary payloads return FALSE without the extension.
++   */
++  public function testDecodeIgbinaryPayloadWithoutExtension(): void {
++    if (!function_exists('igbinary_serialize')) {
++      $this->markTestSkipped('Requires the igbinary extension.');
++    }
++
++    $encoded = IgbinarySerialize::encode(['foo' => 'bar']);
++    $this->assertFalse(@TestIgbinarySerializeWithoutExtension::decode($encoded));
++  }
++
++  /**
++   * Tests the file extension.
++   */
++  public function testGetFileExtension(): void {
++    $this->assertSame('serialized', IgbinarySerialize::getFileExtension());
++  }
++
++}
++
++/**
++ * Test-only serializer variant that emulates the no-extension code path.
++ */
++class TestIgbinarySerializeWithoutExtension extends IgbinarySerialize {
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function encode($data) {
++    return static::executeEncoding(static fn() => serialize($data));
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function decode($raw) {
++    if (!str_starts_with($raw, static::IGBINARY_PREFIX)) {
++      return static::executeDecoding(
++        static fn() => unserialize($raw),
++        [
++          'unserialize(): Error at offset',
++          'unserialize(): Extra data starting at offset',
++          'unserialize(): Unexpected end of serialized data',
++        ],
++      );
++    }
++
++    return FALSE;
++  }
++
++  /**
++   * Exposes the igbinary prefix for test inputs.
++   */
++  public static function getIgbinaryPrefix(): string {
++    return static::IGBINARY_PREFIX;
++  }
++
++}
+diff --git a/core/tests/Drupal/Tests/Core/Cache/DatabaseBackendFactoryTest.php b/core/tests/Drupal/Tests/Core/Cache/DatabaseBackendFactoryTest.php
+index fd6fe322b77c8a6b79ba69a08d3a37c139c96918..b1663b50add7becbe40bf15052f48f1bfcc89609 100644
+--- a/core/tests/Drupal/Tests/Core/Cache/DatabaseBackendFactoryTest.php
++++ b/core/tests/Drupal/Tests/Core/Cache/DatabaseBackendFactoryTest.php
+@@ -5,7 +5,7 @@
+ namespace Drupal\Tests\Core\Cache;
+ 
+ use Drupal\Component\Datetime\TimeInterface;
+-use Drupal\Component\Serialization\PhpSerialize;
++use Drupal\Component\Serialization\IgbinarySerialize;
+ use Drupal\Core\Cache\CacheTagsChecksumInterface;
+ use Drupal\Core\Cache\DatabaseBackend;
+ use Drupal\Core\Cache\DatabaseBackendFactory;
+@@ -35,7 +35,7 @@ public function testGet(array $settings, int $expected_max_rows_foo, int $expect
+       $this->prophesize(Connection::class)->reveal(),
+       $this->prophesize(CacheTagsChecksumInterface::class)->reveal(),
+       new Settings($settings),
+-      new PhpSerialize(),
++      new IgbinarySerialize(),
+       $this->prophesize(TimeInterface::class)->reveal(),
+     );
+ 

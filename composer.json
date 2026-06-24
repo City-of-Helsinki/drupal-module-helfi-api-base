@@ -6,7 +6,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "drupal/big_pipe_sessionless": "^2.0",
         "drupal/entity": "^1.0",
         "drupal/health_check": "^3.0",
         "drupal/monolog": "^3.0",
@@ -40,8 +39,8 @@
     },
     "extra": {
         "patches": {
-                "drupal/big_pipe_sessionless": {
-                        "Drupal 11 support (https://drupal.org/i/3428235)": "https://www.drupal.org/files/issues/2025-05-07/3428235.d11.patch"
+                "drupal/core": {
+                        "[#3014514] Make igbinary the default serializer, if available": "./public/modules/contrib/helfi_api_base/patches/3014514.patch"
                 }
         }
     }
