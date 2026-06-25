@@ -1,0 +1,7 @@
+services:
+  # Override the default redis cache backend to use igbinary serialization.
+  # NOTE: This requires the core patch from https://www.drupal.org/project/drupal/issues/3014514
+  # @todo Remove this patch.
+  cache.backend.redis:
+    class: Drupal\redis\Cache\CacheBackendFactory
+    arguments: ['@redis.factory', '@cache_tags.invalidator.checksum', '@serialization.cache_data']
