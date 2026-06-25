@@ -11,10 +11,8 @@ use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Site\Settings;
-use Drupal\helfi_api_base\ActionLog\ActionLogger;
 use Drupal\helfi_api_base\Features\FeatureManager;
 use Drupal\helfi_api_base\Link\LinkProcessor;
-use Drupal\helfi_api_base\UserExpire\UserExpireManager;
 
 /**
  * Implements hook_element_info_alter().
@@ -98,25 +96,6 @@ function helfi_api_base_entity_update(EntityInterface $entity) : void {
 }
 
 /**
- * Implements hook_cron().
- */
-function helfi_api_base_cron() : void {
-  /** @var \Drupal\helfi_api_base\Features\FeatureManager $featureManager */
-  $featureManager = \Drupal::service(FeatureManager::class);
-
-  /** @var \Drupal\helfi_api_base\UserExpire\UserExpireManager $userExpireManager */
-  $userExpireManager = \Drupal::service(UserExpireManager::class);
-
-  if ($featureManager->isEnabled(FeatureManager::USER_EXPIRE)) {
-    $userExpireManager->cancelExpiredUsers();
-  }
-
-  if ($featureManager->isEnabled(FeatureManager::USER_DELETE)) {
-    $userExpireManager->deleteExpiredUsers();
-  }
-}
-
-/**
  * Implements hook_template_preprocess_default_variables_alter().
  */
 function helfi_api_base_template_preprocess_default_variables_alter(array &$variables): void {
@@ -155,18 +134,4 @@ function helfi_api_base_library_info_alter(array &$libraries, string $extension)
       $library['version'] = Settings::get('deployment_identifier', '0.0.0');
     }
   }
-}
-
-/**
- * Implements hook_entity_presave().
- */
-function helfi_api_base_entity_presave(EntityInterface $entity): void {
-  \Drupal::service(ActionLogger::class)->log('Save', $entity);
-}
-
-/**
- * Implements hook_entity_predelete().
- */
-function helfi_api_base_entity_predelete(EntityInterface $entity): void {
-  \Drupal::service(ActionLogger::class)->log('Delete', $entity);
 }

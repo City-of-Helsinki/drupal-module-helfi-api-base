@@ -41,16 +41,6 @@ parameters:
 			path: helfi_api_base.module
 
 		-
-			message: "#^Method Drupal\\\\helfi_api_base\\\\ActionLog\\\\ActionLogger\\:\\:__construct\\(\\) has parameter \\$actionLogEntities with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ActionLog/ActionLogger.php
-
-		-
-			message: "#^Property Drupal\\\\helfi_api_base\\\\ActionLog\\\\ActionLogger\\:\\:\\$allowedTypes type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ActionLog/ActionLogger.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiClient\\:\\:__construct\\(\\) has parameter \\$defaultOptions with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/ApiClient/ApiClient.php
@@ -751,11 +741,6 @@ parameters:
 			path: tests/src/FunctionalJavascript/ExistingSiteJavascriptTestBase.php
 
 		-
-			message: "#^Parameter \\#1 \\$account of method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ActionLogTest\\:\\:setCurrentUser\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\Entity\\\\User\\|false given\\.$#"
-			count: 1
-			path: tests/src/Kernel/ActionLogTest.php
-
-		-
 			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ApiKernelTestBase\\:\\:alter\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: tests/src/Kernel/ApiKernelTestBase.php
@@ -769,6 +754,11 @@ parameters:
 			message: "#^Parameter \\#2 \\$haystack of method PHPUnit\\\\Framework\\\\Assert\\:\\:assertStringContainsString\\(\\) expects string, string\\|false given\\.$#"
 			count: 1
 			path: tests/src/Kernel/AssetVersioningTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/src/Kernel/AuditLog/ResilientLoggerTasksTest.php
 
 		-
 			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
