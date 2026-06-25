@@ -36,12 +36,5 @@
         "drupal/search_api": "^1.0",
         "drupal/elasticsearch_connector": "^8.0@alpha",
         "donatj/mock-webserver": "dev-master"
-    },
-    "extra": {
-        "patches": {
-                "drupal/core": {
-                        "[#3014514] Make igbinary the default serializer, if available": "./public/modules/contrib/helfi_api_base/patches/3014514.patch"
-                }
-        }
     }
 }
