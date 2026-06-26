@@ -32,7 +32,7 @@ final readonly class Location {
   /**
    * Creates a Location instance from an associative array.
    *
-   * @param array $data
+   * @param array<mixed> $data
    *   An associative array containing:
    *   - coordinates: An indexed array where the first element is the
    *     longitude and the second is the latitude.

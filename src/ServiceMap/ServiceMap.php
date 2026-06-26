@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\ServiceMap;
 
-use Drupal\Component\Utility\Xss;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Utility\Error;
@@ -33,9 +32,9 @@ final class ServiceMap implements ServiceMapInterface {
   /**
    * Constructs a new instance.
    *
-   * @param \GuzzleHttp\Client $client
+   * @param \GuzzleHttp\ClientInterface $client
    *   The HTTP client.
-   * @param \Drupal\Core\Language\LanguageManager $languageManager
+   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   Language manager.
    * @param \Psr\Log\LoggerInterface $logger
    *   Logger.
@@ -62,10 +61,26 @@ final class ServiceMap implements ServiceMapInterface {
   }
 
   /**
+   * Sanitizes the given address.
+   *
+   * @param string $address
+   *   The address.
+   *
+   * @return string|null
+   *   The sanitized address.
+   */
+  public function sanitizeAddress(string $address) : ?string {
+    // ServiceMap API only allows letters, numbers, spaces and .,'+-&|.
+    // \p{L} - Unicode letters (a-z, A-Z, ä, ö, å, etc.)
+    // \p{N} - Unicode numbers (0-9).
+    return preg_replace("/[^\p{L}\p{N} .,'+\-&|]/u", '', $address);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function query(string $address, int $page_size = 1) : array {
-    $address = Xss::filter($address);
+    $address = $this->sanitizeAddress($address);
 
     try {
       $response = $this->client->request('GET', self::API_URL, [

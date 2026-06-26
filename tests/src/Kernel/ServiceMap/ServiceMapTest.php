@@ -38,9 +38,9 @@ class ServiceMapTest extends KernelTestBase {
   /**
    * Gets the SUT.
    *
-   * @param \Prophecy\Prophecy\ObjectProphecy $client
+   * @param \Prophecy\Prophecy\ObjectProphecy<\GuzzleHttp\ClientInterface> $client
    *   The client mock.
-   * @param \Prophecy\Prophecy\ObjectProphecy $logger
+   * @param \Prophecy\Prophecy\ObjectProphecy<\Psr\Log\LoggerInterface> $logger
    *   The logger mock.
    *
    * @return \Drupal\helfi_api_base\ServiceMap\ServiceMap
