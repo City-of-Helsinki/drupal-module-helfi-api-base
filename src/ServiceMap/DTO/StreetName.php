@@ -26,7 +26,7 @@ final readonly class StreetName {
    * will be populated using a corresponding key from the input array, or
    * fallback to the 'fi' value if the key is not present.
    *
-   * @param array $data
+   * @param array<mixed> $data
    *   An associative array containing:
    *   - fi: The default value to use for any property not explicitly set.
    *   - <property_name>: (optional) Values for specific class properties.

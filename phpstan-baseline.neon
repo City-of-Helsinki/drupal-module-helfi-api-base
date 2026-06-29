@@ -586,16 +586,6 @@ parameters:
 			path: src/Plugin/migrate/source/HttpSourcePluginBase.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_api_base\\\\ServiceMap\\\\DTO\\\\Location\\:\\:createFromArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ServiceMap/DTO/Location.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_api_base\\\\ServiceMap\\\\DTO\\\\StreetName\\:\\:createFromArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ServiceMap/DTO/StreetName.php
-
-		-
 			message: "#^Parameter \\#2 \\$uid of function user_cancel expects int, string given\\.$#"
 			count: 1
 			path: src/UserExpire/UserExpireManager.php
@@ -896,27 +886,7 @@ parameters:
 			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
 
 		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:getSut\\(\\) has parameter \\$client with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy but does not specify its types\\: T$#"
-			count: 1
-			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:getSut\\(\\) has parameter \\$logger with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy but does not specify its types\\: T$#"
-			count: 1
-			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
-
-		-
 			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$client of class Drupal\\\\helfi_api_base\\\\ServiceMap\\\\ServiceMap constructor expects GuzzleHttp\\\\Client, object given\\.$#"
-			count: 1
-			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
-
-		-
-			message: "#^Parameter \\#3 \\$logger of class Drupal\\\\helfi_api_base\\\\ServiceMap\\\\ServiceMap constructor expects Psr\\\\Log\\\\LoggerInterface, object given\\.$#"
 			count: 1
 			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
 
