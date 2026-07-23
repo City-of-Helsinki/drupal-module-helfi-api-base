@@ -66,8 +66,9 @@ final class EnsureApiAccountsSubscriber extends DeployHookEventSubscriberBase {
         'roles' => $roles,
       ] = $account;
 
+      $existing = $storage->loadByProperties(['name' => $username]);
       /** @var \Drupal\user\UserInterface $user */
-      if (!$user = user_load_by_name($username)) {
+      if (!$user = reset($existing)) {
         $this->messenger
           ->addMessage(
             sprintf('[helfi_api_base]: Account %s not found. Creating a new account.', $username)
