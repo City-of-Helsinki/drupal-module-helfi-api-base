@@ -40,6 +40,7 @@ final class MigrationUpdateActionDerivative extends DeriverBase implements Conta
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
+    assert(is_array($base_plugin_definition));
     if (empty($this->derivatives)) {
       $definitions = [];
 

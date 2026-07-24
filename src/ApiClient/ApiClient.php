@@ -13,7 +13,6 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TransferException;
-use GuzzleHttp\Utils;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -129,7 +128,7 @@ class ApiClient {
 
     $response = $this->httpClient->request($method, $url, $options);
 
-    return new ApiResponse(Utils::jsonDecode($response->getBody()->getContents()));
+    return new ApiResponse(json_decode($response->getBody()->getContents(), flags: JSON_THROW_ON_ERROR));
   }
 
   /**
