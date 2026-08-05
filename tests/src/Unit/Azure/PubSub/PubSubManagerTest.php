@@ -176,4 +176,39 @@ class PubSubManagerTest extends UnitTestCase {
     $this->assertEquals($expectedMessage, $sut->receive());
   }
 
+  /**
+   * Tests that receive() throws an exception when the server disconnects.
+   */
+  public function testReceiveDisconnected() : void {
+    $dispatcher = $this->prophesize(EventDispatcherInterface::class);
+    $dispatcher->dispatch(Argument::any())->shouldNotBeCalled();
+
+    $client = $this->prophesize(Client::class);
+    $client->text('{"type":"joinGroup","group":"local"}')->shouldBeCalledTimes(1);
+    $client->receive()
+      ->willReturn(
+        new Text('{"type":"event","event":"connected"}'),
+        new Text('{"type":"event","event":"disconnected"}'),
+      );
+    $clientFactory = $this->prophesize(PubSubClientFactoryInterface::class);
+    $clientFactory->create('token')
+      ->willReturn($client->reveal());
+
+    $sut = new PubSubManager(
+      $clientFactory->reveal(),
+      $dispatcher->reveal(),
+      $this->prophesize(TimeInterface::class)->reveal(),
+      new Settings(
+        'hub',
+        'local',
+        'localhost',
+        ['token'],
+      ),
+      $this->prophesize(LoggerInterface::class)->reveal(),
+    );
+    $this->expectException(ClientException::class);
+    $this->expectExceptionMessage('Server disconnected.');
+    $sut->receive();
+  }
+
 }
