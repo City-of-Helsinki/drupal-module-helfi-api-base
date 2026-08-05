@@ -169,6 +169,12 @@ final class PubSubManager implements PubSubManagerInterface {
 
     $json = $this->decodeMessage($message->getContent());
 
+    // Make sure we restart the worker if we get disconnected from the
+    // PubSub server.
+    if (isset($json['event']) && $json['event'] === 'disconnected') {
+      throw new ClientException('Server disconnected.');
+    }
+
     $this->eventDispatcher
       ->dispatch(new PubSubMessage($json));
     return $message->getContent();
