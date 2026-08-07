@@ -74,6 +74,7 @@ class GlobalUrlsTest extends UnitTestCase {
    * Data provider for supported language codes.
    *
    * @return array<string, array<string>>
+   *   Language codes to test.
    */
   public static function langcodeProvider(): array {
     return [
