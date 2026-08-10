@@ -28,7 +28,7 @@ final class GlobalUrls {
         'helsinki_near_you_link_url' => 'https://www.hel.fi/fi/helsinki-lahellasi',
         'ai_register_url' => 'https://ai.hel.fi/eettiset-periaatteet/',
         'helfi_search_form_url' => 'https://www.hel.fi/haku',
-        'helfi_ai_search_form_url' => 'https://helfi-etusivu.docker.so/fi/search/new',
+        'helfi_ai_search_form_url' => 'https://www.hel.fi/fi/search/new',
         'error_page_home_link' => 'https://www.hel.fi/fi',
         'error_page_feedback_link' => 'https://palautteet.hel.fi/fi/',
       ];
@@ -42,7 +42,7 @@ final class GlobalUrls {
         'helsinki_near_you_link_url' => 'https://www.hel.fi/sv/helsingfors-nara-dig',
         'ai_register_url' => 'https://ai.hel.fi/sv/las-mer-om-ai-registret/',
         'helfi_search_form_url' => 'https://www.hel.fi/sok',
-        'helfi_ai_search_form_url' => 'https://helfi-etusivu.docker.so/sv/search/new',
+        'helfi_ai_search_form_url' => 'https://www.hel.fi/sv/search/new',
         'error_page_home_link' => 'https://www.hel.fi/sv',
         'error_page_feedback_link' => 'https://palautteet.hel.fi/sv/',
       ];
@@ -55,7 +55,7 @@ final class GlobalUrls {
       'helsinki_near_you_link_url' => 'https://www.hel.fi/en/helsinki-near-you',
       'ai_register_url' => 'https://ai.hel.fi/',
       'helfi_search_form_url' => 'https://www.hel.fi/search',
-      'helfi_ai_search_form_url' => 'https://helfi-etusivu.docker.so/en/search/new',
+      'helfi_ai_search_form_url' => 'https://www.hel.fi/en/search/new',
       'error_page_home_link' => 'https://www.hel.fi/en',
       'error_page_feedback_link' => 'https://palautteet.hel.fi/en/',
     ];
