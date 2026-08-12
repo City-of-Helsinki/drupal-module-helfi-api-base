@@ -50,6 +50,7 @@ function helfi_api_base_install(bool $is_syncing = FALSE) : void {
         'info' => FALSE,
         'debug' => FALSE,
       ])
+      ->set('ignored_channels', ['stage_file_proxy'])
       ->set('fatal_error_handler', TRUE)
       ->save();
   }
@@ -138,4 +139,19 @@ function helfi_api_base_update_9026(): void {
 function helfi_api_base_update_9028(): void {
   \Drupal::service(ModuleInstallerInterface::class)
     ->uninstall(['page_cache', 'big_pipe_sessionless']);
+}
+
+/**
+ * Silence stage_file_proxy logger channel from Sentry.
+ */
+function helfi_api_base_update_9029(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('raven')) {
+    return;
+  }
+  $config = \Drupal::configFactory()->getEditable('raven.settings');
+  $ignored = $config->get('ignored_channels') ?: [];
+  if (!in_array('stage_file_proxy', $ignored, TRUE)) {
+    $ignored[] = 'stage_file_proxy';
+    $config->set('ignored_channels', $ignored)->save();
+  }
 }
