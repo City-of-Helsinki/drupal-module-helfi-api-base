@@ -66,21 +66,6 @@ parameters:
 			path: src/ApiClient/ApiClient.php
 
 		-
-			message: "#^Parameter \\#1 \\$data of class Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiResponse constructor expects array\\|object, array\\|bool\\|float\\|int\\|object\\|string\\|null given\\.$#"
-			count: 1
-			path: src/ApiClient/ApiClient.php
-
-		-
-			message: "#^Parameter \\#1 \\$data of class Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiResponse constructor expects array\\|object, array\\|bool\\|float\\|int\\|object\\|string\\|null given\\.$#"
-			count: 1
-			path: src/ApiClient/ApiFixture.php
-
-		-
-			message: "#^Parameter \\#1 \\$json of static method GuzzleHttp\\\\Utils\\:\\:jsonDecode\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
-			path: src/ApiClient/ApiFixture.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_api_base\\\\ApiClient\\\\ApiResponse\\:\\:__construct\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/ApiClient/ApiResponse.php
@@ -556,11 +541,6 @@ parameters:
 			path: src/Plugin/migrate/source/HttpSourcePluginBase.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\migrate\\\\source\\\\HttpSourcePluginBase\\:\\:getContent\\(\\) should return array but returns array\\|bool\\|float\\|int\\|object\\|string\\.$#"
-			count: 1
-			path: src/Plugin/migrate/source/HttpSourcePluginBase.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_api_base\\\\Plugin\\\\migrate\\\\source\\\\HttpSourcePluginBase\\:\\:getFromCache\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Plugin/migrate/source/HttpSourcePluginBase.php
@@ -574,16 +554,6 @@ parameters:
 			message: "#^Property Drupal\\\\helfi_api_base\\\\Plugin\\\\migrate\\\\source\\\\HttpSourcePluginBase\\:\\:\\$entityIds type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Plugin/migrate/source/HttpSourcePluginBase.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_api_base\\\\ServiceMap\\\\DTO\\\\Location\\:\\:createFromArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ServiceMap/DTO/Location.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_api_base\\\\ServiceMap\\\\DTO\\\\StreetName\\:\\:createFromArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ServiceMap/DTO/StreetName.php
 
 		-
 			message: "#^Parameter \\#2 \\$uid of function user_cancel expects int, string given\\.$#"
@@ -631,11 +601,6 @@ parameters:
 			path: tests/modules/remote_entity_test/src/Entity/RemoteEntityForm.php
 
 		-
-			message: "#^Method Drupal\\\\remote_entity_test\\\\Entity\\\\RemoteEntityForm\\:\\:create\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: tests/modules/remote_entity_test/src/Entity/RemoteEntityForm.php
-
-		-
 			message: "#^Method Drupal\\\\remote_entity_test\\\\Entity\\\\RemoteEntityForm\\:\\:getAvailableMenus\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: tests/modules/remote_entity_test/src/Entity/RemoteEntityForm.php
@@ -661,16 +626,6 @@ parameters:
 			path: tests/modules/remote_entity_test/src/Plugin/migrate/source/DummySource.php
 
 		-
-			message: "#^Parameter \\#1 \\$account of method Drupal\\\\Tests\\\\BrowserTestBase\\:\\:drupalLogin\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\Entity\\\\User\\|false given\\.$#"
-			count: 1
-			path: tests/src/Functional/BrowserTestBase.php
-
-		-
-			message: "#^Parameter \\#1 \\$account of method Drupal\\\\Tests\\\\BrowserTestBase\\:\\:drupalLogin\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\UserInterface\\|false given\\.$#"
-			count: 1
-			path: tests/src/Functional/DebugUiTest.php
-
-		-
 			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Functional\\\\ExistingSiteTestBase\\:\\:drupalGetWithLanguage\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: tests/src/Functional/ExistingSiteTestBase.php
@@ -687,11 +642,6 @@ parameters:
 
 		-
 			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Functional/MenuLinkFormTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$account of method Drupal\\\\Tests\\\\BrowserTestBase\\:\\:drupalLogin\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\UserInterface\\|false given\\.$#"
 			count: 1
 			path: tests/src/Functional/MenuLinkFormTest.php
 
@@ -781,11 +731,6 @@ parameters:
 			path: tests/src/Kernel/Entity/Access/RemoteEntityAccessTestBase.php
 
 		-
-			message: "#^Parameter \\#3 \\$account of method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\Entity\\\\Access\\\\RemoteEntityAccessTestBase\\:\\:assertRemoteEntityAccess\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\Entity\\\\User\\|false given\\.$#"
-			count: 2
-			path: tests/src/Kernel/Entity/Access/RemoteEntityAccessTestBase.php
-
-		-
 			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\Entity\\\\Revision\\\\RevisionManagerTest\\:\\:setEntityTypes\\(\\) has parameter \\$entityTypes with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: tests/src/Kernel/Entity/Revision/RevisionManagerTest.php
@@ -796,24 +741,9 @@ parameters:
 			path: tests/src/Kernel/EnvironmentResponseSubscriberTest.php
 
 		-
-			message: "#^Cannot call method id\\(\\) on Drupal\\\\user\\\\Entity\\\\User\\|false\\.$#"
-			count: 3
-			path: tests/src/Kernel/EventSubscriber/DisableUserPasswordTest.php
-
-		-
 			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: tests/src/Kernel/EventSubscriber/SentryTracesSamplerSubscriberTest.php
-
-		-
-			message: "#^Cannot call method addRole\\(\\) on Drupal\\\\user\\\\Entity\\\\User\\|false\\.$#"
-			count: 2
-			path: tests/src/Kernel/EventSubscriber/UserLoginSubscriberTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$account of method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\UserLoginSubscriberTest\\:\\:setCurrentUser\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\Entity\\\\User\\|false given\\.$#"
-			count: 3
-			path: tests/src/Kernel/EventSubscriber/UserLoginSubscriberTest.php
 
 		-
 			message: "#^Property Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\MigrationConfigurationSubscriberTest\\:\\:\\$caughtEvents type has no value type specified in iterable type array\\.$#"
@@ -886,27 +816,7 @@ parameters:
 			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
 
 		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:getSut\\(\\) has parameter \\$client with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy but does not specify its types\\: T$#"
-			count: 1
-			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\ServiceMap\\\\ServiceMapTest\\:\\:getSut\\(\\) has parameter \\$logger with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy but does not specify its types\\: T$#"
-			count: 1
-			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
-
-		-
 			message: "#^Method class@anonymous/tests/src/Traits/ApiTestTrait\\.php\\:57\\:\\:fromOptions\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$client of class Drupal\\\\helfi_api_base\\\\ServiceMap\\\\ServiceMap constructor expects GuzzleHttp\\\\Client, object given\\.$#"
-			count: 1
-			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
-
-		-
-			message: "#^Parameter \\#3 \\$logger of class Drupal\\\\helfi_api_base\\\\ServiceMap\\\\ServiceMap constructor expects Psr\\\\Log\\\\LoggerInterface, object given\\.$#"
 			count: 1
 			path: tests/src/Kernel/ServiceMap/ServiceMapTest.php
 
@@ -931,28 +841,13 @@ parameters:
 			path: tests/src/Kernel/UrlHelperTest.php
 
 		-
-			message: "#^Cannot call method id\\(\\) on Drupal\\\\user\\\\Entity\\\\User\\|false\\.$#"
-			count: 8
-			path: tests/src/Kernel/UserExpire/UserExpireManagerTest.php
-
-		-
-			message: "#^Cannot call method isBlocked\\(\\) on Drupal\\\\user\\\\Entity\\\\User\\|false\\.$#"
-			count: 2
-			path: tests/src/Kernel/UserExpire/UserExpireManagerTest.php
-
-		-
-			message: "#^Cannot call method setLastAccessTime\\(\\) on Drupal\\\\user\\\\Entity\\\\User\\|false\\.$#"
-			count: 3
-			path: tests/src/Kernel/UserExpire/UserExpireManagerTest.php
-
-		-
 			message: "#^Method Drupal\\\\Tests\\\\helfi_api_base\\\\Kernel\\\\UserExpire\\\\UserExpireManagerTest\\:\\:assertExpiredUsers\\(\\) has parameter \\$expected with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: tests/src/Kernel/UserExpire/UserExpireManagerTest.php
 
 		-
 			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) with 'Drupal\\\\\\\\user\\\\\\\\UserInterface' and false will always evaluate to false\\.$#"
-			count: 2
+			count: 1
 			path: tests/src/Kernel/Vault/EnsureApiAccountsSubscriberTest.php
 
 		-

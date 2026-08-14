@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\ApiClient;
 
 use Drupal\Core\File\Exception\FileNotExistsException;
-use GuzzleHttp\Utils;
 
 /**
  * Helper class for mocking api responses.
@@ -28,7 +27,7 @@ final class ApiFixture {
       );
     }
 
-    return new ApiResponse(Utils::jsonDecode(file_get_contents($fileName)));
+    return new ApiResponse(json_decode((string) file_get_contents($fileName), flags: JSON_THROW_ON_ERROR));
   }
 
 }

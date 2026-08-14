@@ -28,6 +28,9 @@ abstract class BrowserTestBase extends CoreBrowserTestBase {
     parent::setUp();
 
     foreach (['fi', 'sv'] as $langcode) {
+      if (ConfigurableLanguage::load($langcode)) {
+        continue;
+      }
       ConfigurableLanguage::createFromLangcode($langcode)->save();
     }
     $account = $this->drupalCreateUser([

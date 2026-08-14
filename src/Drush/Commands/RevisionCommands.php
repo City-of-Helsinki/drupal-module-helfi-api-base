@@ -51,7 +51,6 @@ final class RevisionCommands extends DrushCommands {
    *   The exit code.
    */
   #[Command(name: 'helfi:revision:delete')]
-  #[Option(name: 'id', description: 'The entity ID')]
   #[Option(name: 'keep', description: 'Number of revisions to keep')]
   public function delete(
     string $entityType,

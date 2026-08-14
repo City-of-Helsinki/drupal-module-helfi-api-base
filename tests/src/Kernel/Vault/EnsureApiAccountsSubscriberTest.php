@@ -88,7 +88,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
     /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $service */
     $service = $this->container->get('event_dispatcher');
     $service->dispatch(new PostDeployEvent());
-    $account = user_load_by_name('helfi-admin');
+    $account = $this->loadUserByName('helfi-admin');
     $this->assertInstanceOf(UserInterface::class, $account);
     $this->assertTrue($account->hasField('api_key'));
 
@@ -104,7 +104,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
       ->save();
 
     $service->dispatch(new PostDeployEvent());
-    $account = user_load_by_name('helfi-admin');
+    $account = $this->loadUserByName('helfi-admin');
     $this->assertEquals('123', $account->get('api_key')->value);
   }
 
@@ -119,12 +119,12 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
     /** @var \Drupal\Core\Messenger\MessengerInterface $messenger */
     $messenger = $this->container->get('messenger');
 
-    $this->assertFalse(user_load_by_name('helfi-admin'));
+    $this->assertFalse($this->loadUserByName('helfi-admin'));
     // Make sure account is created if one does not exist yet.
     /** @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface $service */
     $service = $this->container->get('event_dispatcher');
     $service->dispatch(new PostDeployEvent());
-    $account = user_load_by_name('helfi-admin');
+    $account = $this->loadUserByName('helfi-admin');
     $this->assertInstanceOf(UserInterface::class, $account);
     $this->assertTrue(password_verify('123', $account->getPassword()));
 
@@ -141,7 +141,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
       ])
       ->save();
     $service->dispatch(new PostDeployEvent());
-    $account = user_load_by_name('helfi-admin');
+    $account = $this->loadUserByName('helfi-admin');
     $this->assertInstanceOf(UserInterface::class, $account);
     $this->assertEquals('drupal+helfi-admin@hel.fi', $account->getEmail());
     $this->assertTrue($account->hasRole('test'));
@@ -164,6 +164,23 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
       return $message === 'Role test3 not found. Skipping.';
     });
     $this->assertCount(1, $found);
+  }
+
+  /**
+   * Loads a user by name.
+   *
+   * @param string $name
+   *   The username.
+   *
+   * @return \Drupal\user\UserInterface|false
+   *   The user or FALSE if not found.
+   */
+  private function loadUserByName(string $name): UserInterface|false {
+    $users = \Drupal::entityTypeManager()
+      ->getStorage('user')
+      ->loadByProperties(['name' => $name]);
+
+    return reset($users);
   }
 
 }
