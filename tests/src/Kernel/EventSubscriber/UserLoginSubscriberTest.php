@@ -31,6 +31,7 @@ class UserLoginSubscriberTest extends KernelTestBase {
   protected static $modules = [
     'system',
     'user',
+    'diff',
     'helfi_api_base',
   ];
 

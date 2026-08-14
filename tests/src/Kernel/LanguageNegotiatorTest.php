@@ -21,6 +21,7 @@ class LanguageNegotiatorTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'diff',
     'helfi_api_base',
     'helfi_language_negotiator_test',
     'language',

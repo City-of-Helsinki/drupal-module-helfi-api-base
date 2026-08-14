@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\AuditLog\Sources;
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Database\Statement\FetchAs;
 use ResilientLogger\Sources\AbstractLogSource;
 use ResilientLogger\Sources\AbstractLogSourceEntry;
 
@@ -59,7 +60,7 @@ class AuditLogSource implements AbstractLogSource {
       ->range(0, $chunkSize)
       ->orderBy('id', 'ASC')
       ->execute()
-      ->fetchAll(\PDO::FETCH_ASSOC);
+      ->fetchAll(FetchAs::Associative);
 
     foreach ($results as $result) {
       yield new AuditLogSourceEntry(intval($result['id']), $this->config);

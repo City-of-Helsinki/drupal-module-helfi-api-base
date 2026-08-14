@@ -213,7 +213,7 @@ function helfi_api_base_update_9030(): void {
 
   // Deregister the old module directly via configuration and key-value store.
   // Avoid the module installer's uninstall(), which would drop the
-  // helfi_audit_logs table in grants.
+  // helfi_audit_logs table in Grants project.
   $extension_config = \Drupal::configFactory()->getEditable('core.extension');
   if ($extension_config->get('module.helfi_audit_log') !== NULL) {
     $extension_config->clear('module.helfi_audit_log')->save();

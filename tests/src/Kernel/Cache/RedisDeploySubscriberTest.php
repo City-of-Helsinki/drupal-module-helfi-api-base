@@ -28,6 +28,7 @@ class RedisDeploySubscriberTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'diff',
     'helfi_api_base',
     'system',
     'redis',

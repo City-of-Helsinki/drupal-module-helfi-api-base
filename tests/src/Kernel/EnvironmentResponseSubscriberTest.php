@@ -27,7 +27,7 @@ class EnvironmentResponseSubscriberTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['helfi_api_base'];
+  protected static $modules = ['diff', 'helfi_api_base'];
 
   /**
    * Gets the response subscriber service.

@@ -20,6 +20,7 @@ class ComposerDebugDataItemTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'diff',
     'helfi_api_base',
     'composer_lock_test',
   ];

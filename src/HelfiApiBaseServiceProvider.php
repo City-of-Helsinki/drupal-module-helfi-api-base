@@ -107,7 +107,7 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
    * 'resilient_logger' setting, since building the ResilientLogger without
    * configuration throws an exception.
    */
-  private function registerResilientLogger(ContainerBuilder $container): void {
+  private function registerAuditLog(ContainerBuilder $container): void {
     $container->register(ResilientLogger::class, ResilientLogger::class)
       ->setFactory([ResilientLoggerFactory::class, 'createFromSettings'])
       ->setArguments([
@@ -138,7 +138,7 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
     }
 
     if (Settings::get('resilient_logger')) {
-      $this->registerResilientLogger($container);
+      $this->registerAuditLog($container);
     }
   }
 

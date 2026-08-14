@@ -20,6 +20,7 @@ class UrlHelperTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'diff',
     'helfi_api_base',
     'system',
     'remote_entity_test',

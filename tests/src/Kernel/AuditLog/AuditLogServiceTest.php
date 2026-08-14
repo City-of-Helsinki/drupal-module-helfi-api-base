@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\AuditLog;
 
+use Drupal\Core\DestructableInterface;
+use Drupal\helfi_api_base\AuditLog\AuditLogOperation;
 use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
 use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
 use Drupal\KernelTests\KernelTestBase;
@@ -21,6 +23,7 @@ class AuditLogServiceTest extends KernelTestBase {
    * {@inheritDoc}
    */
   protected static $modules = [
+    'diff',
     'helfi_api_base',
   ];
 
@@ -38,11 +41,17 @@ class AuditLogServiceTest extends KernelTestBase {
    */
   public function testDatabaseWrite(): void {
     // Dispatch audit log event.
-    $this->container->get(AuditLogServiceInterface::class)->logOperation(new AuditLogEvent(
-      operation: 'TEST_OP',
+    $service = $this->container->get(AuditLogServiceInterface::class);
+    $service->logOperation(new AuditLogEvent(
+      operation: AuditLogOperation::EntityCreate,
       message: 'SUCCESS',
       target: ['id' => '123'],
     ));
+
+    // Events are only queued until the service is destructed (normally by
+    // DrupalKernel::terminate() at the end of the request).
+    $this->assertInstanceOf(DestructableInterface::class, $service);
+    $service->destruct();
 
     // Read back the row that the event subscriber wrote to the database.
     $row = $this->container->get('database')
@@ -54,7 +63,7 @@ class AuditLogServiceTest extends KernelTestBase {
     $this->assertNotEmpty($row);
     $auditEvent = json_decode($row['message'], TRUE)['audit_event'];
 
-    $this->assertEquals('TEST_OP', $auditEvent['operation']);
+    $this->assertEquals('ENTITY_CREATE', $auditEvent['operation']);
     $this->assertEquals('SUCCESS', $auditEvent['message']);
     $this->assertEquals(['id' => '123'], $auditEvent['target']);
 

@@ -26,6 +26,7 @@ class AutocompleteControllerTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'diff',
     'helfi_api_base',
     'system',
   ];

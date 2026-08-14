@@ -21,6 +21,7 @@ class ElasticsearchConnectorTest extends KernelTestBase {
   protected static $modules = [
     'search_api',
     'elasticsearch_connector',
+    'diff',
     'helfi_api_base',
   ];
 

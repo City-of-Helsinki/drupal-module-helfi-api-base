@@ -25,6 +25,7 @@ final class MonologTest extends KernelTestBase {
    */
   protected static $modules = [
     'monolog',
+    'diff',
     'helfi_api_base',
   ];
 

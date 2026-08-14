@@ -27,6 +27,7 @@ class DisableUserPasswordTest extends KernelTestBase {
     'system',
     'user',
     'migrate',
+    'diff',
     'helfi_api_base',
   ];
 

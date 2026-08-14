@@ -44,12 +44,20 @@ final readonly class AuditLogEntityType {
    *   The entity type matcher.
    */
   public static function fromArray(array $matcher): self {
+    // Operations logged by default when an entity type lists no explicit ones.
+    // READ is intentionally excluded: reads are noisy and must be opted into
+    // per entity type via the 'operations' key.
+    $defaultOperations = [
+      AuditLogOperation::EntityCreate,
+      AuditLogOperation::EntityUpdate,
+      AuditLogOperation::EntityDelete,
+    ];
     $operations = isset($matcher['operations'])
       ? array_values(array_filter(array_map(
         static fn (string $operation) => AuditLogOperation::tryFrom($operation),
         $matcher['operations'],
       )))
-      : AuditLogOperation::defaultEntityOperations();
+      : $defaultOperations;
 
     return new self(
       entityType: $matcher['entity_type'],

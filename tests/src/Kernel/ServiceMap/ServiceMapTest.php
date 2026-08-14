@@ -32,6 +32,7 @@ class ServiceMapTest extends KernelTestBase {
    */
   protected static $modules = [
     'system',
+    'diff',
     'helfi_api_base',
   ];
 

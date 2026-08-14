@@ -33,6 +33,7 @@ class UserExpireManagerTest extends KernelTestBase {
     'user',
     'system',
     'node',
+    'diff',
     'helfi_api_base',
   ];
 
@@ -44,7 +45,7 @@ class UserExpireManagerTest extends KernelTestBase {
 
     $this->installSchema('user', ['users_data']);
     $this->installEntitySchema('user');
-    $this->installConfig(['helfi_api_base']);
+    $this->installConfig(['system', 'helfi_api_base']);
     $this->installEntitySchema('node');
     $this->installSchema('node', ['node_access']);
     $node_type = NodeType::create([

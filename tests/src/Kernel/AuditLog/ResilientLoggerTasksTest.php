@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\AuditLog;
 
+use Drupal\Core\DestructableInterface;
+use Drupal\helfi_api_base\AuditLog\AuditLogOperation;
 use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
 use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
 use Drupal\helfi_api_base\AuditLog\ResilientLoggerTasks;
@@ -31,6 +33,7 @@ class ResilientLoggerTasksTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'diff',
     'helfi_api_base',
   ];
 
@@ -70,11 +73,17 @@ class ResilientLoggerTasksTest extends KernelTestBase {
     ]);
     $this->configureResilientLogger($guzzle);
 
-    $this->container->get(AuditLogServiceInterface::class)->logOperation(new AuditLogEvent(
-      operation: 'TEST_OP',
+    $service = $this->container->get(AuditLogServiceInterface::class);
+    $service->logOperation(new AuditLogEvent(
+      operation: AuditLogOperation::EntityCreate,
       message: 'OK',
       target: ['id' => '42'],
     ));
+
+    // Events are only queued until the service is destructed (normally by
+    // DrupalKernel::terminate() at the end of the request).
+    $this->assertInstanceOf(DestructableInterface::class, $service);
+    $service->destruct();
 
     $tasks = $this->container->get(ResilientLoggerTasks::class);
     assert($tasks instanceof ResilientLoggerTasks);
@@ -89,7 +98,7 @@ class ResilientLoggerTasksTest extends KernelTestBase {
     $this->assertStringContainsString('op_type=create', $request->getUri()->getQuery());
 
     $payload = json_decode((string) $request->getBody(), TRUE, flags: JSON_THROW_ON_ERROR);
-    $this->assertSame('TEST_OP', $payload['audit_event']['operation']);
+    $this->assertSame('ENTITY_CREATE', $payload['audit_event']['operation']);
     $this->assertSame('helfi-audit-log-test', $payload['audit_event']['origin']);
 
     // The row was marked sent.

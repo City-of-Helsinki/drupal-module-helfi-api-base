@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\AuditLog\Sources;
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Database\Statement\FetchAs;
 use ResilientLogger\Sources\AbstractLogSourceEntry;
 use ResilientLogger\Utils\Helpers;
 
@@ -61,7 +62,7 @@ class AuditLogSourceEntry implements AbstractLogSourceEntry {
       ->fields('h')
       ->condition('id', $this->id)
       ->execute()
-      ->fetch(\PDO::FETCH_ASSOC);
+      ->fetch(FetchAs::Associative);
 
     if (!$result) {
       throw new \RuntimeException("Document not found");
@@ -112,7 +113,7 @@ class AuditLogSourceEntry implements AbstractLogSourceEntry {
       ->fields('h', ['is_sent'])
       ->condition('id', $this->id)
       ->execute()
-      ->fetch(\PDO::FETCH_ASSOC);
+      ->fetch(FetchAs::Associative);
 
     return (bool) ($result['is_sent'] ?? FALSE);
   }

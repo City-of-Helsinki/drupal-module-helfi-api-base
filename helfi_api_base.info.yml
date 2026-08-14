@@ -4,6 +4,7 @@ package: Custom
 core_version_requirement: ^9 || ^10 || ^11
 dependencies:
   - drupal:migrate
+  - diff:diff
   - entity:entity
   - monolog:monolog
   - health_check:health_check
