@@ -185,9 +185,6 @@ class AuditLogEntityHooksTest extends KernelTestBase {
     $this->flushAuditLog();
     $this->container->get('database')->truncate('helfi_audit_logs')->execute();
 
-    // Deliberately does not force a new revision: getEntityDiff() must
-    // compare against the in-memory original entity, since the update's
-    // revision ID is otherwise identical to the current one.
     $entity = EntityTestRev::load($entity->id());
     $entity->set('name', 'after')->save();
 

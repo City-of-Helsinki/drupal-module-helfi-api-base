@@ -88,10 +88,6 @@ final class AuditLogEntityHooks {
     if (!$previousEntity = $entity->getOriginal()) {
       return NULL;
     }
-    // Use the in-memory original entity directly instead of re-loading it
-    // from storage by revision ID: when the update did not create a new
-    // revision, that ID is the same as the current one and would reload
-    // the already-updated (i.e. not "previous") data.
     $previousEntity = $previousEntity->getTranslation($entity->language()->getId());
 
     $differ = new HumanReadableDiffer();
