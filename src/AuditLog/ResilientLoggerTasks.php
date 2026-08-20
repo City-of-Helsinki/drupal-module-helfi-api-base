@@ -6,6 +6,7 @@ namespace Drupal\helfi_api_base\AuditLog;
 
 use Drupal\Core\Lock\LockBackendInterface;
 use ResilientLogger\ResilientLogger;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Drupal-specific helper for scheduling ResilientLogger tasks.
@@ -31,7 +32,7 @@ readonly class ResilientLoggerTasks {
   private const float LOCK_TIME = 1800;
 
   public function __construct(
-    private LockBackendInterface $lock,
+    #[Autowire(service: 'lock')] private LockBackendInterface $lock,
     private ResilientLogger $service,
   ) {
   }
