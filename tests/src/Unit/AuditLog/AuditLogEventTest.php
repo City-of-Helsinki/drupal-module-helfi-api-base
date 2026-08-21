@@ -33,7 +33,7 @@ class AuditLogEventTest extends UnitTestCase {
     $this->assertArrayNotHasKey('actor', $event->getData());
 
     $actor = ['role' => 'USER', 'user_id' => '123'];
-    $event->setActor($actor);
+    $event->actor = $actor;
     $this->assertSame($actor, $event->getData()['actor']);
   }
 

@@ -36,11 +36,11 @@ class AuditLogEvent extends Event {
    *   When the action occurred. Defaults to the current UTC time.
    */
   public function __construct(
-    public readonly string $operation,
-    public readonly string $message,
-    public readonly array $target,
-    public readonly array $extra = [],
-    protected array $actor = [],
+    public string $operation,
+    public string $message,
+    public array $target,
+    public array $extra = [],
+    public array $actor = [],
     public readonly \DateTimeImmutable $dateTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
   ) {
   }
@@ -54,15 +54,6 @@ class AuditLogEvent extends Event {
   public function setActor(array $actor): self {
     $this->actor = $actor;
     return $this;
-  }
-
-  /**
-   * Get the acting user.
-   *
-   * @phpstan-return array<string, mixed>
-   */
-  public function getActor(): array {
-    return $this->actor;
   }
 
   /**
