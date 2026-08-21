@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\diff\DiffEntityComparison;
 use Drupal\helfi_api_base\AuditLog\AuditLogEntityType;
-use Drupal\helfi_api_base\AuditLog\AuditLogOperation;
 use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
 use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
 use ResilientLogger\Utils\HumanReadableDiffer;
@@ -19,6 +18,26 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  * Audit log entity hooks.
  */
 final class AuditLogEntityHooks {
+
+  /**
+   * The entity was viewed.
+   */
+  public const ENTITY_READ = 'ENTITY_READ';
+
+  /**
+   * The entity was created.
+   */
+  public const ENTITY_CREATE = 'ENTITY_CREATE';
+
+  /**
+   * The entity was updated.
+   */
+  public const ENTITY_UPDATE = 'ENTITY_UPDATE';
+
+  /**
+   * The entity was deleted.
+   */
+  public const ENTITY_DELETE = 'ENTITY_DELETE';
 
   /**
    * The configured entity type matchers.
@@ -58,10 +77,10 @@ final class AuditLogEntityHooks {
    */
   #[Hook('entity_view')]
   public function onEntityView(array &$build, EntityInterface $entity): void {
-    if (!$this->isLoggable($entity, AuditLogOperation::EntityRead)) {
+    if (!$this->isLoggable($entity, self::ENTITY_READ)) {
       return;
     }
-    $this->logEvent($entity, AuditLogOperation::EntityRead);
+    $this->logEvent($entity, self::ENTITY_READ);
   }
 
   /**
@@ -69,10 +88,10 @@ final class AuditLogEntityHooks {
    */
   #[Hook('entity_insert')]
   public function onEntityInsert(EntityInterface $entity): void {
-    if (!$this->isLoggable($entity, AuditLogOperation::EntityCreate)) {
+    if (!$this->isLoggable($entity, self::ENTITY_CREATE)) {
       return;
     }
-    $this->logEvent($entity, AuditLogOperation::EntityCreate);
+    $this->logEvent($entity, self::ENTITY_CREATE);
   }
 
   /**
@@ -109,7 +128,7 @@ final class AuditLogEntityHooks {
    */
   #[Hook('entity_update')]
   public function onEntityUpdate(EntityInterface $entity): void {
-    if (!$this->isLoggable($entity, AuditLogOperation::EntityUpdate)) {
+    if (!$this->isLoggable($entity, self::ENTITY_UPDATE)) {
       return;
     }
     $extra = [];
@@ -117,7 +136,7 @@ final class AuditLogEntityHooks {
     if ($entity instanceof ContentEntityInterface && $entity->getEntityType()->isRevisionable()) {
       $extra['ContentDiff'] = $this->getEntityDiff($entity) ?? '';
     }
-    $this->logEvent($entity, AuditLogOperation::EntityUpdate, $extra);
+    $this->logEvent($entity, self::ENTITY_UPDATE, $extra);
   }
 
   /**
@@ -125,10 +144,10 @@ final class AuditLogEntityHooks {
    */
   #[Hook('entity_delete')]
   public function onEntityDelete(EntityInterface $entity): void {
-    if (!$this->isLoggable($entity, AuditLogOperation::EntityDelete)) {
+    if (!$this->isLoggable($entity, self::ENTITY_DELETE)) {
       return;
     }
-    $this->logEvent($entity, AuditLogOperation::EntityDelete);
+    $this->logEvent($entity, self::ENTITY_DELETE);
   }
 
   /**
@@ -136,13 +155,13 @@ final class AuditLogEntityHooks {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity the operation was performed on.
-   * @param \Drupal\helfi_api_base\AuditLog\AuditLogOperation $operation
+   * @param string $operation
    *   The operation performed.
    *
    * @return bool
    *   TRUE if the entity type is loggable.
    */
-  private function isLoggable(EntityInterface $entity, AuditLogOperation $operation): bool {
+  private function isLoggable(EntityInterface $entity, string $operation): bool {
     if (!$type = $this->loggedEntityTypes[$entity->getEntityTypeId()] ?? NULL) {
       return FALSE;
     }
@@ -154,17 +173,17 @@ final class AuditLogEntityHooks {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity the operation was performed on.
-   * @param \Drupal\helfi_api_base\AuditLog\AuditLogOperation $operation
+   * @param string $operation
    *   The operation performed.
    * @param array<mixed> $extra
    *   The extra data.
    */
-  private function logEvent(EntityInterface $entity, AuditLogOperation $operation, array $extra = []): void {
+  private function logEvent(EntityInterface $entity, string $operation, array $extra = []): void {
     $this->auditLogService->logOperation(new AuditLogEvent(
       operation: $operation,
       message: sprintf(
         '%s operation on %s entity (ID: %s)',
-        $operation->value,
+        $operation,
         $entity->getEntityTypeId(),
         $entity->id(),
       ),

@@ -6,7 +6,6 @@ namespace Drupal\helfi_api_base\Hook;
 
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\helfi_api_base\AuditLog\AuditLogOperation;
 use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
 use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
 
@@ -14,6 +13,16 @@ use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
  * Audit log entity hooks.
  */
 final readonly class AuditLogUserHooks {
+
+  /**
+   * The user logged in.
+   */
+  public const USER_LOGIN = 'USER_LOGIN';
+
+  /**
+   * The user logged out.
+   */
+  public const USER_LOGOUT = 'USER_LOGOUT';
 
   public function __construct(
     private AuditLogServiceInterface $auditLogService,
@@ -27,7 +36,7 @@ final readonly class AuditLogUserHooks {
   public function onUserLogin(AccountInterface $account): void {
     $this->auditLogService->logOperation(
       new AuditLogEvent(
-        operation: AuditLogOperation::UserLogin,
+        operation: self::USER_LOGIN,
         message: sprintf(
           'User "%s" (UID: %d) logged in',
           $account->getAccountName(),
@@ -49,7 +58,7 @@ final readonly class AuditLogUserHooks {
   public function onUserLogout(AccountInterface $account): void {
     $this->auditLogService->logOperation(
       new AuditLogEvent(
-        operation: AuditLogOperation::UserLogout,
+        operation: self::USER_LOGOUT,
         message: sprintf(
           'User "%s" (UID: %d) logged out',
           $account->getAccountName(),

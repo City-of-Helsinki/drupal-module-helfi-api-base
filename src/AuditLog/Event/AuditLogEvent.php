@@ -5,7 +5,6 @@ declare (strict_types=1);
 namespace Drupal\helfi_api_base\AuditLog\Event;
 
 use Drupal\Component\EventDispatcher\Event;
-use Drupal\helfi_api_base\AuditLog\AuditLogOperation;
 
 /**
  * Event class for audit log use.
@@ -23,7 +22,7 @@ class AuditLogEvent extends Event {
   /**
    * Construct a new event object.
    *
-   * @param \Drupal\helfi_api_base\AuditLog\AuditLogOperation $operation
+   * @param string $operation
    *   The type of action performed.
    * @param string $message
    *   Descriptive information about the action.
@@ -37,7 +36,7 @@ class AuditLogEvent extends Event {
    *   When the action occurred. Defaults to the current UTC time.
    */
   public function __construct(
-    public readonly AuditLogOperation $operation,
+    public readonly string $operation,
     public readonly string $message,
     public readonly array $target,
     public readonly array $extra = [],
@@ -76,7 +75,7 @@ class AuditLogEvent extends Event {
     $data = [
       // Format should be yyyy-MM-ddThh:mm:ss.SSSZ.
       'date_time' => $this->dateTime->format('Y-m-d\TH:i:s.v\Z'),
-      'operation' => $this->operation->value,
+      'operation' => $this->operation,
       'message' => $this->message,
       'target' => $this->target,
     ];

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\AuditLog;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\helfi_api_base\Hook\AuditLogEntityHooks;
 
 /**
  * Describes an entity type whose operations are written to the audit log.
@@ -20,7 +21,7 @@ final readonly class AuditLogEntityType {
    *   The entity type id to match.
    * @param string|null $bundle
    *   The bundle to match, or NULL to match any bundle.
-   * @param array<\Drupal\helfi_api_base\AuditLog\AuditLogOperation> $operations
+   * @param array<string> $operations
    *   The operations that should be logged for this entity type.
    */
   public function __construct(
@@ -33,9 +34,10 @@ final readonly class AuditLogEntityType {
   /**
    * Creates an instance from a service parameter matcher.
    *
-   * Operations are configured as strings and parsed into the AuditLogOperation
-   * enum. When no operations are configured the write operations are used.
-   * READ must be opted into explicitly.
+   * Operations are configured as strings matching one of
+   * AuditLogEntityHooks::ENTITY_* constants. When no operations are
+   * configured the write operations are used; READ must be opted into
+   * explicitly.
    *
    * @param array{entity_type: string, bundle?: string, operations?: array<string>} $matcher
    *   The configured matcher.
@@ -48,16 +50,11 @@ final readonly class AuditLogEntityType {
     // READ is intentionally excluded: reads are noisy and must be opted into
     // per entity type via the 'operations' key.
     $defaultOperations = [
-      AuditLogOperation::EntityCreate,
-      AuditLogOperation::EntityUpdate,
-      AuditLogOperation::EntityDelete,
+      AuditLogEntityHooks::ENTITY_CREATE,
+      AuditLogEntityHooks::ENTITY_UPDATE,
+      AuditLogEntityHooks::ENTITY_DELETE,
     ];
-    $operations = isset($matcher['operations'])
-      ? array_values(array_filter(array_map(
-        static fn (string $operation) => AuditLogOperation::tryFrom($operation),
-        $matcher['operations'],
-      )))
-      : $defaultOperations;
+    $operations = $matcher['operations'] ?? $defaultOperations;
 
     return new self(
       entityType: $matcher['entity_type'],
@@ -71,13 +68,13 @@ final readonly class AuditLogEntityType {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity the operation was performed on.
-   * @param \Drupal\helfi_api_base\AuditLog\AuditLogOperation $operation
+   * @param string $operation
    *   The operation being performed.
    *
    * @return bool
    *   TRUE if the operation on the entity should be logged, FALSE otherwise.
    */
-  public function isLoggable(EntityInterface $entity, AuditLogOperation $operation): bool {
+  public function isLoggable(EntityInterface $entity, string $operation): bool {
     if ($this->entityType !== $entity->getEntityTypeId()) {
       return FALSE;
     }

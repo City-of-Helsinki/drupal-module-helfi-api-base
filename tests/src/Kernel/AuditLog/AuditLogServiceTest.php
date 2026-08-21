@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Kernel\AuditLog;
 
 use Drupal\Core\DestructableInterface;
-use Drupal\helfi_api_base\AuditLog\AuditLogOperation;
 use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
 use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
+use Drupal\helfi_api_base\Hook\AuditLogEntityHooks;
 use Drupal\KernelTests\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -43,7 +43,7 @@ class AuditLogServiceTest extends KernelTestBase {
     // Dispatch audit log event.
     $service = $this->container->get(AuditLogServiceInterface::class);
     $service->logOperation(new AuditLogEvent(
-      operation: AuditLogOperation::EntityCreate,
+      operation: AuditLogEntityHooks::ENTITY_CREATE,
       message: 'SUCCESS',
       target: ['id' => '123'],
     ));
