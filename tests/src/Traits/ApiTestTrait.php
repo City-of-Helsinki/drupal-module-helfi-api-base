@@ -67,6 +67,8 @@ trait ApiTestTrait {
 
       /**
        * {@inheritdoc}
+       *
+       * @phpstan-param array<mixed> $config
        */
       public function fromOptions(array $config = []) : Client {
         return $this->client;

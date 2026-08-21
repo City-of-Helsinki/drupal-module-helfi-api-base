@@ -34,6 +34,7 @@ class EnsureApiAccountsSubscriberTest extends KernelTestBase {
     'migrate',
     'field',
     'text',
+    'diff',
     'helfi_api_base',
   ];
 

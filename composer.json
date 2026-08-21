@@ -6,6 +6,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
+        "drupal/diff": "^2.0",
         "drupal/entity": "^1.0",
         "drupal/health_check": "^3.0",
         "drupal/monolog": "^3.0",
@@ -19,7 +20,8 @@
         "ext-curl": "*",
         "symfony/polyfill-php84": "^1.0",
         "symfony/polyfill-php85": "^1.0",
-        "city-of-helsinki/php-logger-extra": "^1.0"
+        "city-of-helsinki/php-logger-extra": "^1.0",
+        "city-of-helsinki/php-resilient-logger": "^2.0"
     },
     "repositories": {
         "php-logger-extra": {

@@ -23,6 +23,7 @@ class SentryTracesSamplerSubscriberTest extends KernelTestBase {
   protected static $modules = [
     'user',
     'raven',
+    'diff',
     'helfi_api_base',
   ];
 
