@@ -40,11 +40,11 @@ readonly class AuditLogActorSubscriber implements EventSubscriberInterface {
    */
   public function addActor(AuditLogEvent $event): void {
     if (!$event->actor) {
-      $event->setActor([
+      $event->actor = [
         'role' => implode(',', $this->currentUser->getRoles()),
         'id' => $this->currentUser->id(),
         'ip_address' => $this->requestStack->getCurrentRequest()?->getClientIp(),
-      ]);
+      ];
     }
   }
 

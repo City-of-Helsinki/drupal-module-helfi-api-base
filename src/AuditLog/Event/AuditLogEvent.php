@@ -46,17 +46,6 @@ class AuditLogEvent extends Event {
   }
 
   /**
-   * Set the acting user.
-   *
-   * @param array<string, mixed> $actor
-   *   The actor associated with the event.
-   */
-  public function setActor(array $actor): self {
-    $this->actor = $actor;
-    return $this;
-  }
-
-  /**
    * Get the audit event data.
    *
    * @return array<string, mixed>
