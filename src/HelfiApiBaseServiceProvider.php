@@ -40,7 +40,6 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
       'ip',
       'referer',
       'logger_context',
-      'filter_backtrace',
     ];
 
     $container->setParameter('monolog.channel_handlers', [
@@ -56,7 +55,7 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
           [
             'name' => 'default_conditional_handler',
             'formatter' => 'drush_or_json',
-            'processors' => array_merge(['message_placeholder'], $monologProcessors),
+            'processors' => array_merge(['message_placeholder', 'filter_backtrace'], $monologProcessors),
           ],
         ],
       ],
