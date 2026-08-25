@@ -17,7 +17,7 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
    * Information is used by Sentry to group errors.
    *
    * @var array|string[]
-   */
+   */T
   private array $fingerprintRules = [
     'error.type:"*" -> group-by-exception-then-message, #{{ error.type }}, #{{ error.value }}',
   ];
@@ -34,7 +34,7 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
   /**
    * Array of sample rates.
    *
-   * @var array|array[]
+   * @var array|string[]
    */
   private array $sampleRates = [
     '0.1' => [
@@ -57,7 +57,7 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
         return NULL;
       }
 
-      // Check if the error should be rate limited.
+      // Handle rate limited errors.
       foreach ($this->sampleRates as $rate => $rates) {
         if (array_any($rates, fn($message) => str_contains($eventErrorMessage, $message))) {
           return $this->customRateLimiter(floatval($rate)) ? $event : NULL;
