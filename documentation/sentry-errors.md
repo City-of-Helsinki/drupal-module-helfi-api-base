@@ -15,4 +15,4 @@ Add a part of the error message to the ignoredErrors-array to ignore the error.
 
 ### Rate limiting
 
-Add an error to the rate limiting array to reduce the amount of errors sent to sentry.
+Add an error to the sampleRate -array to reduce the amount of errors sent to sentry.
