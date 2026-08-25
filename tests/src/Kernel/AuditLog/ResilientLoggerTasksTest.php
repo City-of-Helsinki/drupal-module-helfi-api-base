@@ -101,6 +101,13 @@ class ResilientLoggerTasksTest extends KernelTestBase {
     $this->assertSame('ENTITY_CREATE', $payload['audit_event']['operation']);
     $this->assertSame('helfi-audit-log-test', $payload['audit_event']['origin']);
 
+    // The timestamp must be sent as a yyyy-MM-ddThh:mm:ss.SSSZ string.
+    $this->assertIsString($payload['@timestamp']);
+    $this->assertMatchesRegularExpression(
+      '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/',
+      $payload['@timestamp'],
+    );
+
     // The row was marked sent.
     $isSent = $this->container->get('database')
       ->select('helfi_audit_logs', 'h')

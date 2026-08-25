@@ -70,7 +70,8 @@ class AuditLogSourceEntry implements AbstractLogSourceEntry {
 
     $timestamp = strtotime($result['created_at']);
     $createdAt = (new \DateTimeImmutable('@' . $timestamp))
-      ->setTimezone(new \DateTimeZone('UTC'));
+      ->setTimezone(new \DateTimeZone('UTC'))
+      ->format('Y-m-d\TH:i:s.v\Z');
 
     $message = json_decode($result['message'], TRUE);
     $data = array_intersect_key(
