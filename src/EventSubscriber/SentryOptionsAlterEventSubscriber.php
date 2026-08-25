@@ -55,8 +55,6 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
         return NULL;
       }
 
-
-
       // Handle rate limited errors.
       foreach ($this->sampleRates as $message => $rateLimit) {
         if (str_contains($eventErrorMessage, $message) && $this->skipErrorByRateLimit($rateLimit)) {
