@@ -1,4 +1,4 @@
-#Sentry errors
+# Sentry errors
 
 ## Sentry options alter event subscriber
 
