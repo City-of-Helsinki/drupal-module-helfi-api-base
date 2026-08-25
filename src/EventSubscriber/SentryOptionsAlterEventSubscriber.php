@@ -8,7 +8,6 @@ use Drupal\raven\Event\OptionsAlter;
 use Sentry\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-
 /**
  * Allow altering sentry errors before sending.
  */
@@ -20,7 +19,7 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
    * @var array|string[]
    */
   private array $fingerprintRules = [
-    'error.type:"*" -> group-by-exception-then-message, #{{ error.type }}, #{{ error.value }}'
+    'error.type:"*" -> group-by-exception-then-message, #{{ error.type }}, #{{ error.value }}',
   ];
 
   /**
@@ -39,7 +38,7 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
    */
   private array $sampleRates = [
     '0.1' => [
-      'cURL error 6: Could not resolve host: helfi-etusivu'
+      'cURL error 6: Could not resolve host: helfi-etusivu',
     ],
   ];
 
@@ -59,8 +58,8 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
       }
 
       // Check if the error should be rate limited.
-      foreach($this->sampleRates as $rate => $rates) {
-        if(array_any($rates, fn($message) => str_contains($eventErrorMessage, $message))) {
+      foreach ($this->sampleRates as $rate => $rates) {
+        if (array_any($rates, fn($message) => str_contains($eventErrorMessage, $message))) {
           return $this->customRateLimiter(floatval($rate)) ? $event : NULL;
         }
       }
