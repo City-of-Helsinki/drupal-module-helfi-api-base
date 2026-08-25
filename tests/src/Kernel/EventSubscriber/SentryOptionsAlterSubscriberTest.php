@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_api_base\Kernel\EventSubscriber;
@@ -24,7 +23,7 @@ class SentryOptionsAlterSubscriberTest extends KernelTestBase {
     'user',
     'raven',
     'diff',
-    'helfi_api_base'
+    'helfi_api_base',
   ];
 
   /**
@@ -51,7 +50,7 @@ class SentryOptionsAlterSubscriberTest extends KernelTestBase {
 
     $sentry_event = Event::createEvent();
 
-    // Test that ignored error is ignored
+    // Test that ignored error is ignored.
     $sentry_event->setMessage('', [], 'No alive nodes. All the 1 nodes seem to be down');
     $result = ($event->options['before_send'])($sentry_event);
     $this->assertNull($result);
