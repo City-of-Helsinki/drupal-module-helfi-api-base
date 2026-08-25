@@ -17,7 +17,7 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
    * Information is used by Sentry to group errors.
    *
    * @var array|string[]
-   */T
+   */
   private array $fingerprintRules = [
     'error.type:"*" -> group-by-exception-then-message, #{{ error.type }}, #{{ error.value }}',
   ];
