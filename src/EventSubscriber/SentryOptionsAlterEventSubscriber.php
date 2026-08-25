@@ -72,7 +72,7 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
   /**
    * Limit the amount of errors sent.
    *
-   * @param $rate
+   * @param float $rate
    *   The amount of errors to send to sentry.
    *
    * @return bool
