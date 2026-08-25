@@ -27,9 +27,10 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
 
       // Exclude error messages.
       $excludeByMessage = [
-        'No alive nodes. All the 1 nodes seem to be down'
+        'No alive nodes. All the 1 nodes seem to be down',
+        'cURL error 6: Could not resolve host: helfi-etusivu',
       ];
-      if (array_any($excludeByMessage, fn($message) => str_contains($event->getMessage(), $message))) {
+      if (array_any($excludeByMessage, fn($message) => str_contains($event->getMessageFormatted(), $message))) {
         return NULL;
       }
 
