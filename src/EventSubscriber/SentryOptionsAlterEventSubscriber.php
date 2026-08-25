@@ -37,9 +37,7 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
    * @var array|string[]
    */
   private array $sampleRates = [
-    '0.1' => [
-      'cURL error 6: Could not resolve host: helfi-etusivu',
-    ],
+    'cURL error 6: Could not resolve host: helfi-etusivu' => 0.1,
   ];
 
   /**
@@ -57,10 +55,12 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
         return NULL;
       }
 
+
+
       // Handle rate limited errors.
-      foreach ($this->sampleRates as $rate => $rates) {
-        if (array_any($rates, fn($message) => str_contains($eventErrorMessage, $message))) {
-          return $this->customRateLimiter(floatval($rate)) ? $event : NULL;
+      foreach ($this->sampleRates as $message => $rateLimit) {
+        if (str_contains($eventErrorMessage, $message) && $this->skipErrorByRateLimit($rateLimit)) {
+          return NULL;
         }
       }
 
@@ -75,10 +75,11 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
    *   The amount of errors to send to sentry.
    *
    * @return bool
-   *   Error should be sent to sentry.
+   *   Error should be skipped.
    */
-  private function customRateLimiter(float $rate): bool {
-    return (mt_rand() / mt_getrandmax()) <= $rate;
+  private function skipErrorByRateLimit(float $rate): bool {
+    // If the random float is bigger than given limit, skip the error.
+    return (mt_rand() / mt_getrandmax()) > $rate;
   }
 
   /**
