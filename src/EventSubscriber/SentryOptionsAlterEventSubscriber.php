@@ -33,20 +33,53 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
   ];
 
   /**
+   * Array of sample rates.
+   *
+   * @var array|array[]
+   */
+  private array $sampleRates = [
+    '0.1' => [
+      'cURL error 6: Could not resolve host: helfi-etusivu'
+    ],
+  ];
+
+  /**
    * Alter the Sentry client options.
    */
   public function alterOptions(OptionsAlter $optionsAlterEvent) : void {
     $optionsAlterEvent->options['before_send'] = function (Event $event): ?Event {
+      $eventErrorMessage = $event->getMessageFormatted();
+
       // Alter fingerprint: Fingerprint is used by Sentry to group errors.
       $event->setFingerprint($this->fingerprintRules);
 
       // Ignore errors.
-      if (array_any($this->ignoredErrors, fn($message) => str_contains($event->getMessageFormatted(), $message))) {
+      if (array_any($this->ignoredErrors, fn($message) => str_contains($eventErrorMessage, $message))) {
         return NULL;
+      }
+
+      // Check if the error should be rate limited.
+      foreach($this->sampleRates as $rate => $rates) {
+        if(array_any($rates, fn($message) => str_contains($eventErrorMessage, $message))) {
+          return $this->customRateLimiter(floatval($rate)) ? $event : NULL;
+        }
       }
 
       return $event;
     };
+  }
+
+  /**
+   * Limit the amount of errors sent.
+   *
+   * @param $rate
+   *   The amount of errors to send to sentry.
+   *
+   * @return bool
+   *   Error should be sent to sentry.
+   */
+  private function customRateLimiter(float $rate): bool {
+    return (mt_rand() / mt_getrandmax()) <= $rate;
   }
 
   /**
