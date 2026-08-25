@@ -12,3 +12,7 @@ Sentry uses fingerprints to group similar errors under one item.
 
 Uses str_contains to decide whether to send the error to Sentry or not.
 Add a part of the error message to the ignoredErrors-array to ignore the error.
+
+### Rate limiting
+
+Add an error to the rate limiting array to reduce the amount of errors sent to sentry.
