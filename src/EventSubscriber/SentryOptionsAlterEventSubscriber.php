@@ -34,7 +34,7 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
   /**
    * Array of sample rates.
    *
-   * @var array|string[]
+   * @var array<string,float>
    */
   private array $sampleRates = [
     'cURL error 6: Could not resolve host: helfi-etusivu' => 0.1,
