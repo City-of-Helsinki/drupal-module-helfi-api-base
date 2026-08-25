@@ -107,8 +107,11 @@ final class AuditLogEntityHooks {
     if (!$previousEntity = $entity->getOriginal()) {
       return NULL;
     }
-    $previousEntity = $previousEntity->getTranslation($entity->language()->getId());
+    $langcode = $entity->language()->getId();
 
+    if ($previousEntity->hasTranslation($langcode)) {
+      $previousEntity = $previousEntity->getTranslation($langcode);
+    }
     $differ = new HumanReadableDiffer();
 
     $fields = $this->entityComparison->compareRevisions($previousEntity, $entity);
