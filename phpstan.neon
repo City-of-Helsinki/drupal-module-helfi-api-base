@@ -8,7 +8,7 @@ parameters:
   paths:
     - ./
   excludePaths:
-    - vendor
+    - vendor (?)
   level: 7
   treatPhpDocTypesAsCertain: false
   ignoreErrors:
