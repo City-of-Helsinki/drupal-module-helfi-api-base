@@ -11,7 +11,6 @@ jobs:
         php-versions: ['8.4']
     uses: city-of-helsinki/drupal-gh-actions/.github/workflows/module-tests.yml@main
     with:
-      platform_branch: 'UHF-13544'
       php_version: ${{ matrix.php-versions }}
     secrets:
       sonarcloud_token: ${{ secrets.SONAR_TOKEN }}
