@@ -11,8 +11,10 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\entity_test\Entity\EntityTestMul;
+use Drupal\entity_test\Entity\EntityTestMulRev;
 use Drupal\entity_test\Entity\EntityTestRev;
 use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
+use Drupal\language\Entity\ConfigurableLanguage;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -30,6 +32,7 @@ class AuditLogEntityHooksTest extends KernelTestBase {
    */
   protected static $modules = [
     'system',
+    'language',
     'user',
     'entity_test',
     'diff',
@@ -47,6 +50,7 @@ class AuditLogEntityHooksTest extends KernelTestBase {
     $this->installEntitySchema('entity_test');
     $this->installEntitySchema('entity_test_mul');
     $this->installEntitySchema('entity_test_rev');
+    $this->installEntitySchema('entity_test_mulrev');
   }
 
   /**
@@ -66,6 +70,9 @@ class AuditLogEntityHooksTest extends KernelTestBase {
       // No 'operations' => default write operations only, used to test
       // that updates include a content diff.
       ['entity_type' => 'entity_test_rev'],
+      // Used to test that adding a new translation does not break the
+      // content diff comparison.
+      ['entity_type' => 'entity_test_mulrev'],
     ]);
   }
 
@@ -197,6 +204,30 @@ class AuditLogEntityHooksTest extends KernelTestBase {
     $nameDiff = $events[0]['extra']['ContentDiff'][$entity->id() . ':entity_test_rev.name'];
     $this->assertStringContainsString('before', $nameDiff);
     $this->assertStringContainsString('after', $nameDiff);
+  }
+
+  /**
+   * Tests that adding a new translation does not break the content diff.
+   */
+  public function testAddingNewTranslationIsLogged(): void {
+    $this->setUpCurrentUser([], ['view test entity']);
+    ConfigurableLanguage::createFromLangcode('fr')->save();
+
+    $entity = EntityTestMulRev::create(['name' => 'before', 'langcode' => 'en']);
+    $entity->save();
+    // Clear the CREATE event from saving.
+    $this->flushAuditLog();
+    $this->container->get('database')->truncate('helfi_audit_logs')->execute();
+
+    $entity = EntityTestMulRev::load($entity->id());
+    $translation = $entity->addTranslation('fr', ['name' => 'apres']);
+    $translation->save();
+
+    $events = $this->getAuditEvents();
+    $this->assertCount(1, $events);
+    $this->assertEquals('ENTITY_UPDATE', $events[0]['operation']);
+    $this->assertArrayHasKey('extra', $events[0]);
+    $this->assertArrayHasKey('ContentDiff', $events[0]['extra']);
   }
 
 }
