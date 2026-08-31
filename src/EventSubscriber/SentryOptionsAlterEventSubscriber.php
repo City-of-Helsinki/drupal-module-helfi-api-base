@@ -77,6 +77,7 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
    */
   private function skipErrorByRateLimit(float $rate): bool {
     // If the random float is bigger than given limit, skip the error.
+    // @phpstan-ignore-next-line
     return (mt_rand() / mt_getrandmax()) > $rate; // NOSONAR.
   }
 
