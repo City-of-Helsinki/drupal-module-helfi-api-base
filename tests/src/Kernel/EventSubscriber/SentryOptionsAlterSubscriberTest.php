@@ -6,15 +6,12 @@ namespace Drupal\Tests\helfi_api_base\Kernel\EventSubscriber;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\raven\Event\OptionsAlter;
-use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Sentry\Event;
 
 /**
  * Tests our custom options alter event subscriber.
  */
 class SentryOptionsAlterSubscriberTest extends KernelTestBase {
-
-  use ApiTestTrait;
 
   /**
    * {@inheritdoc}
