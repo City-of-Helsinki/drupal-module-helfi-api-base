@@ -6,7 +6,7 @@ namespace Drupal\Tests\helfi_api_base\Traits;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Extension\ExtensionPathResolver;
-use Drupal\Core\Http\ClientFactory;
+use Drupal\Tests\helfi_api_base\Mock\MockClientFactory;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -54,27 +54,8 @@ trait ApiTestTrait {
   protected function setupMockHttpClient(array $responses) : Client {
     $client = $this->createMockHttpClient($responses);
 
-    $this->container->set('http_client_factory', new class ($client) extends ClientFactory {
+    $this->container->set('http_client_factory', new MockClientFactory($client));
 
-      /**
-       * Constructs a new instance.
-       *
-       * @param \GuzzleHttp\Client $client
-       *   The http client.
-       */
-      public function __construct(private readonly Client $client) {
-      }
-
-      /**
-       * {@inheritdoc}
-       *
-       * @phpstan-param array<mixed> $config
-       */
-      public function fromOptions(array $config = []) : Client {
-        return $this->client;
-      }
-
-    });
     return $client;
   }
 
@@ -139,7 +120,8 @@ trait ApiTestTrait {
    *   The client.
    */
   protected function createMockHistoryMiddlewareHttpClient(array &$container, array $responses = []) : Client {
-    $history = Middleware::history($container);
+    $historyContainer = &$container;
+    $history = Middleware::history($historyContainer);
     $mock = new MockHandler($responses);
     $handlerStack = HandlerStack::create($mock);
     $handlerStack->push($history);
