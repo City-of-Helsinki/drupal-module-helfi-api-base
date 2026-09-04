@@ -82,12 +82,11 @@ class AuditLogCommandsTest extends KernelTestBase {
 
     $this->logEvent();
 
-    $tester = $this->executeCommand(new AuditLogSubmitUnsentEntriesCommand($this->container->get(ResilientLogger::class)));
+    $tester = $this->executeCommand(new AuditLogSubmitUnsentEntriesCommand($this->getResilientLogger()));
     $tester->assertCommandIsSuccessful();
 
     // The single seeded row was shipped over HTTP.
     $this->assertCount(1, $history);
-    /** @var \Psr\Http\Message\RequestInterface $request */
     $request = $history[0]['request'];
     $this->assertSame('PUT', $request->getMethod());
     $this->assertStringStartsWith('/audit-test/_doc/', $request->getUri()->getPath());
@@ -110,14 +109,16 @@ class AuditLogCommandsTest extends KernelTestBase {
    */
   public function testSubmitUnsentEntriesFailsOnRejectedEntry(): void {
     $history = [];
-    $guzzle = $this->createMockHistoryMiddlewareHttpClient($history, [
-      new GuzzleResponse(500, [], 'Internal server error'),
+    $client = $this->createMockHistoryMiddlewareHttpClient($history, [
+      new GuzzleResponse(500, [
+        'X-Elastic-Product' => 'Elasticsearch',
+      ], 'Internal server error'),
     ]);
-    $this->setSetting('resilient_logger', $this->resilientLoggerSettings($guzzle));
+    $this->setSetting('resilient_logger', $this->resilientLoggerSettings($client));
 
     $this->logEvent();
 
-    $tester = $this->executeCommand(new AuditLogSubmitUnsentEntriesCommand($this->container->get(ResilientLogger::class)));
+    $tester = $this->executeCommand(new AuditLogSubmitUnsentEntriesCommand($this->getResilientLogger()));
     $this->assertSame(Command::FAILURE, $tester->getStatusCode());
 
     // The row was left unsent so it can be retried.
@@ -150,7 +151,7 @@ class AuditLogCommandsTest extends KernelTestBase {
     $query->values(['created_at' => $newTs, 'is_sent' => 0, 'message' => '{"audit_event":{}}']);
     $query->execute();
 
-    $tester = $this->executeCommand(new AuditLogClearSentEntriesCommand($this->container->get(ResilientLogger::class)));
+    $tester = $this->executeCommand(new AuditLogClearSentEntriesCommand($this->getResilientLogger()));
     $tester->assertCommandIsSuccessful();
 
     $remaining = (int) $this->container->get(Connection::class)
@@ -176,6 +177,16 @@ class AuditLogCommandsTest extends KernelTestBase {
       $this->assertSame(Command::FAILURE, $tester->getStatusCode());
       $this->assertStringContainsString('The audit log is not configured.', $tester->getDisplay());
     }
+  }
+
+  /**
+   * Gets the resilient logger service.
+   */
+  private function getResilientLogger(): ResilientLogger {
+    $logger = $this->container->get(ResilientLogger::class);
+    assert($logger instanceof ResilientLogger);
+
+    return $logger;
   }
 
   /**
