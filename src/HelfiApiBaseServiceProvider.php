@@ -8,7 +8,6 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Drupal\Core\Site\Settings;
 use Drupal\helfi_api_base\AuditLog\ResilientLogger as ResilientLoggerFactory;
-use Drupal\helfi_api_base\AuditLog\ResilientLoggerTasks;
 use Drupal\helfi_api_base\Cache\RedisDeploySubscriber;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Logger\CurrentUserProcessor;
@@ -100,9 +99,9 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
   }
 
   /**
-   * Registers the audit log ResilientLogger services.
+   * Registers the audit log ResilientLogger service.
    *
-   * These are only registered when the audit log has been configured via the
+   * This is only registered when the audit log has been configured via the
    * 'resilient_logger' setting, since building the ResilientLogger without
    * configuration throws an exception.
    */
@@ -113,10 +112,6 @@ final class HelfiApiBaseServiceProvider extends ServiceProviderBase {
         new Reference('settings'),
         new Reference(EnvironmentResolverInterface::class),
       ]);
-
-    $container->register(ResilientLoggerTasks::class, ResilientLoggerTasks::class)
-      ->setAutowired(TRUE)
-      ->setAutoconfigured(TRUE);
   }
 
   /**
