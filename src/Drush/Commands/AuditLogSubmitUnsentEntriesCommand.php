@@ -38,9 +38,9 @@ final class AuditLogSubmitUnsentEntriesCommand extends Command {
     $io = new SymfonyStyle($input, $output);
 
     if (!$this->resilientLogger) {
-      $io->error('The audit log is not configured. Nothing to submit.');
+      $io->note('The audit log is not configured. Nothing to submit.');
 
-      return self::FAILURE;
+      return self::SUCCESS;
     }
 
     $results = $this->resilientLogger->submitUnsentEntries();

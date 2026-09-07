@@ -38,9 +38,9 @@ final class AuditLogClearSentEntriesCommand extends Command {
     $io = new SymfonyStyle($input, $output);
 
     if (!$this->resilientLogger) {
-      $io->error('The audit log is not configured. Nothing to clear.');
+      $io->note('The audit log is not configured. Nothing to clear.');
 
-      return self::FAILURE;
+      return self::SUCCESS;
     }
 
     $this->resilientLogger->clearSentEntries();

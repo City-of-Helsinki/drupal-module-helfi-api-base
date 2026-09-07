@@ -165,16 +165,16 @@ class AuditLogCommandsTest extends KernelTestBase {
   }
 
   /**
-   * Test that commands fail gracefully when the audit log is unconfigured.
+   * Test that commands do nothing when the audit log not configured.
    */
-  public function testCommandsFailWhenAuditLogIsNotConfigured(): void {
+  public function testCommandsSucceedWhenAuditLogIsNotConfigured(): void {
     foreach ([
       new AuditLogSubmitUnsentEntriesCommand(),
       new AuditLogClearSentEntriesCommand(),
     ] as $command) {
       $tester = $this->executeCommand($command);
 
-      $this->assertSame(Command::FAILURE, $tester->getStatusCode());
+      $tester->assertCommandIsSuccessful();
       $this->assertStringContainsString('The audit log is not configured.', $tester->getDisplay());
     }
   }
