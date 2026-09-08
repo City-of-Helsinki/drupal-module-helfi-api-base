@@ -210,8 +210,6 @@ class AuditLogEntityHooksTest extends KernelTestBase {
    * Tests that updates are not logged when the entity hooks are disabled.
    */
   public function testUpdateIsNotLoggedWhenEntityHooksAreDisabled(): void {
-    $this->setUpCurrentUser([], ['view test entity']);
-
     $this->setSetting('auditlog_entity_hooks_disable', TRUE);
 
     $entity = EntityTestRev::create(['name' => 'before']);
