@@ -18,6 +18,7 @@ parameters:
   helfi_api_base.audit_log_entity_types:
     - { entity_type: 'node' }
     - { entity_type: 'user' }
+  helfi_api_base.audit_log_cli_operations: false
 services:
   _defaults:
     autowire: true

@@ -59,6 +59,7 @@ class AuditLogEntityHooksTest extends KernelTestBase {
   public function register(ContainerBuilder $container): void {
     parent::register($container);
 
+    $container->setParameter('helfi_api_base.audit_log_cli_operations', TRUE);
     $container->setParameter('helfi_api_base.audit_log_entity_types', [
       // No 'operations' => default write operations only (no READ).
       ['entity_type' => 'user'],
