@@ -7,6 +7,7 @@ namespace Drupal\helfi_api_base\Hook;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Site\Settings;
 use Drupal\diff\DiffEntityComparison;
 use Drupal\helfi_api_base\AuditLog\AuditLogEntityType;
 use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
@@ -165,6 +166,9 @@ final class AuditLogEntityHooks {
    *   TRUE if the entity type is loggable.
    */
   private function isLoggable(EntityInterface $entity, string $operation): bool {
+    if (Settings::get('auditlog_entity_hooks_disable', FALSE)) {
+      return FALSE;
+    }
     if (!$type = $this->loggedEntityTypes[$entity->getEntityTypeId()] ?? NULL) {
       return FALSE;
     }
