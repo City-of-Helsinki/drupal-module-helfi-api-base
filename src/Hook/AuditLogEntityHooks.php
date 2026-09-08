@@ -7,6 +7,7 @@ namespace Drupal\helfi_api_base\Hook;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Site\Settings;
 use Drupal\diff\DiffEntityComparison;
 use Drupal\helfi_api_base\AuditLog\AuditLogEntityType;
 use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
@@ -55,14 +56,11 @@ final class AuditLogEntityHooks {
    *   The entity differ service.
    * @param array<string,array{entity_type: string, bundle?: string, operations?: array<string>}> $loggedEntityTypes
    *   The configured entity type matchers.
-   * @param bool $logCliOperations
-   *   Whether operations performed by CLI processes are logged.
    */
   public function __construct(
     private readonly AuditLogServiceInterface $auditLogService,
     #[Autowire(service: 'diff.entity_comparison')] private readonly DiffEntityComparison $entityComparison,
     #[Autowire(param: 'helfi_api_base.audit_log_entity_types')] array $loggedEntityTypes = [],
-    #[Autowire(param: 'helfi_api_base.audit_log_cli_operations')] private readonly bool $logCliOperations = FALSE,
   ) {
     foreach ($loggedEntityTypes as $type) {
       $entityType = AuditLogEntityType::fromArray($type);
@@ -168,8 +166,7 @@ final class AuditLogEntityHooks {
    *   TRUE if the entity type is loggable.
    */
   private function isLoggable(EntityInterface $entity, string $operation): bool {
-    // Skip when running CLI commands.
-    if (!$this->logCliOperations && PHP_SAPI === 'cli') {
+    if (Settings::get('auditlog_entity_hooks_disable', FALSE)) {
       return FALSE;
     }
     if (!$type = $this->loggedEntityTypes[$entity->getEntityTypeId()] ?? NULL) {
