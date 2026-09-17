@@ -6,11 +6,13 @@ namespace Drupal\Tests\helfi_api_base\Kernel\Commands;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\DestructableInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
 use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
 use Drupal\helfi_api_base\AuditLog\Sources\AuditLogSource;
 use Drupal\helfi_api_base\Drush\Commands\AuditLogClearSentEntriesCommand;
 use Drupal\helfi_api_base\Drush\Commands\AuditLogSubmitUnsentEntriesCommand;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Hook\AuditLogEntityHooks;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
@@ -18,7 +20,6 @@ use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Psr\Http\Client\ClientInterface;
-use ResilientLogger\ResilientLogger;
 use ResilientLogger\Targets\ElasticsearchLogTarget;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -41,16 +42,6 @@ class AuditLogCommandsTest extends KernelTestBase {
     'diff',
     'helfi_api_base',
   ];
-
-  /**
-   * {@inheritdoc}
-   *
-   * @see \Drupal\helfi_api_base\HelfiApiBaseServiceProvider::register()
-   */
-  protected function bootKernel(): void {
-    $this->setSetting('resilient_logger', $this->resilientLoggerSettings());
-    parent::bootKernel();
-  }
 
   /**
    * {@inheritdoc}
@@ -82,7 +73,7 @@ class AuditLogCommandsTest extends KernelTestBase {
 
     $this->logEvent();
 
-    $tester = $this->executeCommand(new AuditLogSubmitUnsentEntriesCommand($this->getResilientLogger()));
+    $tester = $this->executeCommand(new AuditLogSubmitUnsentEntriesCommand(...$this->commandArguments()));
     $tester->assertCommandIsSuccessful();
 
     // The single seeded row was shipped over HTTP.
@@ -118,7 +109,7 @@ class AuditLogCommandsTest extends KernelTestBase {
 
     $this->logEvent();
 
-    $tester = $this->executeCommand(new AuditLogSubmitUnsentEntriesCommand($this->getResilientLogger()));
+    $tester = $this->executeCommand(new AuditLogSubmitUnsentEntriesCommand(...$this->commandArguments()));
     $this->assertSame(Command::FAILURE, $tester->getStatusCode());
 
     // The row was left unsent so it can be retried.
@@ -151,7 +142,7 @@ class AuditLogCommandsTest extends KernelTestBase {
     $query->values(['created_at' => $newTs, 'is_sent' => 0, 'message' => '{"audit_event":{}}']);
     $query->execute();
 
-    $tester = $this->executeCommand(new AuditLogClearSentEntriesCommand($this->getResilientLogger()));
+    $tester = $this->executeCommand(new AuditLogClearSentEntriesCommand(...$this->commandArguments()));
     $tester->assertCommandIsSuccessful();
 
     $remaining = (int) $this->container->get(Connection::class)
@@ -168,9 +159,11 @@ class AuditLogCommandsTest extends KernelTestBase {
    * Test that commands do nothing when the audit log not configured.
    */
   public function testCommandsSucceedWhenAuditLogIsNotConfigured(): void {
+    $this->setSetting('resilient_logger', NULL);
+
     foreach ([
-      new AuditLogSubmitUnsentEntriesCommand(),
-      new AuditLogClearSentEntriesCommand(),
+      new AuditLogSubmitUnsentEntriesCommand(...$this->commandArguments()),
+      new AuditLogClearSentEntriesCommand(...$this->commandArguments()),
     ] as $command) {
       $tester = $this->executeCommand($command);
 
@@ -180,13 +173,16 @@ class AuditLogCommandsTest extends KernelTestBase {
   }
 
   /**
-   * Gets the resilient logger service.
+   * Gets the constructor arguments for the audit log commands.
+   *
+   * @return array{\Drupal\Core\Site\Settings, \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface}
+   *   The constructor arguments.
    */
-  private function getResilientLogger(): ResilientLogger {
-    $logger = $this->container->get(ResilientLogger::class);
-    assert($logger instanceof ResilientLogger);
-
-    return $logger;
+  private function commandArguments(): array {
+    return [
+      Settings::getInstance(),
+      $this->container->get(EnvironmentResolverInterface::class),
+    ];
   }
 
   /**
