@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\EventSubscriber;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\raven\Event\OptionsAlter;
 use Sentry\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -13,48 +14,27 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterface {
 
-  /**
-   * Information is used by Sentry to group errors.
-   *
-   * @var array|string[]
-   */
-  private array $fingerprintRules = [];
-
-  /**
-   * List of errors to ignore.
-   *
-   * @var array|string[]
-   */
-  private array $ignoredErrors = [
-    'No alive nodes. All the 1 nodes seem to be down',
-  ];
-
-  /**
-   * Array of sample rates.
-   *
-   * @var array<string,float>
-   */
-  private array $sampleRates = [
-    'cURL error 6: Could not resolve host: helfi-etusivu' => 0.1,
-  ];
+  public function __construct(private ConfigFactoryInterface $configFactory) {
+  }
 
   /**
    * Alter the Sentry client options.
    */
   public function alterOptions(OptionsAlter $optionsAlterEvent) : void {
-    $optionsAlterEvent->options['before_send'] = function (Event $event): ?Event {
+    $errors = $this->configFactory->get('helfi_api_base.settings')->get('sentry_errors');
+    $optionsAlterEvent->options['before_send'] = function (Event $event) use ($errors): ?Event {
       $eventErrorMessage = $event->getMessageFormatted() ?? '';
 
       // Alter fingerprint: Fingerprint is used by Sentry to group errors.
-      // $event->setFingerprint($this->fingerprintRules);
+      // $event->setFingerprint($errors['fingerprint']);
 
       // Ignore errors.
-      if (array_any($this->ignoredErrors, fn($message) => str_contains($eventErrorMessage, $message))) {
+      if (array_any($errors['ignore'], fn($message) => str_contains($eventErrorMessage, $message))) {
         return NULL;
       }
 
       // Handle rate limited errors.
-      foreach ($this->sampleRates as $message => $rateLimit) {
+      foreach ($errors['sample'] as $message => $rateLimit) {
         if (str_contains($eventErrorMessage, $message) && $this->skipErrorByRateLimit($rateLimit)) {
           return NULL;
         }
