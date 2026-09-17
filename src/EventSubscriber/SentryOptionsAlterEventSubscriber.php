@@ -25,9 +25,8 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
     $optionsAlterEvent->options['before_send'] = function (Event $event) use ($errors): ?Event {
       $eventErrorMessage = $event->getMessageFormatted() ?? '';
 
-      // Alter fingerprint: Fingerprint is used by Sentry to group errors.
-      // $event->setFingerprint($errors['fingerprint']);
-
+      // Alter fingerprint: Fingerprint is used by Sentry to group errors,
+      // $event->setFingerprint($errors['fingerprint']);.
       // Ignore errors.
       if (array_any($errors['ignore'], fn($message) => str_contains($eventErrorMessage, $message))) {
         return NULL;
