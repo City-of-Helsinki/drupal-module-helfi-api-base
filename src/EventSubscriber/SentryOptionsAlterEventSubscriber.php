@@ -18,9 +18,7 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
    *
    * @var array|string[]
    */
-  private array $fingerprintRules = [
-    'error.type:"*" -> group-by-exception-then-message, #{{ error.type }}, #{{ error.value }}',
-  ];
+  private array $fingerprintRules = [];
 
   /**
    * List of errors to ignore.
@@ -48,7 +46,7 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
       $eventErrorMessage = $event->getMessageFormatted() ?? '';
 
       // Alter fingerprint: Fingerprint is used by Sentry to group errors.
-      $event->setFingerprint($this->fingerprintRules);
+      // $event->setFingerprint($this->fingerprintRules);
 
       // Ignore errors.
       if (array_any($this->ignoredErrors, fn($message) => str_contains($eventErrorMessage, $message))) {
