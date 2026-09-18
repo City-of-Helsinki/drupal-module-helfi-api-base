@@ -87,9 +87,8 @@ helfi_api_base.settings:
             sequence:
               type: mapping
               mapping:
-                '%key':
-                  type: float
-                  label: 'Sample rate'
+                type: '%key'
+                label: 'Sample rate'
           fingerprint:
             type: sequence
             label: 'Fingerprint'
