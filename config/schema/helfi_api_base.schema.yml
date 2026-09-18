@@ -85,7 +85,7 @@ helfi_api_base.settings:
             type: sequence
             label: 'Sampled'
             sequence:
-              type: mapping
+              type: sequence
               mapping:
                 type: '%key'
                 label: 'Sample rate'
