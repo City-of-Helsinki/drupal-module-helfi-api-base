@@ -85,10 +85,7 @@ helfi_api_base.settings:
             type: sequence
             label: 'Sampled'
             sequence:
-              type: sequence
-              mapping:
-                type: '%key'
-                label: 'Sample rate'
+              type: ignore
           fingerprint:
             type: sequence
             label: 'Fingerprint'
