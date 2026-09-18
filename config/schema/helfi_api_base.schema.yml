@@ -65,3 +65,28 @@ helfi_api_base.delete_revisions:
       type: sequence
       sequence:
         type: string
+
+helfi_api_base.settings:
+  type: config_entity
+  mapping:
+    sentry_errors:
+      type: config_object
+      label: 'Sentry errors configuration'
+      mapping:
+        ignore:
+          type: sequence
+          label: 'Ignored'
+          sequence:
+            type: string
+            label: 'Error message'
+        sample:
+          type: sequence
+          label: 'Sampled'
+          sequence:
+            type: ignore
+        fingerprint:
+          type: sequence
+          label: 'Fingerprint'
+          sequence:
+            type: string
+            label: 'Fingerprint'
