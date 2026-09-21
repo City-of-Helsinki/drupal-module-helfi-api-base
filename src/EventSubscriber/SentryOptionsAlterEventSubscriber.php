@@ -32,13 +32,15 @@ final class SentryOptionsAlterEventSubscriber implements EventSubscriberInterfac
     $optionsAlterEvent->options['before_send'] = function (Event $event) use ($errors): ?Event {
       $eventErrorMessage = $event->getMessageFormatted() ?? '';
 
+      $ignore = $errors['ignore'] ?? [];
       // Ignore errors.
-      if (array_any($errors['ignore'], fn($message) => str_contains($eventErrorMessage, $message))) {
+      if (array_any($ignore, fn($message) => str_contains($eventErrorMessage, $message))) {
         return NULL;
       }
 
+      $sample = $errors['sample'] ?? [];
       // Handle rate limited errors.
-      foreach ($errors['sample'] as $message => $rateLimit) {
+      foreach ($sample as $message => $rateLimit) {
         if (str_contains($eventErrorMessage, $message) && $this->skipErrorByRateLimit($rateLimit)) {
           return NULL;
         }
