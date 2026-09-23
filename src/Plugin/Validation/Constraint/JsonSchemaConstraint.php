@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Plugin\Validation\Constraint;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Validation\Attribute\Constraint as ConstraintAttribute;
 use Symfony\Component\Validator\Constraint;
 
 /**
  * Checks that the submitted value validates against given json schema.
- *
- * @Constraint(
- *   id = "JsonSchema",
- *   label = @Translation("Json Schema", context = "Validation"),
- *   type = {"json", "string"}
- * )
  */
+#[ConstraintAttribute(
+  id: 'JsonSchema',
+  label: new TranslatableMarkup('Json Schema', options: ['context' => 'Validation']),
+  type: ['json', 'string'],
+)]
 class JsonSchemaConstraint extends Constraint {
 
   /**

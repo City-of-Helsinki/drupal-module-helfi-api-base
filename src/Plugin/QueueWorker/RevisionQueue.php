@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Plugin\QueueWorker;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Queue\Attribute\QueueWorker;
 use Drupal\Core\Queue\QueueWorkerBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Entity\Revision\RevisionManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Handles old revision deletion.
- *
- * @QueueWorker(
- *  id = "helfi_api_base_revision",
- *  title = @Translation("Queue worker for deleting old revisions"),
- *  cron = {"time" = 180}
- * )
  */
+#[QueueWorker(
+  id: 'helfi_api_base_revision',
+  title: new TranslatableMarkup('Queue worker for deleting old revisions'),
+  cron: ['time' => 180],
+)]
 final class RevisionQueue extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
   /**

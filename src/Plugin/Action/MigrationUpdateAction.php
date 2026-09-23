@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\Plugin\Action;
 
+use Drupal\Core\Action\Attribute\Action;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Entity\RemoteEntityBase;
 use Drupal\helfi_api_base\MigrateTrait;
+use Drupal\helfi_api_base\Plugin\Derivative\MigrationUpdateActionDerivative;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessage;
 use Drupal\migrate\Plugin\MigrationInterface;
@@ -18,13 +21,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Updates the remote entity using associated migration.
- *
- * @Action(
- *   id = "remote_entity:migration_update",
- *   action_label = @Translation("Remote entity - Migration update"),
- *   deriver = "Drupal\helfi_api_base\Plugin\Derivative\MigrationUpdateActionDerivative",
- * )
  */
+#[Action(
+  id: 'remote_entity:migration_update',
+  action_label: new TranslatableMarkup('Remote entity - Migration update'),
+  deriver: MigrationUpdateActionDerivative::class,
+)]
 final class MigrationUpdateAction extends ActionBase implements ContainerFactoryPluginInterface {
 
   use MigrateTrait;
