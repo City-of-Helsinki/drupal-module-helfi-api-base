@@ -30,6 +30,9 @@ final class SentryTracesSamplerSubscriber implements EventSubscriberInterface {
     }
     $path = parse_url($data['http.url'], PHP_URL_PATH);
 
+    if (!is_string($path)) {
+      return FALSE;
+    }
     return str_ends_with($path, '/health');
   }
 

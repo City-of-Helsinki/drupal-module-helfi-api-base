@@ -8,6 +8,8 @@ use Drupal\Core\Entity\ContentEntityStorageInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\helfi_api_base\Entity\RemoteEntityBase;
+use Drupal\helfi_api_base\Plugin\Derivative\MigrateTranslatableEntity;
+use Drupal\migrate\Attribute\MigrateDestination;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\migrate\Plugin\migrate\destination\EntityContentBase;
@@ -15,12 +17,11 @@ use Drupal\migrate\Row;
 
 /**
  * Provides a destination plugin for translatable entities.
- *
- * @MigrateDestination(
- *   id = "translatable_entity",
- *   deriver = "Drupal\helfi_api_base\Plugin\Derivative\MigrateTranslatableEntity"
- * )
  */
+#[MigrateDestination(
+  id: 'translatable_entity',
+  deriver: MigrateTranslatableEntity::class,
+)]
 class TranslatableEntity extends EntityContentBase {
 
   /**

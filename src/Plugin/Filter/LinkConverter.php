@@ -186,7 +186,7 @@ final class LinkConverter extends FilterBase implements ContainerFactoryPluginIn
     foreach ($node->attributes as $attribute) {
       if ($attribute->nodeName == 'class') {
         // We don't want to overwrite the existing CSS class.
-        $build['class'] = array_unique(array_merge($build['class'], explode(' ', $attribute->nodeValue)));
+        $build['class'] = array_unique(array_merge($build['class'], explode(' ', $attribute->nodeValue ?? '')));
       }
       else {
         $build[$attribute->nodeName] = $attribute->nodeValue;

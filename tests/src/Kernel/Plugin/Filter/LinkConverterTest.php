@@ -41,7 +41,6 @@ class LinkConverterTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->installSchema('system', 'sequences');
     $this->installConfig('filter');
     $this->installConfig('system');
     $this->setUpMockLogger();

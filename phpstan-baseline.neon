@@ -391,12 +391,6 @@ parameters:
 			path: src/EventSubscriber/SentryTracesSamplerSubscriber.php
 
 		-
-			message: '#^Parameter \#1 \$haystack of function str_ends_with expects string, string\|false\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/EventSubscriber/SentryTracesSamplerSubscriber.php
-
-		-
 			message: '#^Method Drupal\\helfi_api_base\\EventSubscriber\\UserLoginSubscriber\:\:__construct\(\) has parameter \$restrictedRoles with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
