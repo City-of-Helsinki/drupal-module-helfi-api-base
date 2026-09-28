@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_api_base\Drush\Commands;
 
 use Drupal\Core\Site\Settings;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverException;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drush\Commands\AutowireTrait;
 use ResilientLogger\ResilientLogger;
@@ -46,7 +47,7 @@ abstract class AuditLogCommandBase extends Command {
         ->getActiveProject()
         ->getName();
     }
-    catch (\InvalidArgumentException) {
+    catch (EnvironmentResolverException) {
     }
 
     return ResilientLogger::create($options);

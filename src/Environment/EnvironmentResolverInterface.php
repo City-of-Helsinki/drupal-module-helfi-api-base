@@ -35,9 +35,7 @@ interface EnvironmentResolverInterface {
    *   The currently active environment.
    *
    * @throws \Drupal\helfi_api_base\Environment\EnvironmentResolverException
-   *   When the active project or environment is not configured.
-   * @throws \InvalidArgumentException
-   *   When the environment is not found.
+   *   When the active project or environment is not configured or not found.
    */
   public function getActiveEnvironment() : Environment;
 
@@ -78,9 +76,7 @@ interface EnvironmentResolverInterface {
    *   The environment.
    *
    * @throws \Drupal\helfi_api_base\Environment\EnvironmentResolverException
-   *   When the project is not found.
-   * @throws \InvalidArgumentException
-   *   When the environment is not found.
+   *   When the project or environment is not found.
    */
   public function getEnvironment(string $project, string $environment) : Environment;
 

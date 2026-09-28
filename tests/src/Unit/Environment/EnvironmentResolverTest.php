@@ -50,9 +50,8 @@ class EnvironmentResolverTest extends UnitTestCase {
     string $language,
     string $environment,
     string $message,
-    string $exception,
   ) : void {
-    $this->expectException($exception);
+    $this->expectException(EnvironmentResolverException::class);
     $this->expectExceptionMessage($message);
     $this->getEnvironmentResolver()
       ->getEnvironment($project, $environment);
@@ -66,8 +65,8 @@ class EnvironmentResolverTest extends UnitTestCase {
    */
   public static function resolveEnvironmentExceptionData() : array {
     return [
-      ['nonexistent', '', '', 'Project "nonexistent" not found.', EnvironmentResolverException::class],
-      ['asuminen', 'en', 'nonexistent', 'Environment "nonexistent" not found.', \InvalidArgumentException::class],
+      ['nonexistent', '', '', 'Project "nonexistent" not found.'],
+      ['asuminen', 'en', 'nonexistent', 'Environment "nonexistent" not found.'],
     ];
   }
 
