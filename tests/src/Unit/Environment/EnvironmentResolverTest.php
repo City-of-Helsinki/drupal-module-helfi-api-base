@@ -11,6 +11,7 @@ use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverException;
 use Drupal\helfi_api_base\Environment\Project;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
@@ -49,8 +50,9 @@ class EnvironmentResolverTest extends UnitTestCase {
     string $language,
     string $environment,
     string $message,
+    string $exception,
   ) : void {
-    $this->expectException(\InvalidArgumentException::class);
+    $this->expectException($exception);
     $this->expectExceptionMessage($message);
     $this->getEnvironmentResolver()
       ->getEnvironment($project, $environment);
@@ -64,8 +66,8 @@ class EnvironmentResolverTest extends UnitTestCase {
    */
   public static function resolveEnvironmentExceptionData() : array {
     return [
-      ['nonexistent', '', '', 'Project "nonexistent" not found.'],
-      ['asuminen', 'en', 'nonexistent', 'Environment "nonexistent" not found.'],
+      ['nonexistent', '', '', 'Project "nonexistent" not found.', EnvironmentResolverException::class],
+      ['asuminen', 'en', 'nonexistent', 'Environment "nonexistent" not found.', \InvalidArgumentException::class],
     ];
   }
 
@@ -99,7 +101,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    */
   #[DataProvider(methodName: 'activeProjectExceptionData')]
   public function testGetActiveProjectException(mixed $value) : void {
-    $this->expectException(\InvalidArgumentException::class);
+    $this->expectException(EnvironmentResolverException::class);
     $this->expectExceptionMessageMatches('/^No active project found./');
 
     // Construct config mock manually because ::getConfigStub() will never
@@ -141,7 +143,7 @@ class EnvironmentResolverTest extends UnitTestCase {
    */
   public function testGetActiveEnvironmentException() : void {
     putenv('APP_ENV=');
-    $this->expectException(\InvalidArgumentException::class);
+    $this->expectException(EnvironmentResolverException::class);
     $this->expectExceptionMessageMatches('/^No active environment found./');
     $this->getEnvironmentResolver(Project::ASUMINEN)->getActiveEnvironment();
   }

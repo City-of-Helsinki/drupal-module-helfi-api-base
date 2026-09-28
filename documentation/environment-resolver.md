@@ -30,6 +30,9 @@ $domain = $environment->getDomain(); // 'nginx-asuminen-dev.agw.arodevtest.hel.f
 $baseUrl = $environment->getBaseUrl(); // 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi'
 /** @var \Drupal\helfi_api_base\Environment\Service $services */
 $service = $environment->getService(\Drupal\helfi_api_base\Environment\ServiceEnum::ElasticProxy); // Gets the elastic-proxy service.
+// Browser accessible Elastic proxy address. helfi_platform_config uses this to
+// populate 'elastic_proxy.settings:elastic_proxy_url'.
+$service = $environment->getService(\Drupal\helfi_api_base\Environment\ServiceEnum::PublicElasticProxy);
 ```
 
 ### Active environment

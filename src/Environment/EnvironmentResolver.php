@@ -201,24 +201,36 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             internalAddress: new Address('helfi-kasko', 'http', 8080),
             paths: $paths[Project::KASVATUS_KOULUTUS],
             environment: EnvironmentEnum::Local,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('elastic-proxy-helfi-kasko.docker.so')),
+            ],
           ),
           new Environment(
             address: new Address('www.test.hel.ninja'),
             internalAddress: new Address('nginx-kasvatus-koulutus-test.apps.arodevtest.hel.fi'),
             paths: $paths[Project::KASVATUS_KOULUTUS],
             environment: EnvironmentEnum::Test,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('kasvatus-koulutus-elastic-proxy.test.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('www.stage.hel.ninja'),
             internalAddress: new Address('nginx-kasvatus-koulutus-staging.apps.platta.hel.fi'),
             paths: $paths[Project::KASVATUS_KOULUTUS],
             environment: EnvironmentEnum::Stage,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('kasvatus-koulutus-elastic-proxy.stage.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('www.hel.fi'),
             internalAddress: new Address('nginx-kasvatus-koulutus-prod.apps.platta.hel.fi'),
             paths: $paths[Project::KASVATUS_KOULUTUS],
             environment: EnvironmentEnum::Prod,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('kasvatus-koulutus-elastic-proxy.api.hel.ninja')),
+            ],
           ),
         ],
         roles: [ProjectRoleEnum::Core],
@@ -263,24 +275,36 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             internalAddress: new Address('helfi-kymp', 'http', 8080),
             paths: $paths[Project::LIIKENNE],
             environment: EnvironmentEnum::Local,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('elastic-proxy-helfi-kymp.docker.so')),
+            ],
           ),
           new Environment(
             address: new Address('www.test.hel.ninja'),
             internalAddress: new Address('nginx-liikenne-test.apps.arodevtest.hel.fi'),
             paths: $paths[Project::LIIKENNE],
             environment: EnvironmentEnum::Test,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('liikenne-elastic-proxy.test.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('www.stage.hel.ninja'),
             internalAddress: new Address('nginx-liikenne-staging.apps.platta.hel.fi'),
             paths: $paths[Project::LIIKENNE],
             environment: EnvironmentEnum::Stage,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('liikenne-elastic-proxy.stage.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('www.hel.fi'),
             internalAddress: new Address('nginx-liikenne-prod.apps.platta.hel.fi'),
             paths: $paths[Project::LIIKENNE],
             environment: EnvironmentEnum::Prod,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('liikenne-elastic-proxy.api.hel.ninja')),
+            ],
           ),
         ],
         roles: [ProjectRoleEnum::Core],
@@ -294,24 +318,36 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             internalAddress: new Address('helfi-rekry', 'http', 8080),
             paths: $paths[Project::REKRY],
             environment: EnvironmentEnum::Local,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('elastic-proxy-helfi-rekry.docker.so')),
+            ],
           ),
           new Environment(
             address: new Address('www.test.hel.ninja'),
             internalAddress: new Address('nginx-rekry-test.apps.arodevtest.hel.fi'),
             paths: $paths[Project::REKRY],
             environment: EnvironmentEnum::Test,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('helfi-rekry-elastic-proxy.test.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('www.stage.hel.ninja'),
             internalAddress: new Address('nginx-rekry-staging.apps.platta.hel.fi'),
             paths: $paths[Project::REKRY],
             environment: EnvironmentEnum::Stage,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('helfi-rekry-elastic-proxy.stage.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('www.hel.fi'),
             internalAddress: new Address('nginx-rekry-prod.apps.platta.hel.fi'),
             paths: $paths[Project::REKRY],
             environment: EnvironmentEnum::Prod,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('helfi-rekry-elastic-proxy.api.hel.ninja')),
+            ],
           ),
         ],
         roles: [ProjectRoleEnum::Core],
@@ -325,24 +361,36 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             internalAddress: new Address('helfi-strategia', 'http', 8080),
             paths: $paths[Project::STRATEGIA],
             environment: EnvironmentEnum::Local,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('elastic-proxy-helfi-strategia.docker.so')),
+            ],
           ),
           new Environment(
             address: new Address('www.test.hel.ninja'),
             internalAddress: new Address('nginx-strategia-talous-test.apps.arodevtest.hel.fi'),
             paths: $paths[Project::STRATEGIA],
             environment: EnvironmentEnum::Test,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('helfi-etusivu-elastic-proxy.test.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('www.stage.hel.ninja'),
             internalAddress: new Address('nginx-strategia-talous-staging.apps.platta.hel.fi'),
             paths: $paths[Project::STRATEGIA],
             environment: EnvironmentEnum::Stage,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('helfi-etusivu-elastic-proxy.stage.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('www.hel.fi'),
             internalAddress: new Address('nginx-strategia-talous-prod.apps.platta.hel.fi'),
             paths: $paths[Project::STRATEGIA],
             environment: EnvironmentEnum::Prod,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('helfi-etusivu-elastic-proxy.api.hel.ninja')),
+            ],
           ),
         ],
         roles: [ProjectRoleEnum::Core],
@@ -356,24 +404,36 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             internalAddress: new Address('helfi-sote', 'http', 8080),
             paths: $paths[Project::TERVEYS],
             environment: EnvironmentEnum::Local,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('elastic-proxy-helfi-sote.docker.so')),
+            ],
           ),
           new Environment(
             address: new Address('www.test.hel.ninja'),
             internalAddress: new Address('nginx-terveys-test.apps.arodevtest.hel.fi'),
             paths: $paths[Project::TERVEYS],
             environment: EnvironmentEnum::Test,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('terveys-elastic-proxy.test.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('www.stage.hel.ninja'),
             internalAddress: new Address('nginx-terveys-staging.apps.platta.hel.fi'),
             paths: $paths[Project::TERVEYS],
             environment: EnvironmentEnum::Stage,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('terveys-elastic-proxy.stage.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('www.hel.fi'),
             internalAddress: new Address('nginx-terveys-prod.apps.platta.hel.fi'),
             paths: $paths[Project::TERVEYS],
             environment: EnvironmentEnum::Prod,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('terveys-elastic-proxy.api.hel.ninja')),
+            ],
           ),
         ],
         roles: [ProjectRoleEnum::Core],
@@ -418,24 +478,36 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             internalAddress: new Address('helsinki-paatokset', 'http', 8080),
             paths: $rootPaths,
             environment: EnvironmentEnum::Local,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('elastic-proxy-helsinki-paatokset.docker.so')),
+            ],
           ),
           new Environment(
             address: new Address('paatokset.test.hel.ninja'),
             internalAddress: new Address('nginx-paatokset-test.apps.arodevtest.hel.fi'),
             paths: $rootPaths,
             environment: EnvironmentEnum::Test,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('paatokset-elastic-proxy.test.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('paatokset.stage.hel.ninja'),
             internalAddress: new Address('nginx-paatokset-staging.apps.platta.hel.fi'),
             paths: $rootPaths,
             environment: EnvironmentEnum::Stage,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('paatokset-elastic-proxy.stage.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('paatokset.hel.fi'),
             internalAddress: new Address('nginx-paatokset-prod.apps.platta.hel.fi'),
             paths: $rootPaths,
             environment: EnvironmentEnum::Prod,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('paatokset-elastic-proxy.api.hel.ninja')),
+            ],
           ),
         ],
       ),
@@ -636,7 +708,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
       return $this->activeProject;
     }
     if (!$name = $this->getConfig(self::PROJECT_NAME_KEY)) {
-      throw new \InvalidArgumentException(
+      throw new EnvironmentResolverException(
         $this->configurationMissingExceptionMessage('No active project found', self::PROJECT_NAME_KEY)
       );
     }
@@ -659,7 +731,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
       $env = getenv('APP_ENV');
     }
     if (!$env) {
-      throw new \InvalidArgumentException(
+      throw new EnvironmentResolverException(
         $this->configurationMissingExceptionMessage('No active environment found', self::ENVIRONMENT_NAME_KEY)
       );
     }
@@ -709,7 +781,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
     if ($project = reset($projects)) {
       return $project;
     }
-    throw new \InvalidArgumentException(
+    throw new EnvironmentResolverException(
       sprintf('Project "%s" not found.', $repository)
     );
   }
