@@ -144,12 +144,15 @@ final class Project {
    *
    * @return \Drupal\helfi_api_base\Environment\Environment
    *   The environment.
+   *
+   * @throws \Drupal\helfi_api_base\Environment\EnvironmentResolverException
+   *   When the environment is not found.
    */
   public function getEnvironment(string $environment) : Environment {
     $environment = $this->normalizeEnvironmentName($environment);
 
     if (!$this->hasEnvironment($environment)) {
-      throw new \InvalidArgumentException(sprintf('Environment "%s" not found.', $environment));
+      throw new EnvironmentResolverException(sprintf('Environment "%s" not found.', $environment));
     }
     return $this->environments[$environment];
   }

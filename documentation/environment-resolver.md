@@ -30,6 +30,32 @@ $domain = $environment->getDomain(); // 'nginx-asuminen-dev.agw.arodevtest.hel.f
 $baseUrl = $environment->getBaseUrl(); // 'https://nginx-asuminen-dev.agw.arodevtest.hel.fi'
 /** @var \Drupal\helfi_api_base\Environment\Service $services */
 $service = $environment->getService(\Drupal\helfi_api_base\Environment\ServiceEnum::ElasticProxy); // Gets the elastic-proxy service.
+// Browser accessible Elastic proxy address. helfi_platform_config uses this to
+// populate 'elastic_proxy.settings:elastic_proxy_url'.
+$service = $environment->getService(\Drupal\helfi_api_base\Environment\ServiceEnum::PublicElasticProxy);
+```
+
+To get the active environment's public Elastic proxy address, use `\Drupal\helfi_api_base\Environment\ActiveServiceTrait`. The class using it must have an `$environmentResolver` property:
+
+```php
+use Drupal\helfi_api_base\Environment\ActiveServiceTrait;
+
+final class MyService {
+
+  use ActiveServiceTrait;
+
+  public function __construct(
+    private readonly EnvironmentResolverInterface $environmentResolver,
+  ) {
+  }
+
+  public function build() : array {
+    // The Elastic proxy address, or NULL if the active environment can't be
+    // resolved or has no Elastic proxy.
+    $url = $this->getPublicElasticProxy()?->getAddress();
+  }
+
+}
 ```
 
 ### Active environment
