@@ -35,6 +35,29 @@ $service = $environment->getService(\Drupal\helfi_api_base\Environment\ServiceEn
 $service = $environment->getService(\Drupal\helfi_api_base\Environment\ServiceEnum::PublicElasticProxy);
 ```
 
+To get the active environment's public Elastic proxy address, use `\Drupal\helfi_api_base\Environment\ActiveServiceTrait`. The class using it must have an `$environmentResolver` property:
+
+```php
+use Drupal\helfi_api_base\Environment\ActiveServiceTrait;
+
+final class MyService {
+
+  use ActiveServiceTrait;
+
+  public function __construct(
+    private readonly EnvironmentResolverInterface $environmentResolver,
+  ) {
+  }
+
+  public function build() : array {
+    // The Elastic proxy address, or NULL if the active environment can't be
+    // resolved or has no Elastic proxy.
+    $url = $this->getPublicElasticProxy()?->getAddress();
+  }
+
+}
+```
+
 ### Active environment
 
 This requires `helfi_api_base.environment_resolver.settings` configuration to be set properly:
