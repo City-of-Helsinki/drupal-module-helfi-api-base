@@ -647,24 +647,36 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             internalAddress: new Address('historiaportaali', 'http', 8080),
             paths: $rootPaths,
             environment: EnvironmentEnum::Local,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('elastic-proxy-historiaportaali.docker.so')),
+            ],
           ),
           new Environment(
             address: new Address('historia.test.hel.ninja'),
             internalAddress: new Address('historia.test.hel.ninja'),
             paths: $rootPaths,
             environment: EnvironmentEnum::Test,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('helhist-elastic-proxy.test.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('historia.stage.hel.ninja'),
             internalAddress: new Address('historia.stage.hel.ninja'),
             paths: $rootPaths,
             environment: EnvironmentEnum::Stage,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('helhist-elastic-proxy.stage.hel.ninja')),
+            ],
           ),
           new Environment(
             address: new Address('historia.hel.fi'),
             internalAddress: new Address('historia.hel.fi'),
             paths: $rootPaths,
             environment: EnvironmentEnum::Prod,
+            services: [
+              new Service(ServiceEnum::PublicElasticProxy, new Address('helhist-elastic-proxy.api.hel.ninja')),
+            ],
           ),
         ],
       ),
