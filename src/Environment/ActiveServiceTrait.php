@@ -15,6 +15,25 @@ namespace Drupal\helfi_api_base\Environment;
 trait ActiveServiceTrait {
 
   /**
+   * Gets the internal Elastic of the active environment.
+   *
+   * @return \Drupal\helfi_api_base\Environment\Address|null
+   *   The Elastic address, or NULL if the active project or environment
+   *   can't be resolved or has no Elastic server.
+   */
+  protected function getElastic(): ?Address {
+    try {
+      return $this->environmentResolver
+        ->getActiveEnvironment()
+        ->getService(ServiceEnum::Elastic)
+        ?->address;
+    }
+    catch (EnvironmentResolverException) {
+      return NULL;
+    }
+  }
+
+  /**
    * Gets the browser accessible Elastic proxy of the active environment.
    *
    * @return \Drupal\helfi_api_base\Environment\Address|null

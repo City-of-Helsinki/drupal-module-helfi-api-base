@@ -155,6 +155,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             paths: $paths[Project::ETUSIVU],
             environment: EnvironmentEnum::Local,
             services: [
+              new Service(ServiceEnum::Elastic, new Address('helfi-etusivu-elastic', 'http', 9200)),
               new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic', 'http', 9200)),
               new Service(ServiceEnum::PublicElasticProxy, new Address('elastic-proxy-helfi-etusivu.docker.so')),
             ],
@@ -165,6 +166,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             paths: $paths[Project::ETUSIVU],
             environment: EnvironmentEnum::Test,
             services: [
+              new Service(ServiceEnum::Elastic, new Address('elasticsearch-etusivu-managed-test-es-default.hki-kanslia-helfi-etusivu-test.svc.cluster.local', 'https', 9200)),
               new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic-proxy.test.hel.ninja')),
               new Service(ServiceEnum::PublicElasticProxy, new Address('helfi-etusivu-elastic-proxy.test.hel.ninja')),
             ],
@@ -175,6 +177,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             paths: $paths[Project::ETUSIVU],
             environment: EnvironmentEnum::Stage,
             services: [
+              new Service(ServiceEnum::Elastic, new Address('elasticsearch-etusivu-managed-es-default.hki-kanslia-helfi-etusivu-staging.svc.cluster.local', 'https', 9200)),
               new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic-proxy.stage.hel.ninja')),
               new Service(ServiceEnum::PublicElasticProxy, new Address('helfi-etusivu-elastic-proxy.stage.hel.ninja')),
             ],
@@ -185,6 +188,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             paths: $paths[Project::ETUSIVU],
             environment: EnvironmentEnum::Prod,
             services: [
+              new Service(ServiceEnum::Elastic, new Address('elasticsearch-etusivu-managed-prod-es-default.hki-kanslia-helfi-etusivu-prod.svc.cluster.local', 'https', 9200)),
               new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic-proxy.api.hel.ninja')),
               new Service(ServiceEnum::PublicElasticProxy, new Address('helfi-etusivu-elastic-proxy.api.hel.ninja')),
             ],
