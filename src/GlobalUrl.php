@@ -57,9 +57,9 @@ enum GlobalUrl: string {
         default => 'https://www.hel.fi/en/helsinki-near-you',
       },
       self::AiRegister => match ($langcode) {
-        'fi' => 'https://ai.hel.fi/eettiset-periaatteet/',
-        'sv' => 'https://ai.hel.fi/sv/las-mer-om-ai-registret/',
-        default => 'https://ai.hel.fi/',
+        'fi' => 'https://www.hel.fi/fi/paatoksenteko-ja-hallinto/tietoa-helsingista/muotoilu-ja-digitaalisuus/digitaalinen-helsinki/tekoaly-kaupungin-palveluissa/tekoalyrekisteri/helfin-paahaku',
+        'sv' => 'https://www.hel.fi/sv/beslutsfattande-och-forvaltning/information-om-helsingfors/design-och-digitalisering/digitala-helsingfors/artificiell-intelligens-inom-stadens-tjanster/ai-registret/helfis-huvudsokning',
+        default => 'https://www.hel.fi/en/decision-making/information-on-helsinki/design-and-digitalisation/digital-helsinki/ai-in-the-city-of-helsinkis-services/ai-register/helfi-main-search',
       },
       self::SearchForm => match ($langcode) {
         'fi' => 'https://www.hel.fi/haku',
