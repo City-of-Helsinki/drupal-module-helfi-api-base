@@ -16,7 +16,6 @@ enum GlobalUrl: string {
   case HelsinkiNearYouLink = 'helsinki_near_you_link_url';
   case AiRegister = 'ai_register_url';
   case SearchForm = 'helfi_search_form_url';
-  case AiSearchForm = 'helfi_ai_search_form_url';
   case ErrorPageHomeLink = 'error_page_home_link';
   case ErrorPageFeedbackLink = 'error_page_feedback_link';
 
@@ -62,14 +61,9 @@ enum GlobalUrl: string {
         default => 'https://www.hel.fi/en/decision-making/information-on-helsinki/design-and-digitalisation/digital-helsinki/ai-in-the-city-of-helsinkis-services/ai-register/helfi-main-search',
       },
       self::SearchForm => match ($langcode) {
-        'fi' => 'https://www.hel.fi/haku',
-        'sv' => 'https://www.hel.fi/sok',
-        default => 'https://www.hel.fi/search',
-      },
-      self::AiSearchForm => match ($langcode) {
-        'fi' => 'https://www.hel.fi/fi/search/new',
-        'sv' => 'https://www.hel.fi/sv/search/new',
-        default => 'https://www.hel.fi/en/search/new',
+        'fi' => 'https://www.hel.fi/fi/haku',
+        'sv' => 'https://www.hel.fi/sv/sok',
+        default => 'https://www.hel.fi/en/search',
       },
       self::ErrorPageHomeLink => match ($langcode) {
         'fi' => 'https://www.hel.fi/fi',
