@@ -46,8 +46,8 @@ enum GlobalUrl: string {
         default => 'https://www.hel.fi/en/open-jobs',
       },
       self::ContactLink => match ($langcode) {
-        'fi' => 'https://www.hel.fi/fi/paatoksenteko/ota-yhteytta-helsingin-kaupunkiin',
-        'sv' => 'https://www.hel.fi/sv/beslutsfattande/kontakta-helsingfors-stad',
+        'fi' => 'https://www.hel.fi/fi/paatoksenteko-ja-hallinto/ota-yhteytta',
+        'sv' => 'https://www.hel.fi/sv/beslutsfattande-och-forvaltning/kontakta-helsingfors-stad',
         default => 'https://www.hel.fi/en/decision-making/contact-the-city-of-helsinki',
       },
       self::HelsinkiNearYouLink => match ($langcode) {
