@@ -9,4 +9,5 @@ namespace Drupal\helfi_api_base\Environment;
  */
 enum ProjectRoleEnum {
   case Core;
+  case HasEtusivuIndex;
 }
