@@ -194,7 +194,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             ],
           ),
         ],
-        roles: [ProjectRoleEnum::Core],
+        roles: [ProjectRoleEnum::Core, ProjectRoleEnum::HasEtusivuIndex],
       ),
       new Project(
         Project::KASVATUS_KOULUTUS,

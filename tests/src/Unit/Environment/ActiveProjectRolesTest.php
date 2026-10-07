@@ -42,6 +42,33 @@ class ActiveProjectRolesTest extends UnitTestCase {
       [TRUE, Project::ASUMINEN, EnvironmentEnum::Local],
       [FALSE, 'non-existent', NULL],
       [FALSE, Project::PAATOKSET, EnvironmentEnum::Prod],
+      [TRUE, Project::ETUSIVU, EnvironmentEnum::Local],
+    ];
+  }
+
+  /**
+   * Tests the HasEtusivuIndex role.
+   */
+  #[DataProvider(methodName: 'hasEtusivuIndexData')]
+  public function testHasEtusivuIndex(bool $expected, ?string $projectName, ?EnvironmentEnum $env): void {
+    $sut = new ActiveProjectRoles($this->getEnvironmentResolver($projectName, $env));
+    $this->assertEquals($expected, $sut->hasRole(ProjectRoleEnum::HasEtusivuIndex));
+  }
+
+  /**
+   * A data provider.
+   *
+   * @return array[]
+   *   The data.
+   */
+  public static function hasEtusivuIndexData(): array {
+    return [
+      [FALSE, NULL, NULL],
+      [TRUE, Project::ASUMINEN, EnvironmentEnum::Local],
+      [FALSE, 'non-existent', NULL],
+      [TRUE, Project::PAATOKSET, EnvironmentEnum::Prod],
+      [TRUE, Project::ETUSIVU, EnvironmentEnum::Local],
+      [FALSE, Project::GRANTS, EnvironmentEnum::Local],
     ];
   }
 
