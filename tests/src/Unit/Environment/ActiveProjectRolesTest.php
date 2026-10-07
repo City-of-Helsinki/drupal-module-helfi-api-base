@@ -24,7 +24,7 @@ class ActiveProjectRolesTest extends UnitTestCase {
   /**
    * Tests ::isCoreInstance().
    */
-  #[DataProvider(methodName: 'isCoreInstanceData')]
+  #[DataProvider('isCoreInstanceData')]
   public function testIsCoreInstance(bool $expected, ?string $projectName, ?EnvironmentEnum $env): void {
     $sut = new ActiveProjectRoles($this->getEnvironmentResolver($projectName, $env));
     $this->assertEquals($expected, $sut->hasRole(ProjectRoleEnum::Core));
@@ -33,7 +33,7 @@ class ActiveProjectRolesTest extends UnitTestCase {
   /**
    * A data provider.
    *
-   * @return array[]
+   * @return array<int, array{bool, ?string, ?\Drupal\helfi_api_base\Environment\EnvironmentEnum}>
    *   The data.
    */
   public static function isCoreInstanceData(): array {
@@ -49,7 +49,7 @@ class ActiveProjectRolesTest extends UnitTestCase {
   /**
    * Tests the HasEtusivuIndex role.
    */
-  #[DataProvider(methodName: 'hasEtusivuIndexData')]
+  #[DataProvider('hasEtusivuIndexData')]
   public function testHasEtusivuIndex(bool $expected, ?string $projectName, ?EnvironmentEnum $env): void {
     $sut = new ActiveProjectRoles($this->getEnvironmentResolver($projectName, $env));
     $this->assertEquals($expected, $sut->hasRole(ProjectRoleEnum::HasEtusivuIndex));
@@ -58,7 +58,7 @@ class ActiveProjectRolesTest extends UnitTestCase {
   /**
    * A data provider.
    *
-   * @return array[]
+   * @return array<int, array{bool, ?string, ?\Drupal\helfi_api_base\Environment\EnvironmentEnum}>
    *   The data.
    */
   public static function hasEtusivuIndexData(): array {

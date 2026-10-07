@@ -1240,18 +1240,6 @@ parameters:
 			message: '#^Attribute class PHPUnit\\Framework\\Attributes\\DataProvider constructor invoked with named argument \$methodName, but it''s not allowed because of @no\-named\-arguments\.$#'
 			identifier: argument.named
 			count: 1
-			path: tests/src/Unit/Environment/ActiveProjectRolesTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\helfi_api_base\\Unit\\Environment\\ActiveProjectRolesTest\:\:isCoreInstanceData\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: tests/src/Unit/Environment/ActiveProjectRolesTest.php
-
-		-
-			message: '#^Attribute class PHPUnit\\Framework\\Attributes\\DataProvider constructor invoked with named argument \$methodName, but it''s not allowed because of @no\-named\-arguments\.$#'
-			identifier: argument.named
-			count: 1
 			path: tests/src/Unit/Environment/AddressTest.php
 
 		-
