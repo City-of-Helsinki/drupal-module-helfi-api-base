@@ -143,7 +143,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Prod,
           ),
         ],
-        roles: [ProjectRoleEnum::Core],
+        roles: [ProjectRoleEnum::Core, ProjectRoleEnum::HasEtusivuIndex],
       ),
       new Project(
         Project::ETUSIVU,
@@ -194,7 +194,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             ],
           ),
         ],
-        roles: [ProjectRoleEnum::Core],
+        roles: [ProjectRoleEnum::Core, ProjectRoleEnum::HasEtusivuIndex],
       ),
       new Project(
         Project::KASVATUS_KOULUTUS,
@@ -237,7 +237,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             ],
           ),
         ],
-        roles: [ProjectRoleEnum::Core],
+        roles: [ProjectRoleEnum::Core, ProjectRoleEnum::HasEtusivuIndex],
       ),
       new Project(
         Project::KUVA,
@@ -268,7 +268,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Prod,
           ),
         ],
-        roles: [ProjectRoleEnum::Core],
+        roles: [ProjectRoleEnum::Core, ProjectRoleEnum::HasEtusivuIndex],
       ),
       new Project(
         Project::LIIKENNE,
@@ -311,7 +311,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             ],
           ),
         ],
-        roles: [ProjectRoleEnum::Core],
+        roles: [ProjectRoleEnum::Core, ProjectRoleEnum::HasEtusivuIndex],
       ),
       new Project(
         Project::REKRY,
@@ -354,7 +354,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             ],
           ),
         ],
-        roles: [ProjectRoleEnum::Core],
+        roles: [ProjectRoleEnum::Core, ProjectRoleEnum::HasEtusivuIndex],
       ),
       new Project(
         Project::STRATEGIA,
@@ -397,7 +397,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             ],
           ),
         ],
-        roles: [ProjectRoleEnum::Core],
+        roles: [ProjectRoleEnum::Core, ProjectRoleEnum::HasEtusivuIndex],
       ),
       new Project(
         Project::TERVEYS,
@@ -440,7 +440,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             ],
           ),
         ],
-        roles: [ProjectRoleEnum::Core],
+        roles: [ProjectRoleEnum::Core, ProjectRoleEnum::HasEtusivuIndex],
       ),
       new Project(
         Project::TYO_YRITTAMINEN,
@@ -471,7 +471,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Prod,
           ),
         ],
-        roles: [ProjectRoleEnum::Core],
+        roles: [ProjectRoleEnum::Core, ProjectRoleEnum::HasEtusivuIndex],
       ),
       new Project(
         Project::PAATOKSET,
@@ -514,6 +514,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             ],
           ),
         ],
+        roles: [ProjectRoleEnum::HasEtusivuIndex],
       ),
       new Project(
         Project::GRANTS,
