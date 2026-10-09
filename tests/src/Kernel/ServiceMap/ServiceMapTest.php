@@ -11,7 +11,9 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\RequestOptions;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -78,11 +80,31 @@ class ServiceMapTest extends KernelTestBase {
   }
 
   /**
+   * Tests that the connection errors, like timeouts, are not logged.
+   */
+  public function testQueryConnectException() : void {
+    $client = $this->prophesize(ClientInterface::class);
+    $client->request('GET', Argument::any(), Argument::any())
+      ->shouldBeCalled()
+      ->willThrow(
+        new ConnectException(
+          'cURL error 28: Operation timed out',
+          $this->prophesize(RequestInterface::class)->reveal(),
+        )
+      );
+    $logger = $this->prophesize(LoggerInterface::class);
+    $logger->log(Argument::cetera())->shouldNotBeCalled();
+
+    $sut = $this->getSut($client, $logger);
+    $this->assertEmpty($sut->query('123'));
+  }
+
+  /**
    * Tests query().
    */
   public function testQuery() : void {
     $client = $this->prophesize(ClientInterface::class);
-    $client->request('GET', Argument::any(), Argument::any())
+    $client->request('GET', Argument::any(), Argument::withEntry(RequestOptions::TIMEOUT, 5))
       ->shouldBeCalled()
       ->willReturn(
         new Response(body: ''),
