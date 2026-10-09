@@ -11,6 +11,7 @@ use Drupal\helfi_api_base\ServiceMap\DTO\Address;
 use Drupal\helfi_api_base\ServiceMap\DTO\Location;
 use Drupal\helfi_api_base\ServiceMap\DTO\StreetName;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
@@ -103,6 +104,11 @@ final class ServiceMap implements ServiceMapInterface {
         ],
         RequestOptions::TIMEOUT => self::TIMEOUT,
       ]);
+    }
+    catch (ConnectException) {
+      // Don't log the connection errors, like timeouts. The API is expected
+      // to be slow or unavailable at times.
+      return [];
     }
     catch (GuzzleException $e) {
       Error::logException($this->logger, $e);
