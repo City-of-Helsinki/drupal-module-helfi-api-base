@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Extension\ModuleInstallerInterface;
 use Drupal\helfi_api_base\Features\FeatureManager;
 
@@ -220,4 +221,23 @@ function helfi_api_base_update_9030(): void {
     // Forget the old module's stored schema version.
     \Drupal::keyValue('system.schema')->delete('helfi_audit_log');
   }
+}
+
+/**
+ * Install new configuration: helfi_api_base.ettings.yml.
+ */
+function helfi_api_base_update_9031(): void {
+  $configName = 'helfi_api_base.settings';
+  if (\Drupal::service('config.storage')->exists($configName)) {
+    return;
+  }
+
+  $path = \Drupal::service('extension.list.module')
+      ->getPath('helfi_api_base') . '/config/install';
+
+  $data = (new FileStorage($path))->read($configName);
+  \Drupal::configFactory()
+    ->getEditable($configName)
+    ->setData($data)
+    ->save(TRUE);
 }
