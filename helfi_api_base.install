@@ -224,7 +224,7 @@ function helfi_api_base_update_9030(): void {
 }
 
 /**
- * Install new configuration: helfi_api_base.ettings.yml.
+ * Install new configuration: helfi_api_base.settings.yml.
  */
 function helfi_api_base_update_9031(): void {
   $configName = 'helfi_api_base.settings';
