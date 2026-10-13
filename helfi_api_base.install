@@ -236,6 +236,10 @@ function helfi_api_base_update_9031(): void {
     ->getPath('helfi_api_base') . '/config/install';
 
   $data = (new FileStorage($path))->read($configName);
+  if (!is_array($data)) {
+    $data = [];
+  }
+
   \Drupal::configFactory()
     ->getEditable($configName)
     ->setData($data)
