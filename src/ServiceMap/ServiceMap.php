@@ -11,7 +11,9 @@ use Drupal\helfi_api_base\ServiceMap\DTO\Address;
 use Drupal\helfi_api_base\ServiceMap\DTO\Location;
 use Drupal\helfi_api_base\ServiceMap\DTO\StreetName;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -27,7 +29,15 @@ final class ServiceMap implements ServiceMapInterface {
    *
    * @var string
    */
-  private const API_URL = 'https://api.hel.fi/servicemap/v2/search/';
+  private const string API_URL = 'https://api.hel.fi/servicemap/v2/search/';
+
+  /**
+   * The request timeout in seconds.
+   *
+   * The address autocomplete makes a request on every keystroke, so a slow
+   * API shouldn't tie up the PHP workers for long.
+   */
+  private const int TIMEOUT = 5;
 
   /**
    * Constructs a new instance.
@@ -92,7 +102,13 @@ final class ServiceMap implements ServiceMapInterface {
           'type' => 'address',
           'language' => $this->languageManager->getCurrentLanguage()->getId(),
         ],
+        RequestOptions::TIMEOUT => self::TIMEOUT,
       ]);
+    }
+    catch (ConnectException) {
+      // Don't log the connection errors, like timeouts. The API is expected
+      // to be slow or unavailable at times.
+      return [];
     }
     catch (GuzzleException $e) {
       Error::logException($this->logger, $e);
