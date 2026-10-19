@@ -12,6 +12,7 @@ final readonly class ParkingZone {
   public function __construct(
     public string $name,
     public string $embedUrl,
+    public array $coordinates = []
   ) {
   }
 

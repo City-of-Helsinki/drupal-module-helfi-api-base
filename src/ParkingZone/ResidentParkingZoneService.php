@@ -79,6 +79,7 @@ final class ResidentParkingZoneService implements ResidentParkingZoneServiceInte
       // The Servicemap API only provides the zone name in Finnish.
       name: (string) ($result['name']['fi'] ?? ''),
       embedUrl: $this->buildEmbedUrl($location, $bbox),
+      coordinates: $result['boundary']['coordinates'][0][0],
     );
   }
 
