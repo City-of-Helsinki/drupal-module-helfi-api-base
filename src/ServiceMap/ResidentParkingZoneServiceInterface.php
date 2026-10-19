@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_api_base\ParkingZone;
+namespace Drupal\helfi_api_base\ServiceMap;
 
-use Drupal\helfi_api_base\ParkingZone\DTO\ParkingZone;
+use Drupal\helfi_api_base\ServiceMap\DTO\ParkingZone;
 use Drupal\helfi_api_base\ServiceMap\DTO\Location;
 
 /**
@@ -18,7 +18,7 @@ interface ResidentParkingZoneServiceInterface {
    * @param \Drupal\helfi_api_base\ServiceMap\DTO\Location $location
    *   The location to look up.
    *
-   * @return \Drupal\helfi_api_base\ParkingZone\DTO\ParkingZone|null
+   * @return \Drupal\helfi_api_base\ServiceMap\DTO\ParkingZone|null
    *   The parking zone, or NULL when the location has no resident parking zone
    *   or the lookup failed.
    */

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_api_base\ParkingZone;
+namespace Drupal\helfi_api_base\ServiceMap;
 
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
-use Drupal\helfi_api_base\ParkingZone\DTO\ParkingZone;
+use Drupal\helfi_api_base\ServiceMap\DTO\ParkingZone;
 use Drupal\helfi_api_base\ServiceMap\DTO\Location;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -60,7 +60,7 @@ final class ResidentParkingZoneService implements ResidentParkingZoneServiceInte
       ]);
     }
     catch (GuzzleException $e) {
-      Error::logException($this->logger, $e);
+      // Pass the exception to the caller.
       throw $e;
     }
 

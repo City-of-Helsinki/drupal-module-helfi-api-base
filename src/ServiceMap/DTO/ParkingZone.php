@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_api_base\ParkingZone\DTO;
+namespace Drupal\helfi_api_base\ServiceMap\DTO;
 
 /**
  * Data transfer object representing a resident parking zone.
