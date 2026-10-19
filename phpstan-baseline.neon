@@ -1451,3 +1451,9 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: tests/src/Unit/Vault/VaultManagerTest.php
+
+    -
+      message: '#^Method Drupal\\helfi_api_base\\ParkingZone\\DTO\\ParkingZone\:\:__construct\(\) has parameter \$coordinates with no value type specified in iterable type array\.$#'
+      identifier: missingType.iterableValue
+      count: 1
+      path: src/ParkingZone/DTO/ParkingZone.php
