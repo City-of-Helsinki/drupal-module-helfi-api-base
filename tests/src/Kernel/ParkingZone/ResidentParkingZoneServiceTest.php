@@ -8,8 +8,6 @@ use Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService;
 use Drupal\helfi_api_base\ServiceMap\DTO\Location;
 use Drupal\KernelTests\KernelTestBase;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -110,5 +108,5 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
 
     $this->assertNull($zone);
   }
-  
+
 }
