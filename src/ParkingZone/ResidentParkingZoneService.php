@@ -61,7 +61,7 @@ final class ResidentParkingZoneService implements ResidentParkingZoneServiceInte
     }
     catch (GuzzleException $e) {
       Error::logException($this->logger, $e);
-      return NULL;
+      throw $e;
     }
 
     $result = json_decode((string) $response->getBody(), TRUE)['results'][0] ?? NULL;
