@@ -36,10 +36,10 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
   /**
    * A location inside a zone resolves to a populated DTO with an embed URL.
    *
-   * @covers ::getParkingZone
-   * @covers ::buildEmbedUrl
-   * @covers ::boundaryToBbox
-   * @covers ::__construct
+   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::getParkingZone
+   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::buildEmbedUrl
+   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::boundaryToBbox
+   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::__construct
    */
   public function testReturnsParkingZone(): void {
     $response = new Response(200, [], (string) json_encode([
@@ -76,8 +76,8 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
   /**
    * A zone without usable geometry resolves to NULL (nothing to show on a map).
    *
-   * @covers ::getParkingZone
-   * @covers ::boundaryToBbox
+   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::getParkingZone
+   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::boundaryToBbox
    */
   public function testReturnsNullWhenZoneHasNoGeometry(): void {
     $response = new Response(200, [], (string) json_encode([
@@ -98,7 +98,7 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
   /**
    * A location outside every zone resolves to NULL.
    *
-   * @covers ::getParkingZone
+   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::getParkingZone
    */
   public function testReturnsNullWhenNoZone(): void {
     $response = new Response(200, [], (string) json_encode(['count' => 0, 'results' => []]));
@@ -114,7 +114,7 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
   /**
    * A failed API request resolves to NULL instead of bubbling the exception.
    *
-   * @covers ::getParkingZone
+   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::getParkingZone
    */
   public function testReturnsNullOnRequestFailure(): void {
     $httpClient = $this->createMock(ClientInterface::class);
