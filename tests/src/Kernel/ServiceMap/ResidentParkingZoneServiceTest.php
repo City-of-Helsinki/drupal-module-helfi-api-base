@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_api_base\Kernel\ParkingZone;
+namespace Drupal\Tests\helfi_api_base\Kernel\ServiceMap;
 
-use Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService;
+use Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService;
 use Drupal\helfi_api_base\ServiceMap\DTO\Location;
 use Drupal\KernelTests\KernelTestBase;
 use GuzzleHttp\ClientInterface;
@@ -34,10 +34,10 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
   /**
    * A location inside a zone resolves to a populated DTO with an embed URL.
    *
-   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::getParkingZone
-   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::buildEmbedUrl
-   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::boundaryToBbox
-   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::__construct
+   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::getParkingZone
+   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::buildEmbedUrl
+   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::boundaryToBbox
+   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::__construct
    */
   public function testReturnsParkingZone(): void {
     $response = new Response(200, [], (string) json_encode([
@@ -74,8 +74,8 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
   /**
    * A zone without usable geometry resolves to NULL (nothing to show on a map).
    *
-   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::getParkingZone
-   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::boundaryToBbox
+   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::getParkingZone
+   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::boundaryToBbox
    */
   public function testReturnsNullWhenZoneHasNoGeometry(): void {
     $response = new Response(200, [], (string) json_encode([
@@ -96,7 +96,7 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
   /**
    * A location outside every zone resolves to NULL.
    *
-   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::getParkingZone
+   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::getParkingZone
    */
   public function testReturnsNullWhenNoZone(): void {
     $response = new Response(200, [], (string) json_encode(['count' => 0, 'results' => []]));
