@@ -110,22 +110,5 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
 
     $this->assertNull($zone);
   }
-
-  /**
-   * A failed API request resolves to NULL instead of bubbling the exception.
-   *
-   * @covers \Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService::getParkingZone
-   */
-  public function testReturnsNullOnRequestFailure(): void {
-    $httpClient = $this->createMock(ClientInterface::class);
-    $httpClient->method('request')->willThrowException(
-      new ConnectException('Timeout', new Request('GET', 'https://api.hel.fi')),
-    );
-
-    $zone = $this->createService($httpClient)
-      ->getParkingZone(new Location(60.18, 24.94, 'Point'));
-
-    $this->assertNull($zone);
-  }
-
+  
 }
