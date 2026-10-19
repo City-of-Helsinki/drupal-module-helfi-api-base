@@ -11,7 +11,6 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
-use Psr\Log\LoggerInterface;
 
 /**
  * Test parking zone service.
@@ -27,7 +26,6 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
     return new ResidentParkingZoneService(
       $httpClient,
       $this->container->get('language_manager'),
-      $this->createMock(LoggerInterface::class),
     );
   }
 
