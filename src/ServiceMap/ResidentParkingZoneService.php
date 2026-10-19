@@ -11,8 +11,6 @@ use Drupal\helfi_api_base\ServiceMap\DTO\Location;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Resolves resident parking zones from the Servicemap API.
