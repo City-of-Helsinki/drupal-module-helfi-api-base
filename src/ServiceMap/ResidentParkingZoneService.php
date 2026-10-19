@@ -6,7 +6,6 @@ namespace Drupal\helfi_api_base\ServiceMap;
 
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Url;
-use Drupal\Core\Utility\Error;
 use Drupal\helfi_api_base\ServiceMap\DTO\ParkingZone;
 use Drupal\helfi_api_base\ServiceMap\DTO\Location;
 use GuzzleHttp\ClientInterface;
@@ -39,8 +38,6 @@ final class ResidentParkingZoneService implements ResidentParkingZoneServiceInte
   public function __construct(
     private readonly ClientInterface $httpClient,
     private readonly LanguageManagerInterface $languageManager,
-    #[Autowire(service: 'logger.channel.helfi_api_base')]
-    private readonly LoggerInterface $logger,
   ) {
   }
 
