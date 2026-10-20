@@ -153,8 +153,8 @@ services:
   Drupal\helfi_api_base\ServiceMap\ServiceMap: ~
   Drupal\helfi_api_base\ServiceMap\ServiceMapInterface: '@Drupal\helfi_api_base\ServiceMap\ServiceMap'
 
-  Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService: ~
-  Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneServiceInterface: '@Drupal\helfi_api_base\ParkingZone\ResidentParkingZoneService'
+  Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService: ~
+  Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneServiceInterface: '@Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService'
 
   Drupal\helfi_api_base\Cache\CacheControlSubscriber: ~
   Drupal\helfi_api_base\Cache\RedisCacheSubscriber: ~
