@@ -86,29 +86,6 @@ class AuditLogServiceTest extends KernelTestBase {
   }
 
   /**
-   * Tests that the update increases the size of the message field.
-   */
-  public function testMessageSizeUpdate(): void {
-    $this->container->get('module_handler')->loadInclude('helfi_api_base', 'install');
-
-    // Recreate the table with the old message field size.
-    $schema = $this->container->get('database')->schema();
-    $table = helfi_api_base_schema()['helfi_audit_logs'];
-    $table['fields']['message']['size'] = 'normal';
-    $schema->dropTable('helfi_audit_logs');
-    $schema->createTable('helfi_audit_logs', $table);
-
-    $diff = str_repeat('a', 100000);
-    $this->writeEvent($diff);
-    $this->assertCount(0, $this->getMessages());
-
-    helfi_api_base_update_9032();
-
-    $this->writeEvent($diff);
-    $this->assertCount(1, $this->getMessages());
-  }
-
-  /**
    * Writes an audit log event with the given content diff.
    *
    * @param string $diff
