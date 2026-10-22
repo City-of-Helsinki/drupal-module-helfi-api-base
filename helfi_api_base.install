@@ -81,7 +81,7 @@ function helfi_api_base_schema(): array {
       'message' => [
         'type' => 'text',
         'not null' => TRUE,
-        'size' => 'normal',
+        'size' => 'medium',
         'description' => 'JSON data for this event',
       ],
       'is_sent' => [
@@ -244,4 +244,21 @@ function helfi_api_base_update_9031(): void {
     ->getEditable($configName)
     ->setData($data)
     ->save(TRUE);
+}
+
+/**
+ * Increase the size of the audit log message field.
+ */
+function helfi_api_base_update_9032(): void {
+  $schema = \Drupal::database()->schema();
+
+  if (!$schema->tableExists('helfi_audit_logs')) {
+    return;
+  }
+  $schema->changeField('helfi_audit_logs', 'message', 'message', [
+    'type' => 'text',
+    'not null' => TRUE,
+    'size' => 'medium',
+    'description' => 'JSON data for this event',
+  ]);
 }
