@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_api_base\EventSubscriber;
 
+use LoggerExtra\LoggerContext;
 use Sentry\State\Scope;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Adds X-Request-ID header value to Sentry events.
+ * Adds the logger context request id to Sentry events.
  */
 final class SentryRequestIdSubscriber implements EventSubscriberInterface {
 
@@ -22,7 +23,7 @@ final class SentryRequestIdSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    if ($requestId = $event->getRequest()->headers->get('X-Request-ID')) {
+    if ($requestId = LoggerContext::get()['request_id'] ?? NULL) {
       \Sentry\configureScope(static fn (Scope $scope) => $scope->setTag('request_id', $requestId));
     }
   }

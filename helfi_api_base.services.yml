@@ -149,6 +149,7 @@ services:
   Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface: '@Drupal\helfi_api_base\AuditLog\AuditLogService'
 
   Drupal\helfi_api_base\AuditLog\EventSubscriber\AuditLogActorSubscriber: ~
+  Drupal\helfi_api_base\AuditLog\EventSubscriber\AuditLogRequestIdSubscriber: ~
 
   Drupal\helfi_api_base\ServiceMap\ServiceMap: ~
   Drupal\helfi_api_base\ServiceMap\ServiceMapInterface: '@Drupal\helfi_api_base\ServiceMap\ServiceMap'
