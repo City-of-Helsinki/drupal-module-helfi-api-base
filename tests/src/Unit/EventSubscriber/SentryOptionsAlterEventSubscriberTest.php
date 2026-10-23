@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_api_base\Unit\EventSubscriber;
 
 use Drupal\Tests\UnitTestCase;
-use Drupal\helfi_api_base\EventSubscriber\SentryTracesSamplerSubscriber;
+use Drupal\helfi_api_base\EventSubscriber\SentryOptionsAlterEventSubscriber;
 use Drupal\raven\Event\OptionsAlter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Sentry\Tracing\SamplingContext;
@@ -16,12 +16,12 @@ use Sentry\Tracing\TransactionContext;
  *
  * @group helfi_api_base
  */
-class SentryTracesSamplerSubscriberTest extends UnitTestCase {
+class SentryOptionsAlterEventSubscriberTest extends UnitTestCase {
 
   /**
    * Calls the sampler callback.
    *
-   * @param array $options
+   * @param array<string, mixed> $options
    *   The default options.
    * @param \Sentry\Tracing\SamplingContext $context
    *   The sampling context.
@@ -30,7 +30,7 @@ class SentryTracesSamplerSubscriberTest extends UnitTestCase {
    *   The sample rate.
    */
   private function callSampler(array $options, SamplingContext $context) : float {
-    $sut = new SentryTracesSamplerSubscriber();
+    $sut = new SentryOptionsAlterEventSubscriber(fn () => NULL);
     $sut->setTracesSampler(new OptionsAlter($options));
 
     $this->assertIsCallable($options['traces_sampler']);
@@ -43,7 +43,7 @@ class SentryTracesSamplerSubscriberTest extends UnitTestCase {
    */
   public function testDefaultSamplerValue() : void {
     $rate = $this->callSampler([], new SamplingContext());
-    $this->assertEquals(SentryTracesSamplerSubscriber::DEFAULT_SAMPLE_RATE, $rate);
+    $this->assertEquals(SentryOptionsAlterEventSubscriber::DEFAULT_SAMPLE_RATE, $rate);
   }
 
   /**
@@ -70,13 +70,13 @@ class SentryTracesSamplerSubscriberTest extends UnitTestCase {
     $transaction->setData(['something' => 'else']);
     $context = SamplingContext::getDefault($transaction);
     $rate = $this->callSampler([], $context);
-    $this->assertEquals(SentryTracesSamplerSubscriber::DEFAULT_SAMPLE_RATE, $rate);
+    $this->assertEquals(SentryOptionsAlterEventSubscriber::DEFAULT_SAMPLE_RATE, $rate);
   }
 
   /**
    * Make sure the sample rate is set zero when we get a URL match.
    */
-  #[DataProvider(methodName: 'ignoreUrlData')]
+  #[DataProvider('ignoreUrlData')]
   public function testTracerIgnoreUrl(string $url) : void {
     $transaction = new TransactionContext();
     $transaction->setData(['http.url' => $url]);
@@ -88,7 +88,7 @@ class SentryTracesSamplerSubscriberTest extends UnitTestCase {
   /**
    * Data provider.
    *
-   * @return array[]
+   * @return array<array{string}>
    *   The data.
    */
   public static function ignoreUrlData() : array {

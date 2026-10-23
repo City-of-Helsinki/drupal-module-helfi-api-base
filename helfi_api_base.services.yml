@@ -34,7 +34,7 @@ services:
 
   Drupal\helfi_api_base\UserExpire\UserExpireManager: ~
   Drupal\helfi_api_base\EventSubscriber\SentryOptionsAlterEventSubscriber: ~
-  Drupal\helfi_api_base\EventSubscriber\SentryTracesSamplerSubscriber: ~
+  Drupal\helfi_api_base\EventSubscriber\SentryRequestIdSubscriber: ~
   Drupal\helfi_api_base\EventSubscriber\DisableUserPasswordSubscriber: ~
 
   Drupal\helfi_api_base\Features\FeatureManagerInterface: '@Drupal\helfi_api_base\Features\FeatureManager'
