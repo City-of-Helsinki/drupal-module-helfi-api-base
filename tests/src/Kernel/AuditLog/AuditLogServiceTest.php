@@ -9,6 +9,7 @@ use Drupal\helfi_api_base\AuditLog\AuditLogServiceInterface;
 use Drupal\helfi_api_base\AuditLog\Event\AuditLogEvent;
 use Drupal\helfi_api_base\Hook\AuditLogEntityHooks;
 use Drupal\KernelTests\KernelTestBase;
+use LoggerExtra\LoggerContext;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -71,6 +72,19 @@ class AuditLogServiceTest extends KernelTestBase {
     $this->assertEquals('anonymous', $auditEvent['actor']['role']);
     $this->assertArrayHasKey('id', $auditEvent['actor']);
     $this->assertArrayHasKey('ip_address', $auditEvent['actor']);
+  }
+
+  /**
+   * Tests that request id is added from the logger context.
+   */
+  public function testRequestId(): void {
+    LoggerContext::use(['request_id' => 'foo'], fn () => $this->writeEvent('diff'));
+
+    $messages = $this->getMessages();
+    $this->assertCount(1, $messages);
+    $extra = json_decode($messages[0], TRUE)['audit_event']['extra'];
+    $this->assertEquals('foo', $extra['request_id']);
+    $this->assertEquals('diff', $extra['ContentDiff']);
   }
 
   /**
