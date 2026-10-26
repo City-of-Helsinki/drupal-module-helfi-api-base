@@ -56,12 +56,64 @@ enum OrganizationType: int {
     };
   }
 
-/**
- * Helper to get label for organization type in Twig, passing Twig security blocking tryFrom.
- */
-public static function getLabelFor(int|string|null $value): ?TranslatableMarkup {
-  return is_numeric($value) ? self::tryFrom((int) $value)?->getLabel() : NULL;
-}
+  /**
+   * Get label string for more generic groups matching the int values.
+   */
+  public function getGroupLabel(): TranslatableMarkup {
+    if ($this->isElectedOfficials()) {
+      return new TranslatableMarkup(string: 'Elected officials');
+    } elseif ($this->isAdministration()) {
+      return new TranslatableMarkup(string: 'Administration');
+    }
+    return new TranslatableMarkup(string: 'Other');
+  }
+
+  /**
+   * Helper to get label for organization type in Twig, passing Twig security blocking tryFrom.
+   */
+  public static function getLabelFor(int|string|null $value): ?TranslatableMarkup {
+    return is_numeric($value) ? self::tryFrom((int) $value)?->getLabel() : NULL;
+  }
+
+  /**
+   * Helper to get label for organization type group in Twig, passing Twig security blocking tryFrom.
+   */
+  public static function getGroupLabelFor(int|string|null $value): ?TranslatableMarkup {
+    return is_numeric($value) ? self::tryFrom((int) $value)?->getGroupLabel() : NULL;
+  }
+
+  /**
+   * Get label string for more generic groups matching the int values.
+   */
+  public function getGroupType(): string {
+    if ($this->isElectedOfficials()) {
+      return 'elected-officials';
+    } elseif ($this->isAdministration()) {
+      return 'administration';
+    }
+    return '';
+  }
+
+  /**
+   * Helper to get group type for organization type group in Twig, passing Twig security blocking tryFrom.
+   */
+  public static function getGroupTypeFor(int|string|null $value): ?string {
+    return is_numeric($value) ? self::tryFrom((int) $value)?->getGroupType() : NULL;
+  }
+
+  /**
+   * True if organization type is considered elected officials.
+   */
+  public function isElectedOfficials(): bool {
+    return in_array($this, [self::COMMITTEE, self::DIVISION, self::COUNCIL, self::BOARD, self::WORKING_COMMITTEE, self::TRUSTEE]);
+  }
+
+  /**
+   * True if organization type is considered administrations.
+   */
+  public function isAdministration(): bool {
+    return in_array($this, [self::OFFICE_HOLDER, self::SERVICE_PACKAGE, self::TEAM]);
+  }
 
   /**
    * True if organization type is considered trustee (?).
