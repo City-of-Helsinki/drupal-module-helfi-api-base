@@ -60,3 +60,9 @@ msgstr "Undantagswebbplats"
 msgctxt "Project label"
 msgid "History Helsinki"
 msgstr "Historia Helsingfors"
+
+msgid "Administration"
+msgstr "Förvaltning"
+
+msgid "Elected officials"
+msgstr "Förtroendevalda"
