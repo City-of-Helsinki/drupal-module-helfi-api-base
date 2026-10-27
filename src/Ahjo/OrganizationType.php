@@ -16,6 +16,8 @@ enum OrganizationType: int {
    */
   const array TRUSTEE_TYPES = ['Viranhaltija', 'Luottamushenkilö'];
 
+  // Uppercase case names are kept for backwards compatibility.
+  // phpcs:disable Drupal.NamingConventions.ValidEnumCase
   case COUNCIL = 1;
   case BOARD = 2;
   case DIVISION = 4;
@@ -31,28 +33,28 @@ enum OrganizationType: int {
   case TRUSTEE = 19;
   case TEAM = 20;
   case UNKNOWN = -1;
-
+  // phpcs:enable Drupal.NamingConventions.ValidEnumCase
 
   /**
    * Get label string matching the int value.
    */
   public function getLabel(): TranslatableMarkup {
     return match ($this) {
-      self::COUNCIL => new TranslatableMarkup(string: 'Council'),
-      self::BOARD => new TranslatableMarkup(string: 'Board'),
-      self::DIVISION => new TranslatableMarkup(string: 'Division'),
-      self::COMMITTEE => new TranslatableMarkup(string: 'Committee'),
-      self::SECTOR => new TranslatableMarkup(string: 'Sector'),
-      self::BUREAU => new TranslatableMarkup(string: 'Bureau'),
-      self::DEPARTMENT => new TranslatableMarkup(string: 'Department'),
-      self::OFFICE_HOLDER => new TranslatableMarkup(string: 'Office holder'),
-      self::CITY => new TranslatableMarkup(string: 'City'),
-      self::UNIT => new TranslatableMarkup(string: 'Unit'),
-      self::WORKING_COMMITTEE => new TranslatableMarkup(string: 'Working committee'),
-      self::SERVICE_PACKAGE => new TranslatableMarkup(string: 'Service package'),
-      self::TRUSTEE => new TranslatableMarkup(string: 'Trustee'),
-      self::TEAM => new TranslatableMarkup(string: 'Team'),
-      self::UNKNOWN => new TranslatableMarkup(string: 'Unknown'),
+      self::COUNCIL => new TranslatableMarkup('Council'),
+      self::BOARD => new TranslatableMarkup('Board'),
+      self::DIVISION => new TranslatableMarkup('Division'),
+      self::COMMITTEE => new TranslatableMarkup('Committee'),
+      self::SECTOR => new TranslatableMarkup('Sector'),
+      self::BUREAU => new TranslatableMarkup('Bureau'),
+      self::DEPARTMENT => new TranslatableMarkup('Department'),
+      self::OFFICE_HOLDER => new TranslatableMarkup('Office holder'),
+      self::CITY => new TranslatableMarkup('City'),
+      self::UNIT => new TranslatableMarkup('Unit'),
+      self::WORKING_COMMITTEE => new TranslatableMarkup('Working committee'),
+      self::SERVICE_PACKAGE => new TranslatableMarkup('Service package'),
+      self::TRUSTEE => new TranslatableMarkup('Trustee'),
+      self::TEAM => new TranslatableMarkup('Team'),
+      self::UNKNOWN => new TranslatableMarkup('Unknown'),
     };
   }
 
@@ -61,22 +63,23 @@ enum OrganizationType: int {
    */
   public function getGroupLabel(): TranslatableMarkup {
     if ($this->isElectedOfficials()) {
-      return new TranslatableMarkup(string: 'Elected officials');
-    } elseif ($this->isAdministration()) {
-      return new TranslatableMarkup(string: 'Administration');
+      return new TranslatableMarkup('Elected officials');
     }
-    return new TranslatableMarkup(string: 'Other');
+    elseif ($this->isAdministration()) {
+      return new TranslatableMarkup('Administration');
+    }
+    return new TranslatableMarkup('Other');
   }
 
   /**
-   * Helper to get label for organization type in Twig, passing Twig security blocking tryFrom.
+   * Get label for organization type, passing Twig security blocking tryFrom.
    */
   public static function getLabelFor(int|string|null $value): ?TranslatableMarkup {
     return is_numeric($value) ? self::tryFrom((int) $value)?->getLabel() : NULL;
   }
 
   /**
-   * Helper to get label for organization type group in Twig, passing Twig security blocking tryFrom.
+   * Get label for organization group, passing Twig security blocking tryFrom.
    */
   public static function getGroupLabelFor(int|string|null $value): ?TranslatableMarkup {
     return is_numeric($value) ? self::tryFrom((int) $value)?->getGroupLabel() : NULL;
@@ -88,14 +91,15 @@ enum OrganizationType: int {
   public function getGroupType(): string {
     if ($this->isElectedOfficials()) {
       return 'elected-officials';
-    } elseif ($this->isAdministration()) {
+    }
+    elseif ($this->isAdministration()) {
       return 'administration';
     }
     return '';
   }
 
   /**
-   * Helper to get group type for organization type group in Twig, passing Twig security blocking tryFrom.
+   * Get organisation group, passing Twig security blocking tryFrom.
    */
   public static function getGroupTypeFor(int|string|null $value): ?string {
     return is_numeric($value) ? self::tryFrom((int) $value)?->getGroupType() : NULL;
@@ -105,7 +109,14 @@ enum OrganizationType: int {
    * True if organization type is considered elected officials.
    */
   public function isElectedOfficials(): bool {
-    return in_array($this, [self::COMMITTEE, self::DIVISION, self::COUNCIL, self::BOARD, self::WORKING_COMMITTEE, self::TRUSTEE]);
+    return in_array($this, [
+      self::COMMITTEE,
+      self::DIVISION,
+      self::COUNCIL,
+      self::BOARD,
+      self::WORKING_COMMITTEE,
+      self::TRUSTEE,
+    ]);
   }
 
   /**
