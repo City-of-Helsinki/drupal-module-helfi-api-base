@@ -385,12 +385,6 @@ parameters:
 			path: src/EventSubscriber/DisableUserPasswordSubscriber.php
 
 		-
-			message: '#^Method Drupal\\helfi_api_base\\EventSubscriber\\SentryTracesSamplerSubscriber\:\:ignoreTracerUrl\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/EventSubscriber/SentryTracesSamplerSubscriber.php
-
-		-
 			message: '#^Method Drupal\\helfi_api_base\\EventSubscriber\\UserLoginSubscriber\:\:__construct\(\) has parameter \$restrictedRoles with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1343,24 +1337,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: tests/src/Unit/Environment/ProjectTest.php
-
-		-
-			message: '#^Attribute class PHPUnit\\Framework\\Attributes\\DataProvider constructor invoked with named argument \$methodName, but it''s not allowed because of @no\-named\-arguments\.$#'
-			identifier: argument.named
-			count: 1
-			path: tests/src/Unit/EventSubscriber/SentryTracesSamplerSubscriberTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\helfi_api_base\\Unit\\EventSubscriber\\SentryTracesSamplerSubscriberTest\:\:callSampler\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: tests/src/Unit/EventSubscriber/SentryTracesSamplerSubscriberTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\helfi_api_base\\Unit\\EventSubscriber\\SentryTracesSamplerSubscriberTest\:\:ignoreUrlData\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: tests/src/Unit/EventSubscriber/SentryTracesSamplerSubscriberTest.php
 
 		-
 			message: '#^Attribute class PHPUnit\\Framework\\Attributes\\DataProvider constructor invoked with named argument \$methodName, but it''s not allowed because of @no\-named\-arguments\.$#'
