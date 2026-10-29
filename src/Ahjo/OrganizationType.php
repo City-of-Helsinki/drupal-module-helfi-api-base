@@ -72,40 +72,6 @@ enum OrganizationType: int {
   }
 
   /**
-   * Get label for organization type, passing Twig security blocking tryFrom.
-   */
-  public static function getLabelFor(int|string|null $value): ?TranslatableMarkup {
-    return is_numeric($value) ? self::tryFrom((int) $value)?->getLabel() : NULL;
-  }
-
-  /**
-   * Get label for organization group, passing Twig security blocking tryFrom.
-   */
-  public static function getGroupLabelFor(int|string|null $value): ?TranslatableMarkup {
-    return is_numeric($value) ? self::tryFrom((int) $value)?->getGroupLabel() : NULL;
-  }
-
-  /**
-   * Get label string for more generic groups matching the int values.
-   */
-  public function getGroupType(): string {
-    if ($this->isElectedOfficials()) {
-      return 'elected-officials';
-    }
-    elseif ($this->isAdministration()) {
-      return 'administration';
-    }
-    return '';
-  }
-
-  /**
-   * Get organisation group, passing Twig security blocking tryFrom.
-   */
-  public static function getGroupTypeFor(int|string|null $value): ?string {
-    return is_numeric($value) ? self::tryFrom((int) $value)?->getGroupType() : NULL;
-  }
-
-  /**
    * True if organization type is considered elected officials.
    */
   public function isElectedOfficials(): bool {
