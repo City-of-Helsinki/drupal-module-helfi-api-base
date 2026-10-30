@@ -1,0 +1,226 @@
+diff --git a/README.PhpRedis.md b/README.PhpRedis.md
+index daf5786..81e1f2d 100644
+--- a/README.PhpRedis.md
++++ b/README.PhpRedis.md
+@@ -31,6 +31,13 @@ Add the new instance setting:
+     // Redis instance name.
+     $settings['redis.connection']['instance']  = 'instance_name';
+ 
++Each sentinel is tried in turn until one of them returns the master. The
++connection timeout for a sentinel is 0.5 seconds by default, and can be
++changed with the sentinel_timeout setting:
++
++    // Sentinel connection timeout in seconds.
++    $settings['redis.connection']['sentinel_timeout'] = 2;
++
+ Connect via UNIX socket
+ -----------------------
+ 
+diff --git a/src/Client/PhpRedis.php b/src/Client/PhpRedis.php
+index e38c5e6..40cf794 100644
+--- a/src/Client/PhpRedis.php
++++ b/src/Client/PhpRedis.php
+@@ -20,9 +20,10 @@ class PhpRedis implements ClientInterface {
+     // Sentinel mode, get the real master.
+     if (is_array($host)) {
+       $ip_host = $this->askForMaster($client, $host, $password);
+-      if (is_array($ip_host)) {
+-        list($host, $port) = $ip_host;
++      if (!is_array($ip_host)) {
++        throw new \RedisException('Could not get the Redis master from the sentinels.');
+       }
++      list($host, $port) = $ip_host;
+     }
+ 
+     if ($persistent) {
+@@ -75,33 +76,42 @@ class PhpRedis implements ClientInterface {
+ 
+     $ip_port = NULL;
+     $settings = Settings::get('redis.connection', []);
+-    $settings += ['instance' => NULL];
++    $settings += ['instance' => NULL, 'sentinel_timeout' => 0.5];
+ 
+     if ($settings['instance']) {
+       foreach ($sentinels as $sentinel) {
+         list($host, $port) = explode(':', $sentinel);
+-        // Prevent fatal PHP errors when one of the sentinels is down.
+-        set_error_handler(function () {
+-          return TRUE;
+-        });
+-        // 0.5s timeout.
+-        $success = $client->connect($host, $port, 0.5);
+-        restore_error_handler();
+-
+-        if (!$success) {
+-          continue;
+-        }
++        try {
++          // Prevent fatal PHP errors when one of the sentinels is down.
++          set_error_handler(function () {
++            return TRUE;
++          });
++          try {
++            $success = $client->connect($host, $port, $settings['sentinel_timeout']);
++          }
++          finally {
++            restore_error_handler();
++          }
+ 
+-        if (isset($password)) {
+-          $client->auth($password);
+-        }
++          if (!$success) {
++            continue;
++          }
++
++          if (isset($password)) {
++            $client->auth($password);
++          }
+ 
+-        if ($client->isConnected()) {
+-          $ip_port = $client->rawcommand('SENTINEL', 'get-master-addr-by-name', $settings['instance']);
+-          if ($ip_port) {
+-            break;
++          if ($client->isConnected()) {
++            $ip_port = $client->rawcommand('SENTINEL', 'get-master-addr-by-name', $settings['instance']);
++            if ($ip_port) {
++              break;
++            }
+           }
+         }
++        catch (\RedisException $e) {
++          // PhpRedis throws an exception instead of returning FALSE when the
++          // connection times out or the sentinel fails, so try the next one.
++        }
+         $client->close();
+       }
+     }
+diff --git a/tests/src/Unit/Client/PhpRedisSentinelTest.php b/tests/src/Unit/Client/PhpRedisSentinelTest.php
+new file mode 100644
+index 0000000..dffa7c0
+--- /dev/null
++++ b/tests/src/Unit/Client/PhpRedisSentinelTest.php
+@@ -0,0 +1,123 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Tests\redis\Unit\Client;
++
++use Drupal\Core\Site\Settings;
++use Drupal\redis\Client\PhpRedis;
++use Drupal\Tests\UnitTestCase;
++use PHPUnit\Framework\Attributes\CoversClass;
++use PHPUnit\Framework\Attributes\Group;
++use PHPUnit\Framework\Attributes\RequiresPhpExtension;
++
++/**
++ * Tests the Sentinel master lookup of the PhpRedis client.
++ */
++#[CoversClass(PhpRedis::class)]
++#[Group('redis')]
++#[RequiresPhpExtension('redis')]
++class PhpRedisSentinelTest extends UnitTestCase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp(): void {
++    parent::setUp();
++
++    new Settings([
++      'redis.connection' => [
++        'instance' => 'mymaster',
++      ],
++    ]);
++  }
++
++  /**
++   * Asks the given client for the master.
++   *
++   * @param \Redis $client
++   *   The client.
++   * @param string[] $sentinels
++   *   The sentinels.
++   *
++   * @return mixed
++   *   The return value of PhpRedis::askForMaster().
++   */
++  protected function askForMaster(\Redis $client, array $sentinels): mixed {
++    $method = new \ReflectionMethod(PhpRedis::class, 'askForMaster');
++    return $method->invoke(new PhpRedis(), $client, $sentinels);
++  }
++
++  /**
++   * Tests that the next sentinel is tried when connecting to one fails.
++   */
++  public function testConnectionTimeout(): void {
++    $client = $this->createMock(\Redis::class);
++    $client->expects($this->exactly(2))
++      ->method('connect')
++      ->willReturnCallback(function ($host, $port, $timeout): bool {
++        $this->assertSame(0.5, $timeout);
++        if ($host === 'sentinel-0') {
++          throw new \RedisException('Operation timed out');
++        }
++        return TRUE;
++      });
++    $client->method('isConnected')->willReturn(TRUE);
++    $client->expects($this->once())
++      ->method('rawcommand')
++      ->with('SENTINEL', 'get-master-addr-by-name', 'mymaster')
++      ->willReturn(['redis-1', '6379']);
++
++    $this->assertSame(['redis-1', '6379'], $this->askForMaster($client, ['sentinel-0:5000', 'sentinel-1:5000']));
++  }
++
++  /**
++   * Tests that the next sentinel is tried when a sentinel command fails.
++   */
++  public function testCommandFailure(): void {
++    $client = $this->createMock(\Redis::class);
++    $client->method('connect')->willReturn(TRUE);
++    $client->method('isConnected')->willReturn(TRUE);
++    $client->expects($this->exactly(2))
++      ->method('rawcommand')
++      ->willReturnOnConsecutiveCalls(
++        $this->throwException(new \RedisException('read error on connection')),
++        ['redis-1', '6379'],
++      );
++
++    $this->assertSame(['redis-1', '6379'], $this->askForMaster($client, ['sentinel-0:5000', 'sentinel-1:5000']));
++  }
++
++  /**
++   * Tests that NULL is returned when no sentinel can be reached.
++   */
++  public function testNoSentinelAvailable(): void {
++    $client = $this->createMock(\Redis::class);
++    $client->method('connect')->willThrowException(new \RedisException('Operation timed out'));
++    $client->expects($this->never())->method('rawcommand');
++
++    $this->assertNull($this->askForMaster($client, ['sentinel-0:5000', 'sentinel-1:5000']));
++  }
++
++  /**
++   * Tests the sentinel connection timeout setting.
++   */
++  public function testSentinelTimeout(): void {
++    new Settings([
++      'redis.connection' => [
++        'instance' => 'mymaster',
++        'sentinel_timeout' => 2,
++      ],
++    ]);
++    $client = $this->createMock(\Redis::class);
++    $client->expects($this->once())
++      ->method('connect')
++      ->with('sentinel-0', '5000', 2)
++      ->willReturn(TRUE);
++    $client->method('isConnected')->willReturn(TRUE);
++    $client->method('rawcommand')->willReturn(['redis-1', '6379']);
++
++    $this->assertSame(['redis-1', '6379'], $this->askForMaster($client, ['sentinel-0:5000']));
++  }
++
++}

@@ -43,6 +43,9 @@
         "patches": {
             "drupal/core": {
                 "[#3014514] Make igbinary the default serializer, if available": "./public/modules/contrib/helfi_api_base/patches/3014514.patch"
+            },
+            "drupal/redis": {
+                "Catch Sentinel connection errors and make the Sentinel timeout configurable": "./public/modules/contrib/helfi_api_base/patches/redis-sentinel-timeout.patch"
             }
         }
     }
