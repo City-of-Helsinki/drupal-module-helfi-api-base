@@ -24,4 +24,14 @@ interface ResidentParkingZoneServiceInterface {
    */
   public function getParkingZone(Location $location): ?ParkingZone;
 
+  /**
+   * Gets the names of all resident parking zones.
+   *
+   * @return string[]
+   *   The parking zone names in Finnish.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
+  public function getParkingZoneNames(): array;
+
 }
