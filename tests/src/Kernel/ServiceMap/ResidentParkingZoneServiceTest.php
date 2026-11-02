@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_api_base\Kernel\ServiceMap;
 use Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService;
 use Drupal\helfi_api_base\ServiceMap\DTO\Location;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Group;
@@ -18,6 +19,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 #[RunTestsInSeparateProcesses]
 #[Group('helfi_platform_config')]
 class ResidentParkingZoneServiceTest extends KernelTestBase {
+
+  use ApiTestTrait;
 
   /**
    * Constructs the service with the given HTTP client.
@@ -105,6 +108,38 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
       ->getParkingZone(new Location(60.0, 24.0, 'Point'));
 
     $this->assertNull($zone);
+  }
+
+  /**
+   * Zone names are collected from every page.
+   *
+   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::getParkingZoneNames
+   */
+  public function testReturnsParkingZoneNames(): void {
+    $nextPage = 'https://example.com/next-page';
+    $history = [];
+    $httpClient = $this->createMockHistoryMiddlewareHttpClient($history, [
+      new Response(200, [], (string) json_encode([
+        'next' => $nextPage,
+        'results' => [
+          ['type' => 'resident_parking_zone', 'name' => ['fi' => 'Kamppi']],
+          ['type' => 'resident_parking_zone', 'name' => NULL],
+        ],
+      ])),
+      new Response(200, [], (string) json_encode([
+        'next' => NULL,
+        'results' => [
+          ['type' => 'resident_parking_zone', 'name' => ['fi' => 'Kallio/Sörnäinen']],
+        ],
+      ])),
+    ]);
+
+    $names = $this->createService($httpClient)->getParkingZoneNames();
+
+    $this->assertSame(['Kamppi', 'Kallio/Sörnäinen'], $names);
+    $this->assertCount(2, $history);
+    $this->assertStringContainsString('type=resident_parking_zone', $history[0]['request']->getUri()->getQuery());
+    $this->assertEquals($nextPage, (string) $history[1]['request']->getUri(), 'The next page is requested with its own query.');
   }
 
 }

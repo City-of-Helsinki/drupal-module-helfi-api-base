@@ -35,4 +35,14 @@ interface ServiceMapInterface {
    */
   public function query(string $address, int $page_size = 1): array;
 
+  /**
+   * Gets all Helsinki postal codes.
+   *
+   * @return string[]
+   *   The postal codes.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
+  public function getPostalCodes(): array;
+
 }

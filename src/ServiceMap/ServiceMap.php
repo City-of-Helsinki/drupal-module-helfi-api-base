@@ -32,6 +32,13 @@ final class ServiceMap implements ServiceMapInterface {
   private const string API_URL = 'https://api.hel.fi/servicemap/v2/search/';
 
   /**
+   * API URL for postal code areas.
+   *
+   * @var string
+   */
+  private const string POSTAL_CODE_AREA_URL = 'https://api.hel.fi/servicemap/v2/postal_code_area/';
+
+  /**
    * The request timeout in seconds.
    *
    * The address autocomplete makes a request on every keystroke, so a slow
@@ -68,6 +75,38 @@ final class ServiceMap implements ServiceMapInterface {
     }
 
     return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPostalCodes(): array {
+    $postalCodes = [];
+    $url = self::POSTAL_CODE_AREA_URL;
+    $options = [
+      RequestOptions::QUERY => ['page_size' => 100],
+      RequestOptions::TIMEOUT => self::TIMEOUT,
+    ];
+
+    while ($url) {
+      $response = $this->client->request('GET', $url, $options);
+      $data = json_decode((string) $response->getBody(), TRUE);
+
+      foreach ($data['results'] ?? [] as $result) {
+        $postalCode = (string) ($result['postal_code'] ?? '');
+
+        // Keep only Helsinki postal codes.
+        if (str_starts_with($postalCode, '00')) {
+          $postalCodes[] = $postalCode;
+        }
+      }
+
+      $url = $data['next'] ?? NULL;
+      // The next page URL holds the query.
+      unset($options[RequestOptions::QUERY]);
+    }
+
+    return $postalCodes;
   }
 
   /**

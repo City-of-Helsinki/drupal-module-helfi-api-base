@@ -147,4 +147,46 @@ class ServiceMapTest extends KernelTestBase {
     $this->assertEquals('Point', $address->location->type);
   }
 
+  /**
+   * Tests that Helsinki postal codes are collected from every page.
+   */
+  public function testGetPostalCodes() : void {
+    $nextPage = 'https://example.com/next-page';
+    $client = $this->prophesize(ClientInterface::class);
+    $client->request('GET', Argument::containingString('postal_code_area'), Argument::withKey(RequestOptions::QUERY))
+      ->shouldBeCalledOnce()
+      ->willReturn(new Response(body: (string) json_encode([
+        'next' => $nextPage,
+        'results' => [
+          ['postal_code' => '00100', 'name' => NULL],
+          ['postal_code' => NULL, 'name' => NULL],
+        ],
+      ])));
+    $client->request('GET', $nextPage, Argument::not(Argument::withKey(RequestOptions::QUERY)))
+      ->shouldBeCalledOnce()
+      ->willReturn(new Response(body: (string) json_encode([
+        'next' => NULL,
+        'results' => [
+          ['postal_code' => '00200', 'name' => NULL],
+          ['postal_code' => '02100', 'name' => NULL],
+        ],
+      ])));
+    $logger = $this->prophesize(LoggerInterface::class);
+
+    $this->assertEquals(['00100', '00200'], $this->getSut($client, $logger)->getPostalCodes());
+  }
+
+  /**
+   * Tests that a failed postal code request throws.
+   */
+  public function testGetPostalCodesGuzzleException() : void {
+    $client = $this->prophesize(ClientInterface::class);
+    $client->request('GET', Argument::any(), Argument::any())
+      ->willThrow(new ConnectException('Fail.', $this->prophesize(RequestInterface::class)->reveal()));
+    $logger = $this->prophesize(LoggerInterface::class);
+
+    $this->expectException(ConnectException::class);
+    $this->getSut($client, $logger)->getPostalCodes();
+  }
+
 }

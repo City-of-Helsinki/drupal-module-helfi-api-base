@@ -79,6 +79,38 @@ final class ResidentParkingZoneService implements ResidentParkingZoneServiceInte
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getParkingZoneNames(): array {
+    $names = [];
+    $url = self::API_URL;
+    $options = [
+      RequestOptions::QUERY => [
+        'type' => self::DIVISION_TYPE,
+        'page_size' => 20,
+      ],
+      RequestOptions::TIMEOUT => 10,
+    ];
+
+    while ($url) {
+      $response = $this->httpClient->request('GET', $url, $options);
+      $data = json_decode((string) $response->getBody(), TRUE);
+
+      foreach ($data['results'] ?? [] as $result) {
+        if (!empty($result['name']['fi'])) {
+          $names[] = (string) $result['name']['fi'];
+        }
+      }
+
+      $url = $data['next'] ?? NULL;
+      // The next page URL holds the query.
+      unset($options[RequestOptions::QUERY]);
+    }
+
+    return $names;
+  }
+
+  /**
    * Builds the Palvelukartta embed URL framed to the given bounding box.
    *
    * @param \Drupal\helfi_api_base\ServiceMap\DTO\Location $location
