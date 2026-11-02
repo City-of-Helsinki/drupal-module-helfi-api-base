@@ -155,7 +155,7 @@ class ServiceMapTest extends KernelTestBase {
     $client = $this->prophesize(ClientInterface::class);
     $client->request('GET', Argument::containingString('postal_code_area'), Argument::withKey(RequestOptions::QUERY))
       ->shouldBeCalledOnce()
-      ->willReturn(new Response(body: json_encode([
+      ->willReturn(new Response(body: (string) json_encode([
         'next' => $nextPage,
         'results' => [
           ['postal_code' => '00100', 'name' => NULL],
@@ -164,7 +164,7 @@ class ServiceMapTest extends KernelTestBase {
       ])));
     $client->request('GET', $nextPage, Argument::not(Argument::withKey(RequestOptions::QUERY)))
       ->shouldBeCalledOnce()
-      ->willReturn(new Response(body: json_encode([
+      ->willReturn(new Response(body: (string) json_encode([
         'next' => NULL,
         'results' => [
           ['postal_code' => '00200', 'name' => NULL],
