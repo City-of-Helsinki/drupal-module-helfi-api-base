@@ -61,8 +61,14 @@ msgctxt "Project label"
 msgid "History Helsinki"
 msgstr "Historia Helsingfors"
 
+msgctxt "Organisation type"
 msgid "Administration"
 msgstr "Förvaltning"
 
+msgctxt "Organisation type"
 msgid "Elected officials"
 msgstr "Förtroendevalda"
+
+msgctxt "Organisation type"
+msgid "Other"
+msgstr "Övriga"

@@ -40,21 +40,21 @@ enum OrganizationType: int {
    */
   public function getLabel(): TranslatableMarkup {
     return match ($this) {
-      self::COUNCIL => new TranslatableMarkup('Council'),
-      self::BOARD => new TranslatableMarkup('Board'),
-      self::DIVISION => new TranslatableMarkup('Division'),
-      self::COMMITTEE => new TranslatableMarkup('Committee'),
-      self::SECTOR => new TranslatableMarkup('Sector'),
-      self::BUREAU => new TranslatableMarkup('Bureau'),
-      self::DEPARTMENT => new TranslatableMarkup('Department'),
-      self::OFFICE_HOLDER => new TranslatableMarkup('Office holder'),
-      self::CITY => new TranslatableMarkup('City'),
-      self::UNIT => new TranslatableMarkup('Unit'),
-      self::WORKING_COMMITTEE => new TranslatableMarkup('Working committee'),
-      self::SERVICE_PACKAGE => new TranslatableMarkup('Service package'),
-      self::TRUSTEE => new TranslatableMarkup('Trustee'),
-      self::TEAM => new TranslatableMarkup('Team'),
-      self::UNKNOWN => new TranslatableMarkup('Unknown'),
+      self::COUNCIL => new TranslatableMarkup('Council', [], ['context' => 'Organisation type']),
+      self::BOARD => new TranslatableMarkup('Board', [], ['context' => 'Organisation type']),
+      self::DIVISION => new TranslatableMarkup('Division', [], ['context' => 'Organisation type']),
+      self::COMMITTEE => new TranslatableMarkup('Committee', [], ['context' => 'Organisation type']),
+      self::SECTOR => new TranslatableMarkup('Sector', [], ['context' => 'Organisation type']),
+      self::BUREAU => new TranslatableMarkup('Bureau', [], ['context' => 'Organisation type']),
+      self::DEPARTMENT => new TranslatableMarkup('Department', [], ['context' => 'Organisation type']),
+      self::OFFICE_HOLDER => new TranslatableMarkup('Office holder', [], ['context' => 'Organisation type']),
+      self::CITY => new TranslatableMarkup('City', [], ['context' => 'Organisation type']),
+      self::UNIT => new TranslatableMarkup('Unit', [], ['context' => 'Organisation type']),
+      self::WORKING_COMMITTEE => new TranslatableMarkup('Working committee', [], ['context' => 'Organisation type']),
+      self::SERVICE_PACKAGE => new TranslatableMarkup('Service package', [], ['context' => 'Organisation type']),
+      self::TRUSTEE => new TranslatableMarkup('Trustee', [], ['context' => 'Organisation type']),
+      self::TEAM => new TranslatableMarkup('Team', [], ['context' => 'Organisation type']),
+      self::UNKNOWN => new TranslatableMarkup('Unknown', [], ['context' => 'Organisation type']),
     };
   }
 
@@ -63,12 +63,12 @@ enum OrganizationType: int {
    */
   public function getGroupLabel(): TranslatableMarkup {
     if ($this->isElectedOfficials()) {
-      return new TranslatableMarkup('Elected officials');
+      return new TranslatableMarkup('Elected officials', [], ['context' => 'Organisation type']);
     }
     elseif ($this->isAdministration()) {
-      return new TranslatableMarkup('Administration');
+      return new TranslatableMarkup('Administration', [], ['context' => 'Organisation type']);
     }
-    return new TranslatableMarkup('Other');
+    return new TranslatableMarkup('Other', [], ['context' => 'Organisation type']);
   }
 
   /**
