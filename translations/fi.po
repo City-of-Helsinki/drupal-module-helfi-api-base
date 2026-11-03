@@ -61,8 +61,14 @@ msgctxt "Project label"
 msgid "History Helsinki"
 msgstr "Historia Helsinki"
 
+msgctxt "Organisation type"
 msgid "Administration"
 msgstr "Hallinto"
 
+msgctxt "Organisation type"
 msgid "Elected officials"
 msgstr "Luottamushenkilöt"
+
+msgctxt "Organisation type"
+msgid "Other"
+msgstr "Muut"

@@ -63,12 +63,12 @@ enum OrganizationType: int {
    */
   public function getGroupLabel(): TranslatableMarkup {
     if ($this->isElectedOfficials()) {
-      return new TranslatableMarkup('Elected officials');
+      return new TranslatableMarkup('Elected officials', [], ['context' => 'Organisation type']);
     }
     elseif ($this->isAdministration()) {
-      return new TranslatableMarkup('Administration');
+      return new TranslatableMarkup('Administration', [], ['context' => 'Organisation type']);
     }
-    return new TranslatableMarkup('Other');
+    return new TranslatableMarkup('Other', [], ['context' => 'Organisation type']);
   }
 
   /**
