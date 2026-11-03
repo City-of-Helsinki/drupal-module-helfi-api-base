@@ -60,3 +60,9 @@ msgstr "Poikkeustilannesivusto"
 msgctxt "Project label"
 msgid "History Helsinki"
 msgstr "Historia Helsinki"
+
+msgid "Administration"
+msgstr "Hallinto"
+
+msgid "Elected officials"
+msgstr "Luottamushenkilöt"
