@@ -680,7 +680,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             paths: $rootPaths,
             environment: EnvironmentEnum::Prod,
             services: [
-              new Service(ServiceEnum::PublicElasticProxy, new Address('helhist-elastic-proxy.api.hel.ninja')),
+              new Service(ServiceEnum::PublicElasticProxy, new Address('helhist-elastic-proxy.api.prod.hel.ninja')),
             ],
           ),
         ],
