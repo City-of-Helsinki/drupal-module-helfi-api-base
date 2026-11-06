@@ -9,7 +9,6 @@ use Drupal\Core\Url;
 use Drupal\helfi_api_base\ServiceMap\DTO\ParkingZone;
 use Drupal\helfi_api_base\ServiceMap\DTO\Location;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -43,21 +42,15 @@ final class ResidentParkingZoneService implements ResidentParkingZoneServiceInte
    * {@inheritdoc}
    */
   public function getParkingZone(Location $location): ?ParkingZone {
-    try {
-      $response = $this->httpClient->request('GET', self::API_URL, [
-        RequestOptions::QUERY => [
-          'type' => self::DIVISION_TYPE,
-          'lat' => $location->lat,
-          'lon' => $location->lon,
-          'geometry' => 'true',
-        ],
-        RequestOptions::TIMEOUT => 3,
-      ]);
-    }
-    catch (GuzzleException $e) {
-      // Pass the exception to the caller.
-      throw $e;
-    }
+    $response = $this->httpClient->request('GET', self::API_URL, [
+      RequestOptions::QUERY => [
+        'type' => self::DIVISION_TYPE,
+        'lat' => $location->lat,
+        'lon' => $location->lon,
+        'geometry' => 'true',
+      ],
+      RequestOptions::TIMEOUT => 3,
+    ]);
 
     $result = json_decode((string) $response->getBody(), TRUE)['results'][0] ?? NULL;
     if (!$result) {
@@ -73,8 +66,11 @@ final class ResidentParkingZoneService implements ResidentParkingZoneServiceInte
     return new ParkingZone(
       // The Servicemap API only provides the zone name in Finnish.
       name: (string) ($result['name']['fi'] ?? ''),
-      embedUrl: $this->buildEmbedUrl($location, $bbox),
+      embedUrl: $this->buildMapUrl($location, $bbox, TRUE),
       coordinates: $result['boundary']['coordinates'][0][0],
+      areaKey: (string) ($result['extra']['area_key'] ?? ''),
+      mapUrl: $this->buildMapUrl($location, $bbox, FALSE),
+      bbox: $bbox,
     );
   }
 
@@ -111,22 +107,24 @@ final class ResidentParkingZoneService implements ResidentParkingZoneServiceInte
   }
 
   /**
-   * Builds the Palvelukartta embed URL framed to the given bounding box.
+   * Builds the Palvelukartta URL framed to the given bounding box.
    *
    * @param \Drupal\helfi_api_base\ServiceMap\DTO\Location $location
    *   The searched location (map centre and marker).
    * @param string $bbox
    *   Bounding box as "minLat,minLng,maxLat,maxLng".
+   * @param bool $embed
+   *   TRUE for the embeddable map, FALSE for the full map page.
    *
    * @return string
-   *   The Palvelukartta embed URL.
+   *   The Palvelukartta URL.
    */
-  private function buildEmbedUrl(Location $location, string $bbox): string {
+  private function buildMapUrl(Location $location, string $bbox, bool $embed): string {
     $langcode = $this->languageManager->getCurrentLanguage()->getId();
     $language = in_array($langcode, self::EMBED_LANGUAGES, TRUE) ? $langcode : 'fi';
 
     return Url::fromUri(
-      sprintf('%s/%s/embed/area', self::EMBED_BASE_URL, $language),
+      sprintf('%s/%s/%sarea', self::EMBED_BASE_URL, $language, $embed ? 'embed/' : ''),
       [
         'query' => [
           'selected' => self::DIVISION_TYPE,
