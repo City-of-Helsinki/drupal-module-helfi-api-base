@@ -2,5 +2,6 @@ sentry_errors:
   ignore:
     - "No alive nodes. All the 1 nodes seem to be down"
     - "There was a problem retrieving image"
+    - 'The submitted value 2026 in the year element is not allowed.'
   sample:
     "cURL error 6: Could not resolve host: helfi-etusivu": 0.1
