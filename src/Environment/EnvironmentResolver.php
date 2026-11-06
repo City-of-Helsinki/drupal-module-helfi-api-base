@@ -156,7 +156,7 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             environment: EnvironmentEnum::Local,
             services: [
               new Service(ServiceEnum::Elastic, new Address('helfi-etusivu-elastic', 'http', 9200)),
-              new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic', 'http', 9200)),
+              new Service(ServiceEnum::ElasticProxy, new Address('helfi-etusivu-elastic-proxy', 'http', 8080)),
               new Service(ServiceEnum::PublicElasticProxy, new Address('elastic-proxy-helfi-etusivu.docker.so')),
             ],
           ),
@@ -280,6 +280,8 @@ final class EnvironmentResolver implements EnvironmentResolverInterface {
             paths: $paths[Project::LIIKENNE],
             environment: EnvironmentEnum::Local,
             services: [
+              new Service(ServiceEnum::Elastic, new Address('helfi-kymp-elastic', 'http', 9200)),
+              new Service(ServiceEnum::ElasticProxy, new Address('helfi-kymp-elastic-proxy', 'http', 8080)),
               new Service(ServiceEnum::PublicElasticProxy, new Address('elastic-proxy-helfi-kymp.docker.so')),
             ],
           ),
