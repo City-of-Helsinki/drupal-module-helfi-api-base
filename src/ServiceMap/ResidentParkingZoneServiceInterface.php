@@ -19,8 +19,9 @@ interface ResidentParkingZoneServiceInterface {
    *   The location to look up.
    *
    * @return \Drupal\helfi_api_base\ServiceMap\DTO\ParkingZone|null
-   *   The parking zone, or NULL when the location has no resident parking zone
-   *   or the lookup failed.
+   *   The parking zone, or NULL when the location has no resident parking zone.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function getParkingZone(Location $location): ?ParkingZone;
 

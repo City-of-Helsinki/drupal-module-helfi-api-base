@@ -9,15 +9,19 @@ use Drupal\helfi_api_base\ServiceMap\DTO\Location;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Test parking zone service.
  */
+#[CoversClass(ResidentParkingZoneService::class)]
 #[RunTestsInSeparateProcesses]
-#[Group('helfi_platform_config')]
+#[Group('helfi_api_base')]
 class ResidentParkingZoneServiceTest extends KernelTestBase {
 
   use ApiTestTrait;
@@ -34,11 +38,6 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
 
   /**
    * A location inside a zone resolves to a populated DTO with an embed URL.
-   *
-   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::getParkingZone
-   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::buildEmbedUrl
-   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::boundaryToBbox
-   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::__construct
    */
   public function testReturnsParkingZone(): void {
     $response = new Response(200, [], (string) json_encode([
@@ -47,6 +46,7 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
         [
           'type' => 'resident_parking_zone',
           'name' => ['fi' => 'Kallio/Sörnäinen'],
+          'extra' => ['area_key' => 'F'],
           'boundary' => [
             'type' => 'MultiPolygon',
             'coordinates' => [[[[24.93, 60.17], [24.95, 60.19], [24.94, 60.18]]]],
@@ -70,13 +70,20 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
     $this->assertStringContainsString('/embed/area', $zone->embedUrl);
     $this->assertStringContainsString('selected=resident_parking_zone', $zone->embedUrl);
     $this->assertStringContainsString('bbox=', $zone->embedUrl);
+    $this->assertSame('F', $zone->areaKey);
+    $this->assertStringContainsString('palvelukartta.hel.fi/en/area?', $zone->mapUrl);
+    $this->assertStringContainsString('selected=resident_parking_zone', $zone->mapUrl);
+
+    // The bbox is the boundary padded by 3 % on each side.
+    $bbox = array_map('floatval', explode(',', $zone->bbox));
+    $this->assertCount(4, $bbox);
+    foreach ([60.1694, 24.9294, 60.1906, 24.9506] as $i => $expected) {
+      $this->assertEqualsWithDelta($expected, $bbox[$i], 0.000001);
+    }
   }
 
   /**
    * A zone without usable geometry resolves to NULL (nothing to show on a map).
-   *
-   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::getParkingZone
-   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::boundaryToBbox
    */
   public function testReturnsNullWhenZoneHasNoGeometry(): void {
     $response = new Response(200, [], (string) json_encode([
@@ -96,8 +103,6 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
 
   /**
    * A location outside every zone resolves to NULL.
-   *
-   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::getParkingZone
    */
   public function testReturnsNullWhenNoZone(): void {
     $response = new Response(200, [], (string) json_encode(['count' => 0, 'results' => []]));
@@ -111,9 +116,20 @@ class ResidentParkingZoneServiceTest extends KernelTestBase {
   }
 
   /**
+   * A failed lookup throws the HTTP client exception.
+   */
+  public function testThrowsWhenLookupFails(): void {
+    $httpClient = $this->createMockHttpClient([
+      new ConnectException('Timeout', new Request('GET', 'https://example.com')),
+    ]);
+
+    $this->expectException(ConnectException::class);
+    $this->createService($httpClient)
+      ->getParkingZone(new Location(60.18, 24.94, 'Point'));
+  }
+
+  /**
    * Zone names are collected from every page.
-   *
-   * @covers \Drupal\helfi_api_base\ServiceMap\ResidentParkingZoneService::getParkingZoneNames
    */
   public function testReturnsParkingZoneNames(): void {
     $nextPage = 'https://example.com/next-page';
